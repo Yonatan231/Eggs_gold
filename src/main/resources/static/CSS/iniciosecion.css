@@ -1,0 +1,331 @@
+/* ---------- GENERAL ---------- */
+body {
+    background-color: #E8E8E8;
+    font-family: Arial, sans-serif;
+}
+
+/* ---------- HEADER ---------- */
+header {
+    padding-left: 30px;
+}
+
+.encabezado {
+    color: black;
+    font-size: 200%;
+    padding-top: 5px;
+    margin-top: 0%;
+    padding-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.inicio, .promociones, .contacto, .registro {
+    font-size: 50%;
+    margin-left: 10px;
+    color: #875644;
+}
+
+.inicio {
+    margin-left: -650px;
+}
+
+.navegador {
+    text-decoration: none;
+    padding-left: 70%;
+    color: #875644;
+    margin-top: 40px;
+}
+
+.navegador a {
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navegador a:hover {
+    color: #32a852;
+}
+
+/* ---------- MAIN ---------- */
+main {
+    text-align: center;
+    margin-top: -4%;
+    padding-top: -4%;
+    padding-right: 20px;
+}
+
+/* ---------- FORMULARIO LOGIN ACTUALIZADO ---------- */
+.login-container {
+    max-width: 400px;
+    margin: 80px auto;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #555;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+}
+
+.btn-login {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background-color: #875644;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #6b3f34;
+}
+
+/* ---------- OTROS ELEMENTOS ---------- */
+.texto1 {
+    text-align: left;
+    color: rgb(90, 75, 75);
+    font-size: large;
+    margin-top: 40px;
+    padding-left: 20px;
+}
+
+.menu {
+    margin-left: 30px;
+    margin-top: 70px;
+    margin-right: 50px;
+}
+
+.gallinas {
+    margin-top: -360px;
+    padding-left: 600px;
+    font-size: 160px;
+}
+
+.compra {
+    margin-left: 20px;
+    background-color: rgb(151, 147, 130);
+    width: 200px;
+    height: 100px;
+    border-radius: 25px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+nav a {
+    color: #875644;
+    padding: 10px;
+    border: none;
+}
+
+nav a.active {
+    color: #875644;
+    font-weight: bold;
+    border-bottom: 2px solid #875644;
+}
+
+.logo1 {
+    display: block;
+    margin-top: 400px;
+    margin-left: 20px;
+}
+
+.contact {
+    margin-top: -90px;
+    margin-left: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.numero1, .numero2, .contacto2 {
+    margin-left: 50px;
+    text-decoration: none;
+}
+
+.info {
+    margin-top: -150px;
+    margin-left: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.politica, .numero4, .codigoEtica {
+    margin-left: 0px;
+    text-decoration: none;
+}
+
+.sigue {
+    margin-top: -135px;
+    margin-left: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.faceboock {
+    margin-left: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.instagram {
+    margin-left: 1130px;
+    margin-top: -70px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.youtube {
+    margin-left: 1230px;
+    margin-top: -70px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.inicio1 {
+    margin-left: 0px;
+}
+
+.datos {
+    margin-top: 80px;
+    font-style: italic;
+    text-shadow: 5px 5px 5px rgb(83, 76, 76);
+}
+
+.nombre, .apellido, .correo, .nacimiento, .password {
+    font-size: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.nombre10, .nombre11 {
+    font-size: 20px;
+    padding-block-end: 10px;
+    box-shadow: 5px 5px 5px black;
+}
+
+.nombre11 {
+    font-size: 32px;
+}
+
+.boton-registrarse {
+    font-size: 20px;
+    padding-block-end: 0px;
+    box-shadow: 5px 5px 5px black;
+}
+
+.boton-registrarse:hover {
+    background-color: aqua;
+    transition-duration: 1000ms;
+}
+
+/* ---------- DROPDOWN ---------- */
+.dropdown {
+    position: relative;
+    text-decoration: none;
+    color: #875644;
+    margin-top: -38px;
+    margin-left: -130px;
+    padding-right: 60px;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    z-index: 1000;
+    min-width: 150px;
+    border-radius: 4px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu li {
+    padding: 10px 20px;
+}
+
+.dropdown-menu a {
+    color: #000;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f5f5f5;
+}
+
+/* ---------- OTROS ---------- */
+.carro7 {
+    position: absolute;
+    top: 10px;
+    z-index: 999;
+}
+
+.iniciarsecion0 {
+    margin-top: -50px;
+}
+
+.ingresar {
+    font-style: italic;
+    text-shadow: 5px 5px 5px rgb(83, 76, 76);
+}

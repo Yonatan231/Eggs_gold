@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/style_registro.css">
+    <link rel="icon" type="imagen/jpg" href="imagenes/LOGO.jpg">
+
+    <title>EGGS GOLD</title>
+</head>
+<body>
+  <header>
+    <div class="encabezado">
+      <div class="logo-titulo">
+        <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70" />
+        <span class="texto">EGGS GOLD</span>
+      </div>
+      <nav class="navegador">
+        <a href="inicio.html" class="nav-link">INICIO</a>
+        <a href="promociones.html" class="nav-link">PROMOCIONES</a>
+        <a href="contacto1.html" class="nav-link">CONTACTO</a>
+        <a href="registro.html" class="nav-link active">REGISTRARSE</a>
+        <a  href="inicio_secion.html" class="nav-link">INICIAR SESIÓN</a>
+      
+        
+        <a href="compra.html" target="_blank" class="carro">
+          <img src="imagenes/carrito.png" alt="Carrito" />
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-wrapper">
+      <img src="imagenes/sign-up.png" alt="Imagen de registro" class="registro-img" />
+      <div class="form-card">
+        <form action="PHP/registro.php" method="POST">
+          <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required />
+          </div>
+          <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required />
+          </div>
+          <div class="form-group">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion" required />
+          </div>
+          <div class="form-group">
+            <label for="num_documento">Número de Documento:</label>
+            <input type="text" id="num_documento" name="num_documento" required />
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" required />
+          </div>
+          <div class="form-group">
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" name="correo" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <button type="submit" class="boton-registrarse">Registrarse</button>
+          <div class="enlace-login">
+              ¿Ya tienes una cuenta? <a href="inicio_secion.html">Inicia sesión aquí</a>
+              </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div>
+        <img src="imagenes/LOGO.jpg" alt="Logo" width="70" />
+      </div>
+      <div class="contact">
+        <h2>CONTÁCTANOS</h2>
+        <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+        <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+      </div>
+      <div class="info">
+        <h2>INFO SITIO</h2>
+        <a href="#">Política de la Empresa</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Socios</a>
+      </div>
+      <div class="social">
+        <h2>SÍGUENOS</h2>
+        <a href="https://es-la.facebook.com/index.php/" target="_blank"><img src="imagenes/faceboock.png" alt="Facebook" /></a>
+        <a href="https://www.instagram.com/" target="_blank"><img src="imagenes/instagram.png" alt="Instagram" /></a>
+        <a href="https://www.youtube.com/" target="_blank"><img src="imagenes/youtube.png" alt="YouTube" /></a>
+      </div>
+    </div>
+  </footer>
+  <script src="JAVA SCRIPT/index.js"></script>
+</body>
+</html>

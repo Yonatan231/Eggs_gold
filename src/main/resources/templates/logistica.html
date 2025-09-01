@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/logistica.css">
+    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+    <title>EGGS GOLD</title>
+</head>
+<body>
+ <div class="toggle-btn">
+    <span>&#9776;</span>
+  </div>
+
+  <div id="sidebar">
+    <ul>
+      <li class="perfil-admin">
+  <div class="avatar-contenedor" id="avatar-contenedor">
+    <span id="avatar-iniciales">AD</span>
+    <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+    <label for="input-foto" class="boton-subir-foto">+</label>
+    <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+  </div>
+  <h2>Admin panel</h2>
+</li>
+      <li><a href="#tabla-clientes">Clientes</a></li>
+      <li><a href="#tabla-productos">Productos</a></li>
+      <li><a href="reportes_logistica.html"> Hacer reporte</a></li>
+      <li><a href="agregar_producto.html">Agregar Producto</a></li>
+      <li><a href="registro_logistica.html">Registro logistica</a></li>
+      <li><a href="PHP/cerrar_sesion.php" id="cerrar-sesion" class="texto">Cerrar sesión</a></li>
+    </ul>
+  </div>
+    <header>
+       <div class="opciones">
+    <img src="imagenes/LOGO.jpg" alt="Texto alternativo" class="logo"/>
+    <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">logistica</span></h1>
+    <a href="notificaciones.html" class="campana-noti">
+  <i class="fas fa-bell"></i>
+</a>
+  </div>
+    </header>
+
+  <main>
+    <h4 class="productos"id="productos">Productos en stock<br>3</h4>
+    
+     </div>
+   <!--busqueda filtros pedidos-->
+   <form class="form-busqueda" id="form-busqueda">
+    <input type="text" name="buscar" id="buscar" placeholder="Buscar pedido...">
+    <button type="submit">Buscar</button>
+</form>
+    <div class="tabla4">
+      <table class="listas1" id="tabla-pedidos">
+        <thead>
+            <tr>
+                <th colspan="9">Pedidos</th>
+            </tr>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th colspan="2">Productos</th>
+            <th>Dirección</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>fecha</th>
+            <th>Asignar</th>
+          </tr>
+        </thead>
+        <tbody >           
+          
+        </tbody>
+        
+      </table>
+    </div>
+  
+<div id="modal-asignar" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar" onclick="cerrarModalAsignar()">&times;</span>
+    <h2>Asignar Pedido</h2>
+    <form id="form-asignar" method="POST">
+      <input type="hidden" name="pedido_id" id="asignar_id_pedido">
+
+      <label for="conductor">Selecciona un conductor:</label>
+      <select name="conductor_id" id="select-conductor" required>
+        <option value="">Cargando conductores...</option>
+      </select>
+
+      <button type="submit" class="btn-asignar">Asignar</button>
+    </form>
+  </div>
+</div>
+
+  <!--busqueda filtros inventario-->
+   <form class="form-busqueda" id="form-busqueda-inventario">
+    <input type="text" name="buscar" id="buscar-inventario" placeholder="Buscar inventario...">
+    <button type="submit">Buscar</button>
+</form>
+
+  <div class="tabla4">
+    <table class="listas1" id="tabla-productos">
+      <thead>
+          <tr>
+              <th colspan="14">Inventario</th>
+          </tr>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Categoria</th>
+          <th>Descripcion</th>
+          <th>Estado</th>
+          <th>Cantidad</th>
+          <th>Ubicacion</th>
+          <th>Imagen</th>
+          <th>Fecha de caducidad</th>
+          <th>Fecha de actualizacion</th>
+          <th>Actualizar</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody >         
+        <!--aqui se cargan el inventario-->
+      </tbody>
+      
+    </table>
+  </div>
+
+
+
+
+  <div id="modal-editar-producto" class="modal_editar" style="display: none;">
+  <form id="form-editar-producto" class="modal-contenido_editar">
+    <h2 class="modal-titulo">📝 Editar Producto</h2>
+    <input type="hidden" name="id" id="editar_id_inventario">
+
+    <label for="editar_nombre">Nombre:</label>
+    <input type="text" name="nombre" id="editar_nombre">
+
+    <label for="editar_precio">Precio:</label>
+    <input type="number" name="precio" id="editar_precio" step="0.01">
+
+    <label for="editar_categoria">Categoría:</label>
+    <input type="text" name="categoria" id="editar_categoria">
+
+    <label for="editar_descripcion">Descripción:</label>
+    <input type="text" name="descripcion" id="editar_descripcion">
+
+    <label for="editar_estado">Estado:</label>
+    <input type="text" name="estado" id="editar_estado">
+
+    <label for="editar_cantidad">Cantidad Disponible:</label>
+    <input type="number" name="cantidad" id="editar_cantidad">
+
+    <label for="editar_ubicacion">Ubicación:</label>
+    <input type="text" name="ubicacion" id="editar_ubicacion">
+
+    <label for="editar_fecha_caducidad">Fecha de Caducidad:</label>
+    <input type="date" name="fecha_caducidad" id="editar_fecha_caducidad">
+
+    <div class="botones">
+      <button type="submit" class="btn-guardar">Guardar Cambios</button>
+      <button type="button" class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+  
+  <!--busqueda filtros inventario-->
+   <form class="form-busqueda" id="form-busqueda-clientes">
+    <input type="text" name="buscar" id="buscar-clientes" placeholder="Buscar cliente...">
+    <button type="submit">Buscar</button>
+</form>
+
+    <div class="tabla3">
+    <table class="listas" id="tabla-clientes">
+      <thead>
+          <tr>
+              <th colspan="8">Cientes</th>
+          </tr>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Documento</th>
+          <th>Direccion</th>
+          <th>Telefono</th>
+          <th>Pedidos realizados</th>
+      </thead>
+      <tbody >       
+        <!--vista de clientes-->
+      </tbody>
+      
+    </table>
+  </div>
+
+      <!--busqueda filtros conductores admin-->
+   <form class="form-busqueda" id="form-busqueda_conductor">
+    <input type="text" name="buscar" id="buscar_conductor" placeholder="Buscar conductor...">
+    <button type="submit">Buscar</button>
+</form>
+
+  <div class="tabla4">
+    <table class="listas1" id="tabla-conductores">
+      <thead>
+          <tr>
+              <th colspan="7">Conductores</th>
+          </tr>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Documento</th>
+          <th>Dirección</th>
+          <th>Telefono</th>
+          <th>Pedidos entregados</th>
+      </thead>
+      <tbody >       
+        <!--vista de conductores-->
+      </tbody>
+      
+    </table>
+  </div>
+  
+  </main>
+
+<script src="JAVA SCRIPT/index_logistica.js"></script> 
+
+</body>
+</html>

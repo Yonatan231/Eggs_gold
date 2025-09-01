@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header .logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+header .logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.sitemap {
+    list-style-type: none;
+    padding-left: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sitemap > li > span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.sitemap ul {
+    list-style-type: none;
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.sitemap li {
+    margin-bottom: 10px;
+}
+
+.sitemap li span {
+    font-size: 1rem;
+    color: #555;
+}
+
+.sitemap li span:hover {
+    text-decoration: underline;
+    color: #333;
+    cursor: pointer;
+}
+
+.inicio {
+    text-decoration: none;
+    color: rgb(30, 30, 238);
+    display: flex;
+}
+
+.errores a {
+    text-decoration: none;
+    color: red;
+}
+
+footer {
+    background-color: #dbd1d1;
+    margin-top: 80px;
+   
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.contact, .info, .social {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact a, .info a {
+    text-decoration: none;
+    color: #875644;
+    font-size: 14px;
+}
+
+.contact a:hover, .info a:hover {
+    color: #32a852;
+}
+.contact{
+    margin-left: 400px;
+    margin-top: -60px;
+}
+.info{
+    margin-left: 900px;
+    margin-top:-110px;
+}
+.sigue{
+    margin-left:1300px ;
+    margin-top: -110px;
+}
+.faceboock{
+    margin-left: 1330px;
+    width:80px;
+    height:60px; 
+}
+.instagram{
+    margin-left: 1360px;
+    width:30px;
+    height:40px;
+}
+.youtube{
+    margin-left: 1360px;
+    margin-top: 10px;
+    width:30px;
+    height:40px;
+}
+
+

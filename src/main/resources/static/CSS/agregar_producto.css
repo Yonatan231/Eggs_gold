@@ -1,0 +1,207 @@
+/* General */
+body {
+    background-color: #E8E8E8;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #fff;
+    padding: 10px 30px;
+    border-bottom: 2px solid #ccc;
+}
+
+.encabezado {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    white-space: nowrap;
+}
+
+.navegador {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
+.navegador a {
+    text-decoration: none;
+    color: #875644;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.navegador a:hover {
+    color: #eee457;
+}
+nav a.active {
+        color: #875644;
+        font-weight: bold;
+        border-bottom: 2px solid #875644;
+    }
+
+.linea {
+    width: 100%;
+    border: 1px solid #ccc;
+}
+/*main*/
+.datos{
+    margin-top: 80px;
+    font-style:italic;
+    text-shadow: 5px 5px 5px rgb(83, 76, 76);
+}
+.nombre,.apellido,.correo,.nacimiento,.password{
+    font-size: 20px;
+ font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.nombre10{
+    font-size: 20px;
+    padding-block-end: 10px;
+    box-shadow: 5px 5px 5px black;
+}
+
+
+.boton-registrarse{
+    font-size: 20px;
+    padding-block-end: 0px;
+    box-shadow: 5px 5px 5px black;
+
+}
+.boton-registrarse.hover{
+    background-color: aqua;
+    transition-duration:1000ms ;
+}
+
+/* Estilo para los enlaces */
+
+.navegador a:hover {
+    color: #ffffff; /* Cambia el color al pasar el mouse */
+}
+
+
+
+form{
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-left: 700px;
+    margin-right: 700px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+input{
+    width: 100%;
+    padding: 1px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+button {
+    background-color: #816934;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+/*footer*/
+/* Footer */
+footer {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-top: 2px solid #ccc;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.contact, .info, .social {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact a, .info a {
+    text-decoration: none;
+    color: #875644;
+    font-size: 14px;
+}
+
+.contact a:hover, .info a:hover {
+    color: #32a852;
+}
+
+.active{
+    padding: 0;
+}
+.nave a{
+    text-decoration: none;
+    background-color: white;
+    color:rgb(0, 0, 0);
+    border: 2px black;
+}
+
+
+form {
+    border: 1px solid #ccc;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #fefefe;
+    margin: 40px auto;
+    width: 400px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+form h1 {
+    text-align: center;
+    color: #875644;
+    margin-bottom: 20px;
+}
+
+form label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+    color: #333;
+    font-size: 15px;
+}
+
+.nombre10 {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0 16px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+
+/* Estilo del botón */
+form button {
+    background-color: #875644;
+    color: white;
+    font-size: 16px;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #6b3f34;
+}

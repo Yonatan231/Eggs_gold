@@ -1,0 +1,247 @@
+ :root {
+      --color-principal: #875644;
+      --color-hover: #32a852;
+      --fondo-claro: #fff;
+      --gris-claro: #E8E8E8;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--gris-claro);
+    }
+
+    /* HEADER */
+    header {
+      background-color: var(--fondo-claro);
+      padding: 10px 30px;
+      border-bottom: 2px solid #ccc;
+    }
+
+    .encabezado {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+    .logo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+    .texto {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--color-principal);
+      justify-content: start;
+    }
+
+    .navegador {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .navegador a {
+      text-decoration: none;
+      color: var(--color-principal);
+      font-weight: 500;
+      padding: 8px 12px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .navegador a:hover {
+      color: var(--color-hover);
+      border-bottom: 2px solid var(--color-hover);
+    }
+
+    .navegador a.active {
+      border-bottom: 2px solid var(--color-principal);
+    }
+
+    .carro img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .linea {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin-top: 10px;
+    }
+
+    /* MAIN */
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .texto3 {
+      color: var(--color-principal);
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .menu_promocion {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+    }
+
+    .card p {
+      padding: 15px;
+      margin: 0;
+      color: #555;
+      font-size: 14px;
+      background: #f9f9f9;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: white;
+      padding: 20px;
+      border-top: 2px solid #ccc;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 20px;
+    }
+
+    .footer-content div {
+      flex: 1 1 200px;
+    }
+
+    .footer-content h2 {
+      color: var(--color-principal);
+      font-size: 16px;
+    }
+
+    .footer-content a {
+      text-decoration: none;
+      color: var(--color-principal);
+      font-size: 14px;
+      display: block;
+      margin: 5px 0;
+    }
+
+    .footer-content a:hover {
+      color: var(--color-hover);
+    }
+
+    .social a img {
+      margin-right: 10px;
+      width: 30px;
+      height: 30px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .encabezado {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .navegador {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+      }
+      .footer-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-content div {
+        text-align: center;
+      }
+    }
+ 
+/*menu de usuario*/
+    .perfil-contenedor {
+  position: relative;
+  display: flex;
+  margin-left: 600px;
+  gap: 5px;
+  cursor: pointer;
+  align-items: center;
+
+}
+
+.perfil-circulo {
+  background-color: #ccc;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perfil-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  z-index: 100;
+}
+.perfil-menu a{
+  padding: 10px 10px;
+  text-decoration: none;
+  color: #5A4B4B;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+
+}
+
+
+
+.perfil-contenedor:hover .perfil-menu {
+  display: flex;
+  padding:5px;
+}
+
+
+/*flecha hacia abajo*/
+
+.perfil-nombre {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #5A4B4B;
+}
+
+.flecha-abajo {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 4px;
+  vertical-align: middle;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #5A4B4B; /* o el color que estés usando */
+}
+

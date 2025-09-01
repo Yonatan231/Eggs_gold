@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/contacto.css">
+    <link rel="icon" type="imagen/jpg" href="imagenes/LOGO.jpg">
+
+    <title>EGGS GOLD</title>
+    </head>
+<body>
+  <header>
+    <div class="encabezado">
+      <div class="logo-titulo">
+        <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70" />
+        <span class="texto">EGGS GOLD</span>
+      </div>
+         <!-- Si SÍ ha iniciado sesión -->
+         <div class="perfil-contenedor" id="perfil-contenedor" style="display: none;">
+      <div class="perfil-circulo" id="perfil-iniciales">YA</div>
+      <div class="perfil-nombre" id="perfil-nombre">Nombre <span class="flecha-abajo"></span></div>
+      <div class="perfil-menu" id="perfil-menu">
+        <a href="#">Mis pedidos</a>
+        <a href="#" onclick="cerrarSesion()">Cerrar sesión</a>
+      </div>
+    </div>
+
+
+      <nav class="navegador">
+        <a href="inicio.html" class="nav-link">INICIO</a>
+        <a href="promociones.html" class="nav-link">PROMOCIONES</a>
+        <a href="contacto1.html" class="nav-link active">CONTACTO</a>
+
+        <!-- Si NO ha iniciado sesión -->
+        <div id="login-registro-links">
+          <a href="registro.html" class="nav-link">REGISTRARSE</a>
+          <a href="inicio_secion.html" class="nav-link">INICIAR SESIÓN</a>
+        </div>
+
+
+        <a href="inventario.html" target="_blank" class="carro">
+          <img src="imagenes/carrito.png" alt="Carrito" width="50" height="50">
+        </a>
+      </nav>
+    </div>
+    <hr class="linea">
+  </header>
+
+  <main>
+    <div class="contact-section">
+      <h2>Información de Contacto</h2>
+      <p>Estamos aquí para ayudarte. Si tienes preguntas, inquietudes o deseas saber más sobre nuestros productos, puedes comunicarte con nosotros a través de los siguientes medios:</p>
+      <p><strong>Teléfonos:</strong> 3126204260 / 3216942598</p>
+      <p><strong>Correo:</strong> contacto@eggsgold.com</p>
+      <p><strong>Dirección:</strong> Calle 123 #45-67, Bogotá, Colombia</p>
+      <p>También puedes seguirnos en nuestras redes sociales para estar al tanto de nuestras promociones y novedades.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div>
+        <img src="imagenes/LOGO.jpg" alt="Logo" width="70" />
+      </div>
+      <div class="contact">
+        <h2>CONTÁCTANOS</h2>
+        <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+        <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+      </div>
+      <div class="info">
+        <h2>INFO SITIO</h2>
+        <a href="#">Política de la Empresa</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Socios</a>
+      </div>
+      <div class="social">
+        <h2>SÍGUENOS</h2>
+        <a href="https://es-la.facebook.com/index.php/" target="_blank"><img src="imagenes/faceboock.png" alt="Facebook" /></a>
+        <a href="https://www.instagram.com/" target="_blank"><img src="imagenes/instagram.png" alt="Instagram" /></a>
+        <a href="https://www.youtube.com/" target="_blank"><img src="imagenes/youtube.png" alt="YouTube" /></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="JAVA SCRIPT/index.js"></script>
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const nombre = localStorage.getItem("nombre");
+    const apellido = localStorage.getItem("apellido");
+
+    if (nombre && apellido) {
+      const iniciales = nombre.charAt(0).toUpperCase() + apellido.charAt(0).toUpperCase();
+      document.getElementById("perfil-iniciales").textContent = iniciales;
+      document.getElementById("perfil-nombre").innerHTML = nombre + " " + apellido + ' <span class="flecha-abajo"></span>';
+
+
+      document.getElementById("perfil-contenedor").style.display = "flex";
+      document.getElementById("login-registro-links").style.display = "none";
+    }
+
+    // Ocultar menú si se hace clic fuera
+    document.addEventListener("click", (event) => {
+      const contenedor = document.getElementById("perfil-contenedor");
+      const menu = document.getElementById("perfil-menu");
+      if (!contenedor.contains(event.target)) {
+        menu.style.display = "none";
+      }
+    });
+  });
+
+  function toggleMenu() {
+    const menu = document.getElementById("perfil-menu");
+    menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
+  }
+
+  function cerrarSesion() {
+    localStorage.clear();
+    window.location.href = "inicio_secion.html";
+  }
+</script>
+
+</html>

@@ -1,0 +1,12 @@
+# Redirigir a HTTPS
+# Redirigir a HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Página de error personalizada
+ErrorDocument 404 /proyecto/error404.html
+ErrorDocument 403/proyecto /error403.html
+ErrorDocument 500/proyecto /error500.html
+
+

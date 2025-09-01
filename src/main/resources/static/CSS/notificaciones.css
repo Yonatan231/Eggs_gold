@@ -1,0 +1,70 @@
+/* Fondo animado suave */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(-45deg, #f7e8cf, #fff, #f2e9dc, #ffe5b4);
+  background-size: 400% 400%;
+  animation: moverFondo 15s ease infinite;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Animación */
+@keyframes moverFondo {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+header {
+  background-color: #fff8e1;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#btn-atras.inicio {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #ffcc00;
+  color: #333;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#btn-atras.inicio:hover {
+  background-color: #ffd633;
+  color: #000;
+  box-shadow: 0 0 8px #ffdd44;
+}
+
+/* Contenedor de reportes */
+#reportes {
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Reporte individual (si usas .reporte-card) */
+.reporte-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease;
+}
+
+.reporte-card:hover {
+  transform: scale(1.01);
+}
+
+.reporte-card img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+

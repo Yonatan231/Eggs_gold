@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="CSS/admin.css" />
+  <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg" />
+  <title>EGGS GOLD</title>
+</head>
+<body>
+  <div class="toggle-btn">
+    <span>&#9776;</span>
+  </div>
+
+  <div id="sidebar">
+    <ul>
+      <li class="perfil-admin">
+  <div class="avatar-contenedor" id="avatar-contenedor">
+    <span id="avatar-iniciales">AD</span>
+    <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+    <label for="input-foto" class="boton-subir-foto">+</label>
+    <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+  </div>
+  <h2>Admin panel</h2>
+</li>
+      <li><a href="#tabla-clientes">Clientes</a></li>
+      <li><a href="#tabla-productos">Productos</a></li>
+      <li><a href="reportes_admin.html">Reportes</a></li>
+      <li><a href="agregar_producto.html">Agregar Producto</a></li>
+      <li><a href="registro_logistica.html">Registro logistica</a></li>
+      <li><a href="PHP/cerrar_sesion.php" id="cerrar-sesion" class="texto">Cerrar sesión</a></li>
+    </ul>
+  </div>
+
+  <header>
+  <div class="opciones">
+    <img src="imagenes/LOGO.jpg" alt="Texto alternativo" class="logo"/>
+    <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">Administrador</span></h1>
+    <a href="notificaciones.html" class="campana-noti">
+  <i class="fas fa-bell"></i>
+</a>
+  </div>
+</header>
+  <main>
+   <div class="contenedor-cuadros">
+  <div class="registrados">Usuarios registrados<br><span id="totalUsuarios">0</span></div>
+  <div class="ventas">Ventas de hoy<br><span id="totalVentas">$0</span></div>
+  <div class="productos">Productos en stock<br><span id="totalProductos">0</span></div>
+</div>
+   <!--busqueda filtros pedidos-->
+   <form class="form-busqueda">
+    <input type="text" name="buscar" id="buscar" placeholder="Buscar pedido...">
+    <button type="submit">Buscar</button>
+</form>
+    <!-- Pedidos recientes con estilo logistica -->
+    <div class="tabla3">
+      <table class="listas" id="tabla-pedidos">
+        <thead>
+          <tr>
+            <th colspan="9">Pedidos</th>
+          </tr>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th colspan="2">Productos</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody >
+       
+        </tbody>
+      </table>
+    </div>
+       <!--busqueda filtros productos-->
+   <form class="form-busqueda" id="form-busqueda">
+    <input type="text" name="buscar" id="buscar_producto" placeholder="Buscar producto...">
+    <button type="submit">Buscar</button>
+</form>
+    <div class="tabla4">
+    <table class="listas1" id="tabla-productos">
+      <thead>
+          <tr>
+              <th colspan="14">Productos</th>
+          </tr>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Categoria</th>
+          <th>Descripcion</th>
+          <th>Estado</th>
+          <th>Cantidad</th>
+          <th>Imagen</th>
+          <th>Actualizar</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody >       
+        <!--vista de productos-->
+      </tbody>
+      
+    </table>
+  </div>
+  <!-- Modal de actualizacion productos -->
+<div id="modalActualizar" class="modal-overlay" style="display: none;">
+  <div class="modal-contenido">
+    <h3>Actualizar Producto</h3>
+    <form id="formActualizarProducto" action="PHP/actualizar_producto.php" method="POST">
+      <input type="hidden" name="id" id="update-id">
+
+      <label for="nombre">Nombre:</label>
+      <input type="text" name="nombre" id="update-nombre" required>
+
+      <label for="precio">Precio:</label>
+      <input type="number" name="precio" id="update-precio" required>
+
+      <label for="categoria">Categoría:</label>
+      <input type="text" name="categoria" id="update-categoria" required>
+
+      <label for="descripcion">Descripción:</label>
+      <input type="text" name="descripcion" id="update-descripcion">
+
+      <label for="estado">Estado:</label>
+      <select name="estado" id="update-estado">
+        <option value="DISPONIBLE">DISPONIBLE</option>
+        <option value="AGOTADO">AGOTADO</option>
+      </select>
+
+      <label for="cantidad">Cantidad:</label>
+      <input type="number" name="cantidad" id="update-cantidad" required>
+
+      <div class="modal-botones">
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+        <button type="button" onclick="cerrarModal()" class="btn-cancelar">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+ 
+       <!--busqueda filtros clientes-->
+   <form class="form-busqueda" id="form-busqueda_cliente">
+    <input type="text" name="buscar" id="buscar_cliente" placeholder="Buscar cliente...">
+    <button type="submit">Buscar</button>
+</form>
+
+
+  <div class="tabla4">
+    <table class="listas1" id="tabla-clientes">
+      <thead>
+          <tr>
+              <th colspan="8">Cientes</th>
+          </tr>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Documento</th>
+          <th>Direccion</th>
+          <th>Telefono</th>
+          <th>Actualizar</th>
+          <th>Eliminar</th>
+       
+      </thead>
+      <tbody >       
+        <!--vista de clientes-->
+      </tbody>
+      
+    </table>
+  </div>
+
+  <!-- Modal de actualización clientes -->
+<div id="modalActualizarClientes"  class="modal-overlay" style="display: none;">
+     <div class="modal-contenido">
+    <h3>Actualizar Clientes</h3>
+    <form id="formActualizarClientes" action="PHP/actualizar_producto.php" method="POST">
+      <input type="hidden" name="id" id="updatec-id">
+
+      <label for="NOMBRE">Nombre:</label>
+      <input type="text" name="NOMBRE" id="updatec-nombre" required><br>
+
+      <label for="APELLIDO">Apellido:</label>
+      <input type="text" name="APELLIDO" id="updatec-apellido" required><br>
+
+      <label for="DOCUMENTO">Documento:</label>
+      <input type="number" name="DOCUMENTO" id="updatec-documento" required><br>
+
+      <label for="DIRECCION">Dirección:</label>
+      <input type="text" name="DIRECCION" id="updatec-direccion"><br>
+
+   
+      <label for="TELEFONO">Cantidad:</label>
+      <input type="number" name="TELEFONO" id="updatec-telefono" required><br>
+
+      <button type="submit">Guardar Cambios</button>
+      <button type="button" onclick="cerrarModalCliente()" >Cancelar</button>
+    </form>
+  </div>
+</div>
+      <!--busqueda filtros conductores admin-->
+   <form class="form-busqueda" id="form-busqueda_conductor">
+    <input type="text" name="buscar" id="buscar_conductor" placeholder="Buscar conductor...">
+    <button type="submit">Buscar</button>
+</form>
+
+  <div class="tabla4">
+    <table class="listas1" id="tabla-conductores">
+      <thead>
+          <tr>
+              <th colspan="8">Conductores</th>
+          </tr>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Documento</th>
+          <th>Dirección</th>
+          <th>Telefono</th>
+          <th>Actualizar</th>
+          <th>Eliminar</th>
+       
+      </thead>
+      <tbody >       
+        <!--vista de conductores-->
+      </tbody>
+      
+    </table>
+  </div>
+
+  <!-- Modal de actualización conductores -->
+<div id="modalActualizarConductores" class="modal-overlay" style="display: none;">
+  <div class="modal-contenido">
+    <h3>Actualizar Conductor</h3>
+    <form id="formActualizarConductores" action="PHP/actualizar_producto.php" method="POST">
+      <input type="hidden" name="id" id="updateco-id">
+
+      <label for="NOMBRE">Nombre:</label>
+      <input type="text" name="NOMBRE" id="updateco-nombre" required><br>
+
+      <label for="APELLIDO">Apellido:</label>
+      <input type="text" name="APELLIDO" id="updateco-apellido" required><br>
+
+      <label for="DOCUMENTO">Documento:</label>
+      <input type="number" name="DOCUMENTO" id="updateco-documento" required><br>
+
+      <label for="DIRECCION">Dirección:</label>
+      <input type="text" name="DIRECCION" id="updateco-direccion"><br>
+
+   
+      <label for="TELEFONO">Cantidad:</label>
+      <input type="number" name="TELEFONO" id="updateco-telefono" required><br>
+
+      <button type="submit">Guardar Cambios</button>
+      <button type="button" onclick="cerrarModalConductores()">Cancelar</button>
+    </form>
+  </div>
+</div>
+
+      <!--busqueda filtros logistica admin-->
+   <form class="form-busqueda" id="form-busqueda_logistica">
+    <input type="text" name="buscar" id="buscar_logistica" placeholder="Buscar logistica...">
+    <button type="submit">Buscar</button>
+</form>
+   <div class="tabla4">
+    <table class="listas1" id="tabla-Logistica">
+      <thead>
+          <tr>
+              <th colspan="8">Logistica</th>
+          </tr>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Documento</th>
+          <th>Direccion</th>
+          <th>Telefono</th>
+          <th>Actualizar</th>
+          <th>Eliminar</th>
+       
+      </thead>
+      <tbody >       
+        <!--vista de logistica-->
+      </tbody>
+      
+    </table>
+  </div>
+
+  
+  <!-- Modal de actualización logistica -->
+<div id="modalActualizarLogistica" class="modal-overlay" style="display: none;">
+  <div class="modal-contenido">
+    <h3>Actualizar Logistica</h3>
+    <form id="formActualizarLogistica" action="PHP/actualizar_producto.php" method="POST">
+      <input type="hidden" name="id" id="updateL-id">
+
+      <label for="NOMBRE">Nombre:</label>
+      <input type="text" name="NOMBRE" id="updateL-nombre" required><br>
+
+      <label for="APELLIDO">Apellido:</label>
+      <input type="text" name="APELLIDO" id="updateL-apellido" required><br>
+
+      <label for="DOCUMENTO">Documento:</label>
+      <input type="number" name="DOCUMENTO" id="updateL-documento" required><br>
+
+      <label for="DIRECCION">Dirección:</label>
+      <input type="text" name="DIRECCION" id="updateL-direccion"><br>
+
+   
+      <label for="TELEFONO">Cantidad:</label>
+      <input type="number" name="TELEFONO" id="updateL-telefono" required><br>
+
+      <button type="submit">Guardar Cambios</button>
+      <button type="button" onclick="cerrarModalLogistica()">Cancelar</button>
+    </form>
+  </div>
+</div>
+
+  </main>
+
+  <script src="JAVA SCRIPT/indexadmin.js"></script>
+  
+</body>
+</html>

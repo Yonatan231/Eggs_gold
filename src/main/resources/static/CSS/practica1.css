@@ -1,0 +1,70 @@
+body{ 
+    background-color: aqua;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    /* background-color:rgb(144, 144, 208);  */
+    /* background-image: url(https://s1.1zoom.me/big0/140/374951-svetik.jpg); */
+    /* width :300px;
+    height:300px;
+    top:70px;
+    left:40px; */
+     } 
+/* .photo{ */
+    /* background-image:url(imagenes/carrito.png);
+    width: 400px;
+    height: 400px;
+    border: 2px solid black;
+    background-size: cover; */
+    
+/* } */
+/* .imagen{ */
+    /* background-image: url(imagenes/gallina1.jpg); */
+    /* width: 400px;
+    height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background:linear-gradient(to right,rgba(222, 213, 213, 0.359),rgba(201, 218, 201, 0.337)),url(imagenes/gallina1.jpg);
+    box-sizing:border-box; */
+/* } */
+/* .profile{
+    background-image: url(https://img.freepik.com/foto-gratis/joven-mujer-feliz-mirando-camara_1301-7076.jpg?semt=ais_hybrid);
+     width:150px;
+    height:150px;
+    position:fixed;
+    top: 0;
+    right: 0; 
+  background-position: 60% 0%;
+    background-size: 250px;
+    top:10px;
+    border-radius: 50%;
+    border:2px solid rgb(210, 141, 141);
+    
+    
+
+} */
+ .contenedor{
+    border: 10px blue;
+    width: 80px;
+    height:80px;
+    background-color: brown;
+    transition-property: background-color,height,width;
+    transition-duration: 6000ms, 4000ms,  3000ms;
+    transition-delay: 0ms,1000ms,5000ms ;
+
+ }
+ .contenedor:hover{
+    background-color: aquamarine;
+    width: 40px;
+    height:40px;
+ }
+ h1{
+    font-size: 4em;
+    background: burlywood;
+    width:400px;
+    border-radius: 8px;
+    text-align: center;
+    color: black;
+    box-shadow: 5px 5px 5px black;
+    margin: 30vh auto;
+    padding: 8px;
+    letter-spacing: 3px;
+ }

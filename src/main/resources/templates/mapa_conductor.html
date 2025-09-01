@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ruta del Pedido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Obtener dirección desde la URL
+    const params = new URLSearchParams(window.location.search);
+    const direccion = params.get('direccion');
+
+    if (!direccion) {
+      alert('Dirección no especificada');
+    }
+
+    // Usar geocodificación gratuita de Nominatim para convertir la dirección
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${direccion}`)
+      .then(res => res.json())
+      .then(result => {
+        if (result.length === 0) {
+          alert("No se pudo encontrar la ubicación.");
+          return;
+        }
+
+        const destino = [parseFloat(result[0].lat), parseFloat(result[0].lon)];
+
+        // Obtener ubicación actual
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            const origen = [pos.coords.latitude, pos.coords.longitude];
+
+            const map = L.map('map').setView(origen, 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Marcadores
+            L.marker(origen).addTo(map).bindPopup('Tu ubicación').openPopup();
+            L.marker(destino).addTo(map).bindPopup('Destino');
+
+            // Dibujar ruta con leaflet-routing-machine
+            L.Routing.control({
+              waypoints: [
+                L.latLng(origen[0], origen[1]),
+                L.latLng(destino[0], destino[1])
+              ],
+              routeWhileDragging: false
+            }).addTo(map);
+          },
+          err => alert("No se pudo obtener tu ubicación.")
+        );
+      })
+      .catch(err => {
+        console.error("Error de geocodificación:", err);
+        alert("Error al buscar la ubicación.");
+      });
+  </script>
+
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+</body>
+</html>

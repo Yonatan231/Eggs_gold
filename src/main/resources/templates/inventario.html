@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/inventario.css">
+    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+    <title>EGGS GOLD</title>
+</head>
+<body>
+  <header>
+    <div class="encabezado">
+      <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70" />
+      <span class="texto">EGGS GOLD</span>
+    </div>
+    <!--barra de busqueda-->
+            <div class="barra-busqueda">
+  <input type="text" id="buscador-productos" placeholder="Buscar..." />
+  <button type="submit">🔍</button>
+</div>
+
+
+            <!-- Perfil si está logueado -->
+    <div class="perfil-contenedor" id="perfil-contenedor" style="display: none;">
+      <div class="perfil-circulo" id="perfil-iniciales">YA</div>
+      <div class="perfil-nombre" id="perfil-nombre">Nombre <span class="flecha-abajo"></span></div>
+      <div class="perfil-menu" id="perfil-menu">
+        <a href="#">Mis pedidos</a>
+        <a href="#" onclick="cerrarSesion()">Cerrar sesión</a>
+      </div>
+    </div>
+
+    <!-- Si NO está logueado -->
+    <div id="login-registro-links">
+      <a href="registro.html" class="nav-link">REGISTRARSE</a>
+      <a href="inicio_secion.html" class="nav-link">INICIAR SESIÓN</a>
+    </div>
+    <nav class="navegador">
+      <a class="inicio" href="inicio.html">INICIO</a>
+      <a class="promociones" href="promociones.html">PROMOCIONES</a>
+      <a class="contacto" href="contacto1.html">CONTACTO</a>
+      <div class="carro7">
+        <a href="historial_productos.html" target="_blank">
+          <img src="imagenes/carrito.png" width="40" height="40" alt="Carrito" />
+          <span id="contador-carrito">0</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="contenedor_flecha">
+      <button class="arrow left" id="prevBtn">&#10094;</button>
+      <div class="productos" id="productos-container">
+        <!-- Productos dinámicos -->
+      </div>
+      <button class="arrow right" id="nextBtn">&#10095;</button>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="contact">
+        <h2>CONTACTANOS</h2>
+        <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+        <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        <a href="https://web.whatsapp.com/" target="_blank">Contactanos</a>
+      </div>
+      <div class="info">
+        <h2>INFO SITIO</h2>
+        <a href="#">Política de la Empresa</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Socios</a>
+      </div>
+      <div class="social">
+        <h2>SÍGUENOS</h2>
+        <a href="https://es-la.facebook.com/index.php/" target="_blank">
+          <img src="imagenes/faceboock.png" alt="Facebook" width="30" height="30">
+        </a>
+        <a href="https://www.instagram.com/" target="_blank">
+          <img src="imagenes/instagram.png" alt="Instagram" width="30" height="30">
+        </a>
+        <a href="https://www.youtube.com/" target="_blank">
+          <img src="imagenes/youtube.png" alt="YouTube" width="30" height="30">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="JAVA SCRIPT/inventario.js"></script>
+  <script src="JAVA SCRIPT/slider.js"></script>
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const nombre = localStorage.getItem("nombre");
+    const apellido = localStorage.getItem("apellido");
+
+    if (nombre && apellido) {
+      const iniciales = nombre.charAt(0).toUpperCase() + apellido.charAt(0).toUpperCase();
+      document.getElementById("perfil-iniciales").textContent = iniciales;
+      document.getElementById("perfil-nombre").innerHTML = nombre + " " + apellido + ' <span class="flecha-abajo"></span>';
+
+      document.getElementById("perfil-contenedor").style.display = "flex";
+      document.getElementById("login-registro-links").style.display = "none";
+    }
+  });
+
+  function cerrarSesion() {
+    localStorage.clear();
+    window.location.href = "inicio_secion.html";
+  }
+</script>
+
+
+</html>
+
+
+    

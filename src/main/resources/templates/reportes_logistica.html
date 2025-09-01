@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear Reporte</title>
+  <link rel="stylesheet" href="CSS/repote.css">
+  <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+</head>
+<body>
+  <div class="container">
+<img  class="logo" src="imagenes/LOGO.jpg" alt="Texto alternativo" width="50" height="50">
+<h2 id="titulo-formulario" class="titulo">Crear Reporte</h2>
+
+
+
+    <form id="report-form" action="PHP/guardar_reporte.php" method="POST" enctype="multipart/form-data">
+      <!-- Remitente fijo: logística -->
+      <input type="hidden" id="remitente" name="remitente" value="">
+
+
+      <!-- Destinatario elegido -->
+      <div class="form-group">
+        <label for="destinatario">Enviar a:</label>
+        <select name="destinatario" id="destinatario" required>
+          <option value="" disabled selected>Seleccione un destinatario</option>
+          <option value="administrador">Administrador</option>
+          <option value="conductor">Conductor</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="title">Título del Reporte:</label>
+        <input type="text" name="titulo" placeholder="Ingrese el título" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descripción:</label>
+        <textarea name="descripcion" rows="5" placeholder="Escriba una descripción detallada" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="file">Adjuntar Archivo:</label>
+        <input type="file" name="archivo" accept="image/*">
+      </div>
+
+      <button type="submit">Enviar Reporte</button>
+    </form>
+  </div>
+</body>
+<script src="JAVA SCRIPT/reporte.js"></script>
+</html>

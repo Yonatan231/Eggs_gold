@@ -1,0 +1,382 @@
+ :root {
+      --color-header: #f7f1e1;
+      --color-sidebar: #fff3cd;
+      --color-ventas: #198754;
+      --color-stock: #ffc107;
+      --color-tabla: #f0f8ff;
+      --color-modal-bg: rgba(0, 0, 0, 0.6);
+      --color-btn-success: #28a745;
+      --color-btn-danger: #dc3545;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      padding-top: 70px;
+    }
+
+    header {
+      background-color: var(--color-header);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .texto {
+      color: #333;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .toggle-btn {
+  position: fixed;
+  top: 0px;
+  left: 10px;
+  z-index: 1100;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+#sidebar {
+  position: fixed;
+  left: -200px;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  background-color: var(--color-sidebar);
+  transition: left 0.3s;
+  z-index: 1050;
+  padding-top: 60px;
+  overflow-y: auto; /* 👈 permite que el sidebar haga scroll vertical */
+  overflow-y: auto;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE y Edge */
+}
+#sidebar::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari */
+}
+
+#sidebar.active {
+  left: 0; /* aparece cuando se activa */
+}
+
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#sidebar li {
+  padding: 12px 10px;
+  text-align: center;
+}
+
+#sidebar a {
+  display: block;
+  padding: 12px 15px;
+  margin: 8px auto;
+  width: 85%;
+  background-color: #fff3c4;
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+#sidebar a:hover {
+  background-color: #ffd966;
+  color: #000;
+  transform: scale(1.05);
+}
+
+#sidebar li.perfil-admin {
+  background-color: transparent;
+  margin-bottom: 20px;
+}
+
+
+.opciones {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap:500px;
+  padding: 5px 5px;
+  border-radius: 10px;
+  
+}
+
+.opciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.titulo2 {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #d35400;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  margin: 0;
+  padding: 0px 40px ;
+  background: linear-gradient(to right, #fff3cd, #ffeeba);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.resaltado {
+  color: #e67e22;
+}
+
+.campana-noti {
+  font-size: 24px;
+  color: #333;
+  text-decoration: none;
+  margin-left: auto; /* Si quieres que se vaya al extremo derecho */
+}
+
+.campana-noti:hover {
+  color: #f39c12;
+}
+
+ .productos {
+      margin: 20px auto;
+      padding: 15px;
+      width: 90%;
+      max-width: 300px;
+      text-align: center;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .ventas {
+      background-color: var(--color-ventas);
+    }
+
+    .productos {
+      background-color: var(--color-stock);
+      color: #000;
+    }
+
+    .tabla3,
+    .tabla4 {
+      margin: 30px auto;
+      width: 95%;
+      background-color: var(--color-tabla);
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      padding: 15px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #fdf0d5;
+    }
+
+    tr:nth-child(even) {
+      background-color: #ffffff;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #fefae0;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--color-modal-bg);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-contenido,
+    .modal form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .modal h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .modal label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .modal input,
+    .modal select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .modal button {
+      margin-top: 20px;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .modal button[type="submit"] {
+      background-color: var(--color-btn-success);
+      color: white;
+    }
+
+    .modal button[type="button"] {
+      background-color: var(--color-btn-danger);
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .ventas,
+      .productos {
+        width: 90%;
+      }
+      .titulo2 {
+        font-size: 22px;
+      }
+    }
+
+
+    /*este es el css pa el filtro de busqueda pedidos*/
+.form-busqueda {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-left: 50px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.form-busqueda input[type="text"] {
+  padding: 10px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-busqueda input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.form-busqueda button {
+  background-color: var(--color-sidebar);
+  color: rgb(13, 10, 10);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-busqueda button:hover {
+  background-color: white;
+}
+
+/*panel de administrador*/
+
+.perfil-admin {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.avatar-contenedor {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background-color: #ddd;
+  overflow: hidden;
+  font-size: 30px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#avatar-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#avatar-iniciales {
+  font-weight: bold;
+}
+
+.boton-subir-foto {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #000;
+  border-radius: 50%;
+  font-size: 20px;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  cursor: pointer;
+  line-height: 28px;
+  font-weight: bold;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+

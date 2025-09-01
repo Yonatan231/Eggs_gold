@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="CSS/productoslogis.css">
+    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="imagenes/LOGO.jpg" alt="Logo" class="logo">
+        </div>
+        <h1>Gestión de Productos</h1>
+        <p>Añadir o eliminar productos de la lista</p>
+    </header>
+
+    <main>
+        <div class="product-container">
+            <button id="add-product-btn" class="btn">Agregar Producto</button>
+            <div id="product-list" class="product-list">
+                <!-- Aquí aparecerán los productos -->
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- Formulario para agregar o editar productos -->
+    <div id="product-form-container" class="product-form-container">
+        <form id="product-form">
+            <h2>Detalles del Producto</h2>
+            <label for="product-name">Nombre del Producto:</label>
+            <input type="text" id="product-name" required>
+
+            <label for="product-price">Precio Normal ($):</label>
+            <input type="number" id="product-price" required>
+
+            <label for="discounted-price">Precio Rebajado ($):</label>
+            <input type="number" id="discounted-price">
+
+            <label for="tax-status">Estado del Impuesto:</label>
+            <select id="tax-status">
+                <option value="Imponible">Imponible</option>
+                <option value="No Imponible">No Imponible</option>
+            </select>
+
+            <label for="tax-class">Clase de Impuesto:</label>
+            <select id="tax-class">
+                <option value="Estándar">Estándar</option>
+                <option value="Reducido">Reducido</option>
+            </select>
+          
+
+            <button type="submit" class="btn">Guardar Producto</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 EGGS GOLD. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="JAVA SCRIPT/productos.js"></script>
+  
+   
+</body>
+</html>
+
+
