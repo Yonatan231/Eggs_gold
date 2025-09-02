@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
             return "inicio"; // busca en templates/inicio.html
         }
 
+        @GetMapping("/inicio")
+        public String inicio1(){
+            return "inicio";
+        }
+
         @GetMapping("/promociones")
         public String promociones() {
             return "promociones"; // busca promociones.html en templates
@@ -21,6 +26,18 @@ import org.springframework.web.bind.annotation.GetMapping;
         public String contacto1(){
             return "contacto1";
         }
+
+
+        @GetMapping("/inicio_secion")
+        public String inicioSecion(){
+            return "inicio_secion";
+        }
+
+        @GetMapping("/inventario")
+        public String inventario(){
+            return "inventario";
+        }
+
 
 
     }

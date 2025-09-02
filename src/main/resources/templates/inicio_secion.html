@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,12 +16,12 @@
         <span class="texto">EGGS GOLD</span>
       </div>
       <nav class="navegador">
-        <a href="inicio.html" class="nav-link">INICIO</a>
-        <a href="promociones.html" class="nav-link">PROMOCIONES</a>
-        <a href="contacto1.html" class="nav-link">CONTACTO</a>
-        <a href="registro.html" class="nav-link">REGISTRARSE</a>
-        <a href="inicio_secion.html" class="nav-link active">INICIAR SESIÓN</a>
-        <a href="inventario.html" target="_blank">
+        <a th:href="@{inicio}" class="nav-link">INICIO</a>
+        <a th:href="@{promociones}" class="nav-link">PROMOCIONES</a>
+        <a th:href="@{contacto1}" class="nav-link">CONTACTO</a>
+        <a th:href="@{registro}" class="nav-link">REGISTRARSE</a>
+        <a th:href="@{inicio_secion}" class="nav-link active">INICIAR SESIÓN</a>
+        <a th:href="@{inventario}" target="_blank">
         <img src="imagenes/carrito.png" width="40" height="40" alt="Carrito" />
         </a>
       </nav>

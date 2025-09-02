@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+
+import javax.management.relation.Role;
 import java.time.LocalDate;
 
 @Entity
@@ -13,6 +15,15 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name="ROL_ID", referencedColumnName="ROLES_ID")
+    private Rol rol;
+
+    @ManyToOne
+    @JoinColumn(name="VEHICULO_ID", referencedColumnName="ID_VEHICULOS")
+    private Vehiculo vehiculo;
+
 
     @Column(name="NOMBRE")
     private String nombre;
@@ -25,7 +36,7 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     @Column(name="TIPO_DOCUMENTO")
-    private TipoDocumento tipoDocumento;
+    private TipoDocumento  tipoDocumento = TipoDocumento.CC;
 
     @Column(name="NUM_DOCUMENTO")
     private Integer numDocumento;
@@ -35,7 +46,7 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     @Column(name="ESTADO")
-    private Estado estado;
+    private Estado estado = Estado.ACTIVO;
 
     @Column(name="CORREO")
     private String correo;
