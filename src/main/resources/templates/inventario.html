@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,22 +25,22 @@
       <div class="perfil-circulo" id="perfil-iniciales">YA</div>
       <div class="perfil-nombre" id="perfil-nombre">Nombre <span class="flecha-abajo"></span></div>
       <div class="perfil-menu" id="perfil-menu">
-        <a href="#">Mis pedidos</a>
-        <a href="#" onclick="cerrarSesion()">Cerrar sesión</a>
+        <a th:href="@{#}">Mis pedidos</a>
+        <a th:href="@{#}" onclick="cerrarSesion()">Cerrar sesión</a>
       </div>
     </div>
 
     <!-- Si NO está logueado -->
     <div id="login-registro-links">
-      <a href="registro.html" class="nav-link">REGISTRARSE</a>
-      <a href="inicio_secion.html" class="nav-link">INICIAR SESIÓN</a>
+      <a th:href="@{registro}" class="nav-link">REGISTRARSE</a>
+      <a th:href="@{inicio_secion}" class="nav-link">INICIAR SESIÓN</a>
     </div>
     <nav class="navegador">
-      <a class="inicio" href="inicio.html">INICIO</a>
-      <a class="promociones" href="promociones.html">PROMOCIONES</a>
-      <a class="contacto" href="contacto1.html">CONTACTO</a>
+      <a class="inicio" th:href="@{inicio}">INICIO</a>
+      <a class="promociones" th:href="@{promociones}">PROMOCIONES</a>
+      <a class="contacto" th:href="@{contacto1}">CONTACTO</a>
       <div class="carro7">
-        <a href="historial_productos.html" target="_blank">
+        <a th:href="@{historial_productos}" target="_blank">
           <img src="imagenes/carrito.png" width="40" height="40" alt="Carrito" />
           <span id="contador-carrito">0</span>
         </a>

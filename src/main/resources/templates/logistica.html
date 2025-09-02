@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="CSS/logistica.css">
+    <link rel="stylesheet" th:href="@{CSS/logistica.css}">
     <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
     <title>EGGS GOLD</title>
 </head>
@@ -24,11 +24,11 @@
   </div>
   <h2>Admin panel</h2>
 </li>
-      <li><a href="#tabla-clientes">Clientes</a></li>
-      <li><a href="#tabla-productos">Productos</a></li>
-      <li><a href="reportes_logistica.html"> Hacer reporte</a></li>
-      <li><a href="agregar_producto.html">Agregar Producto</a></li>
-      <li><a href="registro_logistica.html">Registro logistica</a></li>
+      <li><a th:href="@{#tabla-clientes}">Clientes</a></li>
+      <li><a th:href="@{#tabla-productos}">Productos</a></li>
+      <li><a th:href="@{reportes_logistica}"> Hacer reporte</a></li>
+      <li><a th:href="@{agregar_producto}">Agregar Producto</a></li>
+      <li><a th:href="@{registro_logistica}">Registro logistica</a></li>
       <li><a href="PHP/cerrar_sesion.php" id="cerrar-sesion" class="texto">Cerrar sesión</a></li>
     </ul>
   </div>
