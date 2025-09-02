@@ -24,6 +24,10 @@ public class Usuario {
     @JoinColumn(name="VEHICULO_ID", referencedColumnName="ID_VEHICULOS")
     private Vehiculo vehiculo;
 
+    @ManyToOne
+    @JoinColumn(name="RUTAS_COMPLETADAS_ID", referencedColumnName = "ID_RUTAS_COMPLETADAS")
+    private Rutas rutas;
+
 
     @Column(name="NOMBRE")
     private String nombre;
