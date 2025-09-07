@@ -35,16 +35,16 @@
         INICIAR SESIÓN
       </div>
       <div class="form-wrapper">
-        <img src="imagenes/iniciar sesión.png" alt="Imagen de inicio" class="registro-img" />
+        <img th:src="@{imagenes/iniciar sesión.png}" alt="Imagen de inicio" class="registro-img" />
         <div class="form-card">
-          <form action="PHP/login.php" method="POST">
+          <form th:action="@{/login}" th:object="${loginDTO}" method="POST">
             <div class="form-group">
               <label for="documento">Documento:</label>
-              <input type="text" id="documento" name="documento" required />
+              <input type="text" id="documento" th:field="*{documento}" required />
             </div>
             <div class="form-group">
               <label for="contrasena">Contraseña:</label>
-              <input type="password" id="contrasena" name="contraseña" required />
+              <input type="password" id="contrasena" th:field="*{password}" required />
             </div>
             <button type="submit" class="boton-registrarse">Iniciar sesión</button>
             <div class="enlace-login">

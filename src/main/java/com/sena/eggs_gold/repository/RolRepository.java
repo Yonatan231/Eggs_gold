@@ -1,10 +1,9 @@
 package com.sena.eggs_gold.repository;
 
-import com.sena.eggs_gold.model.entity.Usuario;
+import com.sena.eggs_gold.model.entity.Rol;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuarioRepository  {
-
+public interface RolRepository extends JpaRepository<Rol, Integer> {
 }

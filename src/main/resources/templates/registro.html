@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,13 +31,16 @@
   </header>
 
   <main>
-    <div class="form-wrapper">
+      <div th:if="${mensaje}" th:text="${mensaje}" class="mensaje-exito"></div>
+      <div th:if="${error}" th:text="${error}" class="mensaje-error"></div>
+
+      <div class="form-wrapper">
       <img th:src="@{imagenes/sign-up.png}" alt="Imagen de registro" class="registro-img" />
       <div class="form-card">
-        <form th:action="@{/registro}" th:object="${usuario}" method="POST">
+        <form th:action="@{/registro}" th:object="${clienteDTO}" method="POST">
           <div class="form-group">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" th:field="*{nombre}" required />
+           <input type="text" id="nombre" th:field="*{nombre}" required />
           </div>
           <div class="form-group">
             <label for="apellido">Apellido:</label>
@@ -45,7 +48,7 @@
           </div>
           <div class="form-group">
             <label for="direccion">Dirección:</label>
-            <input type="text" id="direccion" th:field="*{direccion}" required />
+            <input type="text" id="direccion" th:field="*{direccionUsuario}" required />
           </div>
           <div class="form-group">
             <label for="numDocumento">Número de Documento:</label>
