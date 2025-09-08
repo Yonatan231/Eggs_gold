@@ -47,7 +47,7 @@ public class ClienteController {
 
         if (cliente != null) {
             model.addAttribute("cliente", cliente);
-            return "bienvenido"; // ejemplo: templates/bienvenido.html
+            return "inventario"; // ejemplo: templates/bienvenido.html
         } else {
             model.addAttribute("error", "Documento o contraseña incorrectos");
             return "inicio_secion";

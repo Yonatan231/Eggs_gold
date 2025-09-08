@@ -34,7 +34,7 @@
         <!-- Si NO ha iniciado sesión -->
         <div id="login-registro-links">
           <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
-          <a th:href="@{/inicio_secion}" class="nav-link">INICIAR SESIÓN</a>
+          <a th:href="@{/login}" class="nav-link">INICIAR SESIÓN</a>
         </div>
 
 
@@ -61,7 +61,9 @@
         Priorizamos el manejo responsable de nuestros productos...
       </p>
       <p>Confía en nosotros para garantizar el suministro de huevos frescos...</p>
-      <div class="compra">COMPRAR AHORA</div>
+      <div class="compra">
+        <a th:href="@{/inventario}" > COMPRAR AHORA </a>
+      </div>
     </section>
 
     <section class="gallinas">

@@ -44,7 +44,7 @@ public class Usuario {
     @Column(name = "TIPO_DOCUMENTO")
     private TipoDocumento tipoDocumento = TipoDocumento.CC ;
 
-    @Column(name = "NUM_DOCUMENTO")
+    @Column(name = "NUM_DOCUMENTO", unique = true, nullable = false)
     private String numDocumento;
 
     @Column(name = "TELEFONO")

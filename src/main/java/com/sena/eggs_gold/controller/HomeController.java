@@ -38,6 +38,10 @@ import org.springframework.web.bind.annotation.GetMapping;
             return "inventario";
         }
 
+        @GetMapping("/logistica")
+        public String logistica(){
+            return "logistica";
+        }
 
 
     }
