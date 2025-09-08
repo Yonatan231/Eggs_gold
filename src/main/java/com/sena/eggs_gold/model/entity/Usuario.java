@@ -25,6 +25,12 @@ public class Usuario {
     @Column(name = "ID_USUARIOS")
     private Integer idUsuarios;
 
+
+    @ManyToOne
+    @JoinColumn(name = "VEHICULO_ID")
+    private Vehiculo vehiculo;
+
+
     @Column(name = "NOMBRE")
     private String nombre;
 
