@@ -4,5 +4,5 @@ import com.sena.eggs_gold.dto.ClienteRegistroDTO;
 import com.sena.eggs_gold.model.entity.Usuario;
 
 public interface UsuarioService {
-
+ boolean documentoYaExistente(String numDocumento);
 }

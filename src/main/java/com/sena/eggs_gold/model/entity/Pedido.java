@@ -6,7 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entidad JPA para la tabla pedidos
@@ -34,15 +38,14 @@ public class Pedido {
     private LocalDateTime fechaCreacion;
 
     @Column(name = "TOTAL", nullable = false)
-    private Float total;
+    private BigDecimal total;
 
-    // Relaciones JPA - Many to One (muchos pedidos pueden estar asociados a la misma venta)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "VENTAS_ID_VENTAS_CLIENTE", nullable = false)
-    private Venta venta;
 
-    // Many to One (muchos pedidos pueden ser gestionados por el mismo usuario)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<Venta> ventas = new ArrayList<>();
+
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USUARIOS_ID_USUARIOS", nullable = false)
+    @JoinColumn(name = "USUARIOS_ID", nullable = false)
     private Usuario usuario;
 }

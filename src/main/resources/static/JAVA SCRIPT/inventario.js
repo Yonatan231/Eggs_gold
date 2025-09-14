@@ -13,12 +13,25 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarContadorCarrito();
 });
 
-const usuarioId = parseInt(localStorage.getItem("usuario_id")) || 1;
+const clienteGuardado = JSON.parse(localStorage.getItem("cliente"));
+
+if (clienteGuardado && clienteGuardado.nombre) {
+  console.log("Nombre del cliente:", clienteGuardado.nombre);
+  // tu lógica aquí...
+} else {
+  console.warn("Cliente no definido o incompleto");
+}
+
+const usuarioId = clienteGuardado?.idUsuarios || clienteGuardado?.id;
+
+console.log("🧑 ID del usuario:", usuarioId);
+
+
 
 let listaProductos = [];
 
 function cargarProductos() {
-    fetch("PHP/mostrar_producto.php")
+    fetch("/inventario/disponibles")
         .then(response => response.json())
         .then(productos => {
             listaProductos = productos; // Guardar lista original
@@ -31,17 +44,24 @@ function mostrarProductos(productos) {
     const productosContainer = document.getElementById("productos-container");
     productosContainer.innerHTML = "";
 
+
+    if (!Array.isArray(productos)) {
+        console.error("❌ La respuesta no es un array:", productos);
+        productosContainer.innerHTML = "<p>No se pudieron cargar los productos.</p>";
+        return;
+    }
+
     productos.forEach(producto => {
         const productoHTML = `
             <div>
-                <img src="/proyecto/imagenes/${producto.imagen}" class="producto1">
+                <img src="/imagenes/${producto.imagen}" class="producto1">
                 <h4 class="inventarios">${producto.nombre}</h4>
                 <p>${producto.categoria}</p>
                 <p>${producto.descripcion}</p>
                 <p>${producto.estado}</p>
-                <p>Stock: ${producto.cantidad}</p>
+                <p>Stock: ${producto.cantidadDisponible}</p>
                 <h4 class="inventarios2">$${new Intl.NumberFormat("es-CO").format(producto.precio)}</h4>
-                <button class="boton_compra" data-id="${producto.id}" data-nombre="${producto.nombre}" data-precio="${producto.precio}">
+                <button class="boton_compra" data-id="${producto.idProducto}" data-nombre="${producto.nombre}" data-precio="${producto.precio}">
                     Agregar al carrito
                 </button>
             </div>
@@ -77,11 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function agregarAlCarrito(idProducto, precioProducto, cantidad) {
     const formData = new FormData();
-    formData.append("usuario_id", usuarioId);
-    formData.append("producto_id", idProducto);
+    formData.append("usuario", usuarioId);
+    formData.append("producto", idProducto);
     formData.append("cantidad", cantidad);
 
-    fetch("PHP/agregar_item.php", {
+    fetch("/api/carrito/agregar", {
         method: "POST",
         body: formData
     })
@@ -113,7 +133,7 @@ function agregarAlCarrito(idProducto, precioProducto, cantidad) {
 }
 
 function actualizarContadorCarrito() {
-    fetch(`PHP/obtener_pedidos.php?usuario_id=${usuarioId}`)
+    fetch(`/api/carrito/temporal?usuario=${usuarioId}`)
         .then(response => response.json())
         .then(carrito => {
             console.log("📦 Respuesta carrito:", carrito);
@@ -138,7 +158,7 @@ function mostrarCarrito() {
 
     if (!listaCarrito || !totalCarrito) return;
 
-    fetch(`PHP/obtener_pedidos.php?usuario_id=${usuarioId}`)
+    fetch(`/api/carrito/temporal?usuario=${usuarioId}`)
         .then(response => response.json())
         .then(carrito => {
             listaCarrito.innerHTML = "";
@@ -172,8 +192,8 @@ function mostrarCarrito() {
                 boton.addEventListener("click", () => {
                     const id = boton.getAttribute("data-id");
 
-                    fetch("PHP/eliminar_del_carrito.php", {
-                        method: "POST",
+                    fetch(`/api/carrito/eliminar?id=${id}`, {
+                        method: "DELETE",
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded"
                         },
@@ -213,9 +233,14 @@ function confirmarPedido() {
     formData.append("usuario_id", usuarioId);
     formData.append("direccion", direccion);
 
-    fetch("PHP/confirmar_pedido.php", {
+    fetch(`/api/pedido/confirmar`, {
         method: "POST",
-        body: formData
+         headers: {
+           "Content-Type": "application/json"
+         },
+         body: JSON.stringify({
+         direccion: direccion
+         })
     })
     .then(response => response.text())
     .then(mensaje => {

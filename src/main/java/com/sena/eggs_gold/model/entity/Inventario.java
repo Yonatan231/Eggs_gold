@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Entidad JPA para la tabla inventario
@@ -32,10 +34,10 @@ public class Inventario {
     private LocalDate fechaCaducidad;
 
     @Column(name = "FECHA_ACTUALIZACION", nullable = false)
-    private LocalDate fechaActualizacion;
+    private LocalDateTime fechaActualizacion;
 
     // Relación JPA - Many to One (muchos registros de inventario pueden ser del mismo producto)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUCTOS_ID_PRODUCTOS", nullable = false)
+    @JoinColumn(name = "PRODUCTOS_ID", nullable = false)
     private Producto producto;
 }

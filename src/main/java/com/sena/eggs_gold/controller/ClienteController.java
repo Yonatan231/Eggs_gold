@@ -2,18 +2,27 @@ package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.ClienteDTO;
 import com.sena.eggs_gold.dto.LoginDTO;
+import com.sena.eggs_gold.model.entity.Usuario;
+import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ClienteService;
+import com.sena.eggs_gold.service.UsuarioService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final UsuarioService usuarioService;
 
-    public ClienteController(ClienteService clienteService) {
+
+    public ClienteController(ClienteService clienteService, UsuarioService usuarioService, UsuarioRepository usuarioRepository) {
         this.clienteService = clienteService;
+        this.usuarioService = usuarioService;
+
     }
 
     @GetMapping("/registro")
@@ -24,6 +33,10 @@ public class ClienteController {
 
     @PostMapping("/registro")
     public String registrarCliente(@ModelAttribute("clienteDTO") ClienteDTO clienteDTO, Model model) {
+        if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
+            model.addAttribute("error", "El número de documento ya está registrado");
+            return "registro";
+        }
         try {
             clienteService.registrarCliente(clienteDTO);
             model.addAttribute("mensaje", "Cliente registrado exitosamente");
@@ -34,6 +47,7 @@ public class ClienteController {
 
     }
 
+
     @GetMapping("/login")
     public String mostrarLogin(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
@@ -42,17 +56,24 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
-    public String procesarLogin(@ModelAttribute("loginDTO") LoginDTO loginDTO, Model model) {
+    public String procesarLogin(@ModelAttribute("loginDTO") LoginDTO loginDTO,
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes) {
+
         ClienteDTO cliente = clienteService.login(loginDTO.getDocumento(), loginDTO.getPassword());
 
         if (cliente != null) {
-            model.addAttribute("cliente", cliente);
-            return "inventario"; // ejemplo: templates/bienvenido.html
+            session.setAttribute("cliente", cliente);
+            System.out.println("Cliente autenticado: " + cliente);
+
+            return "redirect:/inventario"; // ← redirige al GET
+
         } else {
-            model.addAttribute("error", "Documento o contraseña incorrectos");
-            return "inicio_secion";
+            redirectAttributes.addFlashAttribute("error", "Documento o contraseña incorrectos");
+            return "redirect:/login";
+
         }
 
-    }
 
+    }
 }

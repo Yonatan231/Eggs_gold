@@ -6,6 +6,7 @@ import com.sena.eggs_gold.model.entity.Rol;
 import com.sena.eggs_gold.repository.ClienteRepository;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.service.ClienteService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,12 +47,20 @@ public class ClienteServiceImpl implements ClienteService {
         return clienteRepository.findByNumDocumentoAndPassword(numDocumento, password)
                 .map(cliente->{
                     ClienteDTO dto = new ClienteDTO();
-                    dto.setIdUsuarios(cliente.getIdUsuarios().toString());
+                    dto.setIdUsuarios(cliente.getIdUsuarios());
+                    dto.setNombre(cliente.getNombre());
+                    dto.setApellido(cliente.getApellido());
+                    dto.setDireccionUsuario(cliente.getDireccionUsuario());
                     dto.setNumDocumento(cliente.getNumDocumento());
+                    dto.setTelefono(cliente.getTelefono());
+                    dto.setCorreo(cliente.getCorreo());
                     dto.setPassword(cliente.getPassword());
+
                     return dto;
                 })
                 .orElse(null);
 
     }
+
+
 }

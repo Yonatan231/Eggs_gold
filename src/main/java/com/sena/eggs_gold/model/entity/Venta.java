@@ -35,13 +35,26 @@ public class Venta {
     @Column(name = "ESTADO", nullable = false)
     private EstadoVenta estado;
 
+    @Column(name="CANTIDAD", nullable = false)
+    private Integer cantidad;
+
+
     // Relaciones JPA - Many to One (muchas ventas pueden ser del mismo cliente)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USUARIOS_ID_USUARIOS_CLIENTE", nullable = false)
+    @JoinColumn(name = "CLIENTE_ID", nullable = false)
     private Usuario cliente;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="PRODUCTO_ID", nullable = false)
+    private Producto producto;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="PEDIDO_ID", nullable = false)
+    private Pedido pedido;
+
 
     // Many to One (muchas ventas pueden usar el mismo vehículo)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "VEHICULOS_ID_VEHICULOS", nullable = false)
+    @JoinColumn(name = "VEHICULOS_ID", nullable = false)
     private Vehiculo vehiculo;
 }

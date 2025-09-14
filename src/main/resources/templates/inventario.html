@@ -56,6 +56,7 @@
       </div>
       <button class="arrow right" id="nextBtn">&#10095;</button>
     </div>
+
   </main>
 
   <footer>
@@ -87,30 +88,21 @@
     </div>
   </footer>
 
+  <script th:inline="javascript" th:if="${cliente != null}">
+      const cliente = {
+        id: /*[[${cliente.idUsuarios}]]*/,
+        nombre: /*[[${cliente.nombre}]]*/
+      };
 
-  <script src="JAVA SCRIPT/inventario.js"></script>
-  <script src="JAVA SCRIPT/slider.js"></script>
+      localStorage.setItem("cliente", JSON.stringify(cliente));
+  </script>
+  <script src="JAVA SCRIPT/inventario.js" defer></script>
+  <script src="JAVA SCRIPT/slider.js"defer></script>
+
+
 </body>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const nombre = localStorage.getItem("nombre");
-    const apellido = localStorage.getItem("apellido");
 
-    if (nombre && apellido) {
-      const iniciales = nombre.charAt(0).toUpperCase() + apellido.charAt(0).toUpperCase();
-      document.getElementById("perfil-iniciales").textContent = iniciales;
-      document.getElementById("perfil-nombre").innerHTML = nombre + " " + apellido + ' <span class="flecha-abajo"></span>';
 
-      document.getElementById("perfil-contenedor").style.display = "flex";
-      document.getElementById("login-registro-links").style.display = "none";
-    }
-  });
-
-  function cerrarSesion() {
-    localStorage.clear();
-    window.location.href = "inicio_secion.html";
-  }
-</script>
 
 
 </html>

@@ -33,16 +33,17 @@ import org.springframework.web.bind.annotation.GetMapping;
             return "inicio_secion";
         }
 
-        @GetMapping("/inventario")
-        public String inventario(){
-            return "inventario";
-        }
+
 
         @GetMapping("/logistica")
         public String logistica(){
             return "logistica";
         }
 
+        @GetMapping("/historial_productos")
+        public String mostrarHistorial() {
+            return "historial_productos";
+        }
 
     }
 
