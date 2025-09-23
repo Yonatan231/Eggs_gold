@@ -1,28 +1,26 @@
+fetch('/session', { credentials: 'same-origin' }) // envía la cookie JSESSIONID
+    .then(res => res.json())
+    .then(({ usuario_id, rol }) => {
+        if (!usuario_id || !rol) {
+            alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
+            window.location.href = '/login'; // endpoint Thymeleaf
+            return;
+        }
 
+        console.log('ID de sesión:', usuario_id);
+        console.log('Rol:', rol);
 
-//el inicio de sesión del usuario en vez de el local storage//
-fetch('PHP/obtener_usuario_sesión.php')
-  .then(res => res.json())
-  .then(({ usuario_id, rol_id }) => {
-    if (!usuario_id || !rol_id) {
-      alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
-      window.location.href = '../inicio_secion.html';
-      return;
-    }
+        if (rol === 'CLIENTE') {
+            cargarPedidosRecientes('PENDIENTE');
+        } else if (rol === 'ADMIN') {
+            cargarPedidosRecientes('APROBADO');
+        }
+    })
+    .catch(error => {
+        console.error("Error al obtener sesión:", error);
+        window.location.href = '/login';
+    });
 
-    console.log('ID de sesión:', usuario_id);
-    console.log('Rol:', rol_id);
-
-    if (rol_id == 1) {
-      cargarPedidosRecientes('PENDIENTE');
-    } else if (rol_id == 3) {
-      cargarPedidosRecientes('APROBADO');
-    }
-  })
-  .catch(error => {
-    console.error("Error al obtener sesión:", error);
-    window.location.href = '../inicio_secion.html';
-  });
 
 
 
@@ -36,7 +34,7 @@ btntoggle.addEventListener('click', function(){
 document.addEventListener("DOMContentLoaded", cargarPedidosRecientes);
 
 function cargarPedidosRecientes() {
-  fetch("PHP/mostrar_pedido.php")
+  fetch("/api/pedido/listar")
     .then(response => response.json())
     .then(data => {
       if (!data.success) {
@@ -61,10 +59,10 @@ function cargarPedidosRecientes() {
         fila.innerHTML = `
           <td>${p.ID_PEDIDOS}</td>
           <td>${p.nombre_usuario}</td>
-          <td colspan="2">${p.productos}</td> <!-- ✅ Aquí unimos nombre y cantidad -->
+          <td colspan="2">${p.productos.join(", ")}</td> <!-- ✅ Aquí unimos nombre y cantidad -->
           <td>${p.DIRECCION}</td>
           <td>${p.ESTADO}</td>
-          <td>${p.FECHA_CREACION}</td>
+           <td>${new Date(p.fechaCreacion).toLocaleString()}</td>
           <td>$${p.TOTAL}</td>
         `;
 

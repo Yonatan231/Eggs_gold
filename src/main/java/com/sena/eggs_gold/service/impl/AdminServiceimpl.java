@@ -24,6 +24,7 @@ public class AdminServiceimpl implements AdminService {
         return adminRepository.findByNumDocumentoAndPassword(numDocumento, password)
                 .map(admin->{
                     AdminDTO dto = new AdminDTO();
+                    dto.setIdUsuarios(admin.getIdUsuarios());
                     dto.setNumDocumento(admin.getNumDocumento());
                     dto.setPassword(admin.getPassword());
                     Rol rol = rolRepository.findById(1)
