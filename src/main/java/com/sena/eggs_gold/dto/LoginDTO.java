@@ -1,8 +1,11 @@
 package com.sena.eggs_gold.dto;
 
+import com.sena.eggs_gold.model.entity.Rol;
+
 public class LoginDTO {
     private String documento;
     private String password;
+
 
     public String getDocumento(){
         return documento;

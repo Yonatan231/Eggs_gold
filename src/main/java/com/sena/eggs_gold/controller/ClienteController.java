@@ -43,37 +43,12 @@ public class ClienteController {
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar cliente: " + e.getMessage());
         }
-        return "redirect:/login";
+        return "redirect:auth/login";
 
     }
 
 
-    @GetMapping("/login")
-    public String mostrarLogin(Model model) {
-        model.addAttribute("loginDTO", new LoginDTO());
-        return "inicio_secion"; // templates/inicio_sesion.html
-
-    }
-
-    @PostMapping("/login")
-    public String procesarLogin(@ModelAttribute("loginDTO") LoginDTO loginDTO,
-                                HttpSession session,
-                                RedirectAttributes redirectAttributes) {
-
-        ClienteDTO cliente = clienteService.login(loginDTO.getDocumento(), loginDTO.getPassword());
-
-        if (cliente != null) {
-            session.setAttribute("cliente", cliente);
-            System.out.println("Cliente autenticado: " + cliente);
-
-            return "redirect:/inventario"; // ← redirige al GET
-
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Documento o contraseña incorrectos");
-            return "redirect:/login";
-
-        }
 
 
-    }
+
 }
