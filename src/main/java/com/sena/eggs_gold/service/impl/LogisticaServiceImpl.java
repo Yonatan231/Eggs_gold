@@ -31,8 +31,8 @@ public class LogisticaServiceImpl implements LogisticaService {
         logistica.setCorreo(dto.getCorreo());
         logistica.setPassword(dto.getPassword());
 
-        // Asignar el rol de logística (ajusta el ID según tu base de datos)
-        Rol rol = rolRepository.findById(2) // ejemplo: 2 = logística
+        // Asignar el rol de logística
+        Rol rol = rolRepository.findById(2)
                 .orElseThrow(() -> new RuntimeException("Rol Logística no encontrado"));
         logistica.setRol(rol);
 

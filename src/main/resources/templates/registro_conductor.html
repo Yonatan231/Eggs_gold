@@ -1,137 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/style_registro.css">
-    <link rel="icon" type="imagen/jpg" href="imagenes/LOGO.jpg">
-
-    <title>EGGS GOLD</title>
+    <link rel="stylesheet" th:href="@{/CSS/style_registro.css}">
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}">
+    <title>EGGS GOLD - Registro Conductor</title>
 </head>
 <body>
-    <header>
-        <h1 class="encabezado">
-        <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70"><span class="texto">
-        EGGS GOLD </span>
-        <div class="navegador">
-        <nav >
-            <div class="inicio1">
-            <a class="inicio" href="inicio.html">INICIO</a>
-            <a class="promociones" href="promociones.html">PROMOCIONES</a>
-            <a class="contacto" href="contacto1.html">CONTACTO</a>
-            <a class="registro" href="registro.html">REGISTRARSE</a>
-            <div class="dropdown"> 
-            <a class="iniciar_seccion dropdown-toggle" href="inicio_secion.html">INICIAR SECCION</a>
-            <ul class="dropdown-menu">
-                <li><a href="inicio_secion.html">Usuario</a></li>
-                <li><a href="inicio_secion.html">Conductor</a></li>
-                <li><a href="inicio_secion.html">Logistica</a></li>
-                <li><a href="inicio_secion.html">Admin</a></li>
-            </ul>
-            </div>
-        </a>
-            </div>
-            <div class="carro7">
-            <a href="inventario.html" target="_blank">
-            <img src="imagenes/carrito.png" width="50" height="50">
-             
-        </a>
-    </div>
-            </div>
+<header>
+    <div class="encabezado">
+        <div class="logo-titulo">
+            <img th:src="@{/imagenes/LOGO.jpg}" alt="logo" width="70" height="70"/>
+            <span class="texto">EGGS GOLD</span>
+        </div>
+        <nav class="navegador">
+            <a th:href="@{/inicio}" class="nav-link">INICIO</a>
+            <a th:href="@{/promociones}" class="nav-link">PROMOCIONES</a>
+            <a th:href="@{/contacto1}" class="nav-link">CONTACTO</a>
+            <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
+            <a th:href="@{/login}" class="nav-link">INICIAR SESIÓN</a>
         </nav>
-    </h1>
-   <hr class="linea">
-   
-    </header> 
-    <main>
-        <form action="PHP/registro.php" method="POST" id="userForm">
-          <h1>Datos del usuario</h1>
-          <fieldset>
-            <legend>Información Personal</legend>
-            <input type="hidden" name="tipo_usuario" value="conductor">
+    </div>
+</header>
 
-            <div class="form-group">
-              <label for="nombre">Nombre:</label>
-              <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
-              <span class="error" id="nameError"></span>
-            </div>
-      
-            <div class="form-group">
-              <label for="apellido">Apellido:</label>
-              <input type="text" id="apellido" name="apellido" placeholder="Ingresa tu apellido" required>
-              <span class="error" id="apellidoError"></span>
-            </div>
-      
-            <div class="form-group">
-              <label for="direccion">Dirección:</label>
-              <input type="text" id="direccion" name="direccion" placeholder="Ej: Manzana B Casa 37" required>
-            </div>
-      
-            <div class="form-group">
-              <label for="num_documento">Número de Documento:</label>
-              <input type="text" id="num_documento" name="num_documento" required>
-            </div>
-      
-            <div class="form-group">
-              <label for="telefono">Teléfono:</label>
-              <input type="tel" id="telefono" name="telefono" required>
-            </div>
-      
-            <div class="form-group">
-              <label for="correo">Correo Electrónico:</label>
-              <input type="email" id="correo" name="correo" placeholder="Ingresa tu correo" required>
-              <span class="error" id="emailError"></span>
-            </div>
-      
-            <div class="form-group">
-              <label for="password">Contraseña:</label>
-              <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
-              <span class="error" id="passError"></span>
-            </div>
-      
-            <div class="form-group">
-              <label for="fecha_registro">Fecha de Registro:</label>
-              <input type="date" id="fecha_registro" name="fecha_registro" required>
-            </div>
-          </fieldset>
-      
-          <button type="submit" class="boton-registrarse">Registrarse</button>
-        </form>
-      </main>
-      
-    <footer>
-        <img src= "imagenes/LOGO.jpg" class="logo1" width= "70" height= "70">
-        <div class= "contact">
-         <h2 class="informacion">CONTACTANOS</h2>
-         <a class="numero1" href="https://web.whatsapp.com/" target="_blank" rel="noopener noreferrer">3126204260</a>
-         <a class="numero2" href="https://web.whatsapp.com/" target="_blank" rel="noopener noreferrer">3216942598</a>
-         <a class="contacto2" href="https://web.whatsapp.com/"target="_blank" rel="noopener noreferrer">contactanos</a>
-         </div>
-         <div class="info">
-         <h2>INFO SITIO</h2>
-         <a class="politica" href="#">politica de la empresa</a>
-         <a class="codigoEtica" href="#">politica de privacidad</a>
-         <a class="numero4" href="#">socios</a>
-         </div>
-         <h2 class="sigue">SIGUENOS</h2>
-         <a href="https://es-la.facebook.com/index.php/" target="_blank" rel="noopener noreferrer" >
-            <img src= "imagenes/faceboock.png" alt= "faceboock" class="faceboock" width= "140" height= "90" >
-         </a>
-         <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" >
-            <img src= "imagenes/instagram.png"  alt= "instagram" class="instagram" width= "65" height= "60" >
-         </a>
-         <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" >
-            <img src= "imagenes/youtube.png"  alt= "youtube" class="youtube" width= "70" height= "70" >
-         </a>
-    
-    
-    
-    
-    
-    
-    
-    
-        </footer>
-    <script src="JAVA SCRIPT/index.js" ></script> 
+<main>
+    <div class="form-wrapper">
+        <img th:src="@{/imagenes/sign-up.png}" alt="Imagen de registro" class="registro-img"/>
+        <div class="form-card">
+            <!-- Usamos th:object para enlazar el DTO del controller -->
+            <form th:action="@{/registro_conductor}" th:object="${conductor}" method="post">
+                <!-- Campo oculto para asignar rol conductor -->
+                <input type="hidden" th:field="*{tipoUsuario}" value="CONDUCTOR"/>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" th:field="*{nombre}" id="nombre" placeholder="Ingresa tu nombre" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" th:field="*{apellido}" id="apellido" placeholder="Ingresa tu apellido" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="direccionUsuario">Dirección:</label>
+                    <input type="text" th:field="*{direccionUsuario}" id="direccionUsuario" placeholder="Ej: Manzana B Casa 37" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="numDocumento">Número de Documento:</label>
+                    <input type="text" th:field="*{numDocumento}" id="numDocumento" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" th:field="*{telefono}" id="telefono" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico:</label>
+                    <input type="email" th:field="*{correo}" id="correo" placeholder="Ingresa tu correo" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" th:field="*{password}" id="password" placeholder="Ingresa tu contraseña" required/>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaRegistro">Fecha de Registro:</label>
+                    <input type="date" th:field="*{fechaRegistro}" id="fechaRegistro" required/>
+                </div>
+
+                <button type="submit" class="boton-registrarse">Registrarse</button>
+
+                <div class="enlace-login">
+                    ¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div>
+            <img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" width="70"/>
+        </div>
+        <div class="contact">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+        <div class="info">
+            <h2>INFO SITIO</h2>
+            <a th:href="@{#}">Política de la Empresa</a>
+            <a th:href="@{#}">Política de Privacidad</a>
+            <a th:href="@{#}">Socios</a>
+        </div>
+        <div class="social">
+            <h2>SÍGUENOS</h2>
+            <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                <img th:src="@{/imagenes/faceboock.png}" alt="Facebook"/>
+            </a>
+            <a href="https://www.instagram.com/" target="_blank">
+                <img th:src="@{/imagenes/instagram.png}" alt="Instagram"/>
+            </a>
+            <a href="https://www.youtube.com/" target="_blank">
+                <img th:src="@{/imagenes/youtube.png}" alt="YouTube"/>
+            </a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

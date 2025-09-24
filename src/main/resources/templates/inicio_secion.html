@@ -1,84 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EGGS GOLD</title>
-  <link rel="stylesheet" href="CSS/inicio_secion.css" />
-  <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EGGS GOLD</title>
+    <!-- Rutas corregidas usando Thymeleaf -->
+    <link rel="stylesheet" th:href="@{/css/inicio_secion.css}" />
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
-  <header>
+<header>
     <div class="encabezado">
-      <div class="logo-titulo">
-        <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70" />
-        <span class="texto">EGGS GOLD</span>
-      </div>
-      <nav class="navegador">
-        <a th:href="@{inicio}" class="nav-link">INICIO</a>
-        <a th:href="@{promociones}" class="nav-link">PROMOCIONES</a>
-        <a th:href="@{contacto1}" class="nav-link">CONTACTO</a>
-        <a th:href="@{registro}" class="nav-link">REGISTRARSE</a>
-        <a th:href="@{inicio_secion}" class="nav-link active">INICIAR SESIÓN</a>
-        <a th:href="@{inventario}" target="_blank">
-        <img src="imagenes/carrito.png" width="40" height="40" alt="Carrito" />
-        </a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <div class="formulario-container">
-      <div class="titulo-formulario">
-        <i class="fas fa-sign-in-alt"></i>
-        INICIAR SESIÓN
-      </div>
-      <div class="form-wrapper">
-        <img th:src="@{imagenes/iniciar sesión.png}" alt="Imagen de inicio" class="registro-img" />
-        <div class="form-card">
-          <form th:action="@{/login}" th:object="${loginDTO}" method="POST">
-            <div class="form-group">
-              <label for="documento">Documento:</label>
-              <input type="text" id="documento" th:field="*{documento}" required />
-            </div>
-            <div class="form-group">
-              <label for="contrasena">Contraseña:</label>
-              <input type="password" id="contrasena" th:field="*{password}" required />
-            </div>
-            <button type="submit" class="boton-registrarse">Iniciar sesión</button>
-            <div class="enlace-login">
-              ¿No tienes una cuenta? <a href="registro.html">Regístrate aquí</a>
-            </div>
-          </form>
+        <div class="logo-titulo">
+            <img th:src="@{/imagenes/LOGO.jpg}" alt="logo" width="70" height="70" />
+            <span class="texto">EGGS GOLD</span>
         </div>
-      </div>
+        <nav class="navegador">
+            <a th:href="@{/inicio}" class="nav-link">INICIO</a>
+            <a th:href="@{/promociones}" class="nav-link">PROMOCIONES</a>
+            <a th:href="@{/contacto1}" class="nav-link">CONTACTO</a>
+            <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
+            <a th:href="@{/inicio_secion}" class="nav-link active">INICIAR SESIÓN</a>
+            <a th:href="@{/inventario}" target="_blank">
+                <img th:src="@{/imagenes/carrito.png}" width="40" height="40" alt="Carrito" />
+            </a>
+        </nav>
     </div>
-  </main>
+</header>
 
-  <footer>
+<main>
+    <div class="formulario-container">
+        <div class="titulo-formulario">
+            <i class="fas fa-sign-in-alt"></i>
+            INICIAR SESIÓN
+        </div>
+        <div class="form-wrapper">
+            <!-- Nombre de archivo corregido -->
+            <img th:src="@{/imagenes/iniciar sesión.png}" alt="Imagen de inicio" class="registro-img" />
+            <div class="form-card">
+                <form th:action="@{/login}" th:object="${loginDTO}" method="POST">
+                    <div class="form-group">
+                        <label for="documento">Documento:</label>
+                        <input type="text" id="documento" th:field="*{documento}" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="contrasena">Contraseña:</label>
+                        <input type="password" id="contrasena" th:field="*{password}" required />
+                    </div>
+                    <button type="submit" class="boton-registrarse">Iniciar sesión</button>
+                    <div class="enlace-login">
+                        ¿No tienes una cuenta? <a th:href="@{/registro}">Regístrate aquí</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
     <div class="footer-content">
-      <div><img src="imagenes/LOGO.jpg" alt="Logo" width="70" /></div>
-      <div class="contact">
-        <h2>CONTÁCTANOS</h2>
-        <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
-        <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
-      </div>
-      <div class="info">
-        <h2>INFO SITIO</h2>
-        <a href="#">Política de la empresa</a>
-        <a href="#">Política de privacidad</a>
-        <a href="#">Socios</a>
-      </div>
-      <div class="social">
-        <h2>SÍGUENOS</h2>
-        <a href="https://es-la.facebook.com/" target="_blank"><img src="imagenes/faceboock.png" alt="Facebook" /></a>
-        <a href="https://www.instagram.com/" target="_blank"><img src="imagenes/instagram.png" alt="Instagram" /></a>
-        <a href="https://www.youtube.com/" target="_blank"><img src="imagenes/youtube.png" alt="YouTube" /></a>
-      </div>
+        <div><img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" width="70" /></div>
+        <div class="contact">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+        <div class="info">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la empresa</a>
+            <a href="#">Política de privacidad</a>
+            <a href="#">Socios</a>
+        </div>
+        <div class="social">
+            <h2>SÍGUENOS</h2>
+            <a href="https://es-la.facebook.com/" target="_blank"><img th:src="@{/imagenes/faceboock.png}" alt="Facebook" /></a>
+            <a href="https://www.instagram.com/" target="_blank"><img th:src="@{/imagenes/instagram.png}" alt="Instagram" /></a>
+            <a href="https://www.youtube.com/" target="_blank"><img th:src="@{/imagenes/youtube.png}" alt="YouTube" /></a>
+        </div>
     </div>
-  </footer>
+</footer>
 
-  <script src="JAVA SCRIPT/index.js"></script>
+<script th:src="@{/js/index.js}"></script>
 </body>
 </html>
+

@@ -25,11 +25,9 @@ public class Usuario {
     @Column(name = "ID_USUARIOS")
     private Integer idUsuarios;
 
-
     @ManyToOne
     @JoinColumn(name = "VEHICULO_ID")
     private Vehiculo vehiculo;
-
 
     @Column(name = "NOMBRE")
     private String nombre;
@@ -62,7 +60,6 @@ public class Usuario {
 
     @Column(name = "FECHA_REGISTRO")
     private LocalDate fechaRegistro;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROL_ID")
