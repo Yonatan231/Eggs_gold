@@ -2,17 +2,14 @@ package com.sena.eggs_gold.model.entity;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@DiscriminatorValue("conductor")
+@EqualsAndHashCode(callSuper = false)
+@DiscriminatorValue("Conductor")
 public class Conductor extends Usuario {
 
-    @ManyToOne
-    @JoinColumn(name = "vehiculo_id", nullable = true)
-    private Vehiculo vehiculo;
-
 }
+

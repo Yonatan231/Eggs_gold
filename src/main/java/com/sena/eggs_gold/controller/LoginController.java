@@ -3,10 +3,12 @@ package com.sena.eggs_gold.controller;
 import com.sena.eggs_gold.dto.AdminDTO;
 import com.sena.eggs_gold.dto.ClienteDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
+import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.dto.LoginDTO;
 import com.sena.eggs_gold.service.AdminService;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.LogisticaService;
+import com.sena.eggs_gold.service.ConductorService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,53 +23,63 @@ public class LoginController {
 
     private final ClienteService clienteService;
     private final AdminService adminService;
-    private final LogisticaService logisticaService; // 👈 nuevo
-
-    // Constructor con los tres servicios
+    private final LogisticaService logisticaService;
+    private final ConductorService conductorService;
     public LoginController(
             ClienteService clienteService,
             AdminService adminService,
-            LogisticaService logisticaService
+            LogisticaService logisticaService,
+            ConductorService conductorService
     ) {
         this.clienteService = clienteService;
         this.adminService = adminService;
         this.logisticaService = logisticaService;
+        this.conductorService = conductorService;
     }
 
     @GetMapping("/login")
     public String mostrarLogin(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
-        return "inicio_secion"; // templates/inicio_sesion.html
+        return "inicio_secion";
     }
 
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute LoginDTO loginDTO, HttpSession session, Model model) {
 
-        // Intentar login como Cliente
+        // Cliente
         ClienteDTO cliente = clienteService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (cliente != null) {
             session.setAttribute("usuario_id", cliente.getIdUsuarios());
             session.setAttribute("rol", "CLIENTE");
             model.addAttribute("usuario", cliente);
-            return "inventario"; // pagina cliente
+            return "inventario";
         }
 
-        // Intentar login como Admin
+        // Admin
         AdminDTO admin = adminService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (admin != null) {
             session.setAttribute("usuario_id", admin.getIdUsuarios());
             session.setAttribute("rol", "ADMIN");
             model.addAttribute("usuario", admin);
-            return "administrador"; // pagina admin
+            return "administrador";
         }
 
-        // Intentar login como Logística
+        // Logística
         LogisticaDTO logistica = logisticaService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (logistica != null) {
             session.setAttribute("usuario_id", logistica.getIdUsuarios());
             session.setAttribute("rol", "LOGISTICA");
             model.addAttribute("usuario", logistica);
-            return "logistica"; // pagina logistica
+            return "logistica";
+        }
+
+        // Conductor
+        ConductorDTO conductor = conductorService.login(loginDTO.getDocumento(), loginDTO.getPassword());
+        if (conductor != null) {
+            session.setAttribute("usuario_id", conductor.getIdUsuarios());
+            session.setAttribute("rol", "CONDUCTOR");
+            model.addAttribute("usuario", conductor);
+            return "conductor"; // página del conductor
         }
 
         // Si no coincide en ninguno
@@ -81,9 +93,10 @@ public class LoginController {
         Map<String, Object> response = new HashMap<>();
         response.put("usuario_id", session.getAttribute("usuario_id"));
         response.put("rol", session.getAttribute("rol"));
-        return response; // Devuelve JSON
+        return response;
     }
 }
+
 
 
 

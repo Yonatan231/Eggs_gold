@@ -1,7 +1,9 @@
 package com.sena.eggs_gold.controller;
 
+import com.sena.eggs_gold.dto.LoginDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 
 
     @Controller
@@ -29,8 +31,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
         @GetMapping("/inicio_secion")
-        public String inicioSecion(){
-            return "inicio_secion";
+        public String inicioSecion(Model model) {
+            // Creamos un objeto vacío para el formulario
+            model.addAttribute("loginDTO", new LoginDTO());
+            return "inicio_secion"; // Thymeleaf buscará templates/inicio_secion.html
         }
 
 
