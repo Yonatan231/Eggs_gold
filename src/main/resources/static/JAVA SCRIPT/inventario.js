@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function agregarAlCarrito(idProducto, precioProducto, cantidad) {
     const formData = new FormData();
-    formData.append("usuario", usuarioId);
+
     formData.append("producto", idProducto);
     formData.append("cantidad", cantidad);
 
@@ -172,12 +172,12 @@ function mostrarCarrito() {
             let total = 0;
 
             carrito.forEach(item => {
-                const cantidad = item.CANTIDAD || item.cantidad || 0;
-                const precioTotal = item.PRECIO * cantidad;
+                const cantidad = item.cantidad || item.cantidad || 0;
+                const precioTotal = item.precio * cantidad;
 
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    Producto: ${item.NOMBRE} - Cantidad: ${cantidad} - 
+                    Producto: ${item.nombre} - Cantidad: ${cantidad} -
                     Precio: $${new Intl.NumberFormat("es-CO").format(precioTotal)}
                     <button class="eliminar-item" data-id="${item.id}">🗑️ Eliminar</button>
                 `;
@@ -229,19 +229,16 @@ function confirmarPedido() {
         return;
     }
 
-    const formData = new FormData();
-    formData.append("usuario_id", usuarioId);
-    formData.append("direccion", direccion);
-
-    fetch(`/api/pedido/confirmar`, {
-        method: "POST",
-         headers: {
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify({
-         direccion: direccion
-         })
-    })
+     fetch(`/api/pedido/confirmar`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include", // 🔑 Necesario para mantener la sesión activa
+            body: JSON.stringify({
+                direccion: direccion
+            })
+        })
     .then(response => response.text())
     .then(mensaje => {
         alert(mensaje);

@@ -48,6 +48,7 @@ public class LoginController {
         if (cliente != null) {
             session.setAttribute("usuario_id", cliente.getIdUsuarios());
             session.setAttribute("rol", "CLIENTE");
+            session.setAttribute("cliente", cliente);
             model.addAttribute("usuario", cliente);
             return "inventario"; // pagina cliente
         }

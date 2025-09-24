@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
-
+/*
     private final JavaMailSender mailSender;
 
     public EmailService(JavaMailSender mailSender) {
@@ -18,5 +18,5 @@ public class EmailService {
         mensaje.setSubject("Confirmación de registro");
         mensaje.setText("Hola " + nombreUsuario + ", tu registro fue exitoso. Bienvenido al sistema de pedidos de huevos.");
         mailSender.send(mensaje);
-    }
+    }*/
 }

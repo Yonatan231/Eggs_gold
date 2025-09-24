@@ -26,4 +26,7 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
 
 List<ProductoDisponibleDTO> ProductosDisponiblesEnStock();
     List<Inventario>findByProducto(Producto producto);
+
+
+
 }

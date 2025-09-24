@@ -1,5 +1,6 @@
 package com.sena.eggs_gold.controller;
 
+import com.sena.eggs_gold.model.entity.Inventario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; // ✅ correcta
 import com.sena.eggs_gold.dto.ClienteDTO;
@@ -8,9 +9,7 @@ import com.sena.eggs_gold.service.InventarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.boot.origin.Origin;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,5 +41,10 @@ public class InventarioController {
         return "inventario";
     }
 
-
+//muestra los productos en administrador
+    @GetMapping("producto")
+    @ResponseBody
+    public List<ProductoDisponibleDTO> obtenerProductosDisponibles() {
+        return inventarioService.obtenerProductosDisponibles(); // Servicio que implementa la lógica de SQL
+    }
 }

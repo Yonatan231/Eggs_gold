@@ -182,7 +182,7 @@ document.addEventListener("click", function (e) {
 
 /*mostrar productos*/
 function cargarProductos(){
-fetch("PHP/mostrar_producto.php")
+fetch("http://localhost:8080/inventario/producto")
   .then(response => response.json())
   .then(html => {
     const productos = html;
