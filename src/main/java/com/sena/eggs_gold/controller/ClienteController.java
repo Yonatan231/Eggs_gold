@@ -1,16 +1,12 @@
 package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.ClienteDTO;
-import com.sena.eggs_gold.dto.LoginDTO;
-import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.UsuarioService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClienteController {
@@ -46,9 +42,5 @@ public class ClienteController {
         return "redirect:auth/login";
 
     }
-
-
-
-
 
 }

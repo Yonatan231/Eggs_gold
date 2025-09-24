@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -28,7 +28,7 @@
       <li><a href="#tabla-productos">Productos</a></li>
       <li><a href="reportes_admin.html">Reportes</a></li>
       <li><a href="agregar_producto.html">Agregar Producto</a></li>
-      <li><a href="registro_logistica.html">Registro logistica</a></li>
+      <li><a th:href="@{/registro_logistica}">Registro logística</a></li>
       <li><a href="PHP/cerrar_sesion.php" id="cerrar-sesion" class="texto">Cerrar sesión</a></li>
     </ul>
   </div>
@@ -72,7 +72,7 @@
           </tr>
         </thead>
         <tbody >
-       
+
         </tbody>
       </table>
     </div>
@@ -100,10 +100,10 @@
           <th>Eliminar</th>
         </tr>
       </thead>
-      <tbody >       
+      <tbody >
         <!--vista de productos-->
       </tbody>
-      
+
     </table>
   </div>
   <!-- Modal de actualizacion productos -->
@@ -143,7 +143,7 @@
 </div>
 
 
- 
+
        <!--busqueda filtros clientes-->
    <form class="form-busqueda" id="form-busqueda_cliente">
     <input type="text" name="buscar" id="buscar_cliente" placeholder="Buscar cliente...">
@@ -166,12 +166,12 @@
           <th>Telefono</th>
           <th>Actualizar</th>
           <th>Eliminar</th>
-       
+
       </thead>
-      <tbody >       
+      <tbody >
         <!--vista de clientes-->
       </tbody>
-      
+
     </table>
   </div>
 
@@ -194,7 +194,7 @@
       <label for="DIRECCION">Dirección:</label>
       <input type="text" name="DIRECCION" id="updatec-direccion"><br>
 
-   
+
       <label for="TELEFONO">Cantidad:</label>
       <input type="number" name="TELEFONO" id="updatec-telefono" required><br>
 
@@ -224,12 +224,12 @@
           <th>Telefono</th>
           <th>Actualizar</th>
           <th>Eliminar</th>
-       
+
       </thead>
-      <tbody >       
+      <tbody >
         <!--vista de conductores-->
       </tbody>
-      
+
     </table>
   </div>
 
@@ -252,7 +252,7 @@
       <label for="DIRECCION">Dirección:</label>
       <input type="text" name="DIRECCION" id="updateco-direccion"><br>
 
-   
+
       <label for="TELEFONO">Cantidad:</label>
       <input type="number" name="TELEFONO" id="updateco-telefono" required><br>
 
@@ -282,16 +282,16 @@
           <th>Telefono</th>
           <th>Actualizar</th>
           <th>Eliminar</th>
-       
+
       </thead>
-      <tbody >       
+      <tbody >
         <!--vista de logistica-->
       </tbody>
-      
+
     </table>
   </div>
 
-  
+
   <!-- Modal de actualización logistica -->
 <div id="modalActualizarLogistica" class="modal-overlay" style="display: none;">
   <div class="modal-contenido">
@@ -311,7 +311,7 @@
       <label for="DIRECCION">Dirección:</label>
       <input type="text" name="DIRECCION" id="updateL-direccion"><br>
 
-   
+
       <label for="TELEFONO">Cantidad:</label>
       <input type="number" name="TELEFONO" id="updateL-telefono" required><br>
 
@@ -324,6 +324,6 @@
   </main>
 
   <script src="JAVA SCRIPT/indexadmin.js"></script>
-  
+
 </body>
 </html>
