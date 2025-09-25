@@ -72,5 +72,8 @@ public class Usuario {
     protected void onCreate() {
         this.fechaRegistro = LocalDate.now();
     }
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pedido> pedidos;
+
 }
 

@@ -5,18 +5,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class    LogisticaDTO {
-    private Integer idUsuarios;
+public class ConductorPedidosDTO {
+    private Integer idConductor;
     private String nombre;
     private String apellido;
-    private String direccionUsuario;
     private String numDocumento;
+    private String direccionUsuario;
     private String telefono;
-    private String correo;
-    private String password;
-    private String tipoUsuario;
-
-    public LogisticaDTO() {}
+    private Long pedidosEntregados;
 }
-
-

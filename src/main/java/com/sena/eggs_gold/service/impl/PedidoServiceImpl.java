@@ -21,13 +21,13 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public List<PedidoDTO> obtenerPedidosPorRol(Integer rol, EstadoPedido estado) {
+    public List<PedidoDTO> obtenerPedidosPorRol(String rol, EstadoPedido estado) {
         List<Pedido> pedidos;
 
-        if (rol != null && rol == 1) {
+        if ("ADMIN".equalsIgnoreCase(rol)) {
             // Administrador ve todos los pedidos
             pedidos = pedidoRepository.findAllByOrderByFechaCreacionDesc();
-        } else if (rol != null && rol == 3) {
+        } else if ("LOGISTICA".equalsIgnoreCase(rol)) {
             // Logística solo ve pedidos aprobados
             pedidos = pedidoRepository.findByEstado(EstadoPedido.APROBADO);
         } else {

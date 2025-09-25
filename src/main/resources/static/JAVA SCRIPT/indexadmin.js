@@ -10,10 +10,8 @@ fetch('/session', { credentials: 'same-origin' }) // envía la cookie JSESSIONID
         console.log('ID de sesión:', usuario_id);
         console.log('Rol:', rol);
 
-        if (rol === 'CLIENTE') {
+       if (rol === 'ADMIN') {
             cargarPedidosRecientes('PENDIENTE');
-        } else if (rol === 'ADMIN') {
-            cargarPedidosRecientes('APROBADO');
         }
     })
     .catch(error => {
@@ -34,7 +32,7 @@ btntoggle.addEventListener('click', function(){
 document.addEventListener("DOMContentLoaded", cargarPedidosRecientes);
 
 function cargarPedidosRecientes() {
-  fetch("/api/pedido/listar")
+  fetch("http://localhost:8080/api/pedido/listar")
     .then(response => response.json())
     .then(data => {
       if (!data.success) {
@@ -57,21 +55,21 @@ function cargarPedidosRecientes() {
       pedidos.forEach(p => {
         const fila = document.createElement("tr");
         fila.innerHTML = `
-          <td>${p.ID_PEDIDOS}</td>
-          <td>${p.nombre_usuario}</td>
+          <td>${p.idPedidos}</td>
+          <td>${p.nombreUsuario}</td>
           <td colspan="2">${p.productos.join(", ")}</td> <!-- ✅ Aquí unimos nombre y cantidad -->
-          <td>${p.DIRECCION}</td>
-          <td>${p.ESTADO}</td>
+          <td>${p.direccion}</td>
+          <td>${p.estado}</td>
            <td>${new Date(p.fechaCreacion).toLocaleString()}</td>
-          <td>$${p.TOTAL}</td>
+          <td>$${p.total}</td>
         `;
 
         const tdAccion = document.createElement("td");
 
-        if (rol == 1 && p.ESTADO === 'PENDIENTE') {
+        if (rol === 'ADMIN' && p.estado === 'Pendiente') {
           tdAccion.innerHTML = `
-            <button onclick="actualizarEstado(${p.ID_PEDIDOS}, 'APROBADO')">Aceptar</button>
-            <button onclick="actualizarEstado(${p.ID_PEDIDOS}, 'RECHAZADO')">Denegar</button>
+            <button onclick="actualizarEstado(${p.idPedidos}, 'APROBADO')">Aceptar</button>
+            <button onclick="actualizarEstado(${p.idPedidos}, 'RECHAZADO')">Denegar</button>
           `;
         } else if (rol == 3 && p.ESTADO === 'APROBADO') {
           tdAccion.innerHTML = `<button onclick="asignarPedido(${p.ID_PEDIDOS})">Asignar</button>`;
@@ -270,7 +268,7 @@ tdEliminar.appendChild(eliminarBtn);
 cargarProductos();
 /*mostrar clientes*/
 function cargarProductosCliente(){
-fetch("PHP/mostrar_clientes.php")
+fetch("http://localhost:8080/clientes/pedidos")
   .then(resultado => resultado.json())
   .then(datos => {
     const clientes = datos;
@@ -282,22 +280,22 @@ fetch("PHP/mostrar_clientes.php")
       const fila = document.createElement("tr");
 
       const id = document.createElement("td");
-      id.textContent = cliente.ID_USUARIOS;
+      id.textContent = cliente.idUsuarios;
 
       const nombre = document.createElement("td");
-      nombre.textContent = cliente.NOMBRE;
+      nombre.textContent = cliente.nombre;
 
       const apellido = document.createElement("td");
-      apellido.textContent = cliente.APELLIDO;
+      apellido.textContent = cliente.apellido;
 
       const documento = document.createElement("td");
-      documento.textContent = cliente.NUM_DOCUMENTO;
+      documento.textContent = cliente.numDocumento;
 
       const direccion = document.createElement("td");
-      direccion.textContent = cliente.DIRECCION_USUARIO;
+      direccion.textContent = cliente.direccionUsuario;
 
       const telefono = document.createElement("td");
-      telefono.textContent = cliente.TELEFONO;
+      telefono.textContent = cliente.telefono;
 
        const actualizar = document.createElement("td");
 
@@ -334,7 +332,7 @@ tdEliminar.appendChild(eliminarBtn);
 cargarProductosCliente();
 /*mostrar conductores*/
 function cargarProductosConductores(){
-fetch("PHP/obtener_conductores.php")
+fetch("http://localhost:8080/conductores/pedidos-entregados")
   .then(respuesta => respuesta.json())
   .then(datos => {
     const conductores = datos;
@@ -346,22 +344,22 @@ fetch("PHP/obtener_conductores.php")
       const fila = document.createElement("tr");
 
       const id = document.createElement("td");
-      id.textContent = conductor.ID_USUARIOS;
+      id.textContent = conductor.idConductor;
 
       const nombre = document.createElement("td");
-      nombre.textContent = conductor.NOMBRE;
+      nombre.textContent = conductor.nombre;
 
       const apellido = document.createElement("td");
-      apellido.textContent = conductor.APELLIDO;
+      apellido.textContent = conductor.apellido;
 
       const documento = document.createElement("td");
-      documento.textContent = conductor.NUM_DOCUMENTO;
+      documento.textContent = conductor.numDocumento;
 
        const direccion = document.createElement("td");
-       direccion.textContent = conductor.DIRECCION_USUARIO;
+       direccion.textContent = conductor.direccionUsuario;
 
        const telefono = document.createElement("td");
-       telefono.textContent = conductor.TELEFONO;
+       telefono.textContent = conductor.telefono;
 
         const actualizar = document.createElement("td");
 
@@ -404,7 +402,7 @@ cargarProductosConductores();
 
 /*mostrar logistica*/
 function cargarProductosLogistica(){
-fetch("PHP/mostrar_logistica.php")
+fetch("http://localhost:8080/logistica/ver")
   .then(respuesta => respuesta.json())
   .then(datos => {
     const logistica = datos;
@@ -416,22 +414,22 @@ fetch("PHP/mostrar_logistica.php")
       const fila = document.createElement("tr");
 
       const id = document.createElement("td");
-      id.textContent = logistica.ID_USUARIOS;
+      id.textContent = logistica.idUsuarios;
 
       const nombre = document.createElement("td");
-      nombre.textContent = logistica.NOMBRE;
+      nombre.textContent = logistica.nombre;
 
       const apellido = document.createElement("td");
-      apellido.textContent = logistica.APELLIDO;
+      apellido.textContent = logistica.apellido;
 
       const documento = document.createElement("td");
-      documento.textContent = logistica.NUM_DOCUMENTO;
+      documento.textContent = logistica.numDocumento;
 
        const direccion = document.createElement("td");
-       direccion.textContent = logistica.DIRECCION_USUARIO;
+       direccion.textContent = logistica.direccionUsuario;
 
        const telefono = document.createElement("td");
-       telefono.textContent = logistica.TELEFONO;
+       telefono.textContent = logistica.telefono;
 
         const actualizar = document.createElement("td");
 
@@ -465,7 +463,7 @@ tdEliminar.appendChild(eliminarBtn);
     });
   })
   .catch(error => {
-    console.error("✖️Error al cargar los cconductores", error);
+    console.error("✖️Error al cargar logistica", error);
     alert("✖️Error al cargar logistica");
   });
 

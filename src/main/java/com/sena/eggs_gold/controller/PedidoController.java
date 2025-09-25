@@ -52,11 +52,12 @@ public class PedidoController {
     // Listar pedidos (admin/logística)
     // -------------------------
     @GetMapping("/listar")
+
     public Map<String, Object> listarPedidos(
             @RequestParam(name = "estado", required = false) EstadoPedido estado,
             HttpSession session) {
 
-        Integer rol = (Integer) session.getAttribute("rol_id");
+        String rol = (String) session.getAttribute("rol");
 
         List<PedidoDTO> pedidos = pedidoService.obtenerPedidosPorRol(rol, estado);
 
