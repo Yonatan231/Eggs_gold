@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/agregar_producto.css">
-    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+    <link rel="stylesheet" th:href="@{/CSS/agregar_producto.css}">
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}">
     <title>EGGS GOLD</title>
 </head>
 <body>
     <header>
         <div class="encabezado">
-            <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70">
+            <img th:src="@{/imagenes/LOGO.jpg}" alt="logo" width="70" height="70">
             <span class="texto">EGGS GOLD</span>
             <nav class="navegador">
-                <a class="volver" href="conductor.html">VOLVER</a>
+                <a class="volver" href="login">VOLVER</a>
             </nav>
         </div>
         <hr class="linea">
@@ -23,7 +23,7 @@
         <h1 class="titulo2">Agregar Nuevo Producto</h1>
 
         <!-- Formulario para agregar un producto -->
-        <form action="PHP/recibir_producto.php" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/agregar_producto}" method="POST" enctype="multipart/form-data">
             <label for="nombre_producto">Nombre del Producto:</label>
             <input type="text" id="nombre_producto" name="nombre" required><br>
 
@@ -40,13 +40,13 @@
                 <option value="HUEVOS_AAA">Huevos AAA</option>
                 <!-- Añadir más opciones de categorías según sea necesario -->
             </select><br>
-          
+
 
             <label for="cantidad_producto">Cantidad en stock:</label>
             <input type="number" id="cantidad_producto" name="cantidad" required><br>
 
             <label for="imagen_producto">Imagen del Producto:</label>
-            <input type="file" id="imagen_producto" name="imagen" accept="image/*" required><br>
+            <input type="file" id="imagen_producto" name="imagenFile" accept="image/*" required><br>
 
             <button type="submit">Agregar Producto</button>
         </form>
@@ -68,7 +68,7 @@
             <div class="social">
                 <h2>SÍGUENOS</h2>
                 <a href="https://es-la.facebook.com/index.php/" target="_blank" rel="noopener noreferrer">
-                    <img src="imagenes/faceboock.png" alt="Facebook" class="faceboock" width="40" height="40">
+                    <img src="imagenes/faceboock.png" alt="Facebook" class="faceboock" width="80" height="40">
                 </a>
                 <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
                     <img src="imagenes/instagram.png" alt="Instagram" class="instagram" width="40" height="40">
@@ -80,6 +80,6 @@
         </div>
     </footer>
 
-    <script src="JAVA SCRIPT/inventario.js"></script>
+    <script th:src="@{/JS/inventario.js}"></script>
 </body>
 </html>

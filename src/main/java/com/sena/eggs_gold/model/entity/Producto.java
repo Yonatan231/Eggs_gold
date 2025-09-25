@@ -41,7 +41,7 @@ public class Producto {
     private EstadoProducto estado;
 
     @Column(name = "CANTIDAD", length = 255)
-    private String cantidad;
+    private Integer cantidad;
 
     @Column(name = "imagen", nullable = false, length = 255)
     private String imagen;

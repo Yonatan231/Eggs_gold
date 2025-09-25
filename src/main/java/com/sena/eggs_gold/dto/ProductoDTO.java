@@ -9,14 +9,14 @@ import lombok.AllArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductoDisponibleDTO {
+public class ProductoDTO {
 
     private Integer idProducto;
     private String nombre;
     private Float precio;
     private Categoria categoria;
+    private Integer cantidad;
     private String descripcion;
-    private EstadoProducto estado;
     private String imagen;
-    private Integer cantidadDisponible;
+    private EstadoProducto estado;
 }
