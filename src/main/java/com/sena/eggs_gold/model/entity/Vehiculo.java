@@ -21,7 +21,7 @@ public class Vehiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_VEHICULOS")
+    @Column(name = "ID_VEHICULOS")          /// //////////////////
     private Integer idVehiculos;
 
     @Column(name = "PLACA", nullable = false, length = 20)
@@ -31,7 +31,7 @@ public class Vehiculo {
     private String color;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESTADO", nullable = false)
+    @Column(name = "ESTADO", nullable = false) ///////////////////
     private Estado estado;
 
     @Column(name = "MODELO", nullable = false, length = 55)

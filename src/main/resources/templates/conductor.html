@@ -24,11 +24,8 @@
   </div>
   <h2>Admin panel</h2>
 </li>
-      <li><a href="#tabla-clientes">Clientes</a></li>
-      <li><a href="#tabla-productos">Productos</a></li>
       <li><a href="reportes_conductor.html">Reportes</a></li>
-      <li><a href="agregar_producto.html">Agregar Producto</a></li>
-      <li><a href="registro_logistica.html">Registro logistica</a></li>
+       <li><a href="/registro_vehiculo">Registro Vehículo</a></li>
       <li><a href="PHP/cerrar_sesion.php" id="cerrar-sesion" class="texto">Cerrar sesión</a></li>
     </ul>
   </div>
@@ -51,7 +48,7 @@
 </form>
 
     <div class="tabla3" >
-  
+
       <table class="listas" id="tabla-pedidos_asignados">
         <thead>
             <tr>
@@ -68,8 +65,8 @@
           </tr>
         </thead>
         <tbody >
-         
-         
+
+
         </tbody>
       </table>
     </div>
@@ -96,10 +93,10 @@
             <th>Fecha</th>
           </tr>
         </thead>
-        <tbody >           
-          
+        <tbody >
+
         </tbody>
-        
+
       </table>
     </div>
 
@@ -126,7 +123,7 @@
 </div>
 
 
- 
+
 
 
 
@@ -134,40 +131,40 @@
   <div id="modal-editar-producto" class="modal" style="display: none;">
     <form id="form-editar-producto">
       <input type="hidden" name="id" id="editar_id_inventario">
-      
+
       <label>Nombre:</label>
       <input type="text" name="nombre" id="editar_nombre"><br>
-  
+
       <label>Precio:</label>
       <input type="number" name="precio" id="editar_precio" step="0.01"><br>
-  
+
       <label>Categoría:</label>
       <input type="text" name="categoria" id="editar_categoria"><br>
-  
+
       <label>Descripción:</label>
       <input type="text" name="descripcion" id="editar_descripcion"><br>
-  
+
       <label>Estado:</label>
       <input type="text" name="estado" id="editar_estado"><br>
-  
+
       <label>Cantidad Disponible:</label>
       <input type="number" name="cantidad" id="editar_cantidad"><br>
-  
+
       <label>Ubicación:</label>
       <input type="text" name="ubicacion" id="editar_ubicacion"><br>
-  
+
       <label>Fecha de Caducidad:</label>
       <input type="date" name="fecha_caducidad" id="editar_fecha_caducidad"><br>
-  
+
       <button type="submit">Guardar Cambios</button>
       <button type="button" onclick="cerrarModal()">Cancelar</button>
     </form>
   </div>
-  
-  
-  
 
-<script src="JAVA SCRIPT/pedidos_conductor.js"></script> 
+
+
+
+<script src="JAVA SCRIPT/pedidos_conductor.js"></script>
 
 </body>
 </html>
