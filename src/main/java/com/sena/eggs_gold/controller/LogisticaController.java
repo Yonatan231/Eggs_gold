@@ -2,6 +2,7 @@ package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.service.LogisticaService;
+import com.sena.eggs_gold.service.EmailService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ public class LogisticaController {
 
     @Autowired
     private LogisticaService logisticaService;
+
+    @Autowired
+    private EmailService emailService;
 
     // Mostrar formulario de registro
     @GetMapping("/registro_logistica")
@@ -41,15 +45,25 @@ public class LogisticaController {
         }
 
         try {
+            // Guardar en la base de datos
             logisticaService.registrarLogistica(logisticaDTO);
-            model.addAttribute("mensaje", "Logística registrada con éxito.");
+
+            // Enviar correo de bienvenida
+            emailService.enviarCorreoBienvenida(
+                    logisticaDTO.getCorreo(),        // correo que viene del formulario
+                    logisticaDTO.getNombre()         // nombre para personalizar el mensaje
+            );
+
+            model.addAttribute("mensaje", "Logística registrada con éxito y correo enviado.");
         } catch (Exception e) {
-            model.addAttribute("error", "Error al registrar logística: " + e.getMessage());
-            return "registro_logistica";
+            model.addAttribute("error", "La logística se registró, pero hubo un problema: " + e.getMessage());
         }
 
-        return "redirect:/admin"; // o la vista que quieras después del registro
+        // Redirige al panel admin
+        return "redirect:/admin";
     }
 }
+
+
 
 

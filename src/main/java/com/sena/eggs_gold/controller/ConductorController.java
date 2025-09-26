@@ -2,6 +2,7 @@ package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.service.ConductorService;
+import com.sena.eggs_gold.service.EmailService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ public class ConductorController {
 
     @Autowired
     private ConductorService conductorService;
+
+    @Autowired
+    private EmailService emailService;
 
     // Mostrar formulario de registro de conductor (solo logística)
     @GetMapping("/registro_conductor")
@@ -41,14 +45,23 @@ public class ConductorController {
         }
 
         try {
+            // Guardar en BD
             conductorService.registrarConductor(conductorDTO);
-            model.addAttribute("mensaje", "Conductor registrado con éxito.");
+
+            // Enviar correo de bienvenida
+            emailService.enviarCorreoBienvenida(
+                    conductorDTO.getCorreo(),   // correo del conductor
+                    conductorDTO.getNombre()    // nombre para personalizar
+            );
+
+            model.addAttribute("mensaje", "Conductor registrado con éxito y correo enviado.");
         } catch (Exception e) {
-            model.addAttribute("error", "Error al registrar conductor: " + e.getMessage());
+            model.addAttribute("error", "El conductor se registró, pero hubo un problema: " + e.getMessage());
             return "registro_conductor";
         }
 
-        return "redirect:/logistica"; // vista a la que se redirige después del registro
+        // Redirige al panel logística
+        return "redirect:/logistica";
     }
 }
 
