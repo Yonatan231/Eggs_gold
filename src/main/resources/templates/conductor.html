@@ -26,14 +26,14 @@
 </li>
       <li><a href="reportes_conductor.html">Reportes</a></li>
        <li><a href="/registro_vehiculo">Registro Vehículo</a></li>
-      <li><a href="PHP/cerrar_sesion.php" id="cerrar-sesion" class="texto">Cerrar sesión</a></li>
+        <li><a href="/logout" id="cerrar_sesion" class="texto">Cerrar sesión</a></li>
     </ul>
   </div>
     <header>
           <div class="opciones">
     <img src="imagenes/LOGO.jpg" alt="Texto alternativo" class="logo"/>
     <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">conductor</span></h1>
-    <a href="notificaciones.html" class="campana-noti">
+    <a th:href="@{/notificaciones}" class="campana-noti">
   <i class="fas fa-bell"></i>
 </a>
   </div>

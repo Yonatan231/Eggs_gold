@@ -25,6 +25,7 @@ public class LoginController {
     private final AdminService adminService;
     private final LogisticaService logisticaService;
     private final ConductorService conductorService;
+
     public LoginController(
             ClienteService clienteService,
             AdminService adminService,
@@ -37,12 +38,14 @@ public class LoginController {
         this.conductorService = conductorService;
     }
 
+    // Página de login
     @GetMapping("/login")
     public String mostrarLogin(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
-        return "inicio_secion";
+        return "inicio_secion"; // tu template HTML
     }
 
+    // Procesar login
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute LoginDTO loginDTO, HttpSession session, Model model) {
 
@@ -80,7 +83,7 @@ public class LoginController {
             session.setAttribute("usuario_id", conductor.getIdUsuarios());
             session.setAttribute("rol", "CONDUCTOR");
             model.addAttribute("usuario", conductor);
-            return "conductor"; // página del conductor
+            return "conductor";
         }
 
         // Si no coincide en ninguno
@@ -88,6 +91,7 @@ public class LoginController {
         return "inicio_secion";
     }
 
+    // Ver datos de sesión
     @GetMapping("/session")
     @ResponseBody
     public Map<String, Object> getSession(HttpSession session) {
@@ -96,7 +100,15 @@ public class LoginController {
         response.put("rol", session.getAttribute("rol"));
         return response;
     }
+
+    // Logout (equivalente a session_destroy() en PHP)
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
 }
+
 
 
 
