@@ -6,7 +6,9 @@ package com.sena.eggs_gold.model.enums;
 public enum EstadoPedido {
     RECHAZADO("Rechazado"),
     APROBADO("Aprobado"),
-    PENDIENTE("Pendiente");
+    PENDIENTE("Pendiente"),
+    ENTREGADO("Entregado"),
+    EN_CAMINO("En_camino");
 
     private final String descripcion;
 

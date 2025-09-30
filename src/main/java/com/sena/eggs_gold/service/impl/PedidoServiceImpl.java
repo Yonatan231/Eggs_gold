@@ -5,9 +5,11 @@ import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.repository.PedidoRepository;
 import com.sena.eggs_gold.service.PedidoService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -59,5 +61,32 @@ public class PedidoServiceImpl implements PedidoService {
             );
         }).toList();
     }
+    @Override
+    public boolean aprobarPedido(Integer idPedidos) {
+        Pedido pedido = pedidoRepository.findById(idPedidos)
+                .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
+
+        pedido.setEstado(EstadoPedido.APROBADO);
+        pedidoRepository.save(pedido);
+
+        return true;
+    }
+
+    @Override
+    public boolean actualizarEstado(Integer idPedido, EstadoPedido nuevoEstado) {
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
+
+        pedido.setEstado(nuevoEstado);
+
+        if (nuevoEstado == EstadoPedido.ENTREGADO) {
+            pedido.setFechaEntrega(LocalDateTime.now());
+        }
+
+        pedidoRepository.save(pedido);
+        return true;
+    }
 }
+
+
 

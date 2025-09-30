@@ -37,8 +37,13 @@ public class Pedido {
     @Column(name = "FECHA_CREACION", nullable = false)
     private LocalDateTime fechaCreacion;
 
+    @Column(name="FECHA_ENTREGA")
+    private LocalDateTime fechaEntrega;
+
     @Column(name = "TOTAL", nullable = false)
     private BigDecimal total;
+
+
 
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)

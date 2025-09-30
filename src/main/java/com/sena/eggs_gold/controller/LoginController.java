@@ -101,6 +101,7 @@ public class LoginController {
         return response;
     }
 
+
     // Logout (equivalente a session_destroy() en PHP)
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -108,6 +109,7 @@ public class LoginController {
         return "redirect:/login";
     }
 }
+
 
 
 

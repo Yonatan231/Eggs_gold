@@ -8,4 +8,5 @@ import java.util.List;
 public interface InventarioService {
     List<ProductoDisponibleDTO> ListaProductoDisponible();
     List<ProductoDisponibleDTO> obtenerProductosDisponibles();
+    List<Inventario> obtenerInventario();
 }

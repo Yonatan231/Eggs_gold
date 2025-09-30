@@ -6,7 +6,9 @@ import com.sena.eggs_gold.dto.PedidoDTO;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.service.CarritoService;
 import com.sena.eggs_gold.service.PedidoService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,5 +70,35 @@ public class PedidoController {
 
         return response;
     }
+
+    @PostMapping("/{id}/aprobar")
+    public ResponseEntity<String> aprobarPedido(@PathVariable Integer id) {
+        boolean aprobado = pedidoService.aprobarPedido(id);
+
+        if (aprobado) {
+            return ResponseEntity.ok("ok");
+        } else {
+            return ResponseEntity.badRequest().body("error: no se pudo aprobar");
+        }
+    }
+
+    @PostMapping("/actualizar-estado")
+    public ResponseEntity<?> actualizarEstado(
+            @RequestParam("id_pedido") Integer idPedido,
+            @RequestParam("estado") EstadoPedido estado) {
+        try {
+            boolean actualizado = pedidoService.actualizarEstado(idPedido, estado);
+            if (actualizado) {
+                return ResponseEntity.ok(Map.of("success", true));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "No se pudo actualizar"));
+            }
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
 }
 

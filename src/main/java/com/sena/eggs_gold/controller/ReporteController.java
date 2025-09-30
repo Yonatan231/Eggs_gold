@@ -1,0 +1,31 @@
+package com.sena.eggs_gold.controller;
+
+import com.sena.eggs_gold.service.ReporteService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/admin/reportes")
+public class ReporteController {
+
+    private final ReporteService reporteService;
+
+    public ReporteController(ReporteService reporteService) {
+        this.reporteService = reporteService;
+    }
+
+    @GetMapping("/ventas")
+    public ResponseEntity<ByteArrayResource> descargarReporteVentas() {
+        byte[] pdfBytes = reporteService.generarReporteVentas();
+        ByteArrayResource resource = new ByteArrayResource(pdfBytes);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Reporte_Ventas.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdfBytes.length)
+                .body(resource);
+    }
+}

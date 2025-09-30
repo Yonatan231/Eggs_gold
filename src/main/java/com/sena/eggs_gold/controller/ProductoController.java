@@ -1,13 +1,17 @@
 package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.ProductoDTO;
+import com.sena.eggs_gold.model.entity.Producto;
 import com.sena.eggs_gold.service.ProductoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class ProductoController {
@@ -48,4 +52,28 @@ public class ProductoController {
         model.addAttribute("productos", productoService.listaProductos());
         return "lista_productos"; // thymeleaf (src/main/resources/templates/lista_productos.html)
     }
+
+
+        @PutMapping("/actualizar/{id}")
+        public ResponseEntity<Map<String, Object>> actualizarProducto(
+                @PathVariable Integer id,
+                @RequestBody Producto productoRequest) {
+
+            Map<String, Object> response = new HashMap<>();
+            try {
+                Producto actualizado = productoService.actualizarProducto(id, productoRequest);
+
+                response.put("success", true);
+                response.put("producto", actualizado);
+                return ResponseEntity.ok(response);
+
+            } catch (Exception e) {
+                response.put("success", false);
+                response.put("error", e.getMessage());
+                return ResponseEntity.badRequest().body(response);
+            }
+        }
+
+
+
 }

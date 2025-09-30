@@ -95,7 +95,7 @@ function cargarPedidosRecientes(estado = '') {
 
 // === MOSTRAR PRODUCTOS EN TABLA ===
 function cargarInventario(busqueda = "") {
-  fetch('PHP/mostrar_producto_pagina.php')
+  fetch("http://localhost:8080/inventario/mostrarProducto")
     .then(res => res.json())
     .then(data => {
       const tabla = document.querySelector('#tabla-productos tbody');

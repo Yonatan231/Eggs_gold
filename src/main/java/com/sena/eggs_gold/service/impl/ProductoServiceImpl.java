@@ -4,6 +4,7 @@ import com.sena.eggs_gold.dto.ProductoDTO;
 import com.sena.eggs_gold.model.entity.Producto;
 import com.sena.eggs_gold.repository.ProductoRepository;
 import com.sena.eggs_gold.service.ProductoService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,5 +54,22 @@ public class ProductoServiceImpl implements ProductoService {
                         prod.getEstado()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Producto actualizarProducto(Integer id, Producto datosProducto) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con id " + id));
+
+        // Actualizar campos
+        producto.setNombre(datosProducto.getNombre());
+        producto.setPrecio(datosProducto.getPrecio());
+        producto.setCategoria(datosProducto.getCategoria());
+        producto.setDescripcion(datosProducto.getDescripcion());
+        producto.setEstado(datosProducto.getEstado());
+        producto.setCantidad(datosProducto.getCantidad());
+
+
+        return productoRepository.save(producto);
     }
 }

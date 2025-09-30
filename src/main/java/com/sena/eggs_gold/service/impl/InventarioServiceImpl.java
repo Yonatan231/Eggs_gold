@@ -25,4 +25,9 @@ public class InventarioServiceImpl implements InventarioService {
         // Llamada al repositorio que hace el INNER JOIN y filtra cantidad > 0
         return inventarioRepository.ProductosDisponiblesEnStock();
     }
+
+    @Override
+    public List<Inventario> obtenerInventario() {
+        return inventarioRepository.findAll();
+    }
 }

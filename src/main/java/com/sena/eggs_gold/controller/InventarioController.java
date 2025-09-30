@@ -11,7 +11,9 @@ import org.springframework.boot.origin.Origin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/inventario")
@@ -46,5 +48,17 @@ public class InventarioController {
     @ResponseBody
     public List<ProductoDisponibleDTO> obtenerProductosDisponibles() {
         return inventarioService.obtenerProductosDisponibles(); // Servicio que implementa la lógica de SQL
+    }
+
+    @GetMapping("mostrarProducto")
+    @ResponseBody
+    public Map<String, Object> obtenerInventario() {
+        List<Inventario> inventario = inventarioService.obtenerInventario();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("data", inventario);
+
+        return response;
     }
 }

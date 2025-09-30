@@ -68,16 +68,16 @@ function cargarPedidosRecientes() {
 
         if (rol === 'ADMIN' && p.estado === 'Pendiente') {
           tdAccion.innerHTML = `
-            <button onclick="actualizarEstado(${p.idPedidos}, 'APROBADO')">Aceptar</button>
-            <button onclick="actualizarEstado(${p.idPedidos}, 'RECHAZADO')">Denegar</button>
+            <button onclick="actualizarEstado(${p.idPedidos}, 'Aprobado')">Aceptar</button>
+            <button onclick="actualizarEstado(${p.idPedidos}, 'Rechazado')">Denegar</button>
           `;
-        } else if (rol == 3 && p.ESTADO === 'APROBADO') {
-          tdAccion.innerHTML = `<button onclick="asignarPedido(${p.ID_PEDIDOS})">Asignar</button>`;
-        } else if (rol == 1 && p.ESTADO === 'APROBADO') {
+        } else if (rol == "LOGISTICA" && p.estado === 'Aprobado') {
+          tdAccion.innerHTML = `<button onclick="asignarPedido(${p.idPedidos})">Asignar</button>`;
+        } else if (rol == "ADMIN" && p.estado === 'Aprobado') {
           tdAccion.innerHTML = `<span style="color: green; font-weight: bold;">✔ Aprobado</span>`;
-        } else if (rol == 1 && p.ESTADO === 'RECHAZADO') {
+        } else if (rol == "ADMIN" && p.estado === 'Rechazado') {
           tdAccion.innerHTML = `<span style="color: red; font-weight: bold;">✖ Rechazado</span>`;
-        } else if (rol == 1 && p.ESTADO === 'EN CAMINO') {
+        } else if (rol == "ADMIN" && p.estado === 'En_camino') {
           tdAccion.innerHTML = `<span style="color: green; font-weight: bold;">✔ EN CAMINO</span>`;
         } else {
           tdAccion.innerHTML = "—";
@@ -99,7 +99,7 @@ function actualizarEstado(idPedido, nuevoEstado) {
     formData.append('id_pedido', idPedido);
     formData.append('estado', nuevoEstado);  // CAMBIO AQUÍ: debe coincidir con el nombre en PHP
 
-    fetch('PHP/actualizar_estado_pedido.php', {
+    fetch('/api/pedido/actualizar-estado', {
         method: 'POST',
         body: formData
     })
@@ -192,7 +192,7 @@ fetch("http://localhost:8080/inventario/producto")
       const fila = document.createElement("tr");
 
       const id = document.createElement("td");
-      id.textContent = producto.id;
+      id.textContent = producto.idProducto;
 
       const nombre = document.createElement("td");
       nombre.textContent = producto.nombre;
@@ -209,8 +209,6 @@ fetch("http://localhost:8080/inventario/producto")
       const estado = document.createElement("td");
       estado.textContent = producto.estado;
 
-      const cantidad = document.createElement("td");
-      cantidad.textContent = producto.cantidad;
 
       const imagen = document.createElement("td");
       const imgTag = document.createElement("img");
@@ -250,7 +248,7 @@ tdEliminar.appendChild(eliminarBtn);
       fila.appendChild(categoria);
       fila.appendChild(descripcion);
       fila.appendChild(estado);
-      fila.appendChild(cantidad);
+
       imagen.appendChild(imgTag);
       fila.appendChild(imagen);
       fila.appendChild(actualizar);
@@ -470,28 +468,20 @@ tdEliminar.appendChild(eliminarBtn);
 }
 cargarProductosLogistica();
 
-
-  //funcion abrir modal actualizar productos//
-  function abrirModalActualizar(producto) {
-    
-  document.getElementById("update-id").value = producto.id;
-    console.log("🆔 ID asignado al input:", document.getElementById("update-id").value);
-
-    console.log("🔍 Producto recibido:", producto);
-
+// Función abrir modal actualizar productos
+function abrirModalActualizar(producto) {
+  document.getElementById("update-id").value = producto.idProducto; // ojo: idProductos en tu entidad
   document.getElementById("update-nombre").value = producto.nombre;
   document.getElementById("update-precio").value = producto.precio;
   document.getElementById("update-categoria").value = producto.categoria;
   document.getElementById("update-descripcion").value = producto.descripcion;
   document.getElementById("update-estado").value = producto.estado;
-  document.getElementById("update-cantidad").value = producto.cantidad;
-  
 
 
-  // Mostrar el modal
   document.getElementById("modalActualizar").style.display = "block";
 }
-//funcion cerrar modal//
+
+// Función cerrar modal
 function cerrarModal() {
   document.getElementById("modalActualizar").style.display = "none";
 }
@@ -499,22 +489,33 @@ function cerrarModal() {
 document.getElementById("formActualizarProducto").addEventListener("submit", function(e) {
   e.preventDefault();
 
-  const formData = new FormData(this);
+  const id = document.getElementById("update-id").value;
 
-  for (let [key, value] of formData.entries()) {
-  console.log(`${key}: ${value}`);
-}
-  fetch("PHP/actualizar_producto.php", {
-    method: "POST",
-    body: formData
+  // Construir objeto producto
+  const producto = {
+    nombre: document.getElementById("update-nombre").value,
+    precio: parseFloat(document.getElementById("update-precio").value),
+    categoria: document.getElementById("update-categoria").value,
+    descripcion: document.getElementById("update-descripcion").value,
+    estado: document.getElementById("update-estado").value,
+
+  };
+
+  console.log("📦 Enviando producto:", producto);
+
+  fetch("http://localhost:8080/actualizar/" + id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(producto)
   })
   .then(resp => resp.json())
   .then(data => {
     if (data.success) {
       alert("✅ Producto actualizado correctamente.");
       cerrarModal();
-      // Recargar la tabla
-      cargarProductos(); // Asegúrate de tener esta función
+      cargarProductos(); // Recargar la tabla
     } else {
       alert("❌ Error al actualizar: " + (data.error || "desconocido"));
     }
@@ -524,6 +525,7 @@ document.getElementById("formActualizarProducto").addEventListener("submit", fun
     alert("❌ Fallo en la conexión.");
   });
 });
+
 
 
  //funcion para eliminar un producto en admin//
