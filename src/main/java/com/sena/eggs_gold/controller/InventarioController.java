@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RestController
+@Controller
 @RequestMapping("/inventario")
 @CrossOrigin(origins = "*")
 public class InventarioController {
@@ -31,7 +31,6 @@ public class InventarioController {
         return ResponseEntity.ok(inventarioService.ListaProductoDisponible());
     }
     @GetMapping("")
-    @ResponseBody
     public String mostrarInventario(HttpSession session, Model model) {
         ClienteDTO cliente = (ClienteDTO) session.getAttribute("cliente");
 

@@ -39,7 +39,7 @@ public class ClienteController {
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar cliente: " + e.getMessage());
         }
-        return "redirect:auth/login";
+        return "redirect:/login";
 
     }
 

@@ -53,7 +53,7 @@ public class UsuarioController {
     }
 
 
-    @GetMapping
+    @GetMapping("/usuarios/activos")
     public List<Usuario> listarActivos() {
         return usuarioService.listarActivos();
     }
