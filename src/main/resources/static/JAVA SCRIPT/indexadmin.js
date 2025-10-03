@@ -68,8 +68,8 @@ function cargarPedidosRecientes() {
 
         if (rol === 'ADMIN' && p.estado === 'Pendiente') {
           tdAccion.innerHTML = `
-            <button onclick="actualizarEstado(${p.idPedidos}, 'Aprobado')">Aceptar</button>
-            <button onclick="actualizarEstado(${p.idPedidos}, 'Rechazado')">Denegar</button>
+            <button onclick="actualizarEstado(${p.idPedidos}, 'APROBADO')">Aceptar</button>
+            <button onclick="actualizarEstado(${p.idPedidos}, 'RECHAZADO')">Denegar</button>
           `;
         } else if (rol == "LOGISTICA" && p.estado === 'Aprobado') {
           tdAccion.innerHTML = `<button onclick="asignarPedido(${p.idPedidos})">Asignar</button>`;
@@ -145,39 +145,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Aceptar o Denegar pedido
-document.addEventListener("click", function (e) {
-  if (e.target.classList.contains("aceptar")) {
-    const id = e.target.dataset.id;
-    fetch("PHP/aceptar_pedido.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `id=${id}`
-    })
-    .then(res => res.text())
-    .then(() => {
-      alert("✅ Pedido aceptado");
-      cargarPedidosRecientes(); // ✅ Actualiza la tabla sin eliminar filas manualmente
-    });
-  }
-
-  if (e.target.classList.contains("denegar")) {
-    const id = e.target.dataset.id;
-    fetch("PHP/denegar_pedido.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `id=${id}`
-    })
-    .then(res => res.text())
-    .then(() => {
-      alert("❌ Pedido denegado");
-      cargarPedidosRecientes(); // ✅ Igual aquí
-    });
-  }
-});
-
-
-
 /*mostrar productos*/
 function cargarProductos(){
 fetch("http://localhost:8080/inventario/producto")
@@ -235,7 +202,7 @@ actualizarBtn.addEventListener("click", () => abrirModalActualizar(producto));
 // NUEVO: Botón Eliminar productos//
 const eliminarBtn = document.createElement("button");
 eliminarBtn.textContent = "Eliminar";
-eliminarBtn.addEventListener("click", () => eliminarProducto(producto.id));
+eliminarBtn.addEventListener("click", () => eliminarProducto(producto.idProducto));
 
 const tdEliminar = document.createElement("td");
 tdEliminar.appendChild(eliminarBtn);
@@ -305,7 +272,7 @@ fetch("http://localhost:8080/clientes/pedidos")
        //boton eliminar clientes //
        const eliminarBtn = document.createElement("button");
 eliminarBtn.textContent = "Eliminar";
-eliminarBtn.addEventListener("click", () => eliminarProductoCliente(cliente.ID_USUARIOS));
+eliminarBtn.addEventListener("click", () => eliminarProductoCliente(cliente.idUsuarios));
 
 const tdEliminar = document.createElement("td");
 tdEliminar.appendChild(eliminarBtn);
@@ -370,7 +337,7 @@ fetch("http://localhost:8080/conductores/pedidos-entregados")
         //boton eliminar conductores //
        const eliminarBtn = document.createElement("button");
 eliminarBtn.textContent = "Eliminar";
-eliminarBtn.addEventListener("click", () => eliminarProductoConductores(conductor.ID_USUARIOS));
+eliminarBtn.addEventListener("click", () => eliminarProductoConductores(conductor.idUsuarios || conductor.idConductor));
 
 const tdEliminar = document.createElement("td");
 tdEliminar.appendChild(eliminarBtn);
@@ -440,7 +407,7 @@ fetch("http://localhost:8080/logistica/ver")
         //boton eliminar conductores //
        const eliminarBtn = document.createElement("button");
 eliminarBtn.textContent = "Eliminar";
-eliminarBtn.addEventListener("click", () => eliminarLogistica(logistica.ID_USUARIOS));
+eliminarBtn.addEventListener("click", () => eliminarLogistica(logistica.idUsuarios));
 
 const tdEliminar = document.createElement("td");
 tdEliminar.appendChild(eliminarBtn);
@@ -553,18 +520,18 @@ function eliminarProducto(id) {
 
 //funcion abrir modal actualizar cliente//
   function abrirModalActualizarCliente(cliente) {
-    
-  document.getElementById("updatec-id").value = cliente.ID_USUARIOS;
+
+      document.getElementById("updatec-id").value = cliente.idUsuarios ;
     console.log("🆔 ID asignado al input:", document.getElementById("updatec-id").value);
 
-    console.log("🔍 Producto recibido:", cliente);
+    console.log("🔍 Cliente recibido:", cliente);
 
-  document.getElementById("updatec-nombre").value = cliente.NOMBRE;
-  document.getElementById("updatec-apellido").value = cliente.APELLIDO;
-  document.getElementById("updatec-documento").value = cliente.NUM_DOCUMENTO;
-  document.getElementById("updatec-direccion").value = cliente.DIRECCION_USUARIO;
-  document.getElementById("updatec-telefono").value = cliente.TELEFONO;
-  
+  document.getElementById("updatec-nombre").value = cliente.nombre;
+  document.getElementById("updatec-apellido").value = cliente.apellido;
+  document.getElementById("updatec-documento").value = cliente.numDocumento;
+  document.getElementById("updatec-direccion").value = cliente.direccionUsuario;
+  document.getElementById("updatec-telefono").value = cliente.telefono;
+
 
 
   // Mostrar el modal
@@ -578,19 +545,27 @@ function cerrarModalCliente() {
 document.getElementById("formActualizarClientes").addEventListener("submit", function(e) {
   e.preventDefault();
 
-  const formData = new FormData(this);
+    const usuario = {
+        nombre: document.getElementById("updatec-nombre").value,
+        apellido: document.getElementById("updatec-apellido").value,
+        numDocumento: document.getElementById("updatec-documento").value,
+        direccionUsuario: document.getElementById("updatec-direccion").value,
+        telefono: document.getElementById("updatec-telefono").value
+    };
 
-  for (let [key, value] of formData.entries()) {
-  console.log(`${key}: ${value}`);
-}
-  fetch("PHP/actualizar_clientes.php", {
-    method: "POST",
-    body: formData
+    const id = document.getElementById("updatec-id").value;
+
+    fetch(`http://localhost:8080/usuarios/${id}`, {
+    method: "PUT",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(usuario)
   })
   .then(resp => resp.json())
   .then(data => {
     if (data.success) {
-      alert("✅ Producto actualizado correctamente.");
+      alert("✅ Cliente actualizado correctamente.");
       cerrarModalCliente();
       // Recargar la tabla
       cargarProductosCliente(); // Asegúrate de tener esta función
@@ -604,37 +579,43 @@ document.getElementById("formActualizarClientes").addEventListener("submit", fun
   });
 });
 
-//funcion de eliminar  clientes//
- function eliminarProductoCliente(id) {
-  if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-    fetch(`PHP/eliminar_clientes.php?id=${id}`, {
-      method: "GET",
-    })
-    .then(response => response.text())
-    .then(data => {
-      alert(data); // Muestra el mensaje que venga de PHP
-      location.reload(); // Recarga la tabla
-    })
-    .catch(error => {
-      console.error("❌ Error al eliminar el producto:", error);
-      alert("❌ No se pudo eliminar el producto.");
-    });
-  }
+// función de eliminar clientes //
+function eliminarProductoCliente(id) {
+    if (confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
+        fetch(`/eliminar/${id}`, {
+            method: "PUT"
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error en la petición al backend");
+                }
+                return response.text(); // el backend devuelve un mensaje plano
+            })
+            .then(data => {
+                alert(data); // ✅ Muestra el mensaje del backend
+                location.reload(); // Recarga la tabla para que ya no aparezca
+            })
+            .catch(error => {
+                console.error("❌ Error al eliminar el cliente:", error);
+                alert("❌ No se pudo eliminar el cliente.");
+            });
+    }
 }
+
 
 //funcion abrir modal actualizar conductores//
   function abrirModalActualizarConductores(conductor) {
     
-  document.getElementById("updateco-id").value = conductor.ID_USUARIOS;
+  document.getElementById("updateco-id").value = conductor.idUsuarios || conductor.idConductor;
     console.log("🆔 ID asignado al input:", document.getElementById("updateco-id").value);
 
-    console.log("🔍 Producto recibido:", conductor);
+    console.log("🔍 Conductor recibido:", conductor);
 
-  document.getElementById("updateco-nombre").value = conductor.NOMBRE;
-  document.getElementById("updateco-apellido").value = conductor.APELLIDO;
-  document.getElementById("updateco-documento").value = conductor.NUM_DOCUMENTO;
-  document.getElementById("updateco-direccion").value = conductor.DIRECCION_USUARIO;
-  document.getElementById("updateco-telefono").value = conductor.TELEFONO;
+  document.getElementById("updateco-nombre").value = conductor.nombre;
+  document.getElementById("updateco-apellido").value = conductor.apellido;
+  document.getElementById("updateco-documento").value = conductor.numDocumento;
+  document.getElementById("updateco-direccion").value = conductor.direccionUsuario;
+  document.getElementById("updateco-telefono").value = conductor.telefono;
   
 
 
@@ -649,19 +630,28 @@ function cerrarModalConductores() {
 document.getElementById("formActualizarConductores").addEventListener("submit", function(e) {
   e.preventDefault();
 
-  const formData = new FormData(this);
+  const usuario = {
+      nombre: document.getElementById("updateco-nombre").value,
+      apellido: document.getElementById("updateco-apellido").value,
+      numDocumento: document.getElementById("updateco-documento").value,
+      direccionUsuario: document.getElementById("updateco-direccion").value,
+      telefono: document.getElementById("updateco-telefono").value
+  };
 
-  for (let [key, value] of formData.entries()) {
-  console.log(`${key}: ${value}`);
-}
-  fetch("PHP/actualizar_conductores.php", {
-    method: "POST",
-    body: formData
+    const id = document.getElementById("updateco-id").value;
+
+
+  fetch(`http://localhost:8080/usuarios/${id}`, {
+    method: "PUT",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(usuario)
   })
   .then(resp => resp.json())
   .then(data => {
     if (data.success) {
-      alert("✅ Producto actualizado correctamente.");
+      alert("✅ Conductor actualizado correctamente.");
       cerrarModalConductores();
       // Recargar la tabla
       cargarProductosConductores(); // Asegúrate de tener esta función
@@ -678,35 +668,40 @@ document.getElementById("formActualizarConductores").addEventListener("submit", 
 
 //funcion de eliminar  conductores//
  function eliminarProductoConductores(id) {
-  if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-    fetch(`PHP/eliminar_conductores.php?id=${id}`, {
-      method: "GET",
-    })
-    .then(response => response.text())
-    .then(data => {
-      alert(data); // Muestra el mensaje que venga de PHP
-      location.reload(); // Recarga la tabla
-    })
-    .catch(error => {
-      console.error("❌ Error al eliminar el producto:", error);
-      alert("❌ No se pudo eliminar el producto.");
-    });
-  }
+     if (confirm("¿Estás seguro de que quieres eliminar este conductor?")) {
+         fetch(`/eliminar/${id}`, {
+             method: "PUT"
+         })
+             .then(response => {
+                 if (!response.ok) {
+                     throw new Error("Error en la petición al backend");
+                 }
+                 return response.text(); // el backend devuelve un mensaje plano
+             })
+             .then(data => {
+                 alert(data); // ✅ Muestra el mensaje del backend
+                 location.reload(); // Recarga la tabla para que ya no aparezca
+             })
+             .catch(error => {
+                 console.error("❌ Error al eliminar el conductor:", error);
+                 alert("❌ No se pudo eliminar el conductor.");
+             });
+     }
 }
 
 //funcion abrir modal actualizar Logistica//
   function abrirModalActualizarLogistica(logistica) {
     
-  document.getElementById("updateL-id").value = logistica.ID_USUARIOS;
+  document.getElementById("updateL-id").value = logistica.idUsuarios;
     console.log("🆔 ID asignado al input:", document.getElementById("updateL-id").value);
 
     console.log("🔍 Producto recibido:", logistica);
 
-  document.getElementById("updateL-nombre").value = logistica.NOMBRE;
-  document.getElementById("updateL-apellido").value = logistica.APELLIDO;
-  document.getElementById("updateL-documento").value = logistica.NUM_DOCUMENTO;
-  document.getElementById("updateL-direccion").value = logistica.DIRECCION_USUARIO;
-  document.getElementById("updateL-telefono").value = logistica.TELEFONO;
+  document.getElementById("updateL-nombre").value = logistica.nombre;
+  document.getElementById("updateL-apellido").value = logistica.apellido;
+  document.getElementById("updateL-documento").value = logistica.numDocumento;
+  document.getElementById("updateL-direccion").value = logistica.direccionUsuario;
+  document.getElementById("updateL-telefono").value = logistica.telefono;
   
 
 
@@ -721,19 +716,29 @@ function cerrarModalLogistica() {
 document.getElementById("formActualizarLogistica").addEventListener("submit", function(e) {
   e.preventDefault();
 
-  const formData = new FormData(this);
+    const usuario = {
+        nombre: document.getElementById("updateL-nombre").value,
+        apellido: document.getElementById("updateL-apellido").value,
+        numDocumento: document.getElementById("updateL-documento").value,
+        direccionUsuario: document.getElementById("updateL-direccion").value,
+        telefono: document.getElementById("updateL-telefono").value
+    };
 
-  for (let [key, value] of formData.entries()) {
-  console.log(`${key}: ${value}`);
-}
-  fetch("PHP/actualizar_logistica.php", {
-    method: "POST",
-    body: formData
+  const id = document.getElementById("updateL-id").value;
+
+
+
+  fetch(`http://localhost:8080/usuarios/${id}`, {
+    method: "PUT",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(usuario)
   })
   .then(resp => resp.json())
   .then(data => {
     if (data.success) {
-      alert("✅ Uusuario actualizado correctamente.");
+      alert("✅ Logistica actualizado correctamente.");
       cerrarModalLogistica();
       // Recargar la tabla
       cargarProductosLogistica(); // Asegúrate de tener esta función
@@ -750,20 +755,25 @@ document.getElementById("formActualizarLogistica").addEventListener("submit", fu
 
 //funcion de eliminar  conductores//
  function eliminarLogistica(id) {
-  if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-    fetch(`PHP/eliminar_logistica.php?id=${id}`, {
-      method: "GET",
-    })
-    .then(response => response.text())
-    .then(data => {
-      alert(data); // Muestra el mensaje que venga de PHP
-      location.reload(); // Recarga la tabla
-    })
-    .catch(error => {
-      console.error("❌ Error al eliminar el producto:", error);
-      alert("❌ No se pudo eliminar el producto.");
-    });
-  }
+     if (confirm("¿Estás seguro de que quieres eliminar logistica?")) {
+         fetch(`/eliminar/${id}`, {
+             method: "PUT"
+         })
+             .then(response => {
+                 if (!response.ok) {
+                     throw new Error("Error en la petición al backend");
+                 }
+                 return response.text(); // el backend devuelve un mensaje plano
+             })
+             .then(data => {
+                 alert(data); // ✅ Muestra el mensaje del backend
+                 location.reload(); // Recarga la tabla para que ya no aparezca
+             })
+             .catch(error => {
+                 console.error("❌ Error al eliminar logistica:", error);
+                 alert("❌ No se pudo eliminar logistica");
+             });
+     }
 }
 
 /*buscar pedidos administrador*/
@@ -1153,7 +1163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //aqui muestra el codigo para que las tarjetas funcionen//
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("PHP/resumen_admin.php")
+  fetch("/api/dashboard")
     .then(response => response.json())
     .then(data => {
       document.getElementById("totalUsuarios").textContent = data.usuarios;
@@ -1166,20 +1176,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /*cerrar sesion*/
-
-document.getElementById("cerrar-sesion").addEventListener("click", function (e) {
-  e.preventDefault();
-
-  // 🔴 Limpiar localStorage
-  localStorage.removeItem("usuario_id");
-  localStorage.removeItem("nombre");
-  localStorage.removeItem("apellido");
-  localStorage.removeItem("rol_id");
-
-  // 🔴 También puedes limpiar todo si prefieres
-  // localStorage.clear();
-
-  // 🔁 Redirige al login
-  window.location.href = "inicio_secion.html";
+document.getElementById("cerrar_sesion").addEventListener("click", function(e) {
+    e.preventDefault();
+    localStorage.clear(); // limpia datos locales
+    window.location.href = "/logout"; // llama al endpoint de Spring
 });
+
 

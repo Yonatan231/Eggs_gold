@@ -13,4 +13,6 @@ public interface ProductoService {
 
     List<ProductoDTO> listaProductos();
     Producto actualizarProducto(Integer id, Producto datosProducto);
+
+
 }

@@ -4,6 +4,7 @@ import com.sena.eggs_gold.dto.ClientePedidosDTO;
 import com.sena.eggs_gold.dto.ConductorPedidosDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.repository.UsuarioRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.service.UsuarioService;
@@ -42,6 +43,25 @@ public class UsuarioController {
     @ResponseBody
     public List<LogisticaDTO> listarLogistica() {
         return usuarioService.obtenerLogistica();
+    }
+
+    @PutMapping("/usuarios/{idUsuarios}")
+    public ResponseEntity<?> actualizarUsuario(@PathVariable Integer idUsuarios, @RequestBody Usuario usuario) {
+        return usuarioService.actualizarUsuario(idUsuarios, usuario)
+                .map(u -> ResponseEntity.ok().body("{\"success\":true}"))
+                .orElse(ResponseEntity.badRequest().body("{\"success\":false, \"error\":\"ID NO ENCONTRADO\"}"));
+    }
+
+
+    @GetMapping
+    public List<Usuario> listarActivos() {
+        return usuarioService.listarActivos();
+    }
+
+    @PutMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarLogico(@PathVariable Integer id) {
+        usuarioService.eliminarLogico(id);
+        return ResponseEntity.ok("✅ Usuario eliminado");
     }
 
 }

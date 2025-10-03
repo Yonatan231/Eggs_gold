@@ -4,6 +4,7 @@ import com.sena.eggs_gold.dto.ClientePedidosDTO;
 import com.sena.eggs_gold.dto.ConductorPedidosDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.model.entity.Usuario;
+import com.sena.eggs_gold.model.enums.Estado;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +22,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
     @Query("SELECT new com.sena.eggs_gold.dto.ClientePedidosDTO( " +
             "u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono, COUNT(p)) " +
             "FROM Usuario u LEFT JOIN u.pedidos p " +
-            "WHERE u.rol.idRoles = 4 " +
-            "GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono")
+            "WHERE u.rol.idRoles = 4 AND u.estado = com.sena.eggs_gold.model.enums.Estado.ACTIVO " +
+            "GROUP BY  u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono")
     List<ClientePedidosDTO> findClientesConPedidos();
 
 
@@ -39,15 +40,20 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
                 AND p.ESTADO = 'ENTREGADO') AS pedidos_entregados
         FROM usuarios u
         WHERE u.ROL_ID = 3
+                AND u.ESTADO = 'ACTIVO'
         """, nativeQuery = true)
     List<Object[]> findConductoresConPedidosEntregados();
 
     @Query("SELECT new com.sena.eggs_gold.dto.LogisticaDTO(" +
             "u.idUsuarios, u.nombre, u.apellido, u.direccionUsuario, " +
             "u.numDocumento, u.telefono, u.correo, u.password, '') " + // <-- rol vacío
-            "FROM Usuario u WHERE u.rol.idRoles = 2")
+            "FROM Usuario u WHERE u.rol.idRoles = 2 AND u.estado = com.sena.eggs_gold.model.enums.Estado.ACTIVO")
     List<LogisticaDTO> findAllLogistica();
 
+    List<Usuario> findByEstado(Estado estado);
 
+
+    @Query("SELECT COUNT(u) FROM Usuario u WHERE u.rol.idRoles = ?1")
+    long countByRolId(int rolId);
 
 }

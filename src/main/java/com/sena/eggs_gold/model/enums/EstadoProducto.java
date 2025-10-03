@@ -7,6 +7,7 @@ public enum EstadoProducto {
     DISPONIBLE("Disponible"),
     DESCONTINUADO("Descontinuado");
 
+
     private final String descripcion;
 
     EstadoProducto(String descripcion) {

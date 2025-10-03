@@ -10,4 +10,5 @@ public interface PedidoService {
     List<PedidoDTO> obtenerPedidosPorRol(String rol, EstadoPedido estado);
     boolean aprobarPedido(Integer idPedido);
     boolean actualizarEstado(Integer idPedido, EstadoPedido nuevoEstado);
+
 }

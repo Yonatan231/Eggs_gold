@@ -56,7 +56,7 @@ public class LoginController {
             session.setAttribute("rol", "CLIENTE");
             session.setAttribute("cliente", cliente);
             model.addAttribute("usuario", cliente);
-            return "inventario";
+            return "redirect:/inventario";
         }
 
         // Admin
@@ -65,7 +65,7 @@ public class LoginController {
             session.setAttribute("usuario_id", admin.getIdUsuarios());
             session.setAttribute("rol", "ADMIN");
             model.addAttribute("usuario", admin);
-            return "administrador";
+            return "redirect:/administrador";
         }
 
         // Logística
@@ -74,7 +74,7 @@ public class LoginController {
             session.setAttribute("usuario_id", logistica.getIdUsuarios());
             session.setAttribute("rol", "LOGISTICA");
             model.addAttribute("usuario", logistica);
-            return "logistica";
+            return "redirect:/logistica";
         }
 
         // Conductor
@@ -83,13 +83,20 @@ public class LoginController {
             session.setAttribute("usuario_id", conductor.getIdUsuarios());
             session.setAttribute("rol", "CONDUCTOR");
             model.addAttribute("usuario", conductor);
-            return "conductor";
+            return "redirect:/conductor";
         }
 
         // Si no coincide en ninguno
         model.addAttribute("error", "Credenciales incorrectas");
         return "inicio_secion";
     }
+
+    @GetMapping("/administrador")
+    public String mostrarAdmin(Model model, HttpSession session) {
+        // Opcional: agregar datos al modelo si quieres
+        return "administrador"; // esto apunta a resources/templates/administrador.html
+    }
+
 
     // Ver datos de sesión
     @GetMapping("/session")
@@ -108,6 +115,8 @@ public class LoginController {
         session.invalidate();
         return "redirect:/login";
     }
+
+
 }
 
 

@@ -7,6 +7,9 @@ import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.model.entity.Usuario;
 
 import java.util.List;
+import java.util.Optional;
+
+
 
 public interface UsuarioService {
  boolean documentoYaExistente(String numDocumento);
@@ -14,4 +17,8 @@ public interface UsuarioService {
     List<ConductorPedidosDTO> obtenerConductoresConPedidosEntregados();
 
     List<LogisticaDTO> obtenerLogistica();
+    Optional<Usuario> actualizarUsuario(Integer idUsuarios, Usuario datosActualizados);
+
+    List<Usuario> listarActivos();
+    void eliminarLogico(Integer idUsuarios);
 }
