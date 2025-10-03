@@ -16,11 +16,10 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
                 SELECT new com.sena.eggs_gold.dto.ProductoDisponibleDTO(
                     p.idProducto, p.nombre, p.precio, p.categoria,
                     p.descripcion, p.estado, p.imagen,
-                    i.cantidadDisponible
+                    p.cantidad
                 )
-                FROM Inventario i
-                JOIN i.producto p
-                WHERE i.cantidadDisponible > 0
+                FROM Producto p
+                WHERE p.cantidad > 0  
             
             """)
 

@@ -123,6 +123,7 @@ function actualizarEstado(idPedido, nuevoEstado) {
 document.addEventListener('DOMContentLoaded', cargarPedidosRecientes);
 
 // Eliminar pedido desde botón
+/*
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('ver')) {
         const id = e.target.getAttribute('data-id');
@@ -143,7 +144,7 @@ document.addEventListener('click', function(e) {
                 });
         }
     }
-});
+});*/
 
 /*mostrar productos*/
 function cargarProductos(){

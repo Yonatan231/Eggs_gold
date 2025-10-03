@@ -2,6 +2,7 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.ProductoDTO;
 import com.sena.eggs_gold.model.entity.Producto;
+import com.sena.eggs_gold.model.enums.EstadoProducto;
 import com.sena.eggs_gold.repository.ProductoRepository;
 import com.sena.eggs_gold.service.ProductoService;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,7 +29,12 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setDescripcion(productoDTO.getDescripcion());
         producto.setPrecio(productoDTO.getPrecio());
         producto.setCategoria(productoDTO.getCategoria());
-        producto.setEstado(productoDTO.getEstado());
+        producto.setCantidad(productoDTO.getCantidad());
+        if (productoDTO.getEstado() == null) {
+            producto.setEstado(EstadoProducto.DISPONIBLE); // valor por defecto
+        } else {
+            producto.setEstado(productoDTO.getEstado());
+        }
 
         // Guardar imagen como nombre único
         if (!imagenFile.isEmpty()) {

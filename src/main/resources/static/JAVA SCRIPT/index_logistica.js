@@ -1,16 +1,23 @@
-// === OBTENER USUARIO DE LA SESIÓN ===
-fetch('PHP/obtener_usuario_sesión.php')
-  .then(res => res.json())
-  .then(({ usuario_id, rol_id }) => {
-    console.log('ID de sesión:', usuario_id);
-    console.log('Rol:', rol_id);
+fetch('/session', { credentials: 'same-origin' }) // envía la cookie JSESSIONID
+    .then(res => res.json())
+    .then(({ usuario_id, rol }) => {
+        if (!usuario_id || !rol) {
+            alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
+            window.location.href = '/login'; // endpoint Thymeleaf
+            return;
+        }
 
-    if (rol_id == 1) {
-      cargarPedidosRecientes('PENDIENTE');
-    } else if (rol_id == 3) {
-      cargarPedidosRecientes('APROBADO');
-    }
-  });
+        console.log('ID de sesión:', usuario_id);
+        console.log('Rol:', rol);
+
+        if (rol === 'ADMIN') {
+            cargarPedidosRecientes('PENDIENTE');
+        }
+    })
+    .catch(error => {
+        console.error("Error al obtener sesión:", error);
+        window.location.href = '/login';
+    });
 
 // === TOGGLE DEL MENÚ LATERAL ===
 const btntoggle = document.querySelector('.toggle-btn');
@@ -37,19 +44,22 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
   });
 });
 
+document.addEventListener("DOMContentLoaded", cargarPedidosRecientes);
 // === FUNCIÓN: CARGAR PEDIDOS POR ESTADO ===
 function cargarPedidosRecientes(estado = '') {
-  fetch('PHP/mostrar_pedido.php', {
-    method: 'POST',
-    body: new URLSearchParams({ estado })
-  })
+  fetch("http://localhost:8080/api/pedido/listar")
     .then(response => response.json())
     .then(data => {
+        if (!data.success) {
+            alert("No se pudieron cargar los pedidos.");
+            return;
+        }
+
+        const pedidos = data.pedidos;
+        const rol = data.rol;
       const tbody = document.querySelector('#tabla-pedidos tbody');
       tbody.innerHTML = "";
 
-      const pedidos = data.pedidos;
-      const rol = data.rol;
 
       if (pedidos.length === 0) {
         tbody.innerHTML = '<tr><td colspan="9">No hay pedidos para mostrar.</td></tr>';
@@ -61,11 +71,11 @@ function cargarPedidosRecientes(estado = '') {
 
         // Acción según el rol y estado
         const tdAccion = document.createElement('td');
-        if (rol == 3 && p.ESTADO === 'APROBADO') {
-          tdAccion.innerHTML = `<button onclick="asignarPedido(${p.ID_PEDIDOS})">Asignar</button>`;
-        } else if (rol == 3 && p.ESTADO === 'ASIGNADO') {
+        if (rol === "LOGISTICA" && p.estado === 'Aprobado') {
+          tdAccion.innerHTML = `<button onclick="asignarPedido(${p.idPedidos})">Asignar</button>`;
+        } else if (rol === "LOGISTICA" && p.estado === 'Asignado') {
           tdAccion.innerHTML = `<span style="color: green; font-weight: bold;">✔ ASIGNADO</span>`;
-        } else if (rol == 3 && p.ESTADO === 'EN CAMINO') {
+        } else if (rol === "LOGISTICA" && p.estado === 'En_camino') {
           tdAccion.innerHTML = `<span style="color: green; font-weight: bold;">✔ EN CAMINO</span>`;
         } else {
           tdAccion.innerHTML = "—";
@@ -73,13 +83,14 @@ function cargarPedidosRecientes(estado = '') {
 
         // Fila con los datos del pedido
         fila.innerHTML = `
-          <td>${p.ID_PEDIDOS}</td>
-          <td>${p.nombre_usuario}</td>
+          <td>${p.idPedidos}</td>
+          <td>${p.nombreUsuario}</td>
           <td colspan="2">${p.productos}</td> <!-- ✅ nombre + cantidad en un solo campo -->
-          <td>${p.DIRECCION}</td>
-          <td>${p.ESTADO}</td>
-          <td>${p.FECHA_CREACION}</td>
-          <td>$${p.TOTAL}</td>
+          <td>${p.direccion}</td>
+          <td>${p.total}</td>
+          <td>${p.estado}</td>
+          <td>${p.fechaCreacion}</td>
+         
         `;
 
         fila.appendChild(tdAccion);
@@ -93,63 +104,61 @@ function cargarPedidosRecientes(estado = '') {
 }
 
 
-// === MOSTRAR PRODUCTOS EN TABLA ===
+
+// === MOSTRAR INVENTARIO EN TABLA ===
 function cargarInventario(busqueda = "") {
-  fetch("http://localhost:8080/inventario/mostrarProducto")
-    .then(res => res.json())
-    .then(data => {
-      const tabla = document.querySelector('#tabla-productos tbody');
-      tabla.innerHTML = '';
+    fetch("http://localhost:8080/inventario/detalle")
+        .then(res => res.json())
+        .then(data => {
+            const tabla = document.querySelector('#tabla-productos tbody');
+            tabla.innerHTML = '';
 
-      if (data.success && data.data.length > 0) {
-        // Si hay búsqueda, filtramos
-        const inventarioFiltrado = busqueda
-          ? data.data.filter(item =>
-              Object.values(item).some(valor =>
-                String(valor).toLowerCase().includes(busqueda.toLowerCase())
-              )
-            )
-          : data.data;
+            if (Array.isArray(data) && data.length > 0) {
+                const inventarioFiltrado = busqueda
+                    ? data.filter(item =>
+                        Object.values(item).some(valor =>
+                            String(valor).toLowerCase().includes(busqueda.toLowerCase())
+                        )
+                    )
+                    : data;
 
-        if (inventarioFiltrado.length === 0) {
-          tabla.innerHTML = `<tr><td colspan="13">❌ No se encontraron resultados</td></tr>`;
-          return;
-        }
+                if (inventarioFiltrado.length === 0) {
+                    tabla.innerHTML = `<tr><td colspan="13">❌ No se encontraron resultados</td></tr>`;
+                    return;
+                }
 
-        inventarioFiltrado.forEach(producto => {
-          const fila = `
+                inventarioFiltrado.forEach(producto => {
+                    const fila = `
             <tr>
-              <td>${producto.ID_INVENTARIO}</td>
-              <td>${producto.NOMBRE}</td>
-              <td>${producto.PRECIO}</td>
-              <td>${producto.CATEGORIA}</td>
-              <td>${producto.DESCRIPCION}</td>
-              <td>${producto.ESTADO}</td>
-              <td>${producto.CANTIDAD_DISPONIBLE}</td>
-              <td>${producto.UBICACION}</td>
-              <td><img src="imagenes/${producto.IMAGEN}" width="50"></td>
-              <td>${producto.FECHA_CADUCIDAD || ''}</td>
-              <td>${producto.FECHA_ACTUALIZACION}</td>
-              <td><button onclick="actualizarProducto(${producto.ID_INVENTARIO})">Actualizar</button></td>
-              <td><button onclick="eliminarProducto(${producto.ID_INVENTARIO})">Eliminar</button></td>
+              <td>${producto.idInventario}</td>
+              <td>${producto.nombre}</td>
+              <td>${producto.precio}</td>
+              <td>${producto.categoria}</td>
+              <td>${producto.descripcion}</td>
+              <td>${producto.estado}</td>
+              <td>${producto.cantidadDisponible}</td>
+              <td>${producto.ubicacion}</td>
+              <td><img src="${producto.imagen}" width="50"></td>
+              <td>${producto.fechaCaducidad || ''}</td>
+              <td>${producto.fechaActualizacion}</td>
+              <td><button onclick="actualizarProducto(${producto.idInventario})">Actualizar</button></td>
+              <td><button onclick="eliminarProducto(${producto.idInventario})">Eliminar</button></td>
             </tr>`;
-          tabla.innerHTML += fila;
+                    tabla.innerHTML += fila;
+                });
+            } else {
+                tabla.innerHTML = `<tr><td colspan="13">❌ No hay productos en el inventario</td></tr>`;
+            }
+        })
+        .catch(err => {
+            console.error("❌ Error cargando inventario:", err);
         });
-      } else {
-        tabla.innerHTML = `<tr><td colspan="13">❌ No hay productos en el inventario</td></tr>`;
-      }
-    })
-    .catch(err => {
-      console.error("❌ Error cargando inventario:", err);
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  cargarInventario();
-
-
- 
+    cargarInventario();
 });
+
 
 
 
@@ -158,13 +167,13 @@ function asignarPedido(idPedido) {
   document.getElementById('modal-asignar').style.display = 'flex';
   document.getElementById('asignar_id_pedido').value = idPedido;
 
-  fetch('PHP/obtener_conductores.php')
+  fetch('/entregados')
     .then(res => res.json())
     .then(data => {
       const select = document.getElementById('select-conductor');
       select.innerHTML = '<option value="">Seleccione un conductor</option>';
       data.forEach(conductor => {
-        select.innerHTML += `<option value="${conductor.ID_USUARIOS}">${conductor.NOMBRE} ${conductor.APELLIDO}</option>`;
+        select.innerHTML += `<option value="${conductor.idUsuarios}">${conductor.nombre} ${conductor.apellido}</option>`;
       });
     });
 }
@@ -183,7 +192,7 @@ document.getElementById('form-asignar').addEventListener('submit', function (e) 
   console.log("ID Pedido:", formData.get("pedido_id"));
   console.log("ID Conductor:", formData.get("conductor_id"));
 
-  fetch('PHP/asignar_pedido.php', {
+  fetch('/api/pedido/asignar', {
     method: 'POST',
     body: formData
   })
@@ -208,21 +217,26 @@ document.getElementById('form-asignar').addEventListener('submit', function (e) 
 
 // === EDITAR INVENTARIO ===
 function actualizarProducto(id) {
-  fetch(`PHP/actualizar_producto_logi.php?id=${id}`)
+    if (!id) {
+        console.error("❌ ID de inventario no proporcionado");
+        return;
+    }
+  fetch(`/inventario/${id}`)
     .then(response => {
       if (!response.ok) throw new Error("No se pudo obtener el producto");
       return response.json();
     })
     .then(data => {
-      document.getElementById('editar_id_inventario').value = data.ID_INVENTARIO;
-      document.getElementById('editar_nombre').value = data.NOMBRE;
-      document.getElementById('editar_precio').value = data.PRECIO;
-      document.getElementById('editar_categoria').value = data.CATEGORIA;
-      document.getElementById('editar_descripcion').value = data.DESCRIPCION;
-      document.getElementById('editar_estado').value = data.ESTADO;
-      document.getElementById('editar_cantidad').value = data.CANTIDAD_DISPONIBLE;
-      document.getElementById('editar_ubicacion').value = data.UBICACION;
-      document.getElementById('editar_fecha_caducidad').value = data.FECHA_CADUCIDAD;
+      document.getElementById('editar_id_inventario').value = data.idInventario;
+      document.getElementById('editar_id_producto').value = data.producto.idProducto;
+      document.getElementById('editar_nombre').value = data.producto.nombre;
+      document.getElementById('editar_precio').value = data.producto.precio;
+      document.getElementById('editar_categoria').value = data.producto.categoria;
+      document.getElementById('editar_descripcion').value = data.producto.descripcion;
+      document.getElementById('editar_estado').value = data.producto.estado;
+      document.getElementById('editar_cantidad').value = data.cantidadDisponible;
+      document.getElementById('editar_ubicacion').value = data.ubicacion;
+      document.getElementById('editar_fecha_caducidad').value = data.fechaCaducidad;
 
       const modal = document.getElementById('modal-editar-producto');
       if (modal) {
@@ -244,7 +258,7 @@ document.getElementById('form-editar-producto').addEventListener('submit', funct
 
   const formData = new FormData(this);
 
-  fetch('PHP/actualizar_producto_logi.php', {
+  fetch('/inventario/actualizar', {
     method: 'POST',
     body: formData
   })
@@ -301,7 +315,7 @@ function eliminarProducto(id) {
 
 /*mostrar clientes*/
 function cargarCliente(){
-fetch("PHP/mostrar_clientes.php")
+fetch("http://localhost:8080/clientes/pedidos")
   .then(resultado => resultado.json())
   .then(datos => {
     const clientes = datos;
@@ -313,22 +327,22 @@ fetch("PHP/mostrar_clientes.php")
       const fila = document.createElement("tr");
 
       const id = document.createElement("td");
-      id.textContent = cliente.ID_USUARIOS;
+      id.textContent = cliente.idUsuarios;
 
       const nombre = document.createElement("td");
-      nombre.textContent = cliente.NOMBRE;
+      nombre.textContent = cliente.nombre;
 
       const apellido = document.createElement("td");
-      apellido.textContent = cliente.APELLIDO;
+      apellido.textContent = cliente.apellido;
 
       const documento = document.createElement("td");
-      documento.textContent = cliente.NUM_DOCUMENTO;
+      documento.textContent = cliente.numDocumento;
 
       const direccion = document.createElement("td");
-      direccion.textContent = cliente.DIRECCION_USUARIO;
+      direccion.textContent = cliente.direccionUsuario;
 
       const telefono = document.createElement("td");
-      telefono.textContent = cliente.TELEFONO;
+      telefono.textContent = cliente.telefono;
 
       const pedidos = document.createElement("td");
       pedidos.textContent = cliente.pedidos_realizados ?? 0;
@@ -354,7 +368,7 @@ cargarCliente();
 
 /*mostrar conductores*/
 function cargarConductores(){
-fetch("PHP/obtener_conductores.php")
+fetch("http://localhost:8080/conductores/pedidos-entregados")
   .then(respuesta => respuesta.json())
   .then(datos => {
     const conductores = datos;
@@ -366,22 +380,22 @@ fetch("PHP/obtener_conductores.php")
       const fila = document.createElement("tr");
 
       const id = document.createElement("td");
-      id.textContent = conductor.ID_USUARIOS;
+      id.textContent = conductor.idConductor;
 
       const nombre = document.createElement("td");
-      nombre.textContent = conductor.NOMBRE;
+      nombre.textContent = conductor.nombre;
 
       const apellido = document.createElement("td");
-      apellido.textContent = conductor.APELLIDO;
+      apellido.textContent = conductor.apellido;
 
       const documento = document.createElement("td");
-      documento.textContent = conductor.NUM_DOCUMENTO;
+      documento.textContent = conductor.numDocumento;
 
        const direccion = document.createElement("td");
-       direccion.textContent = conductor.DIRECCION_USUARIO;
+       direccion.textContent = conductor.direccionUsuario;
 
        const telefono = document.createElement("td");
-       telefono.textContent = conductor.TELEFONO; 
+       telefono.textContent = conductor.telefono;
        
        const pedidosEntregados = document.createElement("td");
        pedidosEntregados.textContent = conductor.pedidos_entregados ?? 0;
@@ -735,21 +749,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 /*cerrar sesion*/
-
-document.getElementById("cerrar-sesion").addEventListener("click", function (e) {
-  e.preventDefault();
-
-  // 🔴 Limpiar localStorage
-  localStorage.removeItem("usuario_id");
-  localStorage.removeItem("nombre");
-  localStorage.removeItem("apellido");
-  localStorage.removeItem("rol_id");
-
-  // 🔴 También puedes limpiar todo si prefieres
-  // localStorage.clear();
-
-  // 🔁 Redirige al login
-  window.location.href = "inicio_secion.html";
+document.getElementById("cerrar_sesion").addEventListener("click", function(e) {
+    e.preventDefault();
+    localStorage.clear(); // limpia datos locales
+    window.location.href = "/logout"; // llama al endpoint de Spring
 });

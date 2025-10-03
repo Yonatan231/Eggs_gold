@@ -49,6 +49,21 @@ import org.springframework.ui.Model;
             return "historial_productos";
         }
 
+        @GetMapping("/productos")
+        public String mostrarProductos() {
+            return "productos"; // nombre del archivo productos.html en /templates
+        }
+
+        @GetMapping("Registro_conductor")
+        public String registroConductor() {
+            return "registro_conductor";
+        }
+
+        @GetMapping("conductor")
+       public String mostrarConductor() {
+            return "conductor";
+        }
+
     }
 
 

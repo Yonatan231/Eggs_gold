@@ -25,7 +25,7 @@
   <h2>Admin panel</h2>
 </li>
       <li><a th:href="@{#tabla-clientes}">Clientes</a></li>
-      <li><a th:href="@{#tabla-productos}">Productos</a></li>
+      <li><a th:href="@{/productos}">Productos</a></li>
       <li><a th:href="@{reportes_logistica}"> Hacer reporte</a></li>
       <li><a th:href="@{agregar_producto}">Agregar Producto</a></li>
       <li><a th:href="@{registro_conductor}">Registro conductor</a></li>
@@ -133,9 +133,11 @@
   <div id="modal-editar-producto" class="modal_editar" style="display: none;">
   <form id="form-editar-producto" class="modal-contenido_editar">
     <h2 class="modal-titulo">📝 Editar Producto</h2>
-    <input type="hidden" name="id" id="editar_id_inventario">
+      <input type="hidden" name="idInventario" id="editar_id_inventario">
+      <input type="hidden" name="producto.idProducto" id="editar_id_producto">
 
-    <label for="editar_nombre">Nombre:</label>
+
+      <label for="editar_nombre">Nombre:</label>
     <input type="text" name="nombre" id="editar_nombre">
 
     <label for="editar_precio">Precio:</label>
@@ -151,13 +153,13 @@
     <input type="text" name="estado" id="editar_estado">
 
     <label for="editar_cantidad">Cantidad Disponible:</label>
-    <input type="number" name="cantidad" id="editar_cantidad">
+    <input type="number" name="cantidadDisponible" id="editar_cantidad">
 
     <label for="editar_ubicacion">Ubicación:</label>
     <input type="text" name="ubicacion" id="editar_ubicacion">
 
     <label for="editar_fecha_caducidad">Fecha de Caducidad:</label>
-    <input type="date" name="fecha_caducidad" id="editar_fecha_caducidad">
+    <input type="date" name="fechaCaducidad" id="editar_fecha_caducidad">
 
     <div class="botones">
       <button type="submit" class="btn-guardar">Guardar Cambios</button>

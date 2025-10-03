@@ -8,7 +8,8 @@ public enum EstadoPedido {
     APROBADO("Aprobado"),
     PENDIENTE("Pendiente"),
     ENTREGADO("Entregado"),
-    EN_CAMINO("En_camino");
+    EN_CAMINO("En_camino"),
+    ASIGNADO("Asignado");
 
     private final String descripcion;
 

@@ -100,5 +100,18 @@ public class PedidoController {
         }
     }
 
+    @PostMapping("/asignar")
+
+    public ResponseEntity<Map<String, Object>> asignarPedido(@RequestParam Integer pedido_id,
+                                                             @RequestParam Integer conductor_id) {
+        boolean asignado = pedidoService.asignarPedido(pedido_id, conductor_id);
+        if (asignado) {
+            return ResponseEntity.ok(Map.of("success", true));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("success", false, "message", "Conductor inválido o error al asignar"));
+        }
+
+    }
 }
 

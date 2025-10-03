@@ -5,13 +5,19 @@ import com.sena.eggs_gold.model.entity.Conductor;
 import com.sena.eggs_gold.model.entity.Rol;
 import com.sena.eggs_gold.repository.ConductorRepository;
 import com.sena.eggs_gold.repository.RolRepository;
+import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ConductorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ConductorServiceImpl implements ConductorService {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     private final ConductorRepository conductorRepository;
     private final RolRepository rolRepository;
@@ -60,6 +66,14 @@ public class ConductorServiceImpl implements ConductorService {
                     return dto;
                 })
                 .orElse(null);
+    }
+
+    @Override
+    public List<ConductorDTO> obtenerConductoresConPedidosEntregados() {
+        return usuarioRepository.listarConductoresConPedidosEntregados();
+
+
+
     }
 }
 

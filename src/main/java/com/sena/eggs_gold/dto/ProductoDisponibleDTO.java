@@ -18,5 +18,5 @@ public class ProductoDisponibleDTO {
     private String descripcion;
     private EstadoProducto estado;
     private String imagen;
-    private Integer cantidadDisponible;
+    private Integer cantidad;
 }

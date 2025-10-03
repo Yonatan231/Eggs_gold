@@ -59,7 +59,7 @@ function mostrarProductos(productos) {
                 <p>${producto.categoria}</p>
                 <p>${producto.descripcion}</p>
                 <p>${producto.estado}</p>
-                <p>Stock: ${producto.cantidadDisponible}</p>
+                <p>Stock: ${producto.cantidad}</p>
                 <h4 class="inventarios2">$${new Intl.NumberFormat("es-CO").format(producto.precio)}</h4>
                 <button class="boton_compra" data-id="${producto.idProducto}" data-nombre="${producto.nombre}" data-precio="${producto.precio}">
                     Agregar al carrito

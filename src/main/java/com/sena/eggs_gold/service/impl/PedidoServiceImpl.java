@@ -2,10 +2,13 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.PedidoDTO;
 import com.sena.eggs_gold.model.entity.Pedido;
+import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.repository.PedidoRepository;
+import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.PedidoService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,8 @@ import java.util.List;
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
     private final PedidoRepository pedidoRepository;
 
     public PedidoServiceImpl(PedidoRepository pedidoRepository) {
@@ -84,6 +89,19 @@ public class PedidoServiceImpl implements PedidoService {
         }
 
         pedidoRepository.save(pedido);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean asignarPedido(Integer pedidoId, Integer conductorId) {
+        Usuario conductor = usuarioRepository.findById(conductorId)
+                .filter(u -> u.getRol().getIdRoles() == 3)
+                .orElse(null);
+
+        if (conductor == null) return false;
+
+        pedidoRepository.asignarConductor(pedidoId, conductorId);
         return true;
     }
 }

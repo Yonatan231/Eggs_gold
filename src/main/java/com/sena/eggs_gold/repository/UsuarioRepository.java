@@ -1,6 +1,7 @@
 package com.sena.eggs_gold.repository;
 
 import com.sena.eggs_gold.dto.ClientePedidosDTO;
+import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.dto.ConductorPedidosDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.model.entity.Usuario;
@@ -56,4 +57,18 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
     @Query("SELECT COUNT(u) FROM Usuario u WHERE u.rol.idRoles = ?1")
     long countByRolId(int rolId);
 
+
+    @Query("""
+    SELECT new com.sena.eggs_gold.dto.ConductorDTO(u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono, COUNT(p))
+    FROM Usuario u
+    JOIN u.rol r
+    LEFT JOIN Pedido p ON p.usuario.idUsuarios = u.idUsuarios AND p.estado = 'ENTREGADO'
+    WHERE r.idRoles = 3 AND u.estado = 'ACTIVO'
+    GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono
+""")
+    List<ConductorDTO> listarConductoresConPedidosEntregados();
+
+
 }
+
+

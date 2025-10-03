@@ -1,5 +1,6 @@
 package com.sena.eggs_gold.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class Inventario {
     private LocalDateTime fechaActualizacion;
 
     // Relación JPA - Many to One (muchos registros de inventario pueden ser del mismo producto)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCTOS_ID", nullable = false)
     private Producto producto;
