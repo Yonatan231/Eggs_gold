@@ -1,5 +1,6 @@
 package com.sena.eggs_gold.service;
 
+import com.sena.eggs_gold.dto.PedidoBusquedaDTO;
 import com.sena.eggs_gold.dto.PedidoDTO;
 import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
@@ -11,6 +12,7 @@ public interface PedidoService {
     boolean aprobarPedido(Integer idPedido);
     boolean actualizarEstado(Integer idPedido, EstadoPedido nuevoEstado);
     boolean asignarPedido(Integer pedidoId, Integer conductorId);
+    List<PedidoBusquedaDTO> buscarPedidos(String buscar);
 
 
 }

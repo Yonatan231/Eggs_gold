@@ -1,5 +1,6 @@
 package com.sena.eggs_gold.service.impl;
 
+import com.sena.eggs_gold.dto.ProductoBusquedaDTO;
 import com.sena.eggs_gold.dto.ProductoDTO;
 import com.sena.eggs_gold.model.entity.Producto;
 import com.sena.eggs_gold.model.enums.EstadoProducto;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,5 +82,40 @@ public class ProductoServiceImpl implements ProductoService {
 
         return productoRepository.save(producto);
     }
+
+    @Override
+    public boolean marcarComoDescontinuado(Integer idProducto) {
+        Optional<Producto> productoOpt = productoRepository.findById(idProducto);
+        if (productoOpt.isPresent()) {
+            Producto producto = productoOpt.get();
+            producto.setEstado(EstadoProducto.DESCONTINUADO);
+            productoRepository.save(producto);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<ProductoBusquedaDTO> buscarProductos(String buscar) {
+            List<Map<String, Object>> rows = productoRepository.buscarProductos(buscar);
+            List<ProductoBusquedaDTO> resultado = new ArrayList<>();
+
+            for (Map<String, Object> row : rows) {
+                ProductoBusquedaDTO dto = new ProductoBusquedaDTO();
+                dto.setIdProducto((Integer) row.get("id"));
+                dto.setNombre((String) row.get("nombre"));
+                Object rawPrecio = row.get("precio");
+                dto.setPrecio(rawPrecio != null ? ((Number) rawPrecio).doubleValue() : null);
+                dto.setCategoria((String) row.get("categoria"));
+                dto.setDescripcion((String) row.get("descripcion"));
+                dto.setEstado((String) row.get("estado"));
+                dto.setImagen((String) row.get("imagen"));
+                dto.setCantidadDisponible((Integer) row.get("cantidadDisponible"));
+                resultado.add(dto);
+            }
+
+            return resultado;
+        }
+
 
 }

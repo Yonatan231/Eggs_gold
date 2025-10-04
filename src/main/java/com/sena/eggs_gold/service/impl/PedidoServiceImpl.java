@@ -1,5 +1,6 @@
 package com.sena.eggs_gold.service.impl;
 
+import com.sena.eggs_gold.dto.PedidoBusquedaDTO;
 import com.sena.eggs_gold.dto.PedidoDTO;
 import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.model.entity.Usuario;
@@ -12,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -104,6 +109,29 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoRepository.asignarConductor(pedidoId, conductorId);
         return true;
     }
+
+    @Override
+    public List<PedidoBusquedaDTO> buscarPedidos(String buscar) {
+        List<Map<String, Object>> resultados = pedidoRepository.buscarPedidos(buscar);
+        return resultados.stream().map(this::mapearDTO).collect(Collectors.toList());
+    }
+
+    private PedidoBusquedaDTO mapearDTO(Map<String, Object> row) {
+        PedidoBusquedaDTO dto = new PedidoBusquedaDTO();
+        dto.setIdPedidos((Integer) row.get("idPedidos"));
+        dto.setNombreUsuario((String) row.get("nombreUsuario"));
+        dto.setNombreProducto((String) row.get("nombreProducto"));
+        dto.setPrecio(row.get("precio") != null ? Double.valueOf(row.get("precio").toString()) : null);
+        dto.setCantidad((Integer) row.get("cantidad"));
+        dto.setDireccion((String) row.get("direccion"));
+        dto.setEstado((String) row.get("estado"));
+        dto.setFechaCreacion(row.get("fechaCreacion") != null
+                ? ((Timestamp) row.get("fechaCreacion")).toLocalDateTime()
+                : null);
+        dto.setTotal(row.get("total") != null ? Double.valueOf(row.get("total").toString()) : null);
+        return dto;
+    }
+
 }
 
 

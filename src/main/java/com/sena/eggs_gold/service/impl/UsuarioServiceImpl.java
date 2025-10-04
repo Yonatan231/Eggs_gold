@@ -12,10 +12,18 @@ import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -81,4 +89,42 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.save(usuario);
 
     }
+
+    @Override
+    public List<Usuario> buscarClientePorEstado(String buscar, Estado estado) {
+        return usuarioRepository.buscarClientePorEstado(buscar, estado);
+    }
+
+    @Override
+    public List<Usuario> buscarConductorPorEstado(String buscar, Estado estado) {
+        return usuarioRepository.buscarConductorPorEstado(buscar, estado);
+    }
+
+    @Override
+    public List<Usuario> buscarLogisticaPorEstado(String buscar, Estado estado) {
+        return usuarioRepository.buscarLogisticaPorEstado(buscar, estado);
+    }
+
+    @Override
+    public String guardarFotoPerfil(Integer usuarioId, MultipartFile foto) throws IOException {
+        if (foto.isEmpty()) {
+            throw new IOException("No se envió ninguna imagen");
+        }
+
+        String extension = StringUtils.getFilenameExtension(foto.getOriginalFilename());
+        String nombreArchivo = "perfil_" + UUID.randomUUID() + "." + extension;
+        Path rutaDestino = Paths.get("src/main/resources/static/imagenes", nombreArchivo);
+        Files.copy(foto.getInputStream(), rutaDestino, StandardCopyOption.REPLACE_EXISTING);
+
+        String rutaRelativa = "imagenes/" + nombreArchivo;
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setFotoPanel(rutaRelativa);
+        usuarioRepository.save(usuario);
+
+        return rutaRelativa;
+    }
+
 }

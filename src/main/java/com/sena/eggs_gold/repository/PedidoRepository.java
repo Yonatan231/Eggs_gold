@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
@@ -30,4 +31,27 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
     WHERE p.idPedidos = :pedidoId
 """)
     void asignarConductor(@Param("pedidoId") Integer pedidoId, @Param("conductorId") Integer conductorId);
+
+
+    @Query(value = """
+    SELECT p.ID_PEDIDOS AS idPedidos,
+           u.NOMBRE AS nombreUsuario,
+           pr.NOMBRE AS nombreProducto,
+           pr.PRECIO AS precio,
+           v.CANTIDAD AS cantidad,
+           p.DIRECCION AS direccion,
+           p.ESTADO AS estado,
+           p.FECHA_CREACION AS fechaCreacion,
+           p.TOTAL AS total
+    FROM pedidos p
+    JOIN usuarios u ON p.USUARIOS_ID = u.ID_USUARIOS
+    JOIN ventas v ON v.PEDIDO_ID = p.ID_PEDIDOS
+    JOIN productos pr ON v.PRODUCTO_ID = pr.ID_PRODUCTOS
+    WHERE CONCAT(
+        p.ID_PEDIDOS, u.NOMBRE, pr.NOMBRE, pr.PRECIO, v.CANTIDAD,
+        p.DIRECCION, p.ESTADO, p.FECHA_CREACION, p.TOTAL
+    ) LIKE %:buscar%
+    """, nativeQuery = true)
+    List<Map<String, Object>> buscarPedidos(@Param("buscar") String buscar);
+
 }

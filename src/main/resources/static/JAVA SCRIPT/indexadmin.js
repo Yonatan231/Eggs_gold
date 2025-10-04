@@ -78,7 +78,9 @@ function cargarPedidosRecientes() {
         } else if (rol == "ADMIN" && p.estado === 'Rechazado') {
           tdAccion.innerHTML = `<span style="color: red; font-weight: bold;">✖ Rechazado</span>`;
         } else if (rol == "ADMIN" && p.estado === 'En_camino') {
-          tdAccion.innerHTML = `<span style="color: green; font-weight: bold;">✔ EN CAMINO</span>`;
+          tdAccion.innerHTML = `<span style="color: green; font-weight: bold;">✔ En camino</span>`;
+        } else if (rol == "ADMIN" && p.estado === 'Asignado') {
+            tdAccion.innerHTML = `<span style="color: green; font-weight: bold;">✔ Asignado</span>`;
         } else {
           tdAccion.innerHTML = "—";
         }
@@ -97,7 +99,7 @@ function cargarPedidosRecientes() {
 function actualizarEstado(idPedido, nuevoEstado) {
     const formData = new FormData();
     formData.append('id_pedido', idPedido);
-    formData.append('estado', nuevoEstado);  // CAMBIO AQUÍ: debe coincidir con el nombre en PHP
+    formData.append('estado', nuevoEstado);
 
     fetch('/api/pedido/actualizar-estado', {
         method: 'POST',
@@ -122,116 +124,91 @@ function actualizarEstado(idPedido, nuevoEstado) {
 // Ejecutar al cargar
 document.addEventListener('DOMContentLoaded', cargarPedidosRecientes);
 
-// Eliminar pedido desde botón
-/*
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('ver')) {
-        const id = e.target.getAttribute('data-id');
 
-        if (confirm("¿Seguro que deseas eliminar este pedido?")) {
-            fetch(`PHP/eliminar_pedido.php?id=${id}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("Pedido eliminado con éxito");
-                        e.target.closest("tr").remove();
-                    } else {
-                        alert("Error al eliminar: " + data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error al conectar con el servidor", error);
-                });
-        }
-    }
-});*/
+
 
 /*mostrar productos*/
-function cargarProductos(){
-fetch("http://localhost:8080/inventario/producto")
-  .then(response => response.json())
-  .then(html => {
-    const productos = html;
-    const tabla = document.querySelector("#tabla-productos tbody");
+function cargarProductos() {
+    fetch("http://localhost:8080/inventario/producto")
+        .then(response => response.json())
+        .then(productos => {
+            const tabla = document.querySelector("#tabla-productos tbody");
+            tabla.innerHTML = "";
 
-    tabla.innerHTML = "";
+            productos.forEach(producto => {
+                const fila = document.createElement("tr");
 
-    productos.forEach(producto => {
-      const fila = document.createElement("tr");
+                // 🔹 Celdas de datos
+                const id = document.createElement("td");
+                id.textContent = producto.idProducto;
 
-      const id = document.createElement("td");
-      id.textContent = producto.idProducto;
+                const nombre = document.createElement("td");
+                nombre.textContent = producto.nombre;
 
-      const nombre = document.createElement("td");
-      nombre.textContent = producto.nombre;
+                const precio = document.createElement("td");
+                precio.textContent = `$${parseInt(producto.precio).toLocaleString("es-CO")}`;
 
-      const precio = document.createElement("td");
-      precio.textContent = producto.precio;
+                const categoria = document.createElement("td");
+                categoria.textContent = producto.categoria;
 
-      const categoria = document.createElement("td");
-      categoria.textContent = producto.categoria;
+                const cantidad = document.createElement("td");
+                cantidad.textContent = producto.cantidad;
 
-      const descripcion = document.createElement("td");
-      descripcion.textContent = producto.descripcion;
-
-      const estado = document.createElement("td");
-      estado.textContent = producto.estado;
-
-
-      const imagen = document.createElement("td");
-      const imgTag = document.createElement("img");
-      imgTag.src = `imagenes/${producto.imagen.trim()}`;
-      imgTag.alt = producto.nombre;
-      imgTag.width = 50;
-      imgTag.height = 50;
-      console.log("🔍 Imagen recibida:", producto.imagen);
-
-        const actualizar = document.createElement("td");
-     
-
-  const btnActualizar = document.createElement("button");
-  btnActualizar.textContent = "Actualizar";
-  
-  btnActualizar.onclick = () => abrirModalActualizar(producto);
-  actualizar.appendChild(btnActualizar);
+                const descripcion = document.createElement("td");
+                descripcion.textContent = producto.descripcion;
 
 
-  const actualizarBtn = document.createElement("button");
-actualizarBtn.textContent = "Actualizar";
-actualizarBtn.addEventListener("click", () => abrirModalActualizar(producto));
+                const estado = document.createElement("td");
+                estado.textContent = producto.estado;
 
-// NUEVO: Botón Eliminar productos//
-const eliminarBtn = document.createElement("button");
-eliminarBtn.textContent = "Eliminar";
-eliminarBtn.addEventListener("click", () => eliminarProducto(producto.idProducto));
+                const imagen = document.createElement("td");
+                const imgTag = document.createElement("img");
+                imgTag.src = `imagenes/${producto.imagen.trim()}`;
+                imgTag.alt = producto.nombre;
+                imgTag.width = 50;
+                imgTag.height = 50;
+                imagen.appendChild(imgTag);
 
-const tdEliminar = document.createElement("td");
-tdEliminar.appendChild(eliminarBtn);
+                // 🔵 Botón Actualizar
+                const tdActualizar = document.createElement("td");
+                const btnActualizar = document.createElement("button");
+                btnActualizar.textContent = "✏️ Actualizar";
+                btnActualizar.className = "btn btn-primary btn-sm";
+                btnActualizar.onclick = () => abrirModalActualizar(producto);
+                tdActualizar.appendChild(btnActualizar);
 
-      
+                // 🔴 Botón Eliminar
+                const tdEliminar = document.createElement("td");
+                const btnEliminar = document.createElement("button");
+                btnEliminar.textContent = "🗑️ Eliminar";
+                btnEliminar.className = "btn btn-danger btn-sm";
+                btnEliminar.onclick = () => eliminarProducto(producto.idProducto);
+                tdEliminar.appendChild(btnEliminar);
 
-      fila.appendChild(id);
-      fila.appendChild(nombre);
-      fila.appendChild(precio);
-      fila.appendChild(categoria);
-      fila.appendChild(descripcion);
-      fila.appendChild(estado);
+                // 🧩 Agregar todas las celdas a la fila
+                fila.appendChild(id);
+                fila.appendChild(nombre);
+                fila.appendChild(precio);
+                fila.appendChild(categoria);
+                fila.appendChild(cantidad)
+                fila.appendChild(descripcion);
+                fila.appendChild(estado);
+                fila.appendChild(imagen);
+                fila.appendChild(tdActualizar);
+                fila.appendChild(tdEliminar);
 
-      imagen.appendChild(imgTag);
-      fila.appendChild(imagen);
-      fila.appendChild(actualizar);
-      fila.appendChild(tdEliminar);
-      tabla.appendChild(fila);
-       
-    });
-  })
-  .catch(error => {
-    console.error("❌ Error al cargar productos:", error);
-    alert("❌ No se pudieron cargar los productos.");
-  });
-
+                // 📥 Agregar fila a la tabla
+                tabla.appendChild(fila);
+            });
+        })
+        .catch(error => {
+            console.error("❌ Error al cargar productos:", error);
+            alert("❌ No se pudieron cargar los productos.");
+        });
 }
+
 cargarProductos();
+
 /*mostrar clientes*/
 function cargarProductosCliente(){
 fetch("http://localhost:8080/clientes/pedidos")
@@ -266,13 +243,15 @@ fetch("http://localhost:8080/clientes/pedidos")
        const actualizar = document.createElement("td");
 
       const btnActualizar = document.createElement("button");
-      btnActualizar.textContent = "Actualizar";
+        btnActualizar.textContent = "✏️ Actualizar";
+        btnActualizar.className = "btn btn-primary btn-sm";
      
        btnActualizar.onclick = () => abrirModalActualizarCliente(cliente);
        actualizar.appendChild(btnActualizar)
        //boton eliminar clientes //
        const eliminarBtn = document.createElement("button");
-eliminarBtn.textContent = "Eliminar";
+        eliminarBtn.textContent = "🗑️ Eliminar";
+        eliminarBtn.className = "btn btn-danger btn-sm";
 eliminarBtn.addEventListener("click", () => eliminarProductoCliente(cliente.idUsuarios));
 
 const tdEliminar = document.createElement("td");
@@ -330,14 +309,16 @@ fetch("http://localhost:8080/conductores/pedidos-entregados")
         const actualizar = document.createElement("td");
 
       const btnActualizar = document.createElement("button");
-      btnActualizar.textContent = "Actualizar";
+        btnActualizar.textContent = "✏️ Actualizar";
+        btnActualizar.className = "btn btn-primary btn-sm";
      
        btnActualizar.onclick = () => abrirModalActualizarConductores(conductor);
        actualizar.appendChild(btnActualizar)
 
         //boton eliminar conductores //
        const eliminarBtn = document.createElement("button");
-eliminarBtn.textContent = "Eliminar";
+        eliminarBtn.textContent = "🗑️ Eliminar";
+        eliminarBtn.className = "btn btn-danger btn-sm";
 eliminarBtn.addEventListener("click", () => eliminarProductoConductores(conductor.idUsuarios || conductor.idConductor));
 
 const tdEliminar = document.createElement("td");
@@ -400,14 +381,16 @@ fetch("http://localhost:8080/logistica/ver")
         const actualizar = document.createElement("td");
 
       const btnActualizar = document.createElement("button");
-      btnActualizar.textContent = "Actualizar";
+        btnActualizar.textContent = "✏️ Actualizar";
+        btnActualizar.className = "btn btn-primary btn-sm";
      
        btnActualizar.onclick = () => abrirModalActualizarLogistica(logistica);
        actualizar.appendChild(btnActualizar)
 
         //boton eliminar conductores //
        const eliminarBtn = document.createElement("button");
-eliminarBtn.textContent = "Eliminar";
+        eliminarBtn.textContent = "🗑️ Eliminar";
+        eliminarBtn.className = "btn btn-danger btn-sm";
 eliminarBtn.addEventListener("click", () => eliminarLogistica(logistica.idUsuarios));
 
 const tdEliminar = document.createElement("td");
@@ -442,6 +425,7 @@ function abrirModalActualizar(producto) {
   document.getElementById("update-nombre").value = producto.nombre;
   document.getElementById("update-precio").value = producto.precio;
   document.getElementById("update-categoria").value = producto.categoria;
+  document.getElementById("update-cantidad").value = producto.cantidad;
   document.getElementById("update-descripcion").value = producto.descripcion;
   document.getElementById("update-estado").value = producto.estado;
 
@@ -464,6 +448,7 @@ document.getElementById("formActualizarProducto").addEventListener("submit", fun
     nombre: document.getElementById("update-nombre").value,
     precio: parseFloat(document.getElementById("update-precio").value),
     categoria: document.getElementById("update-categoria").value,
+    cantidad: document.getElementById("update-cantidad").value,
     descripcion: document.getElementById("update-descripcion").value,
     estado: document.getElementById("update-estado").value,
 
@@ -499,17 +484,19 @@ document.getElementById("formActualizarProducto").addEventListener("submit", fun
  //funcion para eliminar un producto en admin//
 function eliminarProducto(id) {
   if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-    fetch(`PHP/eliminar_producto.php?id=${id}`, {
-      method: "GET"
+    fetch(`/descontinuar?id=${id}`, {
+      method: "PUT"
     })
     .then(response => response.text())
     .then(data => {
-      alert(data); // Muestra el mensaje de PHP
-      fetch('PHP/mostrar_producto_pagina.php') // Vuelve a cargar la tabla
+      alert(data); //
+        cargarProductos()
+        /*
+      fetch("http://localhost:8080/inventario/producto") // Vuelve a cargar la tabla
         .then(response => response.text())
         .then(html => {
           document.getElementById('tabla-productos').innerHTML = html;
-        });
+        });*/
     })
     .catch(error => {
       console.error("❌ Error al eliminar el producto:", error);
@@ -778,270 +765,377 @@ document.getElementById("formActualizarLogistica").addEventListener("submit", fu
 }
 
 /*buscar pedidos administrador*/
-document.addEventListener("DOMContentLoaded", function () {
-  const inputBuscar = document.getElementById("buscar");
-  const form = document.getElementById("form-busqueda");
-  const tbody = document.querySelector("#tabla-pedidos tbody");
-
-  function buscarPedidos(valor) {
-    const texto = valor.trim();
-    if (texto === "") {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="9" style="text-align: center;">⚠️ Escriba algo para buscar</td>
-        </tr>`;
-      return;
+function renderEstadoPedido(estado) {
+    switch (estado) {
+        case 'DISPONIBLE':
+            return `<span style="color: green;">✔ DISPONIBLE</span>`;
+        case 'EN CAMINO':
+            return `<span style="color: orange;">🚚 EN CAMINO</span>`;
+        case 'ENTREGADO':
+            return `<span style="color: blue;">📦 ENTREGADO</span>`;
+        case 'ASIGNADO':
+            return `<span style="color: teal;">📝 ASIGNADO</span>`;
+        case 'PENDIENTE':
+            return `<span style="color: gray;">⏳ PENDIENTE</span>`;
+        case 'APROBADO':
+            return `<span style="color: darkgreen;">✅ APROBADO</span>`;
+        case 'RECHAZADO':
+            return `<span style="color: red;">❌ RECHAZADO</span>`;
+        default:
+            return `<span>${estado}</span>`;
     }
+}
 
-    const formData = new FormData();
-    formData.append("buscar", texto);
+document.addEventListener("DOMContentLoaded", function () {
+    const inputBuscar = document.getElementById("buscar");
+    const form = document.getElementById("form-busqueda");
+    const tbody = document.querySelector("#tabla-pedidos tbody");
 
-    fetch("PHP/buscar_pedidos_admin.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = "";
+    function buscarPedidos(valor) {
+        const texto = valor.trim();
+        if (texto === "") {
+            cargarPedidosRecientes();
+            return;
 
-        if (data.length === 0) {
-          tbody.innerHTML = `
+        }
+
+        fetch("/api/pedidos/buscar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ buscar: texto })
+        })
+            .then(res => res.json())
+            .then(data => {
+                tbody.innerHTML = "";
+
+                if (data.length === 0) {
+                    tbody.innerHTML = `
             <tr>
               <td colspan="9" style="text-align: center;">❌ No se encontraron resultados</td>
             </tr>`;
-          return;
-        }
+                    return;
+                }
 
-        data.forEach(pedido => {
-          const fila = `
+                data.forEach(pedido => {
+                    const fila = `
             <tr>
-              <td>${pedido.ID_PEDIDOS}</td>
-              <td>${pedido.nombre_usuario}</td>
-              <td>${pedido.nombre_producto}</td>
-              <td>${pedido.CANTIDAD}</td>
-              <td>${pedido.DIRECCION}</td>
-              <td>${pedido.ESTADO}</td>
-              <td>${pedido.FECHA_CREACION}</td>
-              <td>$${pedido.TOTAL}</td>
-              <td><span style="color: green;">✔ EN CAMINO</span></td>
-            </tr>`;
-          tbody.innerHTML += fila;
-        });
-      })
-      .catch(error => {
-        console.error("❌ Error:", error);
-      });
-  }
+              <td>${pedido.idPedidos}</td>
+              <td>${pedido.nombreUsuario}</td>
+              <td>${pedido.nombreProducto}</td>
+              <td>${pedido.cantidad}</td>
+              <td>${pedido.direccion}</td>
+              <td>${pedido.estado}</td>
+              <td>${pedido.fechaCreacion}</td>
+              <td>$${pedido.total}</td>           
+             <td>${renderEstadoPedido(pedido.estado)}</td>
+              
+              </tr>`;
+                    tbody.innerHTML += fila;
+                });
+            })
+            .catch(error => {
+                console.error("❌ Error:", error);
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center;">❌ Error al buscar pedidos</td>
+          </tr>`;
+            });
+    }
 
-  // 🟡 Buscar mientras escribe
-  inputBuscar.addEventListener("keyup", () => {
-    buscarPedidos(inputBuscar.value);
-  });
+    inputBuscar.addEventListener("keyup", () => {
+        buscarPedidos(inputBuscar.value);
+    });
 
-  // 🔴 Evitar que el botón recargue y repetir la búsqueda si se presiona
-  form.addEventListener("submit", (e) => {
-    e.preventDefault(); // 🔒 Bloquea el envío del formulario
-    buscarPedidos(inputBuscar.value); // 👉 Solo vuelve a buscar lo mismo
-  });
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        buscarPedidos(inputBuscar.value);
+    });
 });
 
 
-/*buscar productos administrador*/
+
 document.addEventListener("DOMContentLoaded", function () {
-  const inputBuscar = document.getElementById("buscar_producto");
-  const form = document.getElementById("form-busqueda");
-  const tbody = document.querySelector("#tabla-productos tbody");
+    const inputBuscar = document.getElementById("buscar_producto");
+    const form = document.getElementById("form-busqueda");
+    const tbody = document.querySelector("#tabla-productos tbody");
 
-  function buscarProductos(valor) {
-    const texto = valor.trim();
-    if (texto === "") {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" style="text-align: center;">⚠️ Escriba algo para buscar</td>
-        </tr>`;
-      return;
-    }
+    function buscarProductos(valor) {
+        const texto = valor.trim();
+        if (texto === "") {
+            cargarProductos();
+            return;
 
-    const formData = new FormData();
-    formData.append("buscar", texto);
-
-    fetch("PHP/buscar_producto_admin.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = "";
-
-        if (data.length === 0) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="8" style="text-align: center;">❌ No se encontraron resultados</td>
-            </tr>`;
-          return;
         }
 
-        data.forEach(producto => {
-          const fila = `
+        fetch("/api/productos/buscar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ buscar: texto })
+        })
+            .then(res => res.json())
+            .then(data => {
+                tbody.innerHTML = "";
+
+                if (data.length === 0) {
+                    tbody.innerHTML = `
             <tr>
-              <td>${producto.id}</td>
-              <td>${producto.NOMBRE}</td>
-              <td>$${parseInt(producto.PRECIO).toLocaleString("es-CO")}</td>
-              <td>${producto.CATEGORIA}</td>
-              <td>${producto.DESCRIPCION}</td>
-              <td>${producto.ESTADO}</td>
-              <td><img src="imagenes/${producto.imagen}" width="50" alt="Producto"></td>
-              <td>${producto.CANTIDAD}</td>
+              <td colspan="10" style="text-align: center;">❌ No se encontraron resultados</td>
             </tr>`;
-          tbody.innerHTML += fila;
-        });
-      })
-      .catch(error => {
-        console.error("❌ Error:", error);
-      });
-  }
+                    return;
+                }
 
-  // 🟡 Buscar mientras escribe
-  inputBuscar.addEventListener("keyup", () => {
-    buscarProductos(inputBuscar.value);
-  });
+                data.forEach(producto => {
+                    const fila = document.createElement("tr");
 
-  // 🔴 Evitar que el botón recargue
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    buscarProductos(inputBuscar.value);
-  });
+                    // Celdas normales
+                    const tdId = document.createElement("td");
+                    tdId.textContent = producto.idProducto;
+
+                    const tdNombre = document.createElement("td");
+                    tdNombre.textContent = producto.nombre;
+
+                    const tdPrecio = document.createElement("td");
+                    tdPrecio.textContent = `$${parseInt(producto.precio).toLocaleString("es-CO")}`;
+
+                    const tdCategoria = document.createElement("td");
+                    tdCategoria.textContent = producto.categoria;
+
+                    const tdCantidad = document.createElement("td");
+                    tdCantidad.textContent = producto.cantidad;
+
+                    const tdDescripcion = document.createElement("td");
+                    tdDescripcion.textContent = producto.descripcion;
+
+                    const tdEstado = document.createElement("td");
+                    tdEstado.textContent = producto.estado;
+
+                    const tdImagen = document.createElement("td");
+                    const img = document.createElement("img");
+                    img.src = `imagenes/${producto.imagen}`;
+                    img.width = 50;
+                    img.alt = "Producto";
+                    tdImagen.appendChild(img);
+
+                    // ✅ Botón Actualizar
+                    const tdActualizar = document.createElement("td");
+                    const btnActualizar = document.createElement("button");
+                    btnActualizar.textContent = "✏️ Actualizar";
+                    btnActualizar.className = "btn btn-primary btn-sm";
+                    btnActualizar.onclick = () => abrirModalActualizar(producto);
+                    tdActualizar.appendChild(btnActualizar);
+
+                    // ✅ Botón Eliminar
+                    const tdEliminar = document.createElement("td");
+                    const btnEliminar = document.createElement("button");
+                    btnEliminar.textContent = "🗑️ Eliminar";
+                    btnEliminar.className = "btn btn-danger btn-sm";
+                    btnEliminar.onclick = () => eliminarProducto(producto.idProducto);
+                    tdEliminar.appendChild(btnEliminar);
+
+                    // Agregar todas las celdas a la fila
+                    fila.appendChild(tdId);
+                    fila.appendChild(tdNombre);
+                    fila.appendChild(tdPrecio);
+                    fila.appendChild(tdCategoria);
+                    fila.appendChild(tdCantidad)
+                    fila.appendChild(tdDescripcion);
+                    fila.appendChild(tdEstado);
+                    fila.appendChild(tdImagen);
+                    fila.appendChild(tdActualizar);
+                    fila.appendChild(tdEliminar);
+
+                    tbody.appendChild(fila);
+                });
+            })
+            .catch(error => {
+                console.error("❌ Error:", error);
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="10" style="text-align: center;">❌ Error al buscar productos</td>
+          </tr>`;
+            });
+    }
+
+    inputBuscar.addEventListener("keyup", () => {
+        buscarProductos(inputBuscar.value);
+    });
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        buscarProductos(inputBuscar.value);
+    });
 });
 
 
 /*buscar Clientes administrador*/
 document.addEventListener("DOMContentLoaded", function () {
-  const inputBuscar = document.getElementById("buscar_cliente");
-  const form = document.getElementById("form-busqueda_cliente");
-  const tbody = document.querySelector("#tabla-clientes tbody");
+    const inputBuscar = document.getElementById("buscar_cliente");
+    const form = document.getElementById("form-busqueda_cliente");
+    const tbody = document.querySelector("#tabla-clientes tbody");
 
-  function buscarProductos(valor) {
-    const texto = valor.trim();
-    if (texto === "") {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" style="text-align: center;">⚠️ Escriba algo para buscar</td>
-        </tr>`;
-      return;
-    }
+    function buscarClientes(valor) {
+        const texto = valor.trim();
+        if (texto === "") {
+         cargarProductosCliente()
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("buscar", texto);
+        // 🔹 Llamada al endpoint de Spring Boot (GET con query param)
+        fetch(`http://localhost:8080/clientes/activos?buscar=${encodeURIComponent(texto)}`)
+            .then(res => res.json())
+            .then(data => {
+                tbody.innerHTML = "";
 
-    fetch("PHP/buscar_cliente_admin.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = "";
-
-        if (data.length === 0) {
-          tbody.innerHTML = `
+                if (data.length === 0) {
+                    tbody.innerHTML = `
             <tr>
               <td colspan="8" style="text-align: center;">❌ No se encontraron resultados</td>
             </tr>`;
-          return;
-        }
+                    return;
+                }
 
-        data.forEach(cliente => {
-          const fila = `
-            <tr>
-              <td>${cliente.ID_USUARIOS}</td>
-              <td>${cliente.NOMBRE}</td>
-              <td>${cliente.APELLIDO}</td>
-              <td>${cliente.NUM_DOCUMENTO}</td>
-              <td>${cliente.DIRECCION_USUARIO}</td>
-              <td>${cliente.TELEFONO}</td>
-            </tr>`;
-          tbody.innerHTML += fila;
-        });
-      })
-      .catch(error => {
-        console.error("❌ Error:", error);
-      });
-  }
+                data.forEach(cliente => {
+                    const tr = document.createElement("tr");
 
-  // 🟡 Buscar mientras escribe
-  inputBuscar.addEventListener("keyup", () => {
-    buscarProductos(inputBuscar.value);
-  });
+            tr.innerHTML=`
+              <td>${cliente.idUsuarios}</td>
+              <td>${cliente.nombre}</td>
+              <td>${cliente.apellido}</td>
+              <td>${cliente.numDocumento}</td>
+              <td>${cliente.direccionUsuario}</td>
+              <td>${cliente.telefono}</td>
+            `;
+                   // 🔹 Botón Actualizar
+                    const tdActualizar = document.createElement("td");
+                    const btnActualizar = document.createElement("button");
+                    btnActualizar.textContent = "✏️ Actualizar";
+                    btnActualizar.className = "btn btn-primary btn-sm";
+                    btnActualizar.onclick = () => abrirModalActualizarCliente(cliente);
+                    tdActualizar.appendChild(btnActualizar);
 
-  // 🔴 Evitar que el botón recargue
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    buscarProductos(inputBuscar.value);
-  });
+                    // 🔹 Botón Eliminar
+                    const tdEliminar = document.createElement("td");
+                    const btnEliminar = document.createElement("button");
+                    btnEliminar.textContent = "🗑️ Eliminar";
+                    btnEliminar.className = "btn btn-danger btn-sm";
+                    btnEliminar.addEventListener("click", () => eliminarProductoCliente(cliente.id));
+                    tdEliminar.appendChild(btnEliminar);
+                    // Agregar botones a la fila
+                    tr.appendChild(tdActualizar);
+                    tr.appendChild(tdEliminar);
+
+                    // Agregar fila completa
+                    tbody.appendChild(tr);
+
+                });
+            })
+            .catch(error => {
+                console.error("❌ Error:", error);
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; color: red;">⚠️ Error al conectar con el servidor</td>
+          </tr>`;
+            });
+    }
+
+    // 🟡 Buscar mientras escribe
+    inputBuscar.addEventListener("keyup", () => {
+        buscarClientes(inputBuscar.value);
+    });
+
+    // 🔴 Evitar que el botón recargue
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        buscarClientes(inputBuscar.value);
+    });
 });
 
-/*buscar Conductor administrador*/
+/* Buscar Conductor (Administrador) */
 document.addEventListener("DOMContentLoaded", function () {
-  const inputBuscar = document.getElementById("buscar_conductor");
-  const form = document.getElementById("form-busqueda_conductor");
-  const tbody = document.querySelector("#tabla-conductores tbody");
+    const inputBuscar = document.getElementById("buscar_conductor");
+    const form = document.getElementById("form-busqueda_conductor");
+    const tbody = document.querySelector("#tabla-conductores tbody");
 
-  function buscarProductos(valor) {
-    const texto = valor.trim();
-    if (texto === "") {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" style="text-align: center;">⚠️ Escriba algo para buscar</td>
-        </tr>`;
-      return;
-    }
+    // Función principal
+    function buscarConductores(valor) {
+        const texto = valor.trim();
 
-    const formData = new FormData();
-    formData.append("buscar", texto);
+        if (texto === "") {
+            cargarProductosConductores()
+            return
+        }
 
-    fetch("PHP/buscar_conductor_admin.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = "";
+        fetch(`http://localhost:8080/conductores/activos?buscar=${encodeURIComponent(texto)}`)
+            .then(res => res.json())
+            .then(data => {
+                tbody.innerHTML = "";
 
-        if (data.length === 0) {
-          tbody.innerHTML = `
+                if (!Array.isArray(data) || data.length === 0) {
+                    tbody.innerHTML = `
             <tr>
               <td colspan="8" style="text-align: center;">❌ No se encontraron resultados</td>
             </tr>`;
-          return;
-        }
+                    return;
+                }
 
-        data.forEach(conductor => {
-          const fila = `
-            <tr>
-              <td>${conductor.ID_USUARIOS}</td>
-              <td>${conductor.NOMBRE}</td>
-              <td>${conductor.APELLIDO}</td>
-              <td>${conductor.NUM_DOCUMENTO}</td>
-              <td>${conductor.DIRECCION_USUARIO}</td>
-              <td>${conductor.TELEFONO}</td>
-            </tr>`;
-          tbody.innerHTML += fila;
-        });
-      })
-      .catch(error => {
-        console.error("❌ Error:", error);
-      });
-  }
+                data.forEach(conductor => {
+                    const tr = document.createElement("tr");
 
-  // 🟡 Buscar mientras escribe
-  inputBuscar.addEventListener("keyup", () => {
-    buscarProductos(inputBuscar.value);
-  });
+                    tr.innerHTML=`
+              <td>${conductor.idUsuarios}</td>
+              <td>${conductor.nombre}</td>
+              <td>${conductor.apellido}</td>
+              <td>${conductor.numDocumento}</td>
+              <td>${conductor.direccionUsuario}</td>
+              <td>${conductor.telefono}</td>
+            `;
+                    // 🔹 Botón Actualizar
+                    const tdActualizar = document.createElement("td");
+                    const btnActualizar = document.createElement("button");
+                    btnActualizar.textContent = "✏️ Actualizar";
+                    btnActualizar.className = "btn btn-primary btn-sm";
+                    btnActualizar.onclick = () => abrirModalActualizarConductores(conductor);
+                    tdActualizar.appendChild(btnActualizar);
 
-  // 🔴 Evitar que el botón recargue
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    buscarProductos(inputBuscar.value);
-  });
+                    // 🔹 Botón Eliminar
+                    const tdEliminar = document.createElement("td");
+                    const btnEliminar = document.createElement("button");
+                    btnEliminar.textContent = "🗑️ Eliminar";
+                    btnEliminar.className = "btn btn-danger btn-sm";
+                    btnEliminar.addEventListener("click", () => eliminarProductoConductores(conductor.idUsuarios || conductor.idConductor));
+                    tdEliminar.appendChild(btnEliminar);
+                    // Agregar botones a la fila
+                    tr.appendChild(tdActualizar);
+                    tr.appendChild(tdEliminar);
+
+                    // Agregar fila completa
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                console.error("❌ Error al buscar conductores:", error);
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; color: red;">⚠️ Error al conectar con el servidor</td>
+          </tr>`;
+            });
+    }
+
+    // Evento: al escribir en el campo
+    inputBuscar.addEventListener("input", function () {
+        const valor = this.value;
+        buscarConductores(valor);
+    });
+
+    // Evento: al enviar el formulario (por si presiona Enter)
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        buscarConductores(inputBuscar.value);
+    });
 });
 
 /*buscar Logistica administrador*/
@@ -1050,119 +1144,144 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("form-busqueda_logistica");
   const tbody = document.querySelector("#tabla-Logistica tbody");
 
-  function buscarProductos(valor) {
+  function buscarLogistica(valor) {
     const texto = valor.trim();
     if (texto === "") {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" style="text-align: center;">⚠️ Escriba algo para buscar</td>
-        </tr>`;
+      cargarProductosLogistica()
       return;
     }
 
-    const formData = new FormData();
-    formData.append("buscar", texto);
 
-    fetch("PHP/buscar_logistica_admin.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = "";
+    fetch(`http://localhost:8080/logistica/activos?buscar=${encodeURIComponent(texto)}`)
+        .then(res => res.json())
+        .then(data => {
+            tbody.innerHTML = "";
 
-        if (data.length === 0) {
-          tbody.innerHTML = `
+            if (!Array.isArray(data) || data.length === 0) {
+                tbody.innerHTML = `
             <tr>
               <td colspan="8" style="text-align: center;">❌ No se encontraron resultados</td>
             </tr>`;
-          return;
-        }
+                return;
+            }
 
         data.forEach(logistica => {
-          const fila = `
-            <tr>
-              <td>${logistica.ID_USUARIOS}</td>
-              <td>${logistica.NOMBRE}</td>
-              <td>${logistica.APELLIDO}</td>
-              <td>${logistica.NUM_DOCUMENTO}</td>
-              <td>${logistica.DIRECCION_USUARIO}</td>
-              <td>${logistica.TELEFONO}</td>
-            </tr>`;
-          tbody.innerHTML += fila;
+            const tr = document.createElement("tr");
+
+            tr.innerHTML=`
+              <td>${logistica.idUsuarios}</td>
+              <td>${logistica.nombre}</td>
+              <td>${logistica.apellido}</td>
+              <td>${logistica.numDocumento}</td>
+              <td>${logistica.direccionUsuario}</td>
+              <td>${logistica.telefono}</td>
+            `;
+            // 🔹 Botón Actualizar
+            const tdActualizar = document.createElement("td");
+            const btnActualizar = document.createElement("button");
+            btnActualizar.textContent = "✏️ Actualizar";
+            btnActualizar.className = "btn btn-primary btn-sm";
+            btnActualizar.onclick = () => abrirModalActualizarLogistica(logistica);
+            tdActualizar.appendChild(btnActualizar);
+
+            // 🔹 Botón Eliminar
+            const tdEliminar = document.createElement("td");
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "🗑️ Eliminar";
+            btnEliminar.className = "btn btn-danger btn-sm";
+            btnEliminar.addEventListener("click", () => eliminarLogistica(logistica.idUsuarios));
+            tdEliminar.appendChild(btnEliminar);
+            // Agregar botones a la fila
+            tr.appendChild(tdActualizar);
+            tr.appendChild(tdEliminar);
+
+            // Agregar fila completa
+            tbody.appendChild(tr);
         });
       })
-      .catch(error => {
-        console.error("❌ Error:", error);
-      });
+        .catch(error => {
+            console.error("❌ Error al buscar conductores:", error);
+            tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; color: red;">⚠️ Error al conectar con el servidor</td>
+          </tr>`;
+        });
   }
 
-  // 🟡 Buscar mientras escribe
-  inputBuscar.addEventListener("keyup", () => {
-    buscarProductos(inputBuscar.value);
-  });
-
-  // 🔴 Evitar que el botón recargue
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    buscarProductos(inputBuscar.value);
-  });
-});
-
-
-/*panel de administrador foto*/
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const avatarImg = document.getElementById("avatar-imagen");
-  const avatarIniciales = document.getElementById("avatar-iniciales");
-  const inputFoto = document.getElementById("input-foto");
-
-  // Mostrar imagen o iniciales
-  fetch("PHP/obtener_foto.php")
-    .then(res => res.json())
-    .then(data => {
-      if (data.success && data.ruta) {
-        avatarImg.src = data.ruta;
-        avatarImg.style.display = "block";
-        avatarIniciales.style.display = "none";
-      } else {
-        const iniciales = data.iniciales || "AD";
-        avatarIniciales.textContent = iniciales;
-        avatarImg.style.display = "none";
-        avatarIniciales.style.display = "flex";
-      }
+    // Evento: al escribir en el campo
+    inputBuscar.addEventListener("input", function () {
+        const valor = this.value;
+        buscarLogistica(valor)
     });
 
-  // Subir imagen
-  inputFoto.addEventListener("change", () => {
-    const archivo = inputFoto.files[0];
-    if (!archivo) return;
-
-    const formData = new FormData();
-    formData.append("foto", archivo);
-
-    fetch("PHP/subir_foto.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          avatarImg.src = data.ruta;
-          avatarImg.style.display = "block";
-          avatarIniciales.style.display = "none";
-        } else {
-          alert("❌ " + data.message);
-        }
-      })
-      .catch(error => {
-        console.error("Error subiendo imagen:", error);
-      });
-  });
+    // Evento: al enviar el formulario (por si presiona Enter)
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        buscarLogistica(inputBuscar.value);
+    });
 });
-//aqui muestra el codigo para que las tarjetas funcionen//
 
+
+
+/* panel de administrador foto */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const avatarImg = document.getElementById("avatar-imagen");
+    const avatarIniciales = document.getElementById("avatar-iniciales");
+    const inputFoto = document.getElementById("input-foto");
+
+    const usuarioId = sessionStorage.getItem("usuarioId") || 1;
+
+    // Mostrar imagen o iniciales
+    fetch(`/usuarios/${usuarioId}/foto`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.ruta) {
+                avatarImg.src = data.ruta;
+                avatarImg.style.display = "block";
+                avatarIniciales.style.display = "none";
+            } else {
+                const iniciales = data.iniciales || "AD";
+                avatarIniciales.textContent = iniciales;
+                avatarImg.style.display = "none";
+                avatarIniciales.style.display = "flex";
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error obteniendo foto:", error);
+        });
+
+    // Subir imagen
+    inputFoto.addEventListener("change", () => {
+        const archivo = inputFoto.files[0];
+        if (!archivo) return;
+
+        const formData = new FormData();
+        formData.append("foto", archivo);
+
+        fetch(`/usuarios/${usuarioId}/foto`, {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    avatarImg.src = data.ruta;
+                    avatarImg.style.display = "block";
+                    avatarIniciales.style.display = "none";
+                } else {
+                    alert("❌ " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error subiendo imagen:", error);
+            });
+    });
+});
+
+
+
+//aqui muestra el codigo para que las tarjetas funcionen//
 document.addEventListener("DOMContentLoaded", () => {
   fetch("/api/dashboard")
     .then(response => response.json())

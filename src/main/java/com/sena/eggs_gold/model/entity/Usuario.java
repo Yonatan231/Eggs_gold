@@ -61,6 +61,9 @@ public class Usuario {
     @Column(name = "FECHA_REGISTRO")
     private LocalDate fechaRegistro;
 
+    @Column(name = "FOTO_PANEL")
+    private String fotoPanel;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROL_ID")
     private Rol rol;

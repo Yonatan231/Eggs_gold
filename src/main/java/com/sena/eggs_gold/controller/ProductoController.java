@@ -3,6 +3,7 @@ package com.sena.eggs_gold.controller;
 import com.sena.eggs_gold.dto.ProductoDTO;
 import com.sena.eggs_gold.model.entity.Producto;
 import com.sena.eggs_gold.service.ProductoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,6 +75,16 @@ public class ProductoController {
             }
         }
 
+    @PutMapping("/descontinuar")
+    public ResponseEntity<String> descontinuarProducto(@RequestParam Integer id) {
+        boolean actualizado = productoService.marcarComoDescontinuado(id);
 
+        if (actualizado) {
+            return ResponseEntity.ok("✅ Producto marcado como DESCONTINUADO.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("❌ No se pudo actualizar el estado del producto.");
+        }
+    }
 
 }

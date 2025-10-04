@@ -68,6 +68,24 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 """)
     List<ConductorDTO> listarConductoresConPedidosEntregados();
 
+    @Query("SELECT u FROM Usuario u " +
+            "WHERE u.rol.idRoles = 4 " +
+            "AND u.estado = :estado " +
+            "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
+    List<Usuario> buscarClientePorEstado(String buscar, Estado estado);
+
+    @Query("SELECT u FROM Usuario u " +
+            "WHERE u.rol.idRoles = 3 " +
+            "AND u.estado = :estado " +
+            "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
+    List<Usuario> buscarConductorPorEstado(String buscar, Estado estado);
+
+    @Query("SELECT u FROM Usuario u " +
+            "WHERE u.rol.idRoles = 2 " +
+            "AND u.estado = :estado " +
+            "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
+    List<Usuario> buscarLogisticaPorEstado(String buscar, Estado estado);
+
 
 }
 

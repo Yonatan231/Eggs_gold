@@ -19,7 +19,7 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
                     p.cantidad
                 )
                 FROM Producto p
-                WHERE p.cantidad > 0  
+                WHERE p.cantidad > 0 AND p.estado = com.sena.eggs_gold.model.enums.EstadoProducto.DISPONIBLE
             
             """)
 
