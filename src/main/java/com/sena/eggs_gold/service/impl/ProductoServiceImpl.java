@@ -2,8 +2,10 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.ProductoBusquedaDTO;
 import com.sena.eggs_gold.dto.ProductoDTO;
+import com.sena.eggs_gold.dto.ProductoDisponibleDTO;
 import com.sena.eggs_gold.model.entity.Producto;
 import com.sena.eggs_gold.model.enums.EstadoProducto;
+import com.sena.eggs_gold.repository.InventarioRepository;
 import com.sena.eggs_gold.repository.ProductoRepository;
 import com.sena.eggs_gold.service.ProductoService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,8 +24,10 @@ public class ProductoServiceImpl implements ProductoService {
 
     private final ProductoRepository productoRepository;
 
+
     public ProductoServiceImpl(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
+
     }
 
     @Override
@@ -116,6 +120,8 @@ public class ProductoServiceImpl implements ProductoService {
 
             return resultado;
         }
+
+
 
 
 }

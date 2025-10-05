@@ -1,6 +1,7 @@
 package com.sena.eggs_gold.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sena.eggs_gold.model.enums.EstadoInventario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,10 @@ public class Inventario {
 
     @Column(name = "FECHA_ACTUALIZACION", nullable = false)
     private LocalDateTime fechaActualizacion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name= "ESTADO")
+    private EstadoInventario estado;
 
     // Relación JPA - Many to One (muchos registros de inventario pueden ser del mismo producto)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

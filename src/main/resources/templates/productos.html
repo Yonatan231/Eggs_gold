@@ -144,7 +144,7 @@
             card.className = "producto-card";
 
             card.innerHTML = `
-                <img src="${producto.imagen}" alt="Imagen del producto" class="producto-imagen">
+                <img src="imagenes/${producto.imagen.trim()}" alt="${producto.nombre}" class="producto-imagen">
                 <div class="producto-info">
                     <h2>${producto.nombre}</h2>
                     <p><strong>ID:</strong> ${producto.idProducto}</p>

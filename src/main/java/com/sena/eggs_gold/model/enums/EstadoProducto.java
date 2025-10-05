@@ -5,7 +5,8 @@ package com.sena.eggs_gold.model.enums;
  */
 public enum EstadoProducto {
     DISPONIBLE("Disponible"),
-    DESCONTINUADO("Descontinuado");
+    DESCONTINUADO("Descontinuado"),
+    AGOTADO("Agotado");
 
 
     private final String descripcion;

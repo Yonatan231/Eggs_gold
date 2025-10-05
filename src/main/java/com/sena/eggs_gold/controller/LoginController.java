@@ -5,6 +5,7 @@ import com.sena.eggs_gold.dto.ClienteDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.dto.LoginDTO;
+import com.sena.eggs_gold.model.entity.Cliente;
 import com.sena.eggs_gold.service.AdminService;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.LogisticaService;
@@ -115,6 +116,18 @@ public class LoginController {
         session.invalidate();
         return "redirect:/login";
     }
+
+    @GetMapping("/tienda")
+    public String mostrarTienda(HttpSession session, Model model) {
+        Cliente cliente = (Cliente) session.getAttribute("cliente");
+
+        if (cliente != null) {
+            model.addAttribute("cliente", cliente);
+        }
+
+        return "historial_productos"; // el nombre del HTML (src/main/resources/templates/tienda.html)
+    }
+
 
 
 }

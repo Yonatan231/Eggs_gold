@@ -55,6 +55,15 @@
 </form>
     <!-- Pedidos recientes con estilo logistica -->
     <div class="tabla3">
+        <h2>📦 Reporte de Pedidos Realizados</h2>
+
+        <!-- Botón para ver el PDF en el navegador -->
+        <iframe id="visor-pdf" src="/admin/reportes/pedidos-usuarios" width="5%" height="50px" style="border:1px solid #ccc;"></iframe>
+
+        <!-- Botón para descargar el PDF -->
+        <a href="/admin/reportes/pedidos-usuarios" download="reporte_pedidos_usuarios.pdf">
+            <button>⬇ Descargar PDF</button>
+        </a>
       <table class="listas" id="tabla-pedidos">
         <thead>
           <tr>

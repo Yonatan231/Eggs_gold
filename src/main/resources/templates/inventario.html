@@ -8,47 +8,61 @@
     <title>EGGS GOLD</title>
 </head>
 <body>
-  <header>
+<header>
+    <!-- LOGO -->
     <div class="encabezado">
-      <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70" />
-      <span class="texto">EGGS GOLD</span>
-    </div>
-    <!--barra de busqueda-->
-            <div class="barra-busqueda">
-  <input type="text" id="buscador-productos" placeholder="Buscar..." />
-  <button type="submit">🔍</button>
-</div>
-
-
-            <!-- Perfil si está logueado -->
-    <div class="perfil-contenedor" id="perfil-contenedor" style="display: none;">
-      <div class="perfil-circulo" id="perfil-iniciales">YA</div>
-      <div class="perfil-nombre" id="perfil-nombre">Nombre <span class="flecha-abajo"></span></div>
-      <div class="perfil-menu" id="perfil-menu">
-        <a th:href="@{#}">Mis pedidos</a>
-        <a th:href="@{#}" onclick="cerrarSesion()">Cerrar sesión</a>
-      </div>
+        <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70" />
+        <span class="texto">EGGS GOLD</span>
     </div>
 
-    <!-- Si NO está logueado -->
-    <div id="login-registro-links">
-      <a th:href="@{registro}" class="nav-link">REGISTRARSE</a>
-      <a th:href="@{login}" class="nav-link">INICIAR SESIÓN</a>
+    <!-- Barra de búsqueda -->
+    <div class="barra-busqueda">
+        <input type="text" id="buscador-productos" placeholder="Buscar..." />
+        <button type="submit">🔍</button>
     </div>
+
+    <!-- PERFIL (si el usuario está logueado) -->
+    <div class="perfil-contenedor"
+         th:if="${cliente != null}"
+         style="display: flex;">
+        <div class="perfil-circulo"
+             th:text="${#strings.substring(cliente.nombre, 0, 1).toUpperCase()} + ${#strings.substring(cliente.apellido, 0, 1).toUpperCase()}">
+            YA
+        </div>
+
+        <div class="perfil-nombre">
+            <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
+            <span class="flecha-abajo"></span>
+        </div>
+
+        <div class="perfil-menu" id="perfil-menu">
+            <a th:href="@{/logout}">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <!-- SI NO ESTÁ LOGUEADO -->
+    <div id="login-registro-links" th:if="${cliente == null}">
+        <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
+        <a th:href="@{/login}" class="nav-link">INICIAR SESIÓN</a>
+    </div>
+
+    <!-- Navegador -->
     <nav class="navegador">
-      <a class="inicio" th:href="@{inicio}">INICIO</a>
-      <a class="promociones" th:href="@{promociones}">PROMOCIONES</a>
-      <a class="contacto" th:href="@{contacto1}">CONTACTO</a>
-      <div class="carro7">
-        <a th:href="@{historial_productos}" target="_blank">
-          <img src="imagenes/carrito.png" width="40" height="40" alt="Carrito" />
-          <span id="contador-carrito">0</span>
-        </a>
-      </div>
-    </nav>
-  </header>
+        <a class="inicio" th:href="@{/inicio}">INICIO</a>
+        <a class="promociones" th:href="@{/promociones}">PROMOCIONES</a>
+        <a class="contacto" th:href="@{/contacto1}">CONTACTO</a>
 
-  <main>
+        <div class="carro7">
+            <a th:href="@{/historial_productos}" target="_blank">
+                <img src="imagenes/carrito.png" width="40" height="40" alt="Carrito" />
+                <span id="contador-carrito">0</span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+
+<main>
     <div class="contenedor_flecha">
       <button class="arrow left" id="prevBtn">&#10094;</button>
       <div class="productos" id="productos-container">

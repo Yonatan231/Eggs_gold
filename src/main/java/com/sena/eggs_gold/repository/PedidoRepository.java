@@ -27,7 +27,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
     @Modifying
     @Query("""
-    UPDATE Pedido p SET p.usuario.idUsuarios = :conductorId, p.estado = 'ASIGNADO'
+    UPDATE Pedido p SET p.conductor.idUsuarios = :conductorId, p.estado = 'ASIGNADO'
     WHERE p.idPedidos = :pedidoId
 """)
     void asignarConductor(@Param("pedidoId") Integer pedidoId, @Param("conductorId") Integer conductorId);
@@ -53,5 +53,37 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
     ) LIKE %:buscar%
     """, nativeQuery = true)
     List<Map<String, Object>> buscarPedidos(@Param("buscar") String buscar);
+
+
+
+    @Query(value = """
+    SELECT 
+        p.ID_PEDIDOS AS idPedido,
+        c.NOMBRE AS nombreCliente,
+        c.APELLIDO AS apellidoCliente,
+        c.TELEFONO AS telefono,
+        p.DIRECCION AS direccion,
+        p.ESTADO AS estado,
+        GROUP_CONCAT(CONCAT(pr.NOMBRE, ' (x', v.CANTIDAD, ')') SEPARATOR ', ') AS productos
+    FROM pedidos p
+    JOIN usuarios c ON p.USUARIOS_ID = c.ID_USUARIOS
+    JOIN ventas v ON v.PEDIDO_ID = p.ID_PEDIDOS
+    JOIN productos pr ON v.PRODUCTO_ID = pr.ID_PRODUCTOS
+    WHERE p.CONDUCTOR_ID = :conductorId AND p.ESTADO IN ('Asignado','En_camino')
+    GROUP BY p.ID_PEDIDOS
+    """, nativeQuery = true)
+    List<Map<String, Object>> obtenerPedidosAsignados(@Param("conductorId") Integer conductorId);
+
+
+    @Modifying
+    @Query("""
+    UPDATE Pedido p SET p.estado = :estado,
+    p.fechaEntrega = CASE WHEN :estado = 'ENTREGADO' THEN CURRENT_TIMESTAMP ELSE p.fechaEntrega END
+    WHERE p.idPedidos = :idPedido
+""")
+    void actualizarEstado(@Param("idPedido") Integer idPedido, @Param("estado") EstadoPedido estado);
+
+
+
 
 }

@@ -138,7 +138,7 @@ function cargarInventario(busqueda = "") {
               <td>${producto.estado}</td>
               <td>${producto.cantidadDisponible}</td>
               <td>${producto.ubicacion}</td>
-              <td><img src="${producto.imagen}" width="50"></td>
+              <td><img src="imagenes/${producto.imagen}" width="50"></td>
               <td>${producto.fechaCaducidad || ''}</td>
               <td>${producto.fechaActualizacion}</td>
               <td><button onclick="actualizarProducto(${producto.idInventario})">Actualizar</button></td>
@@ -233,7 +233,7 @@ function actualizarProducto(id) {
       document.getElementById('editar_precio').value = data.producto.precio;
       document.getElementById('editar_categoria').value = data.producto.categoria;
       document.getElementById('editar_descripcion').value = data.producto.descripcion;
-      document.getElementById('editar_estado').value = data.producto.estado;
+      document.getElementById('editar_estado').value = data.estado;
       document.getElementById('editar_cantidad').value = data.cantidadDisponible;
       document.getElementById('editar_ubicacion').value = data.ubicacion;
       document.getElementById('editar_fecha_caducidad').value = data.fechaCaducidad;
@@ -290,28 +290,31 @@ function cerrarModal() {
 
 // === ELIMINAR PRODUCTO DE INVENTARIO ===
 function eliminarProducto(id) {
-  if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
+    if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
 
-  fetch('PHP/eliminar_inventario.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams({ id: id })
-  })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message);
-      if (data.success) {
-        fetch('PHP/mostrar_producto_pagina.php')
-          cargarInventario();
-      }
+    fetch("http://localhost:8080/inventario/eliminar", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
     })
-    .catch(error => {
-      console.error("❌ Error al eliminar:", error);
-      alert("❌ No se pudo eliminar el producto.");
-    });
+        .then(res => {
+            if (!res.ok) throw new Error("Error en la respuesta del servidor");
+            return res.json();
+        })
+        .then(data => {
+            alert(data.message);
+            if (data.success) {
+                cargarInventario(); // ✅ refresca la tabla después de eliminar
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error al eliminar:", error);
+            alert("❌ No se pudo eliminar el producto.");
+        });
 }
+
 
 /*mostrar clientes*/
 function cargarCliente(){
@@ -419,150 +422,158 @@ fetch("http://localhost:8080/conductores/pedidos-entregados")
 cargarConductores();
 
 /*FILTROS DE BUSQUEDA PEDIDOS*/
-
 document.addEventListener("DOMContentLoaded", function () {
-  const inputBuscar = document.getElementById("buscar");
-  const form = document.getElementById("form-busqueda");
-  const tbody = document.querySelector("#tabla-pedidos tbody");
+    const inputBuscar = document.getElementById("buscar");
+    const form = document.getElementById("form-busqueda");
+    const tbody = document.querySelector("#tabla-pedidos tbody");
 
-  function buscarPedidos(valor) {
-    const texto = valor.trim();
-    if (texto === "") {
-      tbody.innerHTML = `
+    function buscarPedidos(valor) {
+        const texto = valor.trim();
+        if (texto === "") {
+            tbody.innerHTML = `
         <tr>
           <td colspan="9" style="text-align: center;">⚠️ Escriba algo para buscar</td>
         </tr>`;
-      return;
-    }
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("buscar", texto);
+        fetch("/api/pedidos/buscar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ buscar: texto })
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Error en la respuesta del servidor");
+                return res.json();
+            })
+            .then(data => {
+                tbody.innerHTML = "";
 
-    fetch("PHP/buscar_pedido_logis.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = "";
-
-        if (data.length === 0) {
-          tbody.innerHTML = `
+                if (data.length === 0) {
+                    tbody.innerHTML = `
             <tr>
               <td colspan="9" style="text-align: center;">❌ No se encontraron resultados</td>
             </tr>`;
-          return;
-        }
+                    return;
+                }
 
-        data.forEach(pedido => {
-          const fila = `
+                data.forEach(pedido => {
+                    const fila = `
             <tr>
-              <td>${pedido.ID_PEDIDOS}</td>
-              <td>${pedido.nombre_usuario}</td>
-              <td>${pedido.nombre_producto}</td>
-              <td>${pedido.CANTIDAD}</td>
-              <td>${pedido.DIRECCION}</td>
-              <td>${pedido.ESTADO}</td>
-              <td>${pedido.FECHA_CREACION}</td>
-              <td>$${pedido.TOTAL}</td>
+              <td>${pedido.idPedido}</td>
+              <td>${pedido.nombreUsuario}</td>
+              <td>${pedido.nombreProducto}</td>
+              <td>${pedido.cantidad}</td>
+              <td>${pedido.direccion}</td>
+              <td>${pedido.estado}</td>
+              <td>${pedido.fechaCreacion}</td>
+              <td>$${pedido.total}</td>
               <td><span style="color: green;">✔ EN CAMINO</span></td>
             </tr>`;
-          tbody.innerHTML += fila;
-        });
-      })
-      .catch(error => {
-        console.error("❌ Error:", error);
-      });
-  }
+                    tbody.innerHTML += fila;
+                });
+            })
+            .catch(error => {
+                console.error("❌ Error:", error);
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; color: red;">Error al buscar pedidos</td>
+          </tr>`;
+            });
+    }
 
-  // 🟡 Buscar mientras escribe
-  inputBuscar.addEventListener("keyup", () => {
-    buscarPedidos(inputBuscar.value);
-  });
+    // 🟡 Buscar mientras escribe
+    inputBuscar.addEventListener("keyup", () => {
+        buscarPedidos(inputBuscar.value);
+    });
 
-  // 🔴 Evitar que el botón recargue y repetir la búsqueda si se presiona
-  form.addEventListener("submit", (e) => {
-    e.preventDefault(); // 🔒 Bloquea el envío del formulario
-    buscarPedidos(inputBuscar.value); // 👉 Solo vuelve a buscar lo mismo
-  });
+    // 🔴 Evitar que el botón recargue y repetir la búsqueda si se presiona
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        buscarPedidos(inputBuscar.value);
+    });
 });
 
 
-/*FILTROS DE BUSQUEDA INVENTARIO*/
-
+/* FILTROS DE BUSQUEDA INVENTARIO */
 document.addEventListener("DOMContentLoaded", function () {
-  const inputBuscar = document.getElementById("buscar-inventario");
-  const form = document.getElementById("form-busqueda-inventario");
-  const tbody = document.querySelector("#tabla-productos tbody"); // ✅ CORREGIDO
+    const inputBuscar = document.getElementById("buscar-inventario");
+    const form = document.getElementById("form-busqueda-inventario");
+    const tbody = document.querySelector("#tabla-productos tbody");
 
-  function buscarPedidos(valor) {
-    const texto = valor.trim();
-    if (texto === "") {
-      tbody.innerHTML = `
+    function buscarInventario(valor) {
+        const texto = valor.trim();
+        if (texto === "") {
+            tbody.innerHTML = `
         <tr>
           <td colspan="13" style="text-align: center;">⚠️ Escriba algo para buscar</td>
         </tr>`;
-      return;
-    }
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("buscar", texto);
+        fetch("/api/inventario/buscar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ buscar: texto })
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Error en la respuesta del servidor");
+                return res.json();
+            })
+            .then(data => {
+                tbody.innerHTML = "";
 
-    fetch("PHP/buscar_inventario_logis.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = "";
-
-        if (data.length === 0) {
-          tbody.innerHTML = `
+                if (data.length === 0) {
+                    tbody.innerHTML = `
             <tr>
               <td colspan="13" style="text-align: center;">❌ No se encontraron resultados</td>
             </tr>`;
-          return;
-        }
+                    return;
+                }
 
-        data.forEach(inventario => {
-          const fila = `
+                data.forEach(inventario => {
+                    const fila = `
             <tr>
-              <td>${inventario.ID_INVENTARIO}</td>
-              <td>${inventario.NOMBRE}</td>
-              <td>${inventario.PRECIO}</td>
-              <td>${inventario.CATEGORIA}</td>
-              <td>${inventario.DESCRIPCION}</td>
-              <td>${inventario.ESTADO}</td>
-              <td>${inventario.CANTIDAD_DISPONIBLE}</td>
-              <td>${inventario.UBICACION}</td>
-              <td><img src="/proyecto/imagenes/${inventario.IMAGEN}" width="50" alt="imagen"></td>
-              <td>${inventario.FECHA_CADUCIDAD}</td>
-              <td>${inventario.FECHA_ACTUALIZACION}</td>
-              <td><button class="actualizar" data-id="${inventario.ID_INVENTARIO}">Actualizar</button></td>
-              <td><button class="eliminar" data-id="${inventario.ID_INVENTARIO}">Eliminar</button></td>
+              <td>${inventario.idInventario}</td>
+              <td>${inventario.nombre}</td>
+              <td>${inventario.precio}</td>
+              <td>${inventario.categoria}</td>
+              <td>${inventario.descripcion}</td>
+              <td>${inventario.estado}</td>
+              <td>${inventario.cantidadDisponible}</td>
+              <td>${inventario.ubicacion}</td>
+              <td><img src="/proyecto/imagenes/${inventario.imagen}" width="50" alt="imagen"></td>
+              <td>${inventario.fechaCaducidad}</td>
+              <td>${inventario.fechaActualizacion}</td>
+              <td><button class="actualizar" data-id="${inventario.idInventario}">Actualizar</button></td>
+              <td><button class="eliminar" data-id="${inventario.idInventario}">Eliminar</button></td>
             </tr>`;
-          tbody.innerHTML += fila;
-        });
-      })
-      .catch(error => {
-        console.error("❌ Error:", error);
-        tbody.innerHTML = `
+                    tbody.innerHTML += fila;
+                });
+            })
+            .catch(error => {
+                console.error("❌ Error:", error);
+                tbody.innerHTML = `
           <tr>
             <td colspan="13" style="text-align: center; color: red;">⚠️ Error al buscar</td>
           </tr>`;
-      });
-  }
+            });
+    }
 
-  // 🟡 Buscar mientras escribe
-  inputBuscar.addEventListener("keyup", () => {
-    buscarPedidos(inputBuscar.value);
-  });
+    // 🟡 Buscar mientras escribe
+    inputBuscar.addEventListener("keyup", () => {
+        buscarInventario(inputBuscar.value);
+    });
 
-  // 🔴 Evitar que el botón recargue
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    buscarPedidos(inputBuscar.value);
-  });
+    // 🔴 Evitar que el botón recargue
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        buscarInventario(inputBuscar.value);
+    });
 });
 
 
@@ -700,53 +711,59 @@ document.addEventListener("DOMContentLoaded", function () {
 /*panel de logistica foto*/
 
 
+
 document.addEventListener("DOMContentLoaded", () => {
-  const avatarImg = document.getElementById("avatar-imagen");
-  const avatarIniciales = document.getElementById("avatar-iniciales");
-  const inputFoto = document.getElementById("input-foto");
+    const avatarImg = document.getElementById("avatar-imagen");
+    const avatarIniciales = document.getElementById("avatar-iniciales");
+    const inputFoto = document.getElementById("input-foto");
 
-  // Mostrar imagen o iniciales
-  fetch("PHP/obtener_foto.php")
-    .then(res => res.json())
-    .then(data => {
-      if (data.success && data.ruta) {
-        avatarImg.src = data.ruta;
-        avatarImg.style.display = "block";
-        avatarIniciales.style.display = "none";
-      } else {
-        const iniciales = data.iniciales || "AD";
-        avatarIniciales.textContent = iniciales;
-        avatarImg.style.display = "none";
-        avatarIniciales.style.display = "flex";
-      }
+    const usuarioId = sessionStorage.getItem("usuarioId") || 1;
+
+    // Mostrar imagen o iniciales
+    fetch(`/usuarios/${usuarioId}/foto`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.ruta) {
+                avatarImg.src = data.ruta;
+                avatarImg.style.display = "block";
+                avatarIniciales.style.display = "none";
+            } else {
+                const iniciales = data.iniciales || "AD";
+                avatarIniciales.textContent = iniciales;
+                avatarImg.style.display = "none";
+                avatarIniciales.style.display = "flex";
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error obteniendo foto:", error);
+        });
+
+    // Subir imagen
+    inputFoto.addEventListener("change", () => {
+        const archivo = inputFoto.files[0];
+        if (!archivo) return;
+
+        const formData = new FormData();
+        formData.append("foto", archivo);
+
+        fetch(`/usuarios/${usuarioId}/foto`, {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    avatarImg.src = data.ruta;
+                    avatarImg.style.display = "block";
+                    avatarIniciales.style.display = "none";
+                } else {
+                    alert("❌ " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error subiendo imagen:", error);
+            });
     });
-
-  // Subir imagen
-  inputFoto.addEventListener("change", () => {
-    const archivo = inputFoto.files[0];
-    if (!archivo) return;
-
-    const formData = new FormData();
-    formData.append("foto", archivo);
-
-    fetch("PHP/subir_foto.php", {
-      method: "POST",
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          avatarImg.src = data.ruta;
-          avatarImg.style.display = "block";
-          avatarIniciales.style.display = "none";
-        } else {
-          alert("❌ " + data.message);
-        }
-      })
-      .catch(error => {
-        console.error("Error subiendo imagen:", error);
-      });
-  });
 });
 
 /*cerrar sesion*/

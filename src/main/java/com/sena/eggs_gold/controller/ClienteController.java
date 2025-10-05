@@ -4,8 +4,10 @@ import com.sena.eggs_gold.dto.ClienteDTO;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -28,19 +30,29 @@ public class ClienteController {
     }
 
     @PostMapping("/registro")
-    public String registrarCliente(@ModelAttribute("clienteDTO") ClienteDTO clienteDTO, Model model) {
+    public String registrarCliente(@Valid @ModelAttribute("clienteDTO") ClienteDTO clienteDTO,
+                                   BindingResult result,
+                                   Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("errores", result.getFieldErrors());
+            return "registro"; // vuelve al formulario con los errores
+        }
+
         if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
             model.addAttribute("error", "El número de documento ya está registrado");
             return "registro";
         }
+
         try {
             clienteService.registrarCliente(clienteDTO);
             model.addAttribute("mensaje", "Cliente registrado exitosamente");
+            return "redirect:/login";
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar cliente: " + e.getMessage());
+            return "registro";
         }
-        return "redirect:/login";
-
     }
+
 
 }

@@ -32,7 +32,7 @@ public class VehiculoController {
     public String registrarVehiculo(@ModelAttribute("vehiculo") VehiculoDTO vehiculoDTO,
                                     Model model) {
         // Para pruebas: usar un id de conductor fijo (ejemplo 1)
-        Integer idConductor = 18; // solo para pruebas, no importa el conductor real
+        Integer idConductor = 19; // solo para pruebas, no importa el conductor real
 
         Vehiculo vehiculoRegistrado = vehiculoService.registrarVehiculo(vehiculoDTO, idConductor);
 

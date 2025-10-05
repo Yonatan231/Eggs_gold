@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <a href="inventario.html" class="salir">Salir</a>
+        <a th:href="@{inventario}" class="salir">Salir</a>
         <h1>Tienda Online</h1>
     </header>
 
@@ -17,10 +17,11 @@
         <div id="carrito" class="lista-carrito">
             <h2>Productos en el Carrito</h2>
             <ul id="productos-carrito"></ul>
-            <h3 id="total-carrito">Total: $0</h3>
-            
             <label for="direccion">📍 Ingrese su dirección de entrega:</label>
             <input type="text" id="direccion" placeholder="Calle 123, Barrio, Ciudad">
+            <h3 id="total-carrito">Total: $0</h3>
+            
+
             <div id="confirmar-pedido-container"></div>
 
         </div>

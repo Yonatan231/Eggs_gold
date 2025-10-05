@@ -1,5 +1,6 @@
 package com.sena.eggs_gold.service;
 
+import com.sena.eggs_gold.dto.InventarioBusquedaDTO;
 import com.sena.eggs_gold.dto.InventarioDetalleDTO;
 import com.sena.eggs_gold.dto.InventarioRequestDTO;
 import com.sena.eggs_gold.dto.ProductoDisponibleDTO;
@@ -17,4 +18,7 @@ public interface InventarioService {
 
     Inventario obtenerPorId(Integer id);
     boolean actualizarInventario(Inventario inventario);
+
+    String eliminarInventario(Integer idInventario);
+    List<InventarioBusquedaDTO> buscarInventario(String buscar);
 }

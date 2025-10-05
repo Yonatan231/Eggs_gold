@@ -113,7 +113,7 @@ public class CarritoServiceImpl implements CarritoService {
             int cantidad = item.getCantidad();
 
             // Validar stock
-            List<Inventario> inventarios = inventarioRepo.findByProducto(producto);
+            List<Inventario> inventarios = inventarioRepo.listarInventarioActivo();
             if (inventarios.isEmpty()) {
                 throw new IllegalArgumentException("No hay inventario disponible para el producto: " + producto.getNombre());
             }

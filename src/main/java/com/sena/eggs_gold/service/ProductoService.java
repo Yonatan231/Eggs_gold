@@ -2,6 +2,7 @@ package com.sena.eggs_gold.service;
 
 import com.sena.eggs_gold.dto.ProductoBusquedaDTO;
 import com.sena.eggs_gold.dto.ProductoDTO;
+import com.sena.eggs_gold.dto.ProductoDisponibleDTO;
 import com.sena.eggs_gold.model.entity.Producto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,8 @@ public interface ProductoService {
     boolean marcarComoDescontinuado(Integer idProducto);
 
     List<ProductoBusquedaDTO> buscarProductos(String buscar);
+
+
 
 
 }

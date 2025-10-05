@@ -49,6 +49,8 @@
                         <input type="password" id="contrasena" th:field="*{password}" required />
                     </div>
                     <button type="submit" class="boton-registrarse">Iniciar sesión</button>
+                    <!-- 🔴 Mensaje de error si las credenciales son incorrectas -->
+                    <div th:if="${error}" class="mensaje-error" th:text="${error}"></div>
                     <div class="enlace-login">
                         ¿No tienes una cuenta? <a th:href="@{/registro}">Regístrate aquí</a>
                     </div>

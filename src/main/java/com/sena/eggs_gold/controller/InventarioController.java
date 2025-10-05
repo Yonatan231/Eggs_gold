@@ -89,4 +89,12 @@ public class InventarioController {
                     .body(Map.of("success", false, "message", "Error al actualizar"));
         }
     }
+
+    @PostMapping("/eliminar")
+    public ResponseEntity<?> eliminarInventario(@RequestBody Map<String, Integer> payload) {
+        Integer id = payload.get("id");
+        String mensaje = inventarioService.eliminarInventario(id);
+        return ResponseEntity.ok(Map.of("success", true, "message", mensaje));
+    }
+
 }

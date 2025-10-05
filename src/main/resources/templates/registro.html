@@ -38,6 +38,9 @@
       <img th:src="@{imagenes/sign-up.png}" alt="Imagen de registro" class="registro-img" />
       <div class="form-card">
         <form th:action="@{/registro}" th:object="${clienteDTO}" method="POST">
+
+
+
           <div class="form-group">
             <label for="nombre">Nombre:</label>
            <input type="text" id="nombre" th:field="*{nombre}" required />
@@ -67,11 +70,18 @@
             <input type="password" id="password" th:field="*{password}" required />
           </div>
           <button type="submit" class="boton-registrarse">Registrarse</button>
+            <!-- 🔴 Mostrar errores de validación -->
+            <div th:if="${errores}">
+                <ul class="mensaje-error">
+                    <li th:each="err : ${errores}" th:text="${err.defaultMessage}"></li>
+                </ul>
+            </div>
           <div class="enlace-login">
               ¿Ya tienes una cuenta? <a href="inicio_secion.html">Inicia sesión aquí</a>
               </div>
         </form>
       </div>
+
     </div>
   </main>
 

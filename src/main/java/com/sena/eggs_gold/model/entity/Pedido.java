@@ -53,4 +53,8 @@ public class Pedido {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USUARIOS_ID", nullable = false)
     private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CONDUCTOR_ID")
+    private Usuario conductor;
 }

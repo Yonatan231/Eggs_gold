@@ -1,13 +1,12 @@
 package com.sena.eggs_gold.controller;
 
-import com.sena.eggs_gold.dto.ClienteDTO;
-import com.sena.eggs_gold.dto.ConfirmarPedidoRequestDTO;
-import com.sena.eggs_gold.dto.PedidoDTO;
+import com.sena.eggs_gold.dto.*;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.service.CarritoService;
 import com.sena.eggs_gold.service.PedidoService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -113,5 +112,48 @@ public class PedidoController {
         }
 
     }
+
+    @GetMapping("/conductor")
+    public ResponseEntity<?> obtenerPedidosConductor(HttpSession session) {
+        Object conductorIdObj = session.getAttribute("usuario_id");
+        if (conductorIdObj == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "No autenticado"));
+        }
+
+        Integer conductorId = Integer.valueOf(conductorIdObj.toString());
+        List<PedidoConductorDTO> pedidos = pedidoService.obtenerPedidosPorConductor(conductorId);
+        return ResponseEntity.ok(Map.of("success", true, "data", pedidos));
+    }
+
+    @PostMapping("/actualizar-estado-conductor")
+    public ResponseEntity<?> actualizarEstado(@RequestBody ActualizarEstadoDTO dto) {
+        if (dto.getIdPedido() == null || dto.getEstado() == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Faltan datos"));
+        }
+
+        boolean actualizado = pedidoService.actualizarEstadoPedido(dto.getIdPedido(), dto.getEstado());
+
+        if (actualizado) {
+            return ResponseEntity.ok(Map.of("success", true));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "No se pudo actualizar"));
+        }
+    }
+
+    @GetMapping("/conductor/historial")
+    public ResponseEntity<?> obtenerPedidosConductorHistorial(HttpSession session) {
+        Object conductorIdObj = session.getAttribute("usuario_id");
+        if (conductorIdObj == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "No hay sesión iniciada"));
+        }
+
+        Integer conductorId = Integer.valueOf(conductorIdObj.toString());
+        List<PedidoConductorHistorialDTO> pedidos = pedidoService.obtenerPedidosPorConductorHistorial(conductorId);
+        return ResponseEntity.ok(Map.of("success", true, "data", pedidos));
+    }
+
 }
 
