@@ -76,6 +76,7 @@ public class ReporteServiceImpl implements ReporteService {
             for (Pedido pedido : pedidos) {
                 table.addCell(pedido.getIdPedidos().toString());
                 table.addCell(pedido.getUsuario().getNombre());
+                table.addCell(pedido.getUsuario().getApellido());
                 table.addCell(pedido.getEstado().name());
                 table.addCell(pedido.getFechaCreacion().toString());
             }

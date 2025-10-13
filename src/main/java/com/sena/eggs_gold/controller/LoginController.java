@@ -52,7 +52,7 @@ public class LoginController {
 
         // Cliente
         ClienteDTO cliente = clienteService.login(loginDTO.getDocumento(), loginDTO.getPassword());
-        if (cliente != null) {
+        if (cliente != null ) {
             session.setAttribute("usuario_id", cliente.getIdUsuarios());
             session.setAttribute("rol", "CLIENTE");
             session.setAttribute("cliente", cliente);

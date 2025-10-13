@@ -25,7 +25,6 @@
   <h2>Admin panel</h2>
 </li>
       <li><a href="#tabla-clientes">Clientes</a></li>
-      <li><a href="#tabla-productos">Productos</a></li>
       <li><a href="reportes_admin.html">Reportes</a></li>
       <li><a th:href="@{/agregar_producto}">Agregar Producto</a></li>
       <li><a th:href="@{/registro_logistica}">Registro logística</a></li>
@@ -58,11 +57,11 @@
         <h2>📦 Reporte de Pedidos Realizados</h2>
 
         <!-- Botón para ver el PDF en el navegador -->
-        <iframe id="visor-pdf" src="/admin/reportes/pedidos-usuarios" width="5%" height="50px" style="border:1px solid #ccc;"></iframe>
+<!--        <iframe id="visor-pdf" src="/admin/reportes/pedidos-usuarios" width="5%" height="50px" style="border:1px solid #ccc;"></iframe>-->
 
         <!-- Botón para descargar el PDF -->
         <a href="/admin/reportes/pedidos-usuarios" download="reporte_pedidos_usuarios.pdf">
-            <button>⬇ Descargar PDF</button>
+            <button id="btn-ver-pdf">📄 Ver reporte PDF</button>
         </a>
       <table class="listas" id="tabla-pedidos">
         <thead>

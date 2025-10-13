@@ -52,9 +52,9 @@ function cargarPedidosAsignados() {
               <button onclick="rechazarPedido(${pedido.idPedidos})">Rechazar</button>
             `;
           } else if (pedido.estado === 'EN_CAMINO') {
-            const direccion = encodeURIComponent(pedido.direccionUsuario);
+            const direccion = encodeURIComponent(pedido.direccion);
             botones = `
-              <button onclick="window.open('mapa_conductor.html?direccion=${direccion}', '_blank')">Ver ruta</button>
+              <button onclick="window.open('mapa_conductor?direccion=${direccion}', '_blank')">Ver ruta</button>
               <button onclick="marcarEntregado(${pedido.idPedidos})">Entregado</button>
             `;
           } else if (pedido.estado === 'ENTREGADO') {
@@ -79,10 +79,10 @@ function cargarPedidosAsignados() {
 
 
           fila.innerHTML = `
-            <td>${pedido.idPedido}</td>
-            <td>${pedido.nombre} ${pedido.apellido_cliente}</td>
+            <td>${pedido.idPedidos}</td>
+            <td>${pedido.nombreCliente} ${pedido.apellidoCliente}</td>
             <td>${pedido.telefono}</td>
-            <td>${pedido.direccionUsuario}</td>
+            <td>${pedido.direccion}</td>
             <td>${pedido.productos}</td>
             <td>${estadoHTML}</td>
             <td>${botones}</td>

@@ -64,6 +64,11 @@ import org.springframework.ui.Model;
             return "conductor";
         }
 
+        @GetMapping("mapa_conductor")
+        public String mostrarmapaConductor() {
+            return "mapa_conductor";
+        }
+
 
     }
 

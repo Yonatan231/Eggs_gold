@@ -28,6 +28,7 @@ btntoggle.addEventListener('click', function(){
     document.getElementById('sidebar').classList.toggle('active');
 });
 
+
 // Cargar pedidos 
 document.addEventListener("DOMContentLoaded", cargarPedidosRecientes);
 
@@ -1293,6 +1294,11 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(error => {
       console.error("❌ Error cargando resumen:", error);
     });
+});
+
+
+document.getElementById("btn-ver-pdf").addEventListener("click", function() {
+    window.open("/admin/reportes/pedidos-usuarios", "_blank");
 });
 
 /*cerrar sesion*/

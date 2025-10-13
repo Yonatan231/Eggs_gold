@@ -3,8 +3,10 @@ package com.sena.eggs_gold.controller;
 import com.sena.eggs_gold.dto.ClienteDTO;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ClienteService;
+import com.sena.eggs_gold.service.EmailService;
 import com.sena.eggs_gold.service.UsuarioService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,8 @@ public class ClienteController {
 
     private final ClienteService clienteService;
     private final UsuarioService usuarioService;
+    @Autowired
+    private EmailService emailService;
 
 
     public ClienteController(ClienteService clienteService, UsuarioService usuarioService, UsuarioRepository usuarioRepository) {
@@ -44,7 +48,13 @@ public class ClienteController {
             return "registro";
         }
 
+
         try {
+            // Enviar correo de bienvenida
+            emailService.enviarCorreoBienvenida(
+                    clienteDTO.getCorreo(),   // correo del conductor
+                    clienteDTO.getNombre()    // nombre para personalizar
+            );
             clienteService.registrarCliente(clienteDTO);
             model.addAttribute("mensaje", "Cliente registrado exitosamente");
             return "redirect:/login";
