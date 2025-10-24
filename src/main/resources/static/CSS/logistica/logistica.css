@@ -1,0 +1,668 @@
+/* ============================================
+   RESET Y ESTILOS GENERALES
+   ============================================ */
+
+/* Elimina márgenes y rellenos por defecto de todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ============================================
+   VARIABLES CSS (Colores y valores reutilizables)
+   ============================================ */
+:root {
+    /* Colores principales */
+    --color-accent: #27AE60;
+    --color-success: #2ecc71;       /* Verde para éxito */
+    --color-warning: #e67e22;       /* Naranja para advertencias */
+    --color-danger: #e74c3c;        /* Rojo para eliminar */
+    --color-dark: #2c3e50;          /* Gris oscuro para textos */
+    --color-light: #f5f7fa;         /* Gris claro para fondos */
+    --color-sidebar: #F7DC6F;
+    --color-sidebar-dark: #F7DC6F;
+
+    /* Sombras */
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+    /* Transiciones */
+    --transition: all 0.3s ease;
+}
+
+/* ============================================
+   ESTILOS DEL BODY
+   ============================================ */
+body {
+    background-color: #ffffff;
+    color: #333;
+    line-height: 1.6; /* Altura de línea para mejor legibilidad */
+    display: flex;
+    min-height: 100vh; /* Altura mínima de toda la ventana */
+}
+
+/* ============================================
+   BOTÓN PARA ABRIR/CERRAR MENÚ (TOGGLE)
+   ============================================ */
+.toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: var(--color-dark);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 1100; /* Encima de todo */
+    display: none; /* Oculto por defecto, se muestra en móviles */
+    transition: var(--transition);
+}
+
+.toggle-btn:hover {
+    background: #34495e;
+}
+
+/* ============================================
+   MENÚ LATERAL (SIDEBAR)
+   ============================================ */
+#sidebar {
+    width: 250px;
+    background: linear-gradient(180deg, var(--color-sidebar), var(--color-sidebar-dark));
+    color: white;
+    height: 100vh; /* Altura completa de la ventana */
+    position: fixed;
+    overflow-y: auto; /* Scroll si el contenido es muy largo */
+    transition: var(--transition);
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#sidebar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* Estilos de la lista del menú */
+#sidebar ul {
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 0;
+}
+
+#sidebar ul li {
+    padding: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enlaces de navegación */
+#sidebar ul li a,
+#sidebar ul li .nav-link {
+    color: #333333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    transition: var(--transition);
+}
+
+#sidebar ul li a:hover,
+#sidebar ul li .nav-link:hover {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: var(--color-accent);
+    padding-left: 25px;
+}
+
+#sidebar ul li a i,
+#sidebar ul li .nav-link i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* ============================================
+   PERFIL DEL USUARIO EN EL SIDEBAR
+   ============================================ */
+.perfil-admin {
+    text-align: center;
+    padding: 25px 15px !important;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.perfil-admin h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    color: white;
+}
+
+/* Contenedor del avatar */
+.avatar-contenedor {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent), #2980b9);
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+}
+
+.avatar-contenedor:hover {
+    transform: scale(1.05);
+}
+
+/* Imagen del avatar */
+#avatar-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Iniciales del avatar */
+#avatar-iniciales {
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Botón para subir foto de perfil */
+.boton-subir-foto {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--color-accent);
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+}
+
+/* ============================================
+   CONTENIDO PRINCIPAL
+   ============================================ */
+main {
+    flex: 1; /* Ocupa el espacio restante */
+    margin-left: 250px; /* Espacio para el sidebar */
+    padding: 20px;
+    transition: var(--transition);
+}
+
+/* ============================================
+   CABECERA
+   ============================================ */
+header {
+    background-color: #FEFCF4;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.opciones {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Logo de la empresa */
+.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Título de bienvenida */
+.titulo2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    flex: 1;
+}
+
+.resaltado {
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+/* Campana de notificaciones */
+.campana-noti {
+    position: relative;
+    color: var(--color-dark);
+    font-size: 1.2rem;
+    margin-left: auto; /* Empuja el elemento hacia la derecha */
+    transition: var(--transition);
+}
+
+.campana-noti:hover {
+    color: var(--color-accent);
+}
+
+/* ============================================
+   TARJETA DE RESUMEN (Productos en stock)
+   ============================================ */
+.tarjeta-resumen {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.tarjeta-resumen:hover {
+    transform: translateY(-5px); /* Eleva la tarjeta al pasar el mouse */
+    box-shadow: var(--shadow-hover);
+}
+
+/* Icono de la tarjeta */
+.tarjeta-icono {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+/* Color específico para productos */
+.productos .tarjeta-icono {
+    background: rgba(230, 126, 34, 0.2);
+    color: var(--color-warning);
+}
+
+/* Contenido de la tarjeta */
+.tarjeta-contenido h3 {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 5px;
+}
+
+.contador {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
+/* ============================================
+   SECCIONES DE TABLAS
+   ============================================ */
+.seccion-tabla {
+    background: #FEFCF4;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+/* Encabezado de la sección */
+.encabezado-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.encabezado-seccion h2 {
+    font-size: 1.3rem;
+    color: var(--color-dark);
+}
+
+/* ============================================
+   FORMULARIOS DE BÚSQUEDA
+   ============================================ */
+.form-busqueda {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.form-busqueda input {
+    flex: 1; /* Ocupa todo el espacio disponible */
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.form-busqueda input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.form-busqueda button {
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+.form-busqueda button:hover {
+    background: #2980b9;
+}
+
+/* ============================================
+   TABLAS
+   ============================================ */
+.contenedor-tabla {
+    overflow-x: auto; /* Scroll horizontal en tablas grandes */
+}
+
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse; /* Une los bordes de las celdas */
+}
+
+.tabla-datos th,
+.tabla-datos td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+/* Encabezados de la tabla */
+.tabla-datos th {
+    background-color: #f8f9fa;
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Filas de la tabla */
+.tabla-datos tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Imágenes dentro de las tablas */
+.tabla-datos img {
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN EN TABLAS
+   ============================================ */
+.btn-accion {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 5px;
+    transition: var(--transition);
+}
+
+/* Botón de asignar */
+.btn-accion.btn-asignar,
+button[onclick*="asignarPedido"] {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-accion.btn-asignar:hover,
+button[onclick*="asignarPedido"]:hover {
+    background: #27ae60;
+}
+
+/* Botón de actualizar */
+button[onclick*="actualizarProducto"] {
+    background: var(--color-accent);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+button[onclick*="actualizarProducto"]:hover {
+    background: #2980b9;
+}
+
+/* Botón de eliminar */
+button[onclick*="eliminarProducto"] {
+    background: var(--color-danger);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+button[onclick*="eliminarProducto"]:hover {
+    background: #c0392b;
+}
+
+/* ============================================
+   MENSAJES VACÍOS
+   ============================================ */
+.mensaje-vacio {
+    text-align: center;
+    padding: 20px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* ============================================
+   MODALES (VENTANAS EMERGENTES)
+   ============================================ */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-contenido {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-height: 90vh; /* Altura máxima */
+    overflow-y: auto; /* Scroll si el contenido es muy largo */
+}
+
+.modal-contenido h2 {
+    margin-bottom: 20px;
+    color: var(--color-dark);
+    text-align: center;
+}
+
+/* Botón para cerrar el modal */
+.cerrar {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #999;
+    transition: var(--transition);
+}
+
+.cerrar:hover {
+    color: var(--color-danger);
+}
+
+/* Campos del formulario en el modal */
+.modal-contenido label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--color-dark);
+}
+
+.modal-contenido input,
+.modal-contenido select,
+.modal-contenido textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.modal-contenido input:focus,
+.modal-contenido select:focus,
+.modal-contenido textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+/* Botones del modal */
+.modal-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-cancelar {
+    background: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-cancelar:hover {
+    background: #7f8c8d;
+}
+
+.btn-guardar {
+    background: var(--color-success);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+.btn-guardar:hover {
+    background: #27ae60;
+}
+
+/* ============================================
+   DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
+   ============================================ */
+@media (max-width: 768px) {
+    /* Mostrar botón de toggle en móviles */
+    .toggle-btn {
+        display: block;
+    }
+
+    /* Ocultar sidebar por defecto en móviles */
+    #sidebar {
+        width: 0;
+        overflow: hidden;
+    }
+
+    /* El contenido principal ocupa todo el ancho */
+    main {
+        margin-left: 0;
+    }
+
+    /* Sidebar activo en móviles */
+    #sidebar.active {
+        width: 250px;
+    }
+
+    /* Ajustar encabezado de sección */
+    .encabezado-seccion {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* Formulario de búsqueda en columna */
+    .form-busqueda {
+        flex-direction: column;
+    }
+
+    .form-busqueda button {
+        width: 100%;
+    }
+
+    /* Ajustar opciones del header */
+    .opciones {
+        flex-wrap: wrap;
+    }
+
+    .titulo2 {
+        font-size: 1.2rem;
+    }
+
+    /* Tablas con scroll horizontal */
+    .tabla-datos {
+        font-size: 0.85rem;
+    }
+
+    .tabla-datos th,
+    .tabla-datos td {
+        padding: 8px 10px;
+    }
+
+    /* Modal más pequeño en móviles */
+    .modal-contenido {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+/* ============================================
+   DISEÑO RESPONSIVE PARA TABLETS
+   ============================================ */
+@media (max-width: 1024px) and (min-width: 769px) {
+    #sidebar {
+        width: 200px;
+    }
+
+    main {
+        margin-left: 200px;
+    }
+}

@@ -11,12 +11,12 @@ import org.springframework.ui.Model;
 
         @GetMapping("/")
         public String inicio() {
-            return "inicio"; // busca en templates/inicio.html
+            return "inicio/inicio";
         }
 
         @GetMapping("/inicio")
         public String inicio1(){
-            return "inicio";
+            return "inicio/inicio";
         }
 
         @GetMapping("/promociones")
@@ -24,24 +24,24 @@ import org.springframework.ui.Model;
             return "promociones"; // busca promociones.html en templates
         }
 
-        @GetMapping("/contacto1")
+        @GetMapping("/contacto")
         public String contacto1(){
-            return "contacto1";
+            return "inicio/contacto";
         }
 
 
-        @GetMapping("/inicio_secion")
+        @GetMapping("/iniciar_sesion")
         public String inicioSecion(Model model) {
             // Creamos un objeto vacío para el formulario
             model.addAttribute("loginDTO", new LoginDTO());
-            return "inicio_secion"; // Thymeleaf buscará templates/inicio_secion.html
+            return "iniciar_sesion/iniciar_sesion"; // Thymeleaf buscará templates/inicio_secion.html
         }
 
 
 
         @GetMapping("/logistica")
         public String logistica(){
-            return "logistica";
+            return "logistica/logistica";
         }
 
         @GetMapping("/historial_productos")

@@ -1,0 +1,146 @@
+/* === Variables de colores === */
+:root {
+    --color-principal: #F4D03F;
+    --color-secundario: #1C2833;
+    --color-verde: #27AE60;
+    --color-fondo: #F7DC6F;
+    --color-texto: #333333;
+    --blanco: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos globales */
+body {
+    margin: 0;
+    font-family: 'Initial', sans-serif;
+    background: rgba(244, 208, 63, 0.08);
+}
+
+/* Contenedor principal del formulario */
+main {
+    display: flex;
+    justify-content: center;
+    padding: 60px 10px;
+}
+
+/* Tarjeta del formulario */
+.formulario-container {
+    border: 2px solid var(--color-secundario);
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 900px;
+    width: 100%;
+    background-color: var(--blanco);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título del formulario */
+.titulo-formulario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-secundario);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+/* Líneas decorativas a los lados del título */
+.titulo-formulario::before,
+.titulo-formulario::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background-color: var(--color-secundario);
+}
+
+.titulo-formulario i {
+    font-size: 24px;
+}
+
+/* Wrapper para la imagen y el formulario */
+.form-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Imagen del formulario */
+.registro-img {
+    width: 250px;
+    height: auto;
+}
+
+/* Tarjeta que contiene el formulario */
+.form-card {
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Estilos del formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 10px;
+    font-size: 15px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: var(--color-secundario);
+    outline: none;
+}
+
+/* Botón de enviar */
+.boton-registrarse {
+    background-color: var(--color-verde);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.boton-registrarse:hover {
+    background-color: var(--color-verde);
+    transform: scale(1.05);
+}
+
+/* Enlace de registro */
+.enlace-login {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.enlace-login a {
+    color: var(--color-verde);
+    text-decoration: none;
+}
+
+.enlace-login a:hover {
+    text-decoration: underline;
+    color: var(--color-hover);
+}
+
+/* Mensaje de error */
+.mensaje-error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}

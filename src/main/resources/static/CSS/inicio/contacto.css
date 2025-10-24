@@ -1,0 +1,56 @@
+.contacto-contenedor {
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+    background-color: #FEFCF4;
+}
+
+.contacto-principal {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+}
+
+.titulo-contacto {
+    font-size: 2rem;
+    color: var(--color-verde);
+    margin-bottom: 15px;
+}
+
+.descripcion-contacto {
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+.tarjetas-contacto {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.tarjeta {
+    background-color:  #FEFCF4;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+}
+
+.tarjeta:hover {
+    transform: translateY(-5px);
+}
+
+.tarjeta h3 {
+    color: var(--color-verde);
+    margin-bottom: 10px;
+}
+
+.tarjeta p {
+    color: #555;
+}

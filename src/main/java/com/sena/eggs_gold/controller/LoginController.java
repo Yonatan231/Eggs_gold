@@ -43,7 +43,7 @@ public class LoginController {
     @GetMapping("/login")
     public String mostrarLogin(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
-        return "inicio_secion"; // tu template HTML
+        return "iniciar_sesion/iniciar_sesion"; // tu template HTML
     }
 
     // Procesar login
@@ -89,13 +89,15 @@ public class LoginController {
 
         // Si no coincide en ninguno
         model.addAttribute("error", "Credenciales incorrectas");
-        return "inicio_secion";
+        return "iniciar_sesion/iniciar_sesion";
     }
+
+
 
     @GetMapping("/administrador")
     public String mostrarAdmin(Model model, HttpSession session) {
         // Opcional: agregar datos al modelo si quieres
-        return "administrador"; // esto apunta a resources/templates/administrador.html
+        return "administrador/administrador"; // esto apunta a resources/templates/administrador
     }
 
 
@@ -127,8 +129,6 @@ public class LoginController {
 
         return "historial_productos"; // el nombre del HTML (src/main/resources/templates/tienda.html)
     }
-
-
 
 }
 

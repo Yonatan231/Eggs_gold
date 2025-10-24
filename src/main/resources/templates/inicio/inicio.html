@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eggs Gold</title>
+
+    <!-- rutas CSS -->
+    <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
+</head>
+
+<body>
+<!-- encabezado -->
+<header>
+    <div class="marca">
+        <div class="logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}"  alt="Logo Eggs Gold">
+        </div>
+
+        <div>
+            <h1 class="titulo">Eggs Gold</h1>
+            <p class="subtitulo">Huevos frescos a tu puerta</p>
+        </div>
+    </div>
+
+
+    <nav>
+        <a th:href="@{/inicio}" class="activo">Inicio</a>
+        <a href="#productos">Promociones</a>
+        <a href="#sobre">Sobre nosotros</a>
+        <a th:href="@{/contacto}">Contacto</a>
+        <a th:href="@{/registro_cliente}">Registrarse</a>
+        <a th:href="@{/iniciar_sesion}">Iniciar Sesión</a>
+        <a href="../carrito/carrito.html" class="carrito">
+            <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
+        </a>
+    </nav>
+</header>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<main>
+    <section class="inicio">
+        <div class="inicio-imagen-grande">
+            <img th:src="@{/imagenes/inicio/portada.jpg}" alt="Huevos frescos" class="imagen-principal">
+        </div>
+    </section>
+
+    <!-- Sección sobre nosotros (movida justo después de la portada) -->
+    <section id="sobre" class="sobre-nosotros">
+        <h2>Sobre nosotros</h2>
+        <p>
+            Somos productores locales apasionados por ofrecer productos frescos y de la más alta calidad. Nuestras gallinas viven libres y felices, en un entorno natural y saludable, lo que nos permite garantizar huevos frescos, nutritivos y con un sabor auténtico que se nota en cada bocado. Cuidamos cada detalle del proceso, desde la cría hasta la recolección, asegurando que cada huevo cumpla con nuestros estrictos estándares de frescura y sabor.
+
+            Con más de 10 años de experiencia en la producción y distribución de huevos, hemos desarrollado un sistema eficiente que nos permite ofrecer entregas rápidas, seguras y confiables en toda la región. Nos enorgullece apoyar la economía local y mantener una relación cercana con nuestros clientes, brindando un servicio personalizado y productos que reflejan nuestro compromiso con la calidad y el bienestar animal. Elegir nuestros huevos significa disfrutar de un producto natural, fresco y lleno de sabor, directamente desde nuestras granjas hasta tu mesa.
+        </p>
+        <p>Con más de 10 años de experiencia, ofrecemos entregas rápidas y seguras en toda la región.</p>
+    </section>
+
+    <!-- Sección de productos -->
+    <section id="productos">
+        <h2 class="titulo-seccion">Productos Especiales</h2>
+        <div class="productos">
+            <article class="tarjeta">
+                <img th:src="@{/imagenes/inicio/huevos1.jpg}" alt="Caja de 12 huevos">
+                <h3>Caja x12</h3>
+                <p class="precio">$15.000</p>
+                <button class="boton boton-amarillo">Añadir</button>
+            </article>
+
+            <article class="tarjeta">
+                <img src="https://picsum.photos/seed/eggs2/600/400" alt="Huevos orgánicos">
+                <h3>Huevos orgánicos x6</h3>
+                <p class="precio">$4.000</p>
+                <button class="boton boton-amarillo">Añadir</button>
+            </article>
+
+            <article class="tarjeta">
+                <img src="https://picsum.photos/seed/eggs3/600/400" alt="Suscripción semanal">
+                <h3>Suscripción semanal</h3>
+                <p class="precio">$20.000 / mes</p>
+                <button class="boton boton-amarillo">Suscribirme</button>
+            </article>
+        </div>
+    </section>
+
+    <!-- Opiniones -->
+    <section class="opiniones">
+        <h2>Opiniones</h2>
+        <blockquote>“Huevos muy frescos y de excelente calidad.” — <strong>Laura G.</strong></blockquote>
+        <blockquote>“Entrega rápida y confiable.” — <strong>Carlos M.</strong></blockquote>
+        <blockquote>“Sabor natural, muy recomendados.” — <strong>Sofía R.</strong></blockquote>
+    </section>
+
+    <!-- Galería -->
+    <section class="galeria">
+        <h2>Galería del campo</h2>
+        <div class="galeria-grid">
+            <img src="https://picsum.photos/seed/farm1/800/600" alt="Granja">
+            <img src="https://picsum.photos/seed/farm2/800/600" alt="Recolectando huevos">
+            <img src="https://picsum.photos/seed/farm3/800/600" alt="Gallinas libres">
+            <img src="https://picsum.photos/seed/farm4/800/600" alt="Campo verde">
+        </div>
+    </section>
+</main>
+
+
+<!-- Pie de página -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
+        </div>
+
+        <div class="footer-section">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la Empresa</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Socios</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>SÍGUENOS</h2>
+            <div class="social-icons">
+                <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
+                </a>
+                <a href="https://www.youtube.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -24,10 +24,8 @@
   </div>
   <h2>Logis panel</h2>
 </li>
-      <li><a th:href="@{#tabla-clientes}">Clientes</a></li>
       <li><a th:href="@{/productos}">Productos</a></li>
       <li><a th:href="@{agregar_producto}">Agregar Producto</a></li>
-      <li><a th:href="@{registro_conductor}">Registro conductor</a></li>
       <li><a href="/logout" id="cerrar_sesion" class="texto">Cerrar sesión</a></li>
     </ul>
   </div>
@@ -43,7 +41,7 @@
 
   <main>
     <h4 class="productos"id="productos">Productos en stock<br>3</h4>
-    
+
      </div>
    <!--busqueda filtros pedidos-->
    <form class="form-busqueda" id="form-busqueda">
@@ -67,13 +65,13 @@
             <th>Asignar</th>
           </tr>
         </thead>
-        <tbody >           
-          
+        <tbody >
+
         </tbody>
-        
+
       </table>
     </div>
-  
+
 <div id="modal-asignar" class="modal">
   <div class="modal-contenido">
     <span class="cerrar" onclick="cerrarModalAsignar()">&times;</span>
@@ -119,10 +117,10 @@
           <th>Eliminar</th>
         </tr>
       </thead>
-      <tbody >         
+      <tbody >
         <!--aqui se cargan el inventario-->
       </tbody>
-      
+
     </table>
   </div>
 
@@ -167,66 +165,9 @@
   </form>
 </div>
 
-  
-  <!--busqueda filtros inventario-->
-   <form class="form-busqueda" id="form-busqueda-clientes">
-    <input type="text" name="buscar" id="buscar-clientes" placeholder="Buscar cliente...">
-    <button type="submit">Buscar</button>
-</form>
-
-    <div class="tabla3">
-    <table class="listas" id="tabla-clientes">
-      <thead>
-          <tr>
-              <th colspan="8">Cientes</th>
-          </tr>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Documento</th>
-          <th>Direccion</th>
-          <th>Telefono</th>
-          <th>Pedidos realizados</th>
-      </thead>
-      <tbody >       
-        <!--vista de clientes-->
-      </tbody>
-      
-    </table>
-  </div>
-
-      <!--busqueda filtros conductores admin-->
-   <form class="form-busqueda" id="form-busqueda_conductor">
-    <input type="text" name="buscar" id="buscar_conductor" placeholder="Buscar conductor...">
-    <button type="submit">Buscar</button>
-</form>
-
-  <div class="tabla4">
-    <table class="listas1" id="tabla-conductores">
-      <thead>
-          <tr>
-              <th colspan="7">Conductores</th>
-          </tr>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Documento</th>
-          <th>Dirección</th>
-          <th>Telefono</th>
-          <th>Pedidos entregados</th>
-      </thead>
-      <tbody >       
-        <!--vista de conductores-->
-      </tbody>
-      
-    </table>
-  </div>
-  
   </main>
 
-<script src="JAVA SCRIPT/index_logistica.js"></script> 
+<script src="JAVA SCRIPT/index_logistica.js"></script>
 
 </body>
 </html>

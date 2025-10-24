@@ -16,7 +16,7 @@ public class AdminController {
     // Endpoint para el panel de administrador
     @GetMapping("/admin")
     public String mostrarPanelAdmin() {
-        return "administrador"; // admin.html en src/main/resources/templates
+        return "administrador/admistrador"; // admin.html en src/main/resources/templates
     }
 
 }

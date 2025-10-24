@@ -27,40 +27,40 @@ public class ClienteController {
 
     }
 
-    @GetMapping("/registro")
+    @GetMapping("/registro_cliente")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("clienteDTO", new ClienteDTO());
-        return "registro";
+        return "registros/registro_cliente";
     }
 
-    @PostMapping("/registro")
+    @PostMapping("/registro_cliente")
     public String registrarCliente(@Valid @ModelAttribute("clienteDTO") ClienteDTO clienteDTO,
                                    BindingResult result,
                                    Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("errores", result.getFieldErrors());
-            return "registro"; // vuelve al formulario con los errores
+            return "registros/registro_cliente"; // vuelve al formulario con los errores
         }
 
         if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
             model.addAttribute("error", "El número de documento ya está registrado");
-            return "registro";
+            return "registros/registro_cliente";
         }
 
 
         try {
             // Enviar correo de bienvenida
             emailService.enviarCorreoBienvenida(
-                    clienteDTO.getCorreo(),   // correo del conductor
-                    clienteDTO.getNombre()    // nombre para personalizar
+                    clienteDTO.getCorreo(),
+                    clienteDTO.getNombre()
             );
             clienteService.registrarCliente(clienteDTO);
             model.addAttribute("mensaje", "Cliente registrado exitosamente");
-            return "redirect:/login";
+            return "redirect:/iniciar_sesion";
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar cliente: " + e.getMessage());
-            return "registro";
+            return "registros/registro_cliente";
         }
     }
 

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de logística de Eggs Gold - Gestión de pedidos e inventario">
+
+    <!-- Icono de Font Awesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Hoja de estilos CSS personalizada -->
+    <link rel="stylesheet" th:href="@{css/logistica/logistica.css}">
+
+    <!-- Icono de la página (favicon) -->
+    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+
+    <title>EGGS GOLD - Panel de Logística</title>
+</head>
+<body>
+
+<!-- ============================================
+     BOTÓN PARA ABRIR/CERRAR MENÚ LATERAL EN MÓVILES
+     ============================================ -->
+<button class="toggle-btn" aria-label="Abrir menú lateral" aria-expanded="false">
+    <span>&#9776;</span> <!-- Icono de hamburguesa -->
+</button>
+
+<!-- ============================================
+     MENÚ LATERAL (SIDEBAR)
+     ============================================ -->
+<nav id="sidebar" aria-label="Menú de logística">
+    <ul>
+        <!-- Sección del perfil del usuario -->
+        <li class="perfil-admin">
+            <!-- Contenedor del avatar -->
+            <div class="avatar-contenedor" id="avatar-contenedor">
+                <!-- Iniciales del usuario (se muestran si no hay foto) -->
+                <span id="avatar-iniciales">AD</span>
+                <!-- Imagen del usuario (se oculta inicialmente) -->
+                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                <!-- Botón para subir foto -->
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">+</label>
+                <!-- Input oculto para seleccionar archivo -->
+                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+            </div>
+            <h2>Panel de Logística</h2>
+        </li>
+
+        <!-- Enlaces del menú -->
+        <li><a th:href="@{/productos}"><i class="fas fa-boxes"></i> Productos</a></li>
+        <li><a th:href="@{agregar_producto}"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
+        <li><a href="/logout" id="cerrar_sesion" class="texto"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<!-- ============================================
+     CONTENIDO PRINCIPAL
+     ============================================ -->
+<main id="main-content" role="main">
+
+    <!-- ============================================
+         CABECERA
+         ============================================ -->
+    <header role="banner">
+        <div class="opciones">
+            <!-- Logo de la empresa -->
+            <img src="imagenes/LOGO.jpg" alt="Logo de Eggs Gold" class="logo"/>
+            <!-- Título de bienvenida -->
+            <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">Logística</span></h1>
+            <!-- Botón de notificaciones -->
+            <a href="notificaciones.html" class="campana-noti" aria-label="Notificaciones">
+                <i class="fas fa-bell"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- ============================================
+         TARJETA DE RESUMEN - Productos en stock
+         ============================================ -->
+    <section class="tarjeta-resumen productos" aria-label="Resumen de productos">
+        <div class="tarjeta-icono">
+            <i class="fas fa-boxes"></i>
+        </div>
+        <div class="tarjeta-contenido">
+            <h3>Productos en Stock</h3>
+            <!-- El contador se actualiza dinámicamente con JavaScript -->
+            <span id="totalProductos" class="contador">3</span>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECCIÓN DE PEDIDOS
+         ============================================ -->
+    <section class="seccion-tabla" aria-labelledby="titulo-pedidos">
+        <div class="encabezado-seccion">
+            <h2 id="titulo-pedidos">📦 Gestión de Pedidos</h2>
+        </div>
+
+        <!-- Formulario de búsqueda de pedidos -->
+        <form class="form-busqueda" id="form-busqueda">
+            <input type="text" name="buscar" id="buscar" placeholder="Buscar pedido..." aria-label="Buscar pedidos">
+            <button type="submit" aria-label="Buscar">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </form>
+
+        <!-- Tabla de pedidos -->
+        <div class="contenedor-tabla">
+            <table class="tabla-datos" id="tabla-pedidos" aria-describedby="titulo-pedidos">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col" colspan="2">Productos</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Asignar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Los pedidos se cargarán aquí dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+
+            <!-- Mensaje cuando no hay pedidos -->
+            <div id="mensaje-sin-pedidos" class="mensaje-vacio" style="display: none;">
+                <p>No hay pedidos para mostrar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECCIÓN DE INVENTARIO
+         ============================================ -->
+    <section class="seccion-tabla" aria-labelledby="titulo-inventario">
+        <div class="encabezado-seccion">
+            <h2 id="titulo-inventario">📊 Gestión de Inventario</h2>
+        </div>
+
+        <!-- Formulario de búsqueda de inventario -->
+        <form class="form-busqueda" id="form-busqueda-inventario">
+            <input type="text" name="buscar" id="buscar-inventario" placeholder="Buscar inventario..." aria-label="Buscar inventario">
+            <button type="submit" aria-label="Buscar">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </form>
+
+        <!-- Tabla de inventario -->
+        <div class="contenedor-tabla">
+            <table class="tabla-datos" id="tabla-productos" aria-describedby="titulo-inventario">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Ubicación</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Fecha de Caducidad</th>
+                    <th scope="col">Fecha de Actualización</th>
+                    <th scope="col">Actualizar</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- El inventario se cargará aquí dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+
+            <!-- Mensaje cuando no hay productos -->
+            <div id="mensaje-sin-productos" class="mensaje-vacio" style="display: none;">
+                <p>No hay productos en el inventario para mostrar.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ============================================
+     MODALES (VENTANAS EMERGENTES)
+     ============================================ -->
+
+<!-- Modal para asignar pedidos a conductores -->
+<div id="modal-asignar" class="modal" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-asignar">
+    <div class="modal-contenido">
+        <!-- Botón para cerrar el modal -->
+        <span class="cerrar" onclick="cerrarModalAsignar()" aria-label="Cerrar modal">&times;</span>
+        <h2 id="titulo-modal-asignar">Asignar Pedido</h2>
+
+        <!-- Formulario de asignación -->
+        <form id="form-asignar" method="POST">
+            <!-- Campo oculto con el ID del pedido -->
+            <input type="hidden" name="pedido_id" id="asignar_id_pedido">
+
+            <!-- Selector de conductor -->
+            <label for="select-conductor">Selecciona un conductor:</label>
+            <select name="conductor_id" id="select-conductor" required>
+                <option value="">Cargando conductores...</option>
+            </select>
+
+            <!-- Botones del modal -->
+            <div class="modal-botones">
+                <button type="button" class="btn-cancelar" onclick="cerrarModalAsignar()">Cancelar</button>
+                <button type="submit" class="btn-guardar">Asignar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal para editar productos del inventario -->
+<div id="modal-editar-producto" class="modal" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-editar">
+    <div class="modal-contenido">
+        <!-- Botón para cerrar el modal -->
+        <span class="cerrar" onclick="cerrarModal()" aria-label="Cerrar modal">&times;</span>
+        <h2 id="titulo-modal-editar">📝 Editar Producto</h2>
+
+        <!-- Formulario de edición -->
+        <form id="form-editar-producto">
+            <!-- Campos ocultos con los IDs -->
+            <input type="hidden" name="idInventario" id="editar_id_inventario">
+            <input type="hidden" name="producto.idProducto" id="editar_id_producto">
+
+            <!-- Campos del formulario -->
+            <label for="editar_nombre">Nombre:</label>
+            <input type="text" name="nombre" id="editar_nombre">
+
+            <label for="editar_precio">Precio:</label>
+            <input type="number" name="precio" id="editar_precio" step="0.01">
+
+            <label for="editar_categoria">Categoría:</label>
+            <input type="text" name="categoria" id="editar_categoria">
+
+            <label for="editar_descripcion">Descripción:</label>
+            <input type="text" name="descripcion" id="editar_descripcion">
+
+            <label for="editar_estado">Estado:</label>
+            <input type="text" name="estado" id="editar_estado">
+
+            <label for="editar_cantidad">Cantidad Disponible:</label>
+            <input type="number" name="cantidadDisponible" id="editar_cantidad">
+
+            <label for="editar_ubicacion">Ubicación:</label>
+            <input type="text" name="ubicacion" id="editar_ubicacion">
+
+            <label for="editar_fecha_caducidad">Fecha de Caducidad:</label>
+            <input type="date" name="fechaCaducidad" id="editar_fecha_caducidad">
+
+            <!-- Botones del modal -->
+            <div class="modal-botones">
+                <button type="button" class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================
+     ARCHIVO DE JAVASCRIPT
+     ============================================ -->
+<script src="js/logistica/logistica.js"></script>
+
+</body>
+</html>

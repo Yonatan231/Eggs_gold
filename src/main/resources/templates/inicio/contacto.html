@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eggs Gold</title>
+
+    <!-- rutas CSS -->
+    <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/contacto.css}">
+
+</head>
+
+<body>
+<!-- encabezado -->
+<header>
+    <div class="marca">
+        <div class="logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}"  alt="Logo Eggs Gold">
+        </div>
+
+        <div>
+            <h1 class="titulo">Eggs Gold</h1>
+            <p class="subtitulo">Huevos frescos a tu puerta</p>
+        </div>
+    </div>
+
+
+    <nav>
+        <a th:href="@{/inicio}" >Inicio</a>
+        <a href="#productos">Promociones</a>
+        <a href="#sobre">Sobre nosotros</a>
+        <a th:href="@{/contacto}" class="activo">Contacto</a>
+        <a th:href="@{/registro_cliente}">Registrarse</a>
+        <a th:href="@{/iniciar_sesion}">Iniciar Sesión</a>
+        <a href="../carrito/carrito.html" class="carrito">
+            <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
+        </a>
+    </nav>
+</header>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+
+<main class="contacto-contenedor">
+    <section class="contacto-principal">
+        <h2 class="titulo-contacto">Contáctanos</h2>
+        <p class="descripcion-contacto">
+            Estamos aquí para ayudarte. Si tienes preguntas, inquietudes o deseas saber más sobre nuestros productos, comunícate con nosotros a través de los siguientes medios:
+        </p>
+
+        <div class="tarjetas-contacto">
+            <!-- Teléfonos -->
+            <div class="tarjeta">
+                <h3>📞 Teléfonos</h3>
+                <p>3126204260 / 3216942598</p>
+            </div>
+
+            <!-- Correo -->
+            <div class="tarjeta">
+                <h3>📧 Correo</h3>
+                <p>contacto@eggsgold.com</p>
+            </div>
+
+            <!-- Dirección -->
+            <div class="tarjeta">
+                <h3>📍 Dirección</h3>
+                <p>Calle 123 #45-67, Bogotá, Colombia</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<!-- Pie de página -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
+        </div>
+
+        <div class="footer-section">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la Empresa</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Socios</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>SÍGUENOS</h2>
+            <div class="social-icons">
+                <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
+                </a>
+                <a href="https://www.youtube.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

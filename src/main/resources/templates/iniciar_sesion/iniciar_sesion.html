@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio Sesion</title>
+    <!-- Ruta hacia el CSS -->
+    <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
+    <link rel="stylesheet" th:href="@{/css/iniciar_sesion/iniciar_sesion.css}">
+
+</head>
+
+<body>
+<!-- ===== ENCABEZADO ===== -->
+<header>
+    <div class="marca">
+        <div class="logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+
+        <div>
+            <h1 class="titulo">Eggs Gold</h1>
+            <p class="subtitulo">Huevos frescos a tu puerta</p>
+        </div>
+    </div>
+
+
+    <nav>
+        <a th:href="@{/inicio}">Inicio</a>
+        <a href="#productos">Promociones</a>
+        <a href="#sobre">Sobre nosotros</a>
+        <a th:href="@{/contacto}">Contacto</a>
+        <a th:href="@{/registro_cliente}">Registrarse</a>
+        <a th:href="@{/iniciar_sesion}" class = "activo">Iniciar Sesión</a>
+        <a href="../carrito/carrito.html" class="carrito">
+            <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
+        </a>
+    </nav>
+</header>
+
+
+<main>
+    <div class="formulario-container">
+        <!-- Título del formulario con ícono -->
+        <div class="titulo-formulario">
+            <i class="fas fa-sign-in-alt"></i>
+            INICIAR SESIÓN
+        </div>
+        <div class="form-wrapper">
+            <!-- Imagen decorativa del formulario -->
+            <img th:src="@{/imagenes/iniciar_sesion/iniciar_sesion.png}" alt="Imagen de inicio" class="registro-img" />
+            <div class="form-card">
+                <form th:action="@{/login}" th:object="${loginDTO}" method="POST">
+                    <!-- Campo de documento -->
+                    <div class="form-group">
+                        <label for="documento">Documento:</label>
+                        <input type="text" id="documento" th:field="*{documento}" required />
+                    </div>
+
+                    <!-- Campo de contraseña -->
+                    <div class="form-group">
+                        <label for="contrasena">Contraseña:</label>
+                        <input type="password" id="contrasena" th:field="*{password}" required />
+                    </div>
+
+                    <!-- Botón de enviar -->
+                    <button type="submit" class="boton-registrarse">Iniciar sesión</button>
+
+                    <!-- Mensaje de error (solo visible si hay error) -->
+                    <div  class="mensaje-error" style="display:none;">Usuario o contraseña incorrectos</div>
+
+                    <!-- Enlace a registro -->
+                    <div class="enlace-login">
+                        ¿No tienes una cuenta? <a th:href="@{/registro}">Regístrate aquí</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Pie de página -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
+        </div>
+
+        <div class="footer-section">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la Empresa</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Socios</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>SÍGUENOS</h2>
+            <div class="social-icons">
+                <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
+                </a>
+                <a href="https://www.youtube.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

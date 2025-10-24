@@ -1,0 +1,136 @@
+
+:root {
+    --color-principal: #F4D03F;
+    --color-secundario: #1C2833;
+    --color-verde: #27AE60;
+    --color-fondo: #F7DC6F;
+    --color-texto: #333333;
+    --blanco: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: rgba(244, 208, 63, 0.08);
+}
+
+/* Contenedor principal */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 10px;
+}
+
+/* Contenedor del formulario con imagen */
+.form-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    background-color: var(--blanco);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    border: 2px solid var(--color-texto);
+    position: relative;
+    animation: fadeIn 1s ease;
+}
+
+.titulo-registro {
+    position: absolute;
+    top: 20px;
+    left: 110px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color-texto);
+    padding: 4px 12px;
+    border-radius: 6px;
+}
+
+/* Tarjeta del formulario */
+.form-card {
+    max-width: 500px;
+    width: 100%;
+    animation: slideIn 1s ease;
+}
+
+/* Estilos del formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+input:focus {
+    border-color: var(--color-texto);
+    background-color: #f4f4f4;
+}
+
+/* Botón de registro */
+.boton-registrarse {
+    background-color: var(--color-verde);
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s;
+}
+
+.boton-registrarse:hover {
+    transform: scale(1.05);
+}
+
+/* Imagen del formulario */
+.registro-img {
+    max-width: 300px;
+    height: auto;
+    animation: fadeInLeft 1.2s ease;
+}
+
+/* Enlace a login */
+.enlace-login {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.enlace-login a {
+    text-decoration: none;
+    color: var(--color-verde);
+    font-size: 14px;
+}
+
+.enlace-login a:hover {
+    text-decoration: underline;
+    color: var(--color-verde);
+}
+
+/* Mensajes de error y éxito */
+.mensaje-error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+.mensaje-exito {
+    color: green;
+    font-size: 14px;
+    text-align: center;
+}
