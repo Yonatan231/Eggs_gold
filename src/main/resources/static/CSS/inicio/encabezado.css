@@ -1,5 +1,6 @@
-/* ===== ENCABEZADO ===== */
+/* ===== ENCABEZADO (HEADER) ===== */
 header {
+    /* Posición fija para que el header siempre esté visible al hacer scroll */
     position: fixed;
     top: 0;
     left: 0;
@@ -10,10 +11,11 @@ header {
     align-items: center;
     padding: 16px 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    /* z-index alto para que el header esté sobre otros elementos */
+    z-index: 1000;
 }
 
-/* ----- Marca y logo ----- */
+/* ===== MARCA Y LOGO ===== */
 .marca {
     display: flex;
     align-items: center;
@@ -39,6 +41,7 @@ header {
 
 .titulo {
     font-size: 18px;
+    color: var(--color-secundario);
 }
 
 .subtitulo {
@@ -46,14 +49,36 @@ header {
     color: #666;
 }
 
-/* ----- Navegación ----- */
+/* ===== BOTÓN HAMBURGUESA PARA MÓVILES ===== */
+/* Este botón solo se muestra en pantallas pequeñas */
+.menu-toggle {
+    display: none; /* Oculto por defecto en pantallas grandes */
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 1001;
+}
+
+/* Las tres líneas del botón hamburguesa */
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--color-secundario);
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
+/* ===== NAVEGACIÓN ===== */
 nav {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Estilo general de los enlaces */
+/* Estilo general de los enlaces de navegación */
 nav a {
     display: inline-flex;
     align-items: center;
@@ -63,39 +88,40 @@ nav a {
     padding: 8px 12px;
     border-radius: 6px;
     font-weight: bold;
+    /* Transiciones suaves para los efectos */
     transition: background 0.3s, color 0.3s, transform 0.2s;
 }
 
-/* Quitar el rectángulo verde al hacer clic */
+/* Quitar el contorno al hacer clic */
 nav a:focus {
     outline: none;
     box-shadow: none;
 }
 
-/* Hover general */
+/* Efecto hover: fondo verde y texto blanco */
 nav a:hover {
     background-color: var(--color-verde);
     color: #fff;
     transform: translateY(-1px);
 }
 
-/* Enlace activo */
+/* Enlace activo: se mantiene con fondo verde */
 nav a.activo {
     background-color: var(--color-verde);
     color: #fff;
 }
 
-/* ----- Carrito de compras ----- */
+/* ===== CARRITO DE COMPRAS ===== */
 .carrito {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px; /* igual que los otros enlaces */
+    padding: 10px;
     border-radius: 6px;
     transition: background 0.3s, transform 0.3s;
 }
 
-/* Fondo verde al pasar el mouse sobre el área completa */
+/* Fondo verde al pasar el mouse sobre el carrito */
 .carrito:hover {
     background-color: var(--color-verde);
 }
@@ -108,7 +134,146 @@ nav a.activo {
     transition: transform 0.3s ease;
 }
 
-/* Agranda solo el ícono, no el fondo */
+/* Agranda el ícono del carrito al hacer hover */
 .carrito:hover img {
     transform: scale(1.15);
+}
+
+/* ==========================================
+   MEDIA QUERIES PARA RESPONSIVE
+   ========================================== */
+
+/* ===== TABLETS Y PANTALLAS MEDIANAS (768px o menos) ===== */
+@media (max-width: 768px) {
+    /* Reducir padding del header */
+    header {
+        padding: 12px 16px;
+    }
+
+    /* Mostrar el botón hamburguesa en tablets y móviles */
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Navegación en modo móvil */
+    nav {
+        /* Posición absoluta para que se superponga al contenido */
+        position: absolute;
+        top: 100%; /* Justo debajo del header */
+        left: 0;
+        right: 0;
+        background: var(--color-fondo);
+        /* Cambiar a columna vertical */
+        flex-direction: column;
+        gap: 0;
+        /* Ocultar el menú por defecto */
+        max-height: 0;
+        overflow: hidden;
+        /* Transición suave al abrir/cerrar */
+        transition: max-height 0.3s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Cuando el menú está activo (clase añadida por JavaScript) */
+    nav.active {
+        max-height: 500px; /* Altura suficiente para mostrar todos los enlaces */
+    }
+
+    /* Enlaces de navegación en móvil */
+    nav a {
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 0;
+        /* Borde inferior para separar los enlaces */
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        justify-content: flex-start;
+    }
+
+    /* Quitar el borde del último enlace */
+    nav a:last-child {
+        border-bottom: none;
+    }
+
+    /* El carrito también ocupa todo el ancho en móvil */
+    .carrito {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 15px 20px;
+    }
+
+    /* Logo y texto más pequeños en tablets */
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .titulo {
+        font-size: 16px;
+    }
+
+    .subtitulo {
+        font-size: 11px;
+    }
+}
+
+/* ===== MÓVILES PEQUEÑOS (480px o menos) ===== */
+@media (max-width: 480px) {
+    /* Padding mínimo en móviles pequeños */
+    header {
+        padding: 10px 12px;
+    }
+
+    /* Logo y texto aún más pequeños */
+    .logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .titulo {
+        font-size: 14px;
+    }
+
+    .subtitulo {
+        font-size: 10px;
+    }
+
+    /* Reducir el gap de la marca */
+    .marca {
+        gap: 8px;
+    }
+
+    /* Ajustar padding de los enlaces en móvil pequeño */
+    nav a,
+    .carrito {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    /* Imagen del carrito más pequeña */
+    .carrito img {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Ajustar tamaño del botón hamburguesa */
+    .menu-toggle span {
+        width: 22px;
+        height: 2.5px;
+    }
+}
+
+/* ===== ANIMACIÓN DEL BOTÓN HAMBURGUESA AL ACTIVARSE ===== */
+/* Cuando el menú está activo, transforma el botón en una "X" */
+@media (max-width: 768px) {
+    nav.active ~ .menu-toggle span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    nav.active ~ .menu-toggle span:nth-child(2) {
+        opacity: 0;
+    }
+
+    nav.active ~ .menu-toggle span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
 }

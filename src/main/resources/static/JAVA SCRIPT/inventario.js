@@ -1,3 +1,26 @@
+fetch('/session', { credentials: 'same-origin' }) // envía la cookie JSESSIONID
+    .then(res => res.json())
+    .then(({ usuario_id, rol }) => {
+        if (!usuario_id || !rol) {
+            alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
+            window.location.href = '/login'; // endpoint Thymeleaf
+            return;
+        }
+
+        console.log('ID de sesión:', usuario_id);
+        console.log('Rol:', rol);
+
+        if (rol === 'ADMIN') {
+            cargarPedidosRecientes('PENDIENTE');
+        }
+    })
+    .catch(error => {
+        console.error("Error al obtener sesión:", error);
+        window.location.href = '/login';
+    });
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ DOM completamente cargado");
 
@@ -103,7 +126,9 @@ function agregarAlCarrito(idProducto, precioProducto, cantidad) {
 
     fetch("/api/carrito/agregar", {
         method: "POST",
-        body: formData
+        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productoId: 1, cantidad: 2 })
     })
     .then(response => response.text())
     .then(mensaje => {

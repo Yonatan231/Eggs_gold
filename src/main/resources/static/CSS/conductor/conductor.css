@@ -1,0 +1,577 @@
+/* ============================================
+   RESETEO Y ESTILOS GENERALES
+   Elimina márgenes y paddings por defecto del navegador
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Incluye padding y border en el ancho/alto total */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ============================================
+   VARIABLES CSS (Colores y valores reutilizables)
+   Facilitan cambiar el diseño desde un solo lugar
+   ============================================ */
+:root {
+    --color-accent: #27AE60;        /* Color verde principal */
+    --color-success: #2ecc71;       /* Color para estados exitosos */
+    --color-warning: #e67e22;       /* Color para advertencias */
+    --color-dark: #2c3e50;          /* Color oscuro para textos */
+    --color-sidebar: #F7DC6F;       /* Color amarillo del menú */
+    --color-sidebar-dark: #F7DC6F;  /* Color amarillo oscuro del menú */
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);        /* Sombra suave */
+    --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);  /* Sombra al pasar el mouse */
+    --transition: all 0.3s ease;    /* Transición suave para animaciones */
+}
+
+/* ============================================
+   BODY (Cuerpo de la página)
+   Configura el fondo y disposición principal
+   ============================================ */
+body {
+    background-color: #FEFCF4;  /* Color crema suave de fondo */
+    color: #333;                /* Color del texto */
+    line-height: 1.6;           /* Espaciado entre líneas */
+    display: flex;              /* Usa flexbox para layout */
+    min-height: 100vh;          /* Altura mínima del 100% de la ventana */
+}
+
+/* ============================================
+   MENÚ LATERAL (SIDEBAR)
+   Barra de navegación fija en el lado izquierdo
+   ============================================ */
+#sidebar {
+    width: 250px;   /* Ancho fijo del menú */
+    background: linear-gradient(180deg, var(--color-sidebar), var(--color-sidebar-dark));
+    color: white;
+    height: 100vh;  /* Altura completa de la ventana */
+    position: fixed; /* Se queda fijo al hacer scroll */
+    overflow-y: auto; /* Permite scroll si el contenido es muy largo */
+    transition: var(--transition); /* Animación suave al abrir/cerrar */
+    z-index: 1000;  /* Se muestra encima de otros elementos */
+}
+
+#sidebar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* Lista del menú lateral */
+#sidebar ul {
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 0;
+}
+
+/* Elementos de la lista del menú */
+#sidebar ul li {
+    padding: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Línea separadora sutil */
+}
+
+/* Enlaces del menú */
+#sidebar ul li a {
+    color: #333333;         /* Color oscuro para el texto */
+    text-decoration: none;  /* Quita el subrayado */
+    display: flex;          /* Flexbox para alinear icono y texto */
+    align-items: center;    /* Centra verticalmente */
+    gap: 12px;              /* Espacio entre icono y texto */
+    padding: 15px 20px;
+    transition: var(--transition); /* Transición suave */
+}
+
+/* Efecto al pasar el mouse sobre los enlaces */
+#sidebar ul li a:hover,
+#sidebar ul li .nav-link:hover {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: var(--color-accent);
+    padding-left: 25px;
+}
+
+#sidebar ul li a i,
+#sidebar ul li .nav-link i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* ============================================
+   PERFIL DEL CONDUCTOR EN EL MENÚ
+   Sección superior del menú con avatar
+   ============================================ */
+.perfil-admin {
+    text-align: center;
+    padding: 20px 10px;
+    background-color: rgba(0, 0, 0, 0.2); /* Fondo semi-transparente */
+}
+
+/* Contenedor del avatar (foto de perfil) */
+.avatar-contenedor {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;     /* Forma circular */
+    background-color: #27AE60; /* Fondo verde */
+    margin: 0 auto 15px;    /* Centrado horizontalmente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    position: relative;
+    background-size: cover;     /* La imagen cubre todo el contenedor */
+    background-position: center; /* Centra la imagen */
+}
+
+/* Iniciales que se muestran cuando no hay foto */
+#avatar-iniciales {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Imagen del avatar (se muestra cuando hay foto) */
+#avatar-imagen {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover; /* Ajusta la imagen sin distorsión */
+}
+
+/* Botón "+" para subir foto */
+.boton-subir-foto {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #27AE60;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+/* Efecto al pasar el mouse sobre el botón de subir foto */
+.boton-subir-foto:hover {
+    background: #2ecc71; /* Verde más claro */
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño */
+}
+
+/* ============================================
+   BOTÓN HAMBURGUESA (TOGGLE)
+   Solo visible en dispositivos móviles
+   ============================================ */
+.toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 1100; /* Se muestra encima del sidebar */
+    display: none;  /* Oculto por defecto */
+    transition: var(--transition);
+}
+
+.toggle-btn:hover {
+    background: #34495e; /* Color más claro al pasar el mouse */
+}
+
+/* ============================================
+   CONTENIDO PRINCIPAL (MAIN)
+   Área donde se muestra toda la información
+   ============================================ */
+main {
+    flex: 1;            /* Ocupa todo el espacio disponible */
+    margin-left: 250px; /* Deja espacio para el sidebar */
+    padding: 20px;
+    transition: var(--transition);
+}
+
+/* ============================================
+   CABECERA (HEADER)
+   Barra superior con logo y notificaciones
+   ============================================ */
+header {
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Contenedor de opciones del header */
+.opciones {
+    display: flex;
+    align-items: center;
+    gap: 20px;      /* Espacio entre elementos */
+    width: 100%;
+}
+
+/* Logo de la empresa */
+.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Título de bienvenida */
+.titulo2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Texto resaltado (palabra "conductor") */
+.resaltado {
+    color: var(--color-accent); /* Color verde */
+}
+
+/* Icono de campana de notificaciones */
+.campana-noti {
+    position: relative;
+    color: var(--color-dark);
+    font-size: 1.2rem;
+    margin-left: auto; /* Empuja el icono hacia la derecha */
+    transition: var(--transition);
+}
+
+.campana-noti:hover {
+    color: var(--color-accent); /* Cambia a verde al pasar el mouse */
+    transform: scale(1.1);
+}
+
+/* ============================================
+   TARJETAS DE RESUMEN (DASHBOARD)
+   Muestran estadísticas rápidas
+   ============================================ */
+.contenedor-cuadros {
+    display: grid;
+    /* Crea columnas automáticamente, mínimo 250px, máximo espacio disponible */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;          /* Espacio entre tarjetas */
+    margin-bottom: 30px;
+}
+
+/* Tarjeta individual */
+.tarjeta-resumen {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Efecto al pasar el mouse sobre una tarjeta */
+.tarjeta-resumen:hover {
+    transform: translateY(-5px); /* Se eleva ligeramente */
+    box-shadow: var(--shadow-hover); /* Sombra más pronunciada */
+}
+
+/* Icono de la tarjeta */
+.tarjeta-icono {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+/* Icono de pedidos asignados (azul) */
+.pedidos-asignados .tarjeta-icono {
+    background: rgba(52, 152, 219, 0.2);
+    color: var(--color-accent);
+}
+
+/* Icono de pedidos pendientes (naranja) */
+.pedidos-pendientes .tarjeta-icono {
+    background: rgba(230, 126, 34, 0.2);
+    color: var(--color-warning);
+}
+
+/* Contenido de texto de la tarjeta */
+.tarjeta-contenido h3 {
+    font-size: 0.9rem;
+    color: #7f8c8d;     /* Gris suave */
+    margin-bottom: 5px;
+}
+
+/* Número grande del contador */
+.contador {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
+/* ============================================
+   SECCIONES DE TABLAS
+   Contenedores para las tablas de pedidos
+   ============================================ */
+.seccion-tabla {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+/* Encabezado de cada sección */
+.encabezado-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.encabezado-seccion h2 {
+    font-size: 1.3rem;
+    color: var(--color-dark);
+}
+
+/* ============================================
+   FORMULARIOS DE BÚSQUEDA
+   Barra para buscar pedidos o historial
+   ============================================ */
+.form-busqueda {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+/* Campo de texto de búsqueda */
+.form-busqueda input {
+    flex: 1;            /* Ocupa todo el espacio disponible */
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+/* Efecto al enfocar el campo de búsqueda */
+.form-busqueda input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+/* Botón de búsqueda */
+.form-busqueda button {
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+/* Efecto al pasar el mouse sobre el botón */
+.form-busqueda button:hover {
+    background: #2ecc71; /* Verde más claro */
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   TABLAS DE DATOS
+   Tablas para mostrar pedidos e historial
+   ============================================ */
+.contenedor-tabla {
+    overflow-x: auto; /* Permite scroll horizontal en móviles */
+}
+
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse; /* Une los bordes de las celdas */
+}
+
+/* Celdas de la tabla */
+.tabla-datos th,
+.tabla-datos td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+/* Encabezados de la tabla */
+.tabla-datos th {
+    background-color: #f8f9fa;
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Efecto al pasar el mouse sobre una fila */
+.tabla-datos tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN EN LAS TABLAS
+   Botones para entregar, cancelar, etc.
+   ============================================ */
+.btn-accion {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 5px;
+    transition: var(--transition);
+}
+
+/* Botón verde (marcar como entregado) */
+.btn-entregado {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-entregado:hover {
+    background: #27ae60;
+    transform: scale(1.05);
+}
+
+/* Botón rojo (cancelar) */
+.btn-cancelar {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   ESTADOS DE PEDIDOS
+   Estilos para diferentes estados
+   ============================================ */
+.estado-pendiente {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.estado-asignado {
+    color: #3498db;
+    font-weight: bold;
+}
+
+.estado-en-camino {
+    color: var(--color-accent);
+    font-weight: bold;
+}
+
+.estado-entregado {
+    color: var(--color-success);
+    font-weight: bold;
+}
+
+.estado-cancelado {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* ============================================
+   MENSAJE CUANDO NO HAY DATOS
+   Texto que aparece cuando las tablas están vacías
+   ============================================ */
+.mensaje-vacio {
+    text-align: center;
+    padding: 40px 20px;
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+/* ============================================
+   DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
+   Adaptaciones para pantallas pequeñas
+   ============================================ */
+@media (max-width: 768px) {
+    /* Muestra el botón hamburguesa en móviles */
+    .toggle-btn {
+        display: block;
+    }
+
+    /* Oculta el sidebar por defecto en móviles */
+    #sidebar {
+        width: 0;
+        overflow: hidden;
+    }
+
+    /* El contenido principal ocupa todo el ancho */
+    main {
+        margin-left: 0;
+    }
+
+    /* Las tarjetas se apilan verticalmente */
+    .contenedor-cuadros {
+        grid-template-columns: 1fr;
+    }
+
+    /* El encabezado de sección se apila verticalmente */
+    .encabezado-seccion {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* El formulario de búsqueda se apila verticalmente */
+    .form-busqueda {
+        flex-direction: column;
+    }
+
+    /* El título es más pequeño en móviles */
+    .titulo2 {
+        font-size: 1.2rem;
+    }
+
+    /* El logo es más pequeño */
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Cuando el sidebar está activo en móviles */
+#sidebar.active {
+    width: 250px;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA (OPCIONAL)
+   Barra de desplazamiento con estilo
+   ============================================ */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

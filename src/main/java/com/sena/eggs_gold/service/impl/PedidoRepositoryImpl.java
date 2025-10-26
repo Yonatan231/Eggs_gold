@@ -1,8 +1,8 @@
-package com.sena.eggs_gold.repository;
+package com.sena.eggs_gold.service.impl;
 
-import com.sena.eggs_gold.dto.PedidoConductorDTO;
 import com.sena.eggs_gold.dto.PedidoConductorHistorialDTO;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
+import com.sena.eggs_gold.repository.PedidoRepositoryHistorial;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;

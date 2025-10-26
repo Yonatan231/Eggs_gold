@@ -1,4 +1,5 @@
-/* === Variables de colores === */
+/* ===== VARIABLES DE COLORES ===== */
+/* Estas variables ya están definidas en inicio.css, pero las incluimos por claridad */
 :root {
     --color-principal: #F4D03F;
     --color-secundario: #1C2833;
@@ -6,35 +7,40 @@
     --color-fondo: #F7DC6F;
     --color-texto: #333333;
     --blanco: #ffffff;
+    --color-error: #e74c3c;
     font-family: Arial, sans-serif;
 }
 
-/* Estilos globales */
+/* ===== ESTILOS GLOBALES DEL BODY ===== */
 body {
     margin: 0;
-    font-family: 'Initial', sans-serif;
+    font-family: 'Arial', sans-serif;
     background: rgba(244, 208, 63, 0.08);
 }
 
-/* Contenedor principal del formulario */
+/* ===== CONTENEDOR PRINCIPAL (MAIN) ===== */
 main {
     display: flex;
     justify-content: center;
-    padding: 60px 10px;
+    align-items: center;
+    padding: 60px 20px;
+    /* Altura mínima para centrar verticalmente */
+    min-height: calc(100vh - 80px);
 }
 
-/* Tarjeta del formulario */
+/* ===== CONTENEDOR DEL FORMULARIO ===== */
+/* Caja principal que envuelve todo el formulario */
 .formulario-container {
     border: 2px solid var(--color-secundario);
     border-radius: 10px;
-    padding: 30px;
+    padding: 40px;
     max-width: 900px;
     width: 100%;
     background-color: var(--blanco);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Título del formulario */
+/* ===== TÍTULO DEL FORMULARIO ===== */
 .titulo-formulario {
     display: flex;
     align-items: center;
@@ -56,91 +62,341 @@ main {
     background-color: var(--color-secundario);
 }
 
-.titulo-formulario i {
-    font-size: 24px;
+/* Ícono del título */
+.icono-login {
+    font-size: 28px;
 }
 
-/* Wrapper para la imagen y el formulario */
+/* ===== WRAPPER PARA IMAGEN Y FORMULARIO ===== */
+/* Diseño horizontal: imagen a la izquierda, formulario a la derecha */
 .form-wrapper {
     display: flex;
     flex-direction: row;
-    gap: 30px;
+    gap: 40px;
     justify-content: center;
     align-items: center;
 }
 
-/* Imagen del formulario */
-.registro-img {
-    width: 250px;
-    height: auto;
+/* ===== CONTENEDOR DE LA IMAGEN ===== */
+.imagen-container {
+    flex-shrink: 0; /* Evita que la imagen se comprima */
 }
 
-/* Tarjeta que contiene el formulario */
+/* Imagen decorativa del formulario */
+.registro-img {
+    width: 280px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* ===== TARJETA DEL FORMULARIO ===== */
 .form-card {
     max-width: 400px;
     width: 100%;
 }
 
-/* Estilos del formulario */
+/* ===== ESTILOS DEL FORMULARIO ===== */
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
+/* Grupo de cada campo del formulario */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Etiquetas de los campos */
 label {
     font-weight: bold;
+    color: var(--color-secundario);
+    font-size: 15px;
 }
 
+/* Campos de entrada (inputs) */
 input {
     border: none;
     border-bottom: 2px solid #ccc;
-    padding: 10px;
+    padding: 12px 5px;
     font-size: 15px;
     transition: border-color 0.3s ease;
+    background-color: transparent;
 }
 
+/* Estado focus de los inputs */
 input:focus {
-    border-color: var(--color-secundario);
+    border-color: var(--color-verde);
     outline: none;
 }
 
-/* Botón de enviar */
+/* Placeholder de los inputs */
+input::placeholder {
+    color: #999;
+    font-size: 14px;
+}
+
+/* ===== BOTÓN DE ENVIAR ===== */
 .boton-registrarse {
     background-color: var(--color-verde);
     color: white;
-    padding: 12px;
+    padding: 14px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.boton-registrarse:hover {
-    background-color: var(--color-verde);
-    transform: scale(1.05);
-}
-
-/* Enlace de registro */
-.enlace-login {
-    text-align: center;
+    transition: all 0.3s ease;
     margin-top: 10px;
 }
 
+/* Efecto hover del botón */
+.boton-registrarse:hover {
+    background-color: #229954;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+}
+
+/* Efecto active del botón (al hacer clic) */
+.boton-registrarse:active {
+    transform: translateY(0);
+}
+
+/* ===== ENLACE DE REGISTRO ===== */
+.enlace-login {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: var(--color-texto);
+}
+
+/* Enlace dentro del texto */
 .enlace-login a {
     color: var(--color-verde);
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
 }
 
+/* Hover del enlace */
 .enlace-login a:hover {
     text-decoration: underline;
-    color: var(--color-hover);
+    color: #229954;
 }
 
-/* Mensaje de error */
+/* ===== MENSAJE DE ERROR ===== */
 .mensaje-error {
-    color: red;
+    color: var(--color-error);
     font-size: 14px;
     text-align: center;
+    padding: 10px;
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: 5px;
+    border: 1px solid var(--color-error);
+    margin-top: 10px;
+}
+
+/* ==========================================
+   MEDIA QUERIES PARA RESPONSIVE
+   ========================================== */
+
+/* ===== TABLETS (768px o menos) ===== */
+@media (max-width: 768px) {
+    /* Reducir padding del main */
+    main {
+        padding: 40px 15px;
+        min-height: calc(100vh - 70px);
+    }
+
+    /* Reducir padding del contenedor del formulario */
+    .formulario-container {
+        padding: 30px 25px;
+    }
+
+    /* Reducir tamaño del título */
+    .titulo-formulario {
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+
+    .icono-login {
+        font-size: 24px;
+    }
+
+    /* Cambiar a diseño vertical: imagen arriba, formulario abajo */
+    .form-wrapper {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    /* Reducir tamaño de la imagen */
+    .registro-img {
+        width: 220px;
+    }
+
+    /* El formulario ocupa todo el ancho disponible */
+    .form-card {
+        max-width: 100%;
+    }
+
+    /* Ajustar tamaño de los inputs */
+    input {
+        padding: 10px 5px;
+        font-size: 14px;
+    }
+
+    /* Ajustar botón */
+    .boton-registrarse {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    /* Ajustar enlace */
+    .enlace-login {
+        font-size: 13px;
+    }
+}
+
+/* ===== MÓVILES (480px o menos) ===== */
+@media (max-width: 480px) {
+    /* Reducir padding del main */
+    main {
+        padding: 30px 12px;
+        min-height: calc(100vh - 60px);
+    }
+
+    /* Reducir padding del contenedor */
+    .formulario-container {
+        padding: 25px 18px;
+        border-radius: 8px;
+    }
+
+    /* Título más pequeño */
+    .titulo-formulario {
+        font-size: 18px;
+        margin-bottom: 20px;
+        gap: 8px;
+    }
+
+    .icono-login {
+        font-size: 20px;
+    }
+
+    /* Reducir gap del wrapper */
+    .form-wrapper {
+        gap: 20px;
+    }
+
+    /* Imagen más pequeña en móviles */
+    .registro-img {
+        width: 180px;
+    }
+
+    /* Reducir gap del formulario */
+    form {
+        gap: 18px;
+    }
+
+    /* Labels más pequeñas */
+    label {
+        font-size: 14px;
+    }
+
+    /* Inputs más pequeños */
+    input {
+        padding: 10px 4px;
+        font-size: 14px;
+    }
+
+    input::placeholder {
+        font-size: 13px;
+    }
+
+    /* Botón más pequeño */
+    .boton-registrarse {
+        padding: 12px;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    /* Enlace más pequeño */
+    .enlace-login {
+        font-size: 12px;
+        margin-top: 12px;
+    }
+
+    /* Mensaje de error más pequeño */
+    .mensaje-error {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+/* ===== MÓVILES MUY PEQUEÑOS (360px o menos) ===== */
+@media (max-width: 360px) {
+    /* Padding mínimo */
+    main {
+        padding: 20px 10px;
+    }
+
+    .formulario-container {
+        padding: 20px 15px;
+    }
+
+    /* Ocultar la imagen en pantallas muy pequeñas para ahorrar espacio */
+    .imagen-container {
+        display: none;
+    }
+
+    /* Título aún más pequeño */
+    .titulo-formulario {
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+    /* Hacer las líneas decorativas más cortas */
+    .titulo-formulario::before,
+    .titulo-formulario::after {
+        flex: 0.5;
+    }
+
+    /* Ajustes finales para pantallas muy pequeñas */
+    form {
+        gap: 15px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    input {
+        padding: 9px 4px;
+        font-size: 13px;
+    }
+
+    .boton-registrarse {
+        padding: 11px;
+        font-size: 13px;
+    }
+
+    .enlace-login {
+        font-size: 11px;
+    }
+}
+
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+/* Focus visible para navegación con teclado */
+input:focus,
+.boton-registrarse:focus {
+    outline: 2px solid var(--color-verde);
+    outline-offset: 2px;
+}
+
+/* Mejorar contraste del placeholder */
+@media (prefers-contrast: high) {
+    input::placeholder {
+        color: #666;
+    }
 }

@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
+    <!-- Meta tag IMPORTANTE para responsive: hace que el sitio se adapte al ancho del dispositivo -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio Sesion</title>
-    <!-- Ruta hacia el CSS -->
-    <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
-    <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
-    <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
-    <link rel="stylesheet" th:href="@{/css/iniciar_sesion/iniciar_sesion.css}">
+    <title>Iniciar Sesión - Eggs Gold</title>
 
+    <!-- Rutas CSS -->
+    <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
+    <link rel="stylesheet" th:href="@{/css/iniciar_sesion/iniciar_sesion.css}">
 </head>
 
 <body>
@@ -26,54 +27,84 @@
         </div>
     </div>
 
+    <!-- Botón hamburguesa para menú móvil (solo se ve en pantallas pequeñas) -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
-    <nav>
+    <!-- Navegación: se oculta en móvil y se muestra al hacer clic en el botón -->
+    <nav id="navMenu">
         <a th:href="@{/inicio}">Inicio</a>
         <a href="#productos">Promociones</a>
         <a href="#sobre">Sobre nosotros</a>
         <a th:href="@{/contacto}">Contacto</a>
         <a th:href="@{/registro_cliente}">Registrarse</a>
-        <a th:href="@{/iniciar_sesion}" class = "activo">Iniciar Sesión</a>
+        <a th:href="@{/iniciar_sesion}" class="activo">Iniciar Sesión</a>
         <a href="../carrito/carrito.html" class="carrito">
             <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
         </a>
     </nav>
 </header>
 
-
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
 <main>
     <div class="formulario-container">
-        <!-- Título del formulario con ícono -->
+        <!-- Título del formulario con líneas decorativas -->
         <div class="titulo-formulario">
-            <i class="fas fa-sign-in-alt"></i>
+            <span class="icono-login">🔐</span>
             INICIAR SESIÓN
         </div>
+
+        <!-- Wrapper que contiene imagen y formulario -->
         <div class="form-wrapper">
-            <!-- Imagen decorativa del formulario -->
-            <img th:src="@{/imagenes/iniciar_sesion/iniciar_sesion.png}" alt="Imagen de inicio" class="registro-img" />
+            <!-- Imagen decorativa del formulario (se oculta en móvil) -->
+            <div class="imagen-container">
+                <img th:src="@{/imagenes/iniciar_sesion/iniciar_sesion.png}" alt="Imagen de inicio" class="registro-img" />
+            </div>
+
+            <!-- Tarjeta que contiene el formulario -->
             <div class="form-card">
                 <form th:action="@{/login}" th:object="${loginDTO}" method="POST">
                     <!-- Campo de documento -->
                     <div class="form-group">
                         <label for="documento">Documento:</label>
-                        <input type="text" id="documento" th:field="*{documento}" required />
+                        <input
+                                type="text"
+                                id="documento"
+                                th:field="*{documento}"
+                                placeholder="Ingresa tu documento"
+                                required
+                        />
                     </div>
 
                     <!-- Campo de contraseña -->
                     <div class="form-group">
                         <label for="contrasena">Contraseña:</label>
-                        <input type="password" id="contrasena" th:field="*{password}" required />
+                        <input
+                                type="password"
+                                id="contrasena"
+                                th:field="*{password}"
+                                placeholder="Ingresa tu contraseña"
+                                required
+                        />
                     </div>
 
                     <!-- Botón de enviar -->
-                    <button type="submit" class="boton-registrarse">Iniciar sesión</button>
+                    <button type="submit" class="boton-registrarse">
+                        Iniciar sesión
+                    </button>
 
                     <!-- Mensaje de error (solo visible si hay error) -->
-                    <div  class="mensaje-error" style="display:none;">Usuario o contraseña incorrectos</div>
+                    <div class="mensaje-error" style="display:none;">
+                        ❌ Usuario o contraseña incorrectos
+                    </div>
 
                     <!-- Enlace a registro -->
                     <div class="enlace-login">
-                        ¿No tienes una cuenta? <a th:href="@{/registro}">Regístrate aquí</a>
+                        ¿No tienes una cuenta?
+                        <a th:href="@{/registro_cliente}">Regístrate aquí</a>
                     </div>
                 </form>
             </div>
@@ -81,7 +112,7 @@
     </div>
 </main>
 
-<!-- Pie de página -->
+<!-- ===== PIE DE PÁGINA ===== -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -117,5 +148,8 @@
         </div>
     </div>
 </footer>
+
+<!-- Script JavaScript para el menú móvil -->
+<script th:src="@{/js/inicio/inicio.js}"></script>
 </body>
 </html>

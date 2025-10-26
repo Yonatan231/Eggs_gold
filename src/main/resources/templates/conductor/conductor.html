@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Configuración básica de la página -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de conductor de Eggs Gold - Gestión de pedidos asignados">
+
+    <!-- Enlaces a hojas de estilo externas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/conductor/conductor.css">
+
+    <!-- Icono de la página (favicon) -->
+    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+
+    <title>EGGS GOLD - Panel de Conductor</title>
+</head>
+<body>
+
+<!-- ============================================
+     BOTÓN PARA ABRIR/CERRAR MENÚ LATERAL
+     Se muestra solo en dispositivos móviles
+     ============================================ -->
+<button class="toggle-btn" aria-label="Abrir menú lateral" aria-expanded="false">
+    <span>&#9776;</span>
+</button>
+
+<!-- ============================================
+     MENÚ LATERAL (SIDEBAR)
+     Contiene las opciones de navegación del conductor
+     ============================================ -->
+<nav id="sidebar" aria-label="Menú de conductor">
+    <ul>
+        <!-- Sección del perfil del conductor -->
+        <li class="perfil-admin">
+            <!-- Contenedor del avatar (foto de perfil) -->
+            <div class="avatar-contenedor" id="avatar-contenedor">
+                <!-- Iniciales que se muestran si no hay foto -->
+                <span id="avatar-iniciales">CD</span>
+                <!-- Imagen de perfil (oculta por defecto) -->
+                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                <!-- Botón para subir una nueva foto -->
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">+</label>
+                <!-- Input de archivo (oculto, se activa con el botón "+") -->
+                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+            </div>
+            <h2>Panel de Conductor</h2>
+        </li>
+
+        <!-- Opciones del menú -->
+        <li>
+            <a href="/registro_vehiculo">
+                <i class="fas fa-truck"></i> Registro Vehículo
+            </a>
+        </li>
+        <li>
+            <a href="/logout" id="cerrar_sesion" class="texto">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- ============================================
+     CONTENIDO PRINCIPAL
+     Aquí va todo el contenido visible de la página
+     ============================================ -->
+<main id="main-content" role="main">
+
+    <!-- ============================================
+         CABECERA (HEADER)
+         Barra superior con logo y notificaciones
+         ============================================ -->
+    <header role="banner">
+        <div class="opciones">
+            <!-- Logo de la empresa -->
+            <img src="imagenes/LOGO.jpg" alt="Logo de Eggs Gold" class="logo"/>
+
+            <!-- Título de bienvenida -->
+            <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">conductor</span></h1>
+
+            <!-- Botón de notificaciones (campana) -->
+            <a th:href="@{/notificaciones}" class="campana-noti" aria-label="Notificaciones">
+                <i class="fas fa-bell"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- ============================================
+         TARJETAS DE RESUMEN (DASHBOARD)
+         Muestran estadísticas rápidas del conductor
+         ============================================ -->
+    <section class="contenedor-cuadros" aria-label="Resumen de pedidos">
+
+        <!-- Tarjeta 1: Total de Pedidos Asignados -->
+        <div class="tarjeta-resumen pedidos-asignados">
+            <div class="tarjeta-icono">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="tarjeta-contenido">
+                <h3>Pedidos Asignados</h3>
+                <!-- Este número se actualiza automáticamente con JavaScript -->
+                <span id="totalAsignados" class="contador">0</span>
+            </div>
+        </div>
+
+        <!-- Tarjeta 2: Pedidos Pendientes de Entrega -->
+        <div class="tarjeta-resumen pedidos-pendientes">
+            <div class="tarjeta-icono">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="tarjeta-contenido">
+                <h3>Pedidos Pendientes</h3>
+                <!-- Este número se actualiza automáticamente con JavaScript -->
+                <span id="totalPendientes" class="contador">0</span>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         SECCIÓN DE PEDIDOS ASIGNADOS
+         Tabla con todos los pedidos que debe entregar el conductor
+         ============================================ -->
+    <section class="seccion-tabla" aria-labelledby="titulo-pedidos-asignados">
+
+        <!-- Encabezado de la sección -->
+        <div class="encabezado-seccion">
+            <h2 id="titulo-pedidos-asignados">📦 Pedidos Asignados</h2>
+        </div>
+
+        <!-- Formulario de búsqueda para filtrar pedidos -->
+        <form class="form-busqueda" id="form-busqueda-conductor">
+            <input
+                    type="text"
+                    name="buscar"
+                    id="buscar-conductor"
+                    placeholder="Buscar pedidos..."
+                    aria-label="Buscar pedidos asignados"
+            />
+            <button type="submit" aria-label="Buscar">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </form>
+
+        <!-- Contenedor de la tabla (permite scroll horizontal en móviles) -->
+        <div class="contenedor-tabla">
+            <table class="tabla-datos" id="tabla-pedidos_asignados">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Productos</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Los pedidos se cargarán aquí dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+
+            <!-- Mensaje que se muestra cuando no hay pedidos -->
+            <div id="mensaje-sin-pedidos" class="mensaje-vacio" style="display: none;">
+                <p>No hay pedidos asignados para mostrar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECCIÓN DE HISTORIAL DE PEDIDOS
+         Tabla con todos los pedidos completados o cancelados
+         ============================================ -->
+    <section class="seccion-tabla" aria-labelledby="titulo-historial-pedidos">
+
+        <!-- Encabezado de la sección -->
+        <div class="encabezado-seccion">
+            <h2 id="titulo-historial-pedidos">📋 Historial de Pedidos</h2>
+        </div>
+
+        <!-- Formulario de búsqueda para filtrar historial -->
+        <form class="form-busqueda" id="form-busqueda-historial">
+            <input
+                    type="text"
+                    name="buscar"
+                    id="buscar-historial"
+                    placeholder="Buscar historial..."
+                    aria-label="Buscar historial de pedidos"
+            />
+            <button type="submit" aria-label="Buscar">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </form>
+
+        <!-- Contenedor de la tabla de historial -->
+        <div class="contenedor-tabla">
+            <table class="tabla-datos" id="tabla-pedidos">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Tipo de producto</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- El historial se cargará aquí dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+
+            <!-- Mensaje que se muestra cuando no hay historial -->
+            <div id="mensaje-sin-historial" class="mensaje-vacio" style="display: none;">
+                <p>No hay historial de pedidos para mostrar.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ============================================
+     SCRIPTS DE JAVASCRIPT
+     Importa el archivo con toda la funcionalidad
+     ============================================ -->
+<script src="js/conductor/conductor.js"></script>
+
+</body>
+</html>

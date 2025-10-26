@@ -67,6 +67,7 @@ public class InventarioServiceImpl implements InventarioService {
         inventario.setUbicacion(dto.getUbicacion());
         inventario.setFechaCaducidad(dto.getFechaCaducidad());
         inventario.setFechaActualizacion(LocalDateTime.now());
+        inventario.setEstado(EstadoInventario.ACTIVO);
 
         inventarioRepository.save(inventario);
 

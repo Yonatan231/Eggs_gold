@@ -7,13 +7,12 @@
     --color-success: #2ecc71;
     --color-warning: #e67e22;
     --color-danger: #e74c3c;
-    --color-dark: #2c3e50;       /* letra */
+    --color-dark: #2c3e50;
     --color-sidebar: #F7DC6F;
     --color-sidebar-dark: #F7DC6F;
-    --color-header: #ffffff;         /* barra titulo admin */
-    --color-background: #ffffffff;     /* fondo todo */
-    --color-tabla: #ffffff;
-    --color-tabla-header: #f8f9fa; /* barra de la tabla de arriba  */
+    --color-header: #ffffff;
+    --color-background: #ffffffff;
+    --color-tabla-header: #f8f9fa;
     --color-modal-bg: rgba(0, 0, 0, 0.5);
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -42,7 +41,6 @@ body {
 
 /* ============================================
    MENÚ LATERAL (SIDEBAR)
-   Navegación principal del panel
    ============================================ */
 #sidebar {
     width: 250px;
@@ -56,24 +54,23 @@ body {
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
+#sidebar::-webkit-scrollbar {
+    display: none;
+}
 
 #sidebar {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-/* Lista de navegación */
 #sidebar ul {
     list-style: none;
-    padding: 0;
 }
 
 #sidebar ul li {
-    padding: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Enlaces de navegación */
 #sidebar ul li a,
 #sidebar ul li .nav-link {
     color: #333333;
@@ -101,7 +98,6 @@ body {
 
 /* ============================================
    PERFIL DEL ADMINISTRADOR
-   Sección superior del sidebar
    ============================================ */
 .perfil-admin {
     text-align: center;
@@ -117,7 +113,6 @@ body {
     color: white;
 }
 
-/* Contenedor del avatar */
 .avatar-contenedor {
     width: 80px;
     height: 80px;
@@ -141,7 +136,6 @@ body {
     transform: scale(1.05);
 }
 
-/* Imagen del avatar */
 #avatar-imagen {
     width: 100%;
     height: 100%;
@@ -149,13 +143,11 @@ body {
     border-radius: 50%;
 }
 
-/* Iniciales del avatar */
 #avatar-iniciales {
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Botón para subir foto de perfil */
 .boton-subir-foto {
     position: absolute;
     bottom: 0;
@@ -176,7 +168,6 @@ body {
 
 /* ============================================
    CONTENIDO PRINCIPAL
-   Área donde se muestra toda la información
    ============================================ */
 main {
     flex: 1;
@@ -188,7 +179,6 @@ main {
 
 /* ============================================
    CABECERA (HEADER)
-   Barra superior con logo y notificaciones
    ============================================ */
 header {
     background-color: var(--color-header);
@@ -206,7 +196,6 @@ header {
     width: 100%;
 }
 
-/* Logo del header */
 .logo {
     width: 50px;
     height: 50px;
@@ -215,7 +204,6 @@ header {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Título de bienvenida */
 .titulo2 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -228,7 +216,6 @@ header {
     font-weight: 700;
 }
 
-/* Icono de notificaciones */
 .campana-noti {
     position: relative;
     color: var(--color-dark);
@@ -243,7 +230,6 @@ header {
     transform: scale(1.1);
 }
 
-/* Contador de notificaciones */
 .notificacion-contador {
     position: absolute;
     top: 0;
@@ -263,7 +249,6 @@ header {
 
 /* ============================================
    TARJETAS DE RESUMEN (DASHBOARD)
-   Estadísticas principales en la parte superior
    ============================================ */
 .contenedor-cuadros {
     display: grid;
@@ -272,7 +257,6 @@ header {
     margin-bottom: 30px;
 }
 
-/* Tarjeta individual de resumen */
 .tarjeta-resumen {
     background: white;
     border-radius: var(--border-radius);
@@ -289,7 +273,6 @@ header {
     box-shadow: var(--shadow-hover);
 }
 
-/* Icono de la tarjeta */
 .tarjeta-icono {
     width: 60px;
     height: 60px;
@@ -301,7 +284,6 @@ header {
     flex-shrink: 0;
 }
 
-/* Estilos específicos para cada tipo de tarjeta */
 .registrados .tarjeta-icono {
     background: rgba(52, 152, 219, 0.15);
     color: #3498db;
@@ -317,7 +299,6 @@ header {
     color: var(--color-warning);
 }
 
-/* Contenido de texto de la tarjeta */
 .tarjeta-contenido {
     flex: 1;
 }
@@ -338,7 +319,6 @@ header {
 
 /* ============================================
    SECCIONES DE TABLAS
-   Contenedores para cada tabla de datos
    ============================================ */
 .seccion-tabla {
     background: #FEFCF4;
@@ -348,7 +328,6 @@ header {
     margin-bottom: 30px;
 }
 
-/* Encabezado de cada sección */
 .encabezado-seccion {
     display: flex;
     justify-content: space-between;
@@ -364,7 +343,6 @@ header {
     font-weight: 600;
 }
 
-/* Botón para descargar PDF */
 .btn-pdf {
     background: var(--color-danger);
     color: white;
@@ -388,7 +366,6 @@ header {
 
 /* ============================================
    FORMULARIOS DE BÚSQUEDA
-   Barra de búsqueda para filtrar datos
    ============================================ */
 .form-busqueda {
     display: flex;
@@ -434,7 +411,6 @@ header {
 
 /* ============================================
    TABLAS
-   Diseño de las tablas de datos
    ============================================ */
 .contenedor-tabla {
     overflow-x: auto;
@@ -475,7 +451,6 @@ header {
     background-color: #fefefe;
 }
 
-/* Imagen en la tabla */
 .tabla-datos img {
     border-radius: 5px;
     object-fit: cover;
@@ -484,7 +459,6 @@ header {
 
 /* ============================================
    BOTONES DE ACCIÓN
-   Botones para editar, eliminar, etc.
    ============================================ */
 .btn-accion {
     padding: 6px 12px;
@@ -505,7 +479,6 @@ header {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Botón primario (editar) */
 .btn-primary,
 .btn-editar {
     background: var(--color-accent);
@@ -517,7 +490,6 @@ header {
     background: #2980b9;
 }
 
-/* Botón de éxito (aceptar) */
 .btn-success,
 .btn-aceptar {
     background: var(--color-success);
@@ -529,7 +501,6 @@ header {
     background: #27ae60;
 }
 
-/* Botón de peligro (eliminar/rechazar) */
 .btn-danger,
 .btn-eliminar,
 .btn-rechazar {
@@ -545,7 +516,6 @@ header {
 
 /* ============================================
    ESTADOS DE PEDIDOS
-   Estilos para mostrar el estado visual
    ============================================ */
 .estado-pendiente {
     color: var(--color-warning);
@@ -571,7 +541,6 @@ header {
 
 /* ============================================
    MENSAJE VACÍO
-   Cuando no hay datos para mostrar
    ============================================ */
 .mensaje-vacio {
     text-align: center;
@@ -586,7 +555,6 @@ header {
 
 /* ============================================
    MODALES
-   Ventanas emergentes para edición
    ============================================ */
 .modal-overlay {
     position: fixed;
@@ -604,15 +572,10 @@ header {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* Contenido del modal */
 .modal-contenido {
     background: white;
     border-radius: var(--border-radius);
@@ -644,7 +607,6 @@ header {
     font-weight: 600;
 }
 
-/* Formularios dentro del modal */
 .modal-contenido label {
     display: block;
     margin-top: 15px;
@@ -679,7 +641,6 @@ header {
     min-height: 80px;
 }
 
-/* Botones del modal */
 .modal-botones {
     display: flex;
     justify-content: flex-end;
@@ -719,40 +680,29 @@ header {
     background: #27ae60;
 }
 
-/* Evitar scroll del body cuando el modal está abierto */
 body.modal-abierto {
     overflow: hidden;
 }
 
 /* ============================================
-   RESPONSIVE DESIGN
-   Adaptación para diferentes tamaños de pantalla
+   RESPONSIVE DESIGN - MEJORADO
    ============================================ */
 
 /* Tablets (768px o menos) */
 @media (max-width: 768px) {
-    /* Mostrar botón de menú */
-    .toggle-btn {
-        display: block;
-    }
-
-    /* Ocultar sidebar por defecto */
     #sidebar {
         left: -250px;
     }
 
-    /* Mostrar sidebar cuando está activo */
     #sidebar.active {
         left: 0;
     }
 
-    /* Ajustar contenido principal */
     main {
         margin-left: 0;
         padding: 15px;
     }
 
-    /* Ajustar header */
     header {
         padding: 12px 15px;
     }
@@ -765,18 +715,16 @@ body.modal-abierto {
         font-size: 1.2rem;
     }
 
-    /* Tarjetas en columna */
     .contenedor-cuadros {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
 
-    /* Ajustar encabezado de secciones */
     .encabezado-seccion {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    /* Formulario de búsqueda */
     .form-busqueda {
         flex-direction: column;
     }
@@ -786,7 +734,6 @@ body.modal-abierto {
         justify-content: center;
     }
 
-    /* Tablas con scroll horizontal */
     .contenedor-tabla {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -796,14 +743,14 @@ body.modal-abierto {
         min-width: 600px;
     }
 
-    /* Modal más pequeño */
     .modal-contenido {
         width: 95%;
         padding: 20px;
+        margin: 20px;
     }
 }
 
-/* Móviles pequeños (480px o menos) */
+/* Móviles (480px o menos) */
 @media (max-width: 480px) {
     .titulo2 {
         font-size: 1rem;
@@ -811,6 +758,8 @@ body.modal-abierto {
 
     .tarjeta-resumen {
         padding: 15px;
+        flex-direction: column;
+        text-align: center;
     }
 
     .tarjeta-icono {
@@ -825,6 +774,7 @@ body.modal-abierto {
 
     .seccion-tabla {
         padding: 15px;
+        margin-bottom: 20px;
     }
 
     .tabla-datos th,
@@ -836,59 +786,64 @@ body.modal-abierto {
     .btn-accion {
         padding: 5px 10px;
         font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+
+    .modal-botones {
+        flex-direction: column;
+    }
+
+    .btn-cancelar,
+    .btn-guardar {
+        width: 100%;
+        justify-content: center;
     }
 }
 
-/* ============================================
-   ANIMACIONES Y EFECTOS ADICIONALES
-   ============================================ */
-
-/* Animación de carga */
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
+/* Pantallas muy pequeñas (360px o menos) */
+@media (max-width: 360px) {
+    main {
+        padding: 10px;
     }
-    50% {
-        opacity: 0.5;
+
+    .tarjeta-resumen {
+        padding: 12px;
+    }
+
+    .seccion-tabla {
+        padding: 12px;
+    }
+
+    .encabezado-seccion h2 {
+        font-size: 1.2rem;
+    }
+
+    .btn-pdf {
+        width: 100%;
+        justify-content: center;
     }
 }
 
-.cargando {
-    animation: pulse 1.5s ease-in-out infinite;
-}
+/* Pantallas grandes (1200px o más) */
+@media (min-width: 1200px) {
+    .contenedor-cuadros {
+        grid-template-columns: repeat(4, 1fr);
+    }
 
-/* Transición suave para cambios de contenido */
-.fade-in {
-    animation: fadeIn 0.5s ease;
-}
-
-/* Efecto de escala al hacer hover en tarjetas */
-.hover-scale:hover {
-    transform: scale(1.02);
+    main {
+        padding: 30px;
+    }
 }
 
 /* ============================================
    UTILIDADES
-   Clases auxiliares reutilizables
    ============================================ */
 .text-center {
     text-align: center;
 }
 
-.text-right {
-    text-align: right;
-}
-
-.mt-10 {
-    margin-top: 10px;
-}
-
 .mt-20 {
     margin-top: 20px;
-}
-
-.mb-10 {
-    margin-bottom: 10px;
 }
 
 .mb-20 {
@@ -897,8 +852,4 @@ body.modal-abierto {
 
 .hidden {
     display: none !important;
-}
-
-.visible {
-    display: block !important;
 }

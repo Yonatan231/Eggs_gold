@@ -2,21 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
+    <!-- Meta tag IMPORTANTE para responsive: hace que el sitio se adapte al ancho del dispositivo -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eggs Gold</title>
 
-    <!-- rutas CSS -->
+    <!-- Rutas CSS -->
     <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
 </head>
 
 <body>
-<!-- encabezado -->
+<!-- ===== ENCABEZADO ===== -->
 <header>
     <div class="marca">
         <div class="logo">
-            <img th:src="@{/imagenes/inicio/logo.jpg}"  alt="Logo Eggs Gold">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
 
         <div>
@@ -25,8 +26,15 @@
         </div>
     </div>
 
+    <!-- Botón hamburguesa para menú móvil (solo se ve en pantallas pequeñas) -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
-    <nav>
+    <!-- Navegación: se oculta en móvil y se muestra al hacer clic en el botón -->
+    <nav id="navMenu">
         <a th:href="@{/inicio}" class="activo">Inicio</a>
         <a href="#productos">Promociones</a>
         <a href="#sobre">Sobre nosotros</a>
@@ -41,21 +49,22 @@
 
 <!-- ===== CONTENIDO PRINCIPAL ===== -->
 <main>
+    <!-- Sección de portada -->
     <section class="inicio">
         <div class="inicio-imagen-grande">
             <img th:src="@{/imagenes/inicio/portada.jpg}" alt="Huevos frescos" class="imagen-principal">
         </div>
     </section>
 
-    <!-- Sección sobre nosotros (movida justo después de la portada) -->
+    <!-- Sección sobre nosotros -->
     <section id="sobre" class="sobre-nosotros">
         <h2>Sobre nosotros</h2>
         <p>
             Somos productores locales apasionados por ofrecer productos frescos y de la más alta calidad. Nuestras gallinas viven libres y felices, en un entorno natural y saludable, lo que nos permite garantizar huevos frescos, nutritivos y con un sabor auténtico que se nota en cada bocado. Cuidamos cada detalle del proceso, desde la cría hasta la recolección, asegurando que cada huevo cumpla con nuestros estrictos estándares de frescura y sabor.
-
-            Con más de 10 años de experiencia en la producción y distribución de huevos, hemos desarrollado un sistema eficiente que nos permite ofrecer entregas rápidas, seguras y confiables en toda la región. Nos enorgullece apoyar la economía local y mantener una relación cercana con nuestros clientes, brindando un servicio personalizado y productos que reflejan nuestro compromiso con la calidad y el bienestar animal. Elegir nuestros huevos significa disfrutar de un producto natural, fresco y lleno de sabor, directamente desde nuestras granjas hasta tu mesa.
         </p>
-        <p>Con más de 10 años de experiencia, ofrecemos entregas rápidas y seguras en toda la región.</p>
+        <p>
+            Con más de 10 años de experiencia en la producción y distribución de huevos, hemos desarrollado un sistema eficiente que nos permite ofrecer entregas rápidas, seguras y confiables en toda la región. Nos enorgullece apoyar la economía local y mantener una relación cercana con nuestros clientes, brindando un servicio personalizado y productos que reflejan nuestro compromiso con la calidad y el bienestar animal.
+        </p>
     </section>
 
     <!-- Sección de productos -->
@@ -88,9 +97,9 @@
     <!-- Opiniones -->
     <section class="opiniones">
         <h2>Opiniones</h2>
-        <blockquote>“Huevos muy frescos y de excelente calidad.” — <strong>Laura G.</strong></blockquote>
-        <blockquote>“Entrega rápida y confiable.” — <strong>Carlos M.</strong></blockquote>
-        <blockquote>“Sabor natural, muy recomendados.” — <strong>Sofía R.</strong></blockquote>
+        <blockquote>"Huevos muy frescos y de excelente calidad." – <strong>Laura G.</strong></blockquote>
+        <blockquote>"Entrega rápida y confiable." – <strong>Carlos M.</strong></blockquote>
+        <blockquote>"Sabor natural, muy recomendados." – <strong>Sofía R.</strong></blockquote>
     </section>
 
     <!-- Galería -->
@@ -105,8 +114,7 @@
     </section>
 </main>
 
-
-<!-- Pie de página -->
+<!-- ===== PIE DE PÁGINA ===== -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -142,5 +150,8 @@
         </div>
     </div>
 </footer>
+
+<!-- Script JavaScript para el menú móvil -->
+<script th:src="@{/js/inicio/inicio.js}"></script>
 </body>
 </html>

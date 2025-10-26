@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-@DiscriminatorValue("logistica")
+@DiscriminatorValue("Logistica")
 public class Logistica extends Usuario {
 
 }

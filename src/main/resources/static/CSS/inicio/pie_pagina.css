@@ -1,4 +1,4 @@
-/* ===== PIE ===== */
+/* ===== PIE DE PÁGINA (FOOTER) ===== */
 footer {
     background-color: var(--color-fondo);
     padding: 40px 60px;
@@ -6,61 +6,73 @@ footer {
     font-family: Arial, sans-serif;
 }
 
+/* Contenedor principal del footer con diseño flex */
 .footer-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
     gap: 40px;
 }
 
+/* ===== LOGO DEL FOOTER ===== */
 .footer-logo img {
     width: 90px;
-    border-radius: auto;
+    border-radius: 8px;
 }
 
+/* ===== SECCIONES DEL FOOTER ===== */
 .footer-section {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.footer-section h2 {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000;
-    margin-bottom: 8px;
-}
-
-.footer-section a {
-    color: var(--color-secundario);
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.footer-section a:hover {
-    color: var(--color-verde);
-}
-
-.social-icons {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
+/* Títulos de las secciones */
+.footer-section h2 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+/* Enlaces del footer */
+.footer-section a {
+    color: var(--color-secundario);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+/* Efecto hover en los enlaces */
+.footer-section a:hover {
+    color: var(--color-verde);
+}
+
+/* ===== ICONOS DE REDES SOCIALES ===== */
+.social-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Transición suave para los iconos */
 .social-icons img {
     transition: transform 0.2s;
+    border-radius: 4px;
 }
 
+/* Efecto hover: agranda los iconos */
 .social-icons img:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
+/* ===== PARTE INFERIOR DEL FOOTER (opcional) ===== */
 .footer-bottom {
     text-align: center;
     margin-top: 30px;
     border-top: 1px solid #ccc;
-    padding-top: 10px;
+    padding-top: 15px;
 }
 
 .footer-bottom a {
@@ -71,17 +83,105 @@ footer {
 
 .footer-bottom a:hover {
     text-decoration: underline;
+    color: var(--color-verde);
 }
 
-@media (max-width: 800px) {
+/* ==========================================
+   MEDIA QUERIES PARA RESPONSIVE
+   ========================================== */
+
+/* ===== TABLETS (768px o menos) ===== */
+@media (max-width: 768px) {
+    /* Reducir padding del footer en tablets */
+    footer {
+        padding: 30px 40px;
+    }
+
+    /* Reducir gap entre secciones */
+    .footer-container {
+        gap: 30px;
+        /* Centrar contenido en tablets */
+        justify-content: center;
+    }
+
+    /* Logo más pequeño */
+    .footer-logo img {
+        width: 75px;
+    }
+
+    /* Títulos más pequeños */
+    .footer-section h2 {
+        font-size: 15px;
+    }
+
+    /* Enlaces más pequeños */
+    .footer-section a {
+        font-size: 13px;
+    }
+
+    /* Los iconos de redes sociales se mantienen en columna */
+    .social-icons {
+        gap: 8px;
+    }
+}
+
+/* ===== MÓVILES (480px o menos) ===== */
+@media (max-width: 480px) {
+    /* Padding reducido en móviles */
+    footer {
+        padding: 25px 20px;
+    }
+
+    /* Cambiar a diseño de columna centrado */
     .footer-container {
         flex-direction: column;
         align-items: center;
         text-align: center;
+        gap: 25px;
     }
 
+    /* Logo centrado y más pequeño */
+    .footer-logo img {
+        width: 70px;
+    }
+
+    /* Centrar las secciones */
+    .footer-section {
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* Títulos más pequeños */
+    .footer-section h2 {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    /* Enlaces más pequeños */
+    .footer-section a {
+        font-size: 12px;
+    }
+
+    /* Iconos de redes sociales en horizontal en móviles */
     .social-icons {
         flex-direction: row;
         justify-content: center;
+        gap: 15px;
+    }
+
+    /* Iconos más pequeños en móvil */
+    .social-icons img {
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    /* Ajustar el footer-bottom */
+    .footer-bottom {
+        margin-top: 20px;
+        padding-top: 12px;
+    }
+
+    .footer-bottom a {
+        font-size: 12px;
     }
 }

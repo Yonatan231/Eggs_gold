@@ -61,7 +61,7 @@ import org.springframework.ui.Model;
 
         @GetMapping("conductor")
        public String mostrarConductor() {
-            return "conductor";
+            return "conductor/conductor";
         }
 
         @GetMapping("mapa_conductor")

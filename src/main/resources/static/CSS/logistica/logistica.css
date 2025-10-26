@@ -249,13 +249,15 @@ header {
 .campana-noti {
     position: relative;
     color: var(--color-dark);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-left: auto; /* Empuja el elemento hacia la derecha */
     transition: var(--transition);
+    padding: 8px;
 }
 
 .campana-noti:hover {
     color: var(--color-accent);
+    transform: scale(1.1);
 }
 
 /* ============================================
