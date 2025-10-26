@@ -26,9 +26,9 @@ public class ConductorController {
     // Mostrar formulario de registro de conductor (solo logística)
     @GetMapping("/registro_conductor")
     public String mostrarFormulario(Model model, HttpSession session) {
-        // Validar que el rol sea LOGISTICA
+        // Validar que el rol sea ADMIN
         String rol = (String) session.getAttribute("rol");
-        if (rol == null || !rol.equals("LOGISTICA")) {
+        if (rol == null || !rol.equals("ADMIN")) {
             return "redirect:/acceso_denegado"; // vista para acceso restringido
         }
 
@@ -41,9 +41,9 @@ public class ConductorController {
     public String registrarConductor(@ModelAttribute("conductor") ConductorDTO conductorDTO,
                                      HttpSession session,
                                      Model model) {
-        // Validar que el rol sea LOGISTICA
+        // Validar que el rol sea ADMIN
         String rol = (String) session.getAttribute("rol");
-        if (rol == null || !rol.equals("LOGISTICA")) {
+        if (rol == null || !rol.equals("ADMIN")) {
             return "redirect:/acceso_denegado";
         }
 
@@ -63,8 +63,8 @@ public class ConductorController {
             return "registro_conductor";
         }
 
-        // Redirige al panel logística
-        return "redirect:/logistica";
+        // Redirige al panel administrador
+        return "redirect:/administrador";
     }
 
     @GetMapping("/entregados")
