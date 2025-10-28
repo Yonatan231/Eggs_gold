@@ -86,8 +86,4 @@ public class ProductoController {
                     .body("❌ No se pudo actualizar el estado del producto.");
         }
     }
-
-
-
-
 }

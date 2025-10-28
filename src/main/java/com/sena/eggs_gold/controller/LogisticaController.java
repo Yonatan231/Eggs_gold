@@ -20,20 +20,20 @@ public class LogisticaController {
     @Autowired
     private EmailService emailService;
 
-    // Mostrar formulario de registro
+    // Mostrar formulario de registro de logística
     @GetMapping("/registro_logistica")
     public String mostrarFormulario(Model model, HttpSession session) {
         // Validar que el rol sea ADMIN
         String rol = (String) session.getAttribute("rol");
         if (rol == null || !rol.equals("ADMIN")) {
-            return "redirect:/acceso_denegado"; // vista para acceso restringido
+            return "redirect:/acceso_denegado";
         }
 
         model.addAttribute("logistica", new LogisticaDTO());
-        return "registro_logistica"; // busca registro_logistica.html en templates/
+        return "registros/registro_logistica";
     }
 
-    // Procesar el formulario de registro
+    // Procesar el formulario
     @PostMapping("/registro_logistica")
     public String registrarLogistica(@ModelAttribute("logistica") LogisticaDTO logisticaDTO,
                                      HttpSession session,
@@ -50,20 +50,16 @@ public class LogisticaController {
 
             // Enviar correo de bienvenida
             emailService.enviarCorreoBienvenida(
-                    logisticaDTO.getCorreo(),        // correo que viene del formulario
-                    logisticaDTO.getNombre()         // nombre para personalizar el mensaje
+                    logisticaDTO.getCorreo(),
+                    logisticaDTO.getNombre()
             );
 
             model.addAttribute("mensaje", "Logística registrada con éxito y correo enviado.");
         } catch (Exception e) {
-            model.addAttribute("error", "La logística se registró, pero hubo un problema: " + e.getMessage());
+            model.addAttribute("error", "Error al registrar logística: " + e.getMessage());
+            return "registros/registro_logistica";
         }
 
-        // Redirige al panel admin
-        return "redirect:/admin";
+        return "redirect:/administrador";
     }
 }
-
-
-
-

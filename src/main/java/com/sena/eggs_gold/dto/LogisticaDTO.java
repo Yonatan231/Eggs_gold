@@ -1,11 +1,11 @@
 package com.sena.eggs_gold.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-public class    LogisticaDTO {
+@NoArgsConstructor
+public class LogisticaDTO {
     private Integer idUsuarios;
     private String nombre;
     private String apellido;
@@ -14,9 +14,21 @@ public class    LogisticaDTO {
     private String telefono;
     private String correo;
     private String password;
-    private String tipoUsuario;
+    private String tipoUsuario; // el último campo '' de la query
 
-    public LogisticaDTO() {}
+    // 🔹 Este constructor coincide con la query en UsuarioRepository
+    public LogisticaDTO(Integer idUsuarios, String nombre, String apellido,
+                        String direccionUsuario, String numDocumento,
+                        String telefono, String correo, String password,
+                        String tipoUsuario) {
+        this.idUsuarios = idUsuarios;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccionUsuario = direccionUsuario;
+        this.numDocumento = numDocumento;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.password = password;
+        this.tipoUsuario = tipoUsuario;
+    }
 }
-
-

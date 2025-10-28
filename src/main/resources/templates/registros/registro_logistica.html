@@ -1,114 +1,81 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/CSS/style_registro.css}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Registrar Logística - Eggs Gold</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos base -->
+    <link rel="stylesheet" th:href="@{/css/administrador/administrador.css}">
+    <link rel="stylesheet" th:href="@{/css/registros/registro_conductor.css}">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}">
-    <title>EGGS GOLD - Registro Logística</title>
 </head>
 <body>
-<header>
-    <div class="encabezado">
-        <div class="logo-titulo">
-            <img th:src="@{/imagenes/LOGO.jpg}" alt="logo" width="70" height="70"/>
-            <span class="texto">EGGS GOLD</span>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+    <ul>
+        <li class="perfil-admin">
+            <div class="avatar-contenedor">
+                <span id="avatar-iniciales">AD</span>
+            </div>
+            <h2>Panel de Administración</h2>
+        </li>
+        <li><a th:href="@{/administrador}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+        <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<!-- Contenido principal -->
+<main id="main-content">
+    <header>
+        <div class="opciones">
+            <img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" class="logo">
+            <h1 class="titulo2"><i class="fas fa-user-cog"></i> Registro de Logística</h1>
         </div>
-        <nav class="navegador">
-            <a th:href="@{/inicio}" class="nav-link">INICIO</a>
-            <a th:href="@{/promociones}" class="nav-link">PROMOCIONES</a>
-            <a th:href="@{/contacto1}" class="nav-link">CONTACTO</a>
-            <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
-            <a th:href="@{/login}" class="nav-link">INICIAR SESIÓN</a>
-            <a th:href="@{/inventario}" target="_blank" class="carro">
-                <img th:src="@{/imagenes/carrito.png}" alt="Carrito"/>
-            </a>
-        </nav>
-    </div>
-</header>
+    </header>
 
-<main>
-    <div class="form-wrapper">
-        <img th:src="@{/imagenes/sign-up.png}" alt="Imagen de registro" class="registro-img"/>
-        <div class="form-card">
-            <!-- Aquí usamos th:object para enlazar el DTO del controller -->
-            <form th:action="@{/registro_logistica}" th:object="${logistica}" method="post">
-                <input type="hidden" th:field="*{tipoUsuario}" value="LOGISTICA"/>
+    <!-- Mensajes -->
+    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" th:field="*{nombre}" id="nombre" required/>
-                </div>
+    <!-- Formulario -->
+    <form th:action="@{/registro_logistica}" th:object="${logistica}" method="post"
+          class="formulario-contenedor">
 
-                <div class="form-group">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" th:field="*{apellido}" id="apellido" required/>
-                </div>
+        <h2>Formulario de registro</h2>
 
-                <div class="form-group">
-                    <label for="direccionUsuario">Dirección:</label>
-                    <input type="text" th:field="*{direccionUsuario}" id="direccionUsuario" required/>
-                </div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Carlos" required>
 
-                <div class="form-group">
-                    <label for="numDocumento">Número de Documento:</label>
-                    <input type="text" th:field="*{numDocumento}" id="numDocumento" required/>
-                </div>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" th:field="*{apellido}" placeholder="Ej. López" required>
 
-                <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="tel" th:field="*{telefono}" id="telefono" required/>
-                </div>
+        <label for="numDocumento">Número de Documento:</label>
+        <input type="number" id="numDocumento" th:field="*{numDocumento}" placeholder="Ej. 1022457896" required>
 
-                <div class="form-group">
-                    <label for="correo">Correo Electrónico:</label>
-                    <input type="email" th:field="*{correo}" id="correo" required/>
-                </div>
+        <label for="direccionUsuario">Dirección:</label>
+        <input type="text" id="direccionUsuario" th:field="*{direccionUsuario}" placeholder="Ej. Calle 123 #45-67" required>
 
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" th:field="*{password}" id="password" required/>
-                </div>
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" th:field="*{telefono}" placeholder="Ej. 3123456789" required>
 
-                <button type="submit" class="boton-registrarse">Registrarse</button>
+        <label for="correo">Correo Electrónico:</label>
+        <input type="email" id="correo" th:field="*{correo}" placeholder="Ej. logistica@eggsgold.com" required>
 
-                <div class="enlace-login">
-                    ¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a>
-                </div>
-            </form>
-        </div>
-    </div>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" th:field="*{password}" placeholder="Ingrese una contraseña" required>
+
+        <button type="submit" class="btn-guardar">
+            <i class="fas fa-save"></i> Registrar logistica
+        </button>
+    </form>
 </main>
-
-<footer>
-    <div class="footer-content">
-        <div>
-            <img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" width="70"/>
-        </div>
-        <div class="contact">
-            <h2>CONTÁCTANOS</h2>
-            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
-            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
-        </div>
-        <div class="info">
-            <h2>INFO SITIO</h2>
-            <a th:href="@{#}">Política de la Empresa</a>
-            <a th:href="@{#}">Política de Privacidad</a>
-            <a th:href="@{#}">Socios</a>
-        </div>
-        <div class="social">
-            <h2>SÍGUENOS</h2>
-            <a href="https://es-la.facebook.com/index.php/" target="_blank">
-                <img th:src="@{/imagenes/faceboock.png}" alt="Facebook"/>
-            </a>
-            <a href="https://www.instagram.com/" target="_blank">
-                <img th:src="@{/imagenes/instagram.png}" alt="Instagram"/>
-            </a>
-            <a href="https://www.youtube.com/" target="_blank">
-                <img th:src="@{/imagenes/youtube.png}" alt="YouTube"/>
-            </a>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

@@ -33,7 +33,7 @@ public class ConductorController {
         }
 
         model.addAttribute("conductor", new ConductorDTO());
-        return "registro_conductor"; // busca registro_conductor.html en templates/
+        return "registros/registro_conductor"; // busca registro_conductor.html en templates/
     }
 
     // Procesar el formulario de registro

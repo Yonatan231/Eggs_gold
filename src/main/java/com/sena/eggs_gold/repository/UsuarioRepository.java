@@ -45,10 +45,21 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
         """, nativeQuery = true)
     List<Object[]> findConductoresConPedidosEntregados();
 
-    @Query("SELECT new com.sena.eggs_gold.dto.LogisticaDTO(" +
-            "u.idUsuarios, u.nombre, u.apellido, u.direccionUsuario, " +
-            "u.numDocumento, u.telefono, u.correo, u.password, '') " + // <-- rol vacío
-            "FROM Usuario u WHERE u.rol.idRoles = 2 AND u.estado = com.sena.eggs_gold.model.enums.Estado.ACTIVO")
+    @Query("""
+           SELECT new com.sena.eggs_gold.dto.LogisticaDTO(
+               u.idUsuarios,
+               u.nombre,
+               u.apellido,
+               u.direccionUsuario,
+               u.numDocumento,
+               u.telefono,
+               u.correo,
+               u.password,
+               u.rol.nombreRol
+           )
+           FROM Usuario u
+           WHERE u.rol.idRoles = 2 AND u.estado = com.sena.eggs_gold.model.enums.Estado.ACTIVO
+           """)
     List<LogisticaDTO> findAllLogistica();
 
     List<Usuario> findByEstado(Estado estado);
