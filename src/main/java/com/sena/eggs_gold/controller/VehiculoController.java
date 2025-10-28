@@ -22,7 +22,7 @@ public class VehiculoController {
     @GetMapping("/registro_vehiculo")
     public String mostrarFormulario(Model model) {
         model.addAttribute("vehiculo", new VehiculoDTO());
-        return "registro_vehiculo"; // nombre del HTML sin extensión
+        return "registros/registro_vehiculo"; // nombre del HTML sin extensión
     }
 
     /**

@@ -1,3 +1,4 @@
+/* Estilos para el formulario de registro de vehículo - Basado en registro_conductor.css */
 body {
     background-color: #FEFCF4;
 }
@@ -18,6 +19,7 @@ main {
     align-items: stretch;
 }
 
+/* Título del formulario */
 .formulario-contenedor h2 {
     text-align: center;
     color: #27AE60;
@@ -26,6 +28,7 @@ main {
     font-weight: 700;
 }
 
+/* Estilos para las etiquetas */
 label {
     margin-top: 15px;
     font-weight: 600;
@@ -33,11 +36,10 @@ label {
     display: block;
 }
 
+/* Estilos para todos los tipos de input */
 input[type="text"],
 input[type="number"],
-input[type="email"],
-input[type="tel"],
-input[type="password"] {
+input[type="date"] {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid #ccc;
@@ -47,11 +49,14 @@ input[type="password"] {
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+/* Efecto focus para los inputs */
 input:focus {
     border-color: #27AE60;
     outline: none;
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.3);
 }
 
+/* Botón de guardar con icono */
 .btn-guardar {
     margin-top: 25px;
     background-color: #F7DC6F;
@@ -69,10 +74,12 @@ input:focus {
     transition: background-color 0.3s;
 }
 
+/* Efecto hover del botón */
 .btn-guardar:hover {
     background-color: #27AE60;
 }
 
+/* Estilos para mensajes de alerta */
 .alert {
     max-width: 700px;
     margin: 20px auto;
@@ -94,6 +101,7 @@ input:focus {
     border: 1px solid #c62828;
 }
 
+/* Estilos para el header */
 header {
     background-color: white;
     border-bottom: 1px solid #ddd;
@@ -101,6 +109,7 @@ header {
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
+/* Título principal con icono */
 header .titulo2 {
     color: #444;
     font-size: 22px;
@@ -109,6 +118,7 @@ header .titulo2 {
     gap: 10px;
 }
 
+/* Color del icono en el título */
 header .titulo2 i {
     color: #F7DC6F;
 }

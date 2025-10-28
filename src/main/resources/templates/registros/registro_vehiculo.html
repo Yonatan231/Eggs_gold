@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Registrar Vehículo - Eggs Gold</title>
+
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos base (asumiendo que existen) -->
+    <link rel="stylesheet" th:href="@{/css/administrador/administrador.css}">
+    <link rel="stylesheet" th:href="@{/css/registros/registro_vehiculo.css}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}">
+</head>
+<body>
+<nav id="sidebar">
+    <ul>
+        <li class="perfil-admin">
+            <div class="avatar-contenedor">
+                <span id="avatar-iniciales">AD</span>
+            </div>
+            <h2>Panel de Administración</h2>
+        </li>
+        <li><a th:href="@{/templates/conductor}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+        <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<!-- Contenido principal -->
+<main id="main-content">
+    <header>
+        <div class="opciones">
+            <!-- Logo de la empresa -->
+            <img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" class="logo">
+            <!-- Título de la página con icono -->
+            <h1 class="titulo2"><i class="fas fa-car"></i> Registro de Vehículo</h1>
+        </div>
+    </header>
+
+    <!-- Mensajes de éxito o error (si existen) -->
+    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <!-- Formulario de registro del vehículo -->
+    <form th:action="@{/registro_vehiculo}" th:object="${vehiculo}" method="post"
+          class="formulario-contenedor">
+
+        <h2>Formulario de registro</h2>
+
+        <!-- Campo para la placa del vehículo -->
+        <label for="placa">Placa:</label>
+        <input type="text" id="placa" th:field="*{placa}" placeholder="Ej: ABC123" required>
+
+        <!-- Campo para el color del vehículo -->
+        <label for="color">Color:</label>
+        <input type="text" id="color" th:field="*{color}" placeholder="Ej: Rojo" required>
+
+        <!-- Campo para el modelo del vehículo -->
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" th:field="*{modelo}" placeholder="Ej: 2020" required>
+
+        <!-- Campo para la marca del vehículo -->
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" th:field="*{marca}" placeholder="Ej: Toyota" required>
+
+        <!-- Campo para la capacidad de carga -->
+        <label for="capacidadCarga">Capacidad de carga (kg):</label>
+        <input type="number" step="0.01" id="capacidadCarga" th:field="*{capacidadCarga}" placeholder="Ej: 1000" required>
+
+        <!-- Campo para el kilometraje -->
+        <label for="kilometraje">Kilometraje:</label>
+        <input type="number" step="0.01" id="kilometraje" th:field="*{kilometraje}" placeholder="Ej: 50000" required>
+
+        <!-- Campo para la fecha de registro -->
+        <label for="fechaRegistro">Fecha de Registro:</label>
+        <input type="date" id="fechaRegistro" th:field="*{fechaRegistro}" required>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="btn-guardar">
+            <i class="fas fa-save"></i> Registrar Vehículo
+        </button>
+    </form>
+</main>
+</body>
+</html>
