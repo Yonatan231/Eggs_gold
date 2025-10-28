@@ -68,13 +68,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Redirige a diferentes páginas según el rol del usuario
     if (rol == "1") {
-        btnAtras.href = "administrador.html"; // Administrador
+        btnAtras.href = "administrador/administrador.htm"; // Administrador
     } else if (rol == "2") {
-        btnAtras.href = "conductor.html"; // Conductor
+        btnAtras.href = "conductor.htm"; // Conductor
     } else if (rol == "3") {
-        btnAtras.href = "logistica.html"; // Logística
+        btnAtras.href = "logistica.htm"; // Logística
     } else {
-        btnAtras.href = "inicio.html"; // Página por defecto si el rol no coincide
+        btnAtras.href = "inicio/inicio.htm"; // Página por defecto si el rol no coincide
     }
 });
 

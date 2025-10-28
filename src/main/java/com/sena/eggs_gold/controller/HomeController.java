@@ -34,7 +34,7 @@ import org.springframework.ui.Model;
         public String inicioSecion(Model model) {
             // Creamos un objeto vacío para el formulario
             model.addAttribute("loginDTO", new LoginDTO());
-            return "iniciar_sesion/iniciar_sesion"; // Thymeleaf buscará templates/inicio_secion.html
+            return "iniciar_sesion/iniciar_sesion"; // Thymeleaf buscará templates/inicio_secion
         }
 
 
