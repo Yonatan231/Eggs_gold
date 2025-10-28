@@ -3,122 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/inventario.css">
+    <!-- Enlace al archivo CSS personalizado -->
+    <link rel="stylesheet" href="css/cliente/cliente.css">
+    <link rel="stylesheet" href="css/inicio/pie_pagina.css">
+    <link rel="stylesheet" href="css/inicio/inicio.css">
+    <!-- Enlace al favicon (ícono de la pestaña) -->
     <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
-    <title>EGGS GOLD</title>
+    <title>EGGS GOLD - Inventario</title>
 </head>
 <body>
+<!-- ========== ENCABEZADO (HEADER) ========== -->
 <header>
-    <!-- LOGO -->
-    <div class="encabezado">
-        <img src="imagenes/LOGO.jpg" alt="logo" width="70" height="70" />
-        <span class="texto">EGGS GOLD</span>
-    </div>
-
-    <!-- Barra de búsqueda -->
-    <div class="barra-busqueda">
-        <input type="text" id="buscador-productos" placeholder="Buscar..." />
-        <button type="submit">🔍</button>
-    </div>
-
-    <!-- PERFIL (si el usuario está logueado) -->
-    <div class="perfil-contenedor"
-         th:if="${cliente != null}"
-         style="display: flex;">
-        <div class="perfil-circulo"
-             th:text="${#strings.substring(cliente.nombre, 0, 1).toUpperCase()} + ${#strings.substring(cliente.apellido, 0, 1).toUpperCase()}">
-            YA
+    <!-- Contenedor principal del encabezado -->
+    <div class="header-contenedor">
+        <!-- Logo y título de la empresa -->
+        <div class="logo-titulo">
+            <img src="imagenes/LOGO.jpg" alt="logo" width="50" height="50" />
+            <span class="texto">EGGS GOLD</span>
         </div>
 
-        <div class="perfil-nombre">
-            <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
-            <span class="flecha-abajo"></span>
-        </div>
+        <!-- Contenedor de búsqueda y usuario -->
+        <div class="busqueda-usuario">
+            <!-- Barra de búsqueda de productos -->
+            <div class="barra-busqueda">
+                <input type="text" id="buscador-productos" placeholder="Buscar productos..." />
+                <button type="submit">🔍 Buscar</button>
+            </div>
 
-        <div class="perfil-menu" id="perfil-menu">
-            <a th:href="@{/logout}">Cerrar sesión</a>
+            <!-- Contenedor para carrito y perfil -->
+            <div class="carrito-perfil">
+                <!-- Carrito de compras con contador -->
+                <div class="carro7">
+                    <a th:href="@{/historial_productos}" target="_blank">
+                        <img src="imagenes/carrito.png" width="20" height="20" alt="Carrito" />
+                        Carrito
+                        <!-- Contador de productos en el carrito -->
+                        <span id="contador-carrito">0</span>
+                    </a>
+                </div>
+
+                <!-- PERFIL (solo visible si el usuario está logueado) -->
+                <div class="perfil-contenedor"
+                     th:if="${cliente != null}">
+                    <!-- Círculo con iniciales del cliente -->
+                    <div class="perfil-circulo"
+                         th:text="${#strings.substring(cliente.nombre, 0, 1).toUpperCase()} + ${#strings.substring(cliente.apellido, 0, 1).toUpperCase()}">
+                        YA
+                    </div>
+
+                    <!-- Nombre del cliente con flecha desplegable -->
+                    <div class="perfil-nombre">
+                        <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
+                        <span class="flecha-abajo"></span>
+                    </div>
+
+                    <!-- Menú desplegable del perfil -->
+                    <div class="perfil-menu" id="perfil-menu">
+                        <a th:href="@{/perfil}">Mi Perfil</a>
+                        <a th:href="@{/pedidos}">Mis Pedidos</a>
+                        <a th:href="@{/logout}">Cerrar sesión</a>
+                    </div>
+                </div>
+
+                <!-- SI NO ESTÁ LOGUEADO (mostrar enlaces de registro e inicio de sesión) -->
+                <div class="login-registro-links" th:if="${cliente == null}">
+                    <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
+                    <a th:href="@{/login}" class="nav-link">INICIAR SESIÓN</a>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- SI NO ESTÁ LOGUEADO -->
-    <div id="login-registro-links" th:if="${cliente == null}">
-        <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
-        <a th:href="@{/login}" class="nav-link">INICIAR SESIÓN</a>
-    </div>
-
-    <!-- Navegador -->
-    <nav class="navegador">
-        <a class="inicio" th:href="@{/inicio}">INICIO</a>
-        <a class="promociones" th:href="@{/promociones}">PROMOCIONES</a>
-        <a class="contacto" th:href="@{/contacto1}">CONTACTO</a>
-
-        <div class="carro7">
-            <a th:href="@{/historial_productos}" target="_blank">
-                <img src="imagenes/carrito.png" width="40" height="40" alt="Carrito" />
-                <span id="contador-carrito">0</span>
-            </a>
-        </div>
-    </nav>
 </header>
 
-
+<!-- ========== CONTENIDO PRINCIPAL ========== -->
 <main>
-    <div class="contenedor_flecha">
-      <button class="arrow left" id="prevBtn">&#10094;</button>
-      <div class="productos" id="productos-container">
-        <!-- Productos dinámicos -->
-      </div>
-      <button class="arrow right" id="nextBtn">&#10095;</button>
+    <!-- Sección de productos en inventario -->
+    <section class="seccion-productos">
+        <h2 class="titulo-seccion">NUESTROS PRODUCTOS</h2>
+        <!-- Contenedor donde se cargarán los productos dinámicamente -->
+        <div class="productos" id="productos-container">
+            <!-- Los productos se cargarán aquí mediante JavaScript -->
+        </div>
+    </section>
+</main>
+
+<!-- ========== PIE DE PÁGINA (FOOTER) ========== -->
+<footer>
+    <div class="footer-container">
+        <!-- Logo del footer -->
+        <div class="footer-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
+        </div>
+
+        <!-- Sección de contacto -->
+        <div class="footer-section">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+
+        <!-- Sección de información del sitio -->
+        <div class="footer-section">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la Empresa</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Socios</a>
+        </div>
+
+        <!-- Sección de redes sociales -->
+        <div class="footer-section">
+            <h2>SÍGUENOS</h2>
+            <div class="social-icons">
+                <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
+                </a>
+                <a href="https://www.youtube.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
+                </a>
+            </div>
+        </div>
     </div>
+</footer>
 
-  </main>
+<!-- Script inline de Thymeleaf para guardar datos del cliente en localStorage -->
+<script th:inline="javascript" th:if="${cliente != null}">
+    // Guarda los datos del cliente en el almacenamiento local del navegador
+    const cliente = {
+        idUsuarios: [[${cliente.idUsuarios}]],
+        nombre: [[${cliente.nombre}]],
+        apellido: [[${cliente.apellido}]],
+        email: [[${cliente.email}]]
+    };
+    // Convierte el objeto a JSON y lo guarda
+    localStorage.setItem("cliente", JSON.stringify(cliente));
+</script>
 
-  <footer>
-    <div class="footer-content">
-      <div class="contact">
-        <h2>CONTACTANOS</h2>
-        <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
-        <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
-        <a href="https://web.whatsapp.com/" target="_blank">Contactanos</a>
-      </div>
-      <div class="info">
-        <h2>INFO SITIO</h2>
-        <a href="#">Política de la Empresa</a>
-        <a href="#">Política de Privacidad</a>
-        <a href="#">Socios</a>
-      </div>
-      <div class="social">
-        <h2>SÍGUENOS</h2>
-        <a href="https://es-la.facebook.com/index.php/" target="_blank">
-          <img src="imagenes/faceboock.png" alt="Facebook" width="30" height="30">
-        </a>
-        <a href="https://www.instagram.com/" target="_blank">
-          <img src="imagenes/instagram.png" alt="Instagram" width="30" height="30">
-        </a>
-        <a href="https://www.youtube.com/" target="_blank">
-          <img src="imagenes/youtube.png" alt="YouTube" width="30" height="30">
-        </a>
-      </div>
-    </div>
-  </footer>
-
-  <script th:inline="javascript" th:if="${cliente != null}">
-      const cliente = {
-
-      };
-
-      localStorage.setItem("cliente", JSON.stringify(cliente));
-  </script>
-  <script src="JAVA SCRIPT/inventario.js" defer></script>
-  <script src="JAVA SCRIPT/slider.js"defer></script>
-
+<!-- Enlace al archivo JavaScript con la funcionalidad -->
+<script src="js/cliente/cliente.js" defer></script>
 
 </body>
-
-
-
-
 </html>
-
-
-    

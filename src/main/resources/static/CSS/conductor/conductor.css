@@ -1,15 +1,4 @@
 /* ============================================
-   RESETEO Y ESTILOS GENERALES
-   Elimina márgenes y paddings por defecto del navegador
-   ============================================ */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; /* Incluye padding y border en el ancho/alto total */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* ============================================
    VARIABLES CSS (Colores y valores reutilizables)
    Facilitan cambiar el diseño desde un solo lugar
    ============================================ */
@@ -17,12 +6,28 @@
     --color-accent: #27AE60;        /* Color verde principal */
     --color-success: #2ecc71;       /* Color para estados exitosos */
     --color-warning: #e67e22;       /* Color para advertencias */
+    --color-danger: #e74c3c;        /* Color rojo para peligro/cancelar */
     --color-dark: #2c3e50;          /* Color oscuro para textos */
     --color-sidebar: #F7DC6F;       /* Color amarillo del menú */
     --color-sidebar-dark: #F7DC6F;  /* Color amarillo oscuro del menú */
+    --color-header: #ffffff;        /* Color blanco para header */
+    --color-background: #FEFCF4;    /* Color crema suave de fondo */
+    --color-tabla-header: #f8f9fa;  /* Color gris claro para encabezados de tabla */
+    --color-modal-bg: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente para modales */
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);        /* Sombra suave */
     --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);  /* Sombra al pasar el mouse */
     --transition: all 0.3s ease;    /* Transición suave para animaciones */
+    --border-radius: 10px;          /* Radio de borde redondeado */
+}
+
+/* ============================================
+   RESETEO Y ESTILOS GENERALES
+   Elimina márgenes y paddings por defecto del navegador
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Incluye padding y border en el ancho/alto total */
 }
 
 /* ============================================
@@ -30,7 +35,8 @@
    Configura el fondo y disposición principal
    ============================================ */
 body {
-    background-color: #FEFCF4;  /* Color crema suave de fondo */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-background);  /* Color crema suave de fondo */
     color: #333;                /* Color del texto */
     line-height: 1.6;           /* Espaciado entre líneas */
     display: flex;              /* Usa flexbox para layout */
@@ -50,49 +56,56 @@ body {
     overflow-y: auto; /* Permite scroll si el contenido es muy largo */
     transition: var(--transition); /* Animación suave al abrir/cerrar */
     z-index: 1000;  /* Se muestra encima de otros elementos */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Sombra derecha del menú */
 }
 
+/* Oculta la barra de desplazamiento del sidebar en navegadores WebKit (Chrome, Safari) */
+#sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Oculta la barra de desplazamiento en Firefox e Internet Explorer */
 #sidebar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* Internet Explorer */
 }
 
 /* Lista del menú lateral */
 #sidebar ul {
     list-style: none; /* Quita los puntos de la lista */
-    padding: 0;
 }
 
 /* Elementos de la lista del menú */
 #sidebar ul li {
-    padding: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Línea separadora sutil */
 }
 
-/* Enlaces del menú */
-#sidebar ul li a {
+/* Enlaces del menú (incluye clase .nav-link para más flexibilidad) */
+#sidebar ul li a,
+#sidebar ul li .nav-link {
     color: #333333;         /* Color oscuro para el texto */
     text-decoration: none;  /* Quita el subrayado */
     display: flex;          /* Flexbox para alinear icono y texto */
     align-items: center;    /* Centra verticalmente */
     gap: 12px;              /* Espacio entre icono y texto */
-    padding: 15px 20px;
+    padding: 15px 20px;     /* Espaciado interno */
     transition: var(--transition); /* Transición suave */
 }
 
 /* Efecto al pasar el mouse sobre los enlaces */
 #sidebar ul li a:hover,
 #sidebar ul li .nav-link:hover {
-    background-color: rgba(52, 152, 219, 0.2);
-    color: var(--color-accent);
-    padding-left: 25px;
+    background-color: rgba(52, 152, 219, 0.2); /* Fondo azul claro */
+    color: var(--color-accent); /* Cambia a color verde */
+    padding-left: 25px;         /* Desplaza el texto hacia la derecha */
 }
 
+/* Estilos para los iconos del menú */
 #sidebar ul li a i,
 #sidebar ul li .nav-link i {
-    font-size: 1.1rem;
-    width: 20px;
-    text-align: center;
+    font-size: 1.1rem;  /* Tamaño del icono */
+    width: 20px;        /* Ancho fijo para alinear iconos */
+    text-align: center; /* Centra el icono */
 }
 
 /* ============================================
@@ -101,8 +114,17 @@ body {
    ============================================ */
 .perfil-admin {
     text-align: center;
-    padding: 20px 10px;
+    padding: 25px 15px !important; /* Espaciado interno (importante para sobrescribir otros estilos) */
     background-color: rgba(0, 0, 0, 0.2); /* Fondo semi-transparente */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important; /* Línea divisoria */
+}
+
+/* Título del panel (ej: "Panel de Conductor") */
+.perfil-admin h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    color: white;
 }
 
 /* Contenedor del avatar (foto de perfil) */
@@ -110,32 +132,38 @@ body {
     width: 80px;
     height: 80px;
     border-radius: 50%;     /* Forma circular */
-    background-color: #27AE60; /* Fondo verde */
+    background: linear-gradient(135deg, var(--color-accent), #2980b9); /* Gradiente verde-azul */
     margin: 0 auto 15px;    /* Centrado horizontalmente */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     color: white;
     position: relative;
     background-size: cover;     /* La imagen cubre todo el contenedor */
     background-position: center; /* Centra la imagen */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    transition: var(--transition);
 }
 
-/* Iniciales que se muestran cuando no hay foto */
-#avatar-iniciales {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Efecto al pasar el mouse sobre el avatar */
+.avatar-contenedor:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
 }
 
 /* Imagen del avatar (se muestra cuando hay foto) */
 #avatar-imagen {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
     object-fit: cover; /* Ajusta la imagen sin distorsión */
+    border-radius: 50%; /* Mantiene la forma circular */
+}
+
+/* Iniciales que se muestran cuando no hay foto */
+#avatar-iniciales {
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra de texto para mejor legibilidad */
 }
 
 /* Botón "+" para subir foto */
@@ -143,16 +171,17 @@ body {
     position: absolute;
     bottom: 0;
     right: 0;
-    background: #27AE60;
+    background: var(--color-accent);
     color: white;
     border-radius: 50%;
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Sombra para destacar el botón */
     transition: var(--transition);
 }
 
@@ -194,6 +223,7 @@ main {
     margin-left: 250px; /* Deja espacio para el sidebar */
     padding: 20px;
     transition: var(--transition);
+    min-height: 100vh;  /* Altura mínima del 100% de la ventana */
 }
 
 /* ============================================
@@ -201,20 +231,18 @@ main {
    Barra superior con logo y notificaciones
    ============================================ */
 header {
-    background-color: white;
+    background-color: var(--color-header);
     padding: 15px 20px;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-bottom: 25px;
 }
 
 /* Contenedor de opciones del header */
 .opciones {
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Distribuye los elementos (logo - título - campana) */
     gap: 20px;      /* Espacio entre elementos */
     width: 100%;
 }
@@ -225,31 +253,54 @@ header {
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 /* Título de bienvenida */
 .titulo2 {
     font-size: 1.5rem;
     font-weight: 600;
+    color: var(--color-dark);
+    flex: 1; /* Ocupa el espacio disponible entre logo y campana */
 }
 
 /* Texto resaltado (palabra "conductor") */
 .resaltado {
     color: var(--color-accent); /* Color verde */
+    font-weight: 700; /* Más grueso que el resto del título */
 }
 
 /* Icono de campana de notificaciones */
 .campana-noti {
     position: relative;
     color: var(--color-dark);
-    font-size: 1.2rem;
-    margin-left: auto; /* Empuja el icono hacia la derecha */
+    font-size: 1.3rem;
+    text-decoration: none;
     transition: var(--transition);
+    padding: 8px; /* Área clickeable más grande */
 }
 
 .campana-noti:hover {
     color: var(--color-accent); /* Cambia a verde al pasar el mouse */
     transform: scale(1.1);
+}
+
+/* Contador de notificaciones (círculo rojo con número) */
+.notificacion-contador {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--color-danger);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* ============================================
@@ -267,7 +318,7 @@ header {
 /* Tarjeta individual */
 .tarjeta-resumen {
     background: white;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     padding: 20px;
     box-shadow: var(--shadow);
     transition: var(--transition);
@@ -286,37 +337,44 @@ header {
 .tarjeta-icono {
     width: 60px;
     height: 60px;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.8rem;
+    flex-shrink: 0; /* Evita que el icono se encoja */
 }
 
 /* Icono de pedidos asignados (azul) */
 .pedidos-asignados .tarjeta-icono {
-    background: rgba(52, 152, 219, 0.2);
-    color: var(--color-accent);
+    background: rgba(52, 152, 219, 0.15); /* Fondo azul suave */
+    color: #3498db;
 }
 
 /* Icono de pedidos pendientes (naranja) */
 .pedidos-pendientes .tarjeta-icono {
-    background: rgba(230, 126, 34, 0.2);
+    background: rgba(230, 126, 34, 0.15); /* Fondo naranja suave */
     color: var(--color-warning);
 }
 
 /* Contenido de texto de la tarjeta */
+.tarjeta-contenido {
+    flex: 1; /* Ocupa el espacio restante */
+}
+
 .tarjeta-contenido h3 {
     font-size: 0.9rem;
     color: #7f8c8d;     /* Gris suave */
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
 /* Número grande del contador */
 .contador {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     color: var(--color-dark);
+    line-height: 1; /* Elimina espacio extra */
 }
 
 /* ============================================
@@ -325,8 +383,8 @@ header {
    ============================================ */
 .seccion-tabla {
     background: white;
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: var(--border-radius);
+    padding: 25px;
     box-shadow: var(--shadow);
     margin-bottom: 30px;
 }
@@ -337,11 +395,36 @@ header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;    /* Permite que se apile en pantallas pequeñas */
+    gap: 15px;
 }
 
 .encabezado-seccion h2 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Botón para exportar a PDF (si se necesita en el futuro) */
+.btn-pdf {
+    background: var(--color-danger);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+    box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+}
+
+.btn-pdf:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4);
 }
 
 /* ============================================
@@ -355,20 +438,20 @@ header {
 }
 
 /* Campo de texto de búsqueda */
-.form-busqueda input {
+.form-busqueda input[type="text"] {
     flex: 1;            /* Ocupa todo el espacio disponible */
-    padding: 10px 15px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     transition: var(--transition);
 }
 
 /* Efecto al enfocar el campo de búsqueda */
-.form-busqueda input:focus {
+.form-busqueda input[type="text"]:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); /* Resplandor verde */
 }
 
 /* Botón de búsqueda */
@@ -377,11 +460,13 @@ header {
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
+    padding: 12px 25px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
     transition: var(--transition);
 }
 
@@ -389,6 +474,7 @@ header {
 .form-busqueda button:hover {
     background: #2ecc71; /* Verde más claro */
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
 }
 
 /* ============================================
@@ -397,31 +483,53 @@ header {
    ============================================ */
 .contenedor-tabla {
     overflow-x: auto; /* Permite scroll horizontal en móviles */
+    border-radius: 8px;
 }
 
 .tabla-datos {
     width: 100%;
     border-collapse: collapse; /* Une los bordes de las celdas */
+    background: white;
 }
 
 /* Celdas de la tabla */
 .tabla-datos th,
 .tabla-datos td {
-    padding: 12px 15px;
+    padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
 /* Encabezados de la tabla */
 .tabla-datos th {
-    background-color: #f8f9fa;
+    background-color: var(--color-tabla-header);
     color: var(--color-dark);
     font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase; /* TEXTO EN MAYÚSCULAS */
+    letter-spacing: 0.5px;     /* Espacio entre letras */
+}
+
+/* Filas del cuerpo de la tabla */
+.tabla-datos tbody tr {
+    transition: var(--transition);
 }
 
 /* Efecto al pasar el mouse sobre una fila */
-.tabla-datos tr:hover {
+.tabla-datos tbody tr:hover {
     background-color: #f8f9fa;
+}
+
+/* Color alternado para filas pares (mejora la lectura) */
+.tabla-datos tbody tr:nth-child(even) {
+    background-color: #fefefe;
+}
+
+/* Imágenes dentro de la tabla (productos, avatares, etc.) */
+.tabla-datos img {
+    border-radius: 5px;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* ============================================
@@ -429,63 +537,96 @@ header {
    Botones para entregar, cancelar, etc.
    ============================================ */
 .btn-accion {
-    padding: 5px 10px;
+    padding: 6px 12px;
     border: none;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     margin-right: 5px;
     transition: var(--transition);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
-/* Botón verde (marcar como entregado) */
+/* Efecto al pasar el mouse sobre botones de acción */
+.btn-accion:hover {
+    transform: translateY(-2px); /* Se eleva ligeramente */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón primario (azul) - Para acciones principales */
+.btn-primary,
+.btn-editar {
+    background: var(--color-accent);
+    color: white;
+}
+
+.btn-primary:hover,
+.btn-editar:hover {
+    background: #2980b9;
+}
+
+/* Botón de éxito (verde) - Para acciones positivas */
+.btn-success,
+.btn-aceptar,
 .btn-entregado {
     background: var(--color-success);
     color: white;
 }
 
+.btn-success:hover,
+.btn-aceptar:hover,
 .btn-entregado:hover {
     background: #27ae60;
-    transform: scale(1.05);
 }
 
-/* Botón rojo (cancelar) */
+/* Botón de peligro (rojo) - Para acciones destructivas */
+.btn-danger,
+.btn-eliminar,
+.btn-rechazar,
 .btn-cancelar {
-    background: #e74c3c;
+    background: var(--color-danger);
     color: white;
 }
 
+.btn-danger:hover,
+.btn-eliminar:hover,
+.btn-rechazar:hover,
 .btn-cancelar:hover {
     background: #c0392b;
-    transform: scale(1.05);
 }
 
 /* ============================================
    ESTADOS DE PEDIDOS
-   Estilos para diferentes estados
+   Estilos para diferentes estados con colores
    ============================================ */
 .estado-pendiente {
-    color: #f39c12;
+    color: var(--color-warning);
     font-weight: bold;
 }
 
+.estado-aceptado,
+.estado-aprobado,
 .estado-asignado {
-    color: #3498db;
+    color: #3498db; /* Azul */
     font-weight: bold;
 }
 
 .estado-en-camino {
-    color: var(--color-accent);
-    font-weight: bold;
-}
-
-.estado-entregado {
     color: var(--color-success);
     font-weight: bold;
 }
 
+.estado-entregado {
+    color: #16a085; /* Verde azulado */
+    font-weight: bold;
+}
+
+.estado-rechazado,
 .estado-cancelado {
-    color: #e74c3c;
+    color: var(--color-danger);
     font-weight: bold;
 }
 
@@ -497,45 +638,194 @@ header {
     text-align: center;
     padding: 40px 20px;
     color: #7f8c8d;
-    font-size: 1rem;
+    font-size: 1.1rem;
+}
+
+.mensaje-vacio p {
+    margin: 0;
+}
+
+/* ============================================
+   MODALES
+   Ventanas emergentes para formularios o confirmaciones
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-modal-bg);
+    z-index: 2000;
+    backdrop-filter: blur(5px); /* Efecto de desenfoque del fondo */
+    animation: fadeIn 0.3s ease; /* Animación de aparición */
+}
+
+/* Animación de aparición del fondo del modal */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Contenido del modal (la caja blanca) */
+.modal-contenido {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh; /* Máximo 90% de la altura de la ventana */
+    overflow-y: auto; /* Scroll si el contenido es muy largo */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: zoomIn 0.3s ease; /* Animación de zoom al aparecer */
+}
+
+/* Animación de zoom del modal */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Título del modal */
+.modal-contenido h3 {
+    margin-bottom: 25px;
+    color: var(--color-dark);
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Etiquetas de los campos del formulario */
+.modal-contenido label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--color-dark);
+    font-size: 0.9rem;
+}
+
+/* Campos de entrada del formulario (inputs, selects, textareas) */
+.modal-contenido input,
+.modal-contenido select,
+.modal-contenido textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    font-family: inherit; /* Usa la misma fuente que el resto de la página */
+}
+
+/* Efecto al enfocar los campos del formulario */
+.modal-contenido input:focus,
+.modal-contenido select:focus,
+.modal-contenido textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+/* Área de texto (textarea) */
+.modal-contenido textarea {
+    resize: vertical;   /* Solo permite redimensionar verticalmente */
+    min-height: 80px;   /* Altura mínima */
+}
+
+/* Contenedor de botones del modal */
+.modal-botones {
+    display: flex;
+    justify-content: flex-end; /* Alinea los botones a la derecha */
+    gap: 10px;
+    margin-top: 25px;
+}
+
+/* Estilos de botones del modal */
+.btn-cancelar-modal,
+.btn-guardar {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+}
+
+/* Botón cancelar del modal (gris) */
+.btn-cancelar-modal {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-cancelar-modal:hover {
+    background: #7f8c8d;
+}
+
+/* Botón guardar del modal (verde) */
+.btn-guardar {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-guardar:hover {
+    background: #27ae60;
+}
+
+/* Evita que el body tenga scroll cuando un modal está abierto */
+body.modal-abierto {
+    overflow: hidden;
 }
 
 /* ============================================
    DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
    Adaptaciones para pantallas pequeñas
    ============================================ */
+
+/* Tablets (768px o menos) */
 @media (max-width: 768px) {
     /* Muestra el botón hamburguesa en móviles */
     .toggle-btn {
         display: block;
     }
 
-    /* Oculta el sidebar por defecto en móviles */
+    /* Oculta el sidebar por defecto en móviles (se mueve fuera de la pantalla) */
     #sidebar {
-        width: 0;
-        overflow: hidden;
+        left: -250px;
+    }
+
+    /* Cuando el sidebar está activo, se muestra */
+    #sidebar.active {
+        left: 0;
     }
 
     /* El contenido principal ocupa todo el ancho */
     main {
         margin-left: 0;
+        padding: 15px;
     }
 
-    /* Las tarjetas se apilan verticalmente */
-    .contenedor-cuadros {
-        grid-template-columns: 1fr;
+    /* Ajustes del header */
+    header {
+        padding: 12px 15px;
     }
 
-    /* El encabezado de sección se apila verticalmente */
-    .encabezado-seccion {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    /* El formulario de búsqueda se apila verticalmente */
-    .form-busqueda {
-        flex-direction: column;
+    /* Permite que los elementos del header se apilen si es necesario */
+    .opciones {
+        flex-wrap: wrap;
     }
 
     /* El título es más pequeño en móviles */
@@ -543,35 +833,196 @@ header {
         font-size: 1.2rem;
     }
 
-    /* El logo es más pequeño */
-    .logo {
-        width: 40px;
-        height: 40px;
+    /* Las tarjetas se apilan verticalmente */
+    .contenedor-cuadros {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    /* El encabezado de sección se apila verticalmente */
+    .encabezado-seccion {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* El formulario de búsqueda se apila verticalmente */
+    .form-busqueda {
+        flex-direction: column;
+    }
+
+    /* El botón de búsqueda ocupa todo el ancho */
+    .form-busqueda button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Scroll horizontal suave en tablas */
+    .contenedor-tabla {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ancho mínimo de la tabla para que no se comprima demasiado */
+    .tabla-datos {
+        min-width: 600px;
+    }
+
+    /* El modal ocupa más espacio en móviles */
+    .modal-contenido {
+        width: 95%;
+        padding: 20px;
+        margin: 20px;
     }
 }
 
-/* Cuando el sidebar está activo en móviles */
-#sidebar.active {
-    width: 250px;
+/* Móviles (480px o menos) */
+@media (max-width: 480px) {
+    /* El título es aún más pequeño */
+    .titulo2 {
+        font-size: 1rem;
+    }
+
+    /* Las tarjetas se apilan verticalmente y se centran */
+    .tarjeta-resumen {
+        padding: 15px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* El icono es más pequeño en móviles pequeños */
+    .tarjeta-icono {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    /* El contador es más pequeño */
+    .contador {
+        font-size: 1.6rem;
+    }
+
+    /* Las secciones de tabla tienen menos padding */
+    .seccion-tabla {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* Las celdas de la tabla son más pequeñas */
+    .tabla-datos th,
+    .tabla-datos td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+
+    /* Los botones de acción son más pequeños y se apilan mejor */
+    .btn-accion {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+
+    /* Los botones del modal se apilan verticalmente */
+    .modal-botones {
+        flex-direction: column;
+    }
+
+    /* Los botones del modal ocupan todo el ancho */
+    .btn-cancelar-modal,
+    .btn-guardar {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Pantallas muy pequeñas (360px o menos) */
+@media (max-width: 360px) {
+    /* Reduce el padding general */
+    main {
+        padding: 10px;
+    }
+
+    /* Las tarjetas tienen menos padding */
+    .tarjeta-resumen {
+        padding: 12px;
+    }
+
+    /* Las secciones de tabla tienen menos padding */
+    .seccion-tabla {
+        padding: 12px;
+    }
+
+    /* Los encabezados de sección son más pequeños */
+    .encabezado-seccion h2 {
+        font-size: 1.2rem;
+    }
+
+    /* El botón PDF ocupa todo el ancho */
+    .btn-pdf {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Pantallas grandes (1200px o más) */
+@media (min-width: 1200px) {
+    /* En pantallas grandes, las tarjetas pueden ser 4 columnas */
+    .contenedor-cuadros {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Más espacio en pantallas grandes */
+    main {
+        padding: 30px;
+    }
 }
 
 /* ============================================
-   SCROLLBAR PERSONALIZADA (OPCIONAL)
-   Barra de desplazamiento con estilo
+   UTILIDADES
+   Clases auxiliares para uso rápido
    ============================================ */
+
+/* Centra el texto */
+.text-center {
+    text-align: center;
+}
+
+/* Margen superior de 20px */
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* Margen inferior de 20px */
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+/* Oculta un elemento (importante para sobrescribir otros estilos) */
+.hidden {
+    display: none !important;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA
+   Barra de desplazamiento con estilo personalizado
+   ============================================ */
+
+/* Ancho de la barra de desplazamiento (navegadores WebKit) */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
+/* Fondo de la barra de desplazamiento */
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
+/* El "pulgar" de la barra (la parte que se arrastra) */
 ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
 }
 
+/* Color del pulgar al pasar el mouse */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }

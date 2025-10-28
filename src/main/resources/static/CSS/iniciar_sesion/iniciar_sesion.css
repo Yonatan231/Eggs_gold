@@ -385,18 +385,3 @@ input::placeholder {
         font-size: 11px;
     }
 }
-
-/* ===== MEJORAS DE ACCESIBILIDAD ===== */
-/* Focus visible para navegación con teclado */
-input:focus,
-.boton-registrarse:focus {
-    outline: 2px solid var(--color-verde);
-    outline-offset: 2px;
-}
-
-/* Mejorar contraste del placeholder */
-@media (prefers-contrast: high) {
-    input::placeholder {
-        color: #666;
-    }
-}
