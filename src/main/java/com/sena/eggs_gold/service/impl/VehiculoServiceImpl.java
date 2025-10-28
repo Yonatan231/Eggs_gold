@@ -10,6 +10,7 @@ import com.sena.eggs_gold.service.VehiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,7 +41,9 @@ public class VehiculoServiceImpl implements VehiculoService {
         vehiculo.setMarca(dto.getMarca());
         vehiculo.setCapacidadCarga(dto.getCapacidadCarga());
         vehiculo.setKilometraje(dto.getKilometraje());
-        vehiculo.setFechaRegistro(dto.getFechaRegistro());
+        if (vehiculo.getFechaRegistro() == null) {
+            vehiculo.setFechaRegistro(LocalDate.now());
+        }
 
         // Campos fijos
         vehiculo.setEstado(Estado.ACTIVO);

@@ -47,7 +47,7 @@ public class Vehiculo {
     private Float kilometraje;
 
     @Column(name = "FECHA_REGISTRO", nullable = false)
-    private LocalDate fechaRegistro;
+    private LocalDate fechaRegistro = LocalDate.now();
 
     // Relación bidireccional - Un vehículo puede ser usado por muchos usuarios
     @OneToMany(mappedBy = "vehiculo")

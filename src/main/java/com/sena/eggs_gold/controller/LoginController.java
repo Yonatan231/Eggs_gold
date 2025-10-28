@@ -83,9 +83,11 @@ public class LoginController {
         if (conductor != null) {
             session.setAttribute("usuario_id", conductor.getIdUsuarios());
             session.setAttribute("rol", "CONDUCTOR");
+            session.setAttribute("idConductor", conductor.getIdUsuarios()); // ← agrega esta línea
             model.addAttribute("usuario", conductor);
             return "redirect:/conductor";
         }
+
 
         // Si no coincide en ninguno
         model.addAttribute("error", "Credenciales incorrectas");

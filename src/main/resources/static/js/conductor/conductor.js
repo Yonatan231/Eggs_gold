@@ -1,31 +1,3 @@
-/* ============================================
-   VERIFICACIÓN DE SESIÓN
-   Al cargar la página, verifica que el usuario esté logueado
-   ============================================ */
-fetch('/session', { credentials: 'same-origin' }) // Envía la cookie de sesión
-    .then(res => res.json())
-    .then(({ usuario_id, rol }) => {
-        // Si no hay usuario o rol, redirige al login
-        if (!usuario_id || !rol) {
-            alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
-            window.location.href = '/login';
-            return;
-        }
-
-        // Muestra información de la sesión en la consola (para desarrollo)
-        console.log('ID de sesión:', usuario_id);
-        console.log('Rol:', rol);
-
-        // Si el usuario es ADMIN, carga pedidos pendientes
-        if (rol === 'ADMIN') {
-            cargarPedidosRecientes('PENDIENTE');
-        }
-    })
-    .catch(error => {
-        // Si hay error al verificar la sesión, redirige al login
-        console.error("Error al obtener sesión:", error);
-        window.location.href = '/login';
-    });
 
 /* ============================================
    MENÚ LATERAL - BOTÓN HAMBURGUESA
@@ -516,20 +488,3 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
-/* ============================================
-   CERRAR SESIÓN
-   Limpia los datos y redirige al login
-   ============================================ */
-const btnCerrarSesion = document.getElementById("cerrar_sesion");
-if (btnCerrarSesion) {
-    btnCerrarSesion.addEventListener("click", function(e) {
-        e.preventDefault(); // Evita que el enlace funcione normalmente
-
-        // Pide confirmación antes de cerrar sesión
-        if (confirm("¿Está seguro de que desea cerrar sesión?")) {
-            localStorage.clear(); // Limpia datos locales del navegador
-            window.location.href = "/logout"; // Redirige al endpoint de logout
-        }
-    });
-}
