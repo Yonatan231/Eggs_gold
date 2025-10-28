@@ -34,9 +34,9 @@
             <div class="carrito-perfil">
                 <!-- Carrito de compras con contador -->
                 <div class="carro7">
-                    <a th:href="@{/historial_productos}" target="_blank">
-                        <img src="imagenes/carrito.png" width="20" height="20" alt="Carrito" />
-                        Carrito
+                    <a th:href="@{/historial_productos}">
+                        <img th:src="@{/imagenes/inicio/carrito_compras.png}" width="20" height="20"/>
+                        Carrito/
                         <!-- Contador de productos en el carrito -->
                         <span id="contador-carrito">0</span>
                     </a>
@@ -128,21 +128,10 @@
     </div>
 </footer>
 
-<!-- Script inline de Thymeleaf para guardar datos del cliente en localStorage -->
-<script th:inline="javascript" th:if="${cliente != null}">
-    // Guarda los datos del cliente en el almacenamiento local del navegador
-    const cliente = {
-        idUsuarios: [[${cliente.idUsuarios}]],
-        nombre: [[${cliente.nombre}]],
-        apellido: [[${cliente.apellido}]],
-        email: [[${cliente.email}]]
-    };
-    // Convierte el objeto a JSON y lo guarda
-    localStorage.setItem("cliente", JSON.stringify(cliente));
-</script>
-
 <!-- Enlace al archivo JavaScript con la funcionalidad -->
 <script src="js/cliente/cliente.js" defer></script>
+<script src="js/manejo_sesion/manejo_sesion.js" defer></script>
+
 
 </body>
 </html>

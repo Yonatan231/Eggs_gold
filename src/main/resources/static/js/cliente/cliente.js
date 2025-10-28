@@ -1,33 +1,3 @@
-// ========== VERIFICACIÓN DE SESIÓN DEL USUARIO ==========
-// Esta función se ejecuta al cargar la página para verificar que el usuario esté autenticado
-fetch('/session', { credentials: 'same-origin' }) // Envía la cookie JSESSIONID para mantener la sesión
-    .then(res => res.json()) // Convierte la respuesta a formato JSON
-    .then(({ usuario_id, rol }) => {
-        // Verifica si el usuario tiene sesión activa
-        if (!usuario_id || !rol) {
-            // Si no hay sesión, muestra alerta y redirige al login
-            alert("⚠️ Sesión no iniciada. Redirigiendo al inicio...");
-            window.location.href = '/login'; // Redirige a la página de login
-            return;
-        }
-
-        // Si hay sesión, muestra información en consola
-        console.log('✅ Sesión activa');
-        console.log('ID de sesión:', usuario_id);
-        console.log('Rol:', rol);
-
-        // Si el usuario es administrador, puede cargar funciones adicionales
-        if (rol === 'ADMIN') {
-            console.log('Usuario administrador detectado');
-            // Aquí puedes agregar funcionalidades para administradores
-        }
-    })
-    .catch(error => {
-        // Maneja errores en la verificación de sesión
-        console.error("❌ Error al obtener sesión:", error);
-        alert("Error al verificar la sesión. Por favor, inicia sesión nuevamente.");
-        window.location.href = '/login'; // Redirige al login en caso de error
-    });
 
 // ========== INICIALIZACIÓN AL CARGAR EL DOM ==========
 // Event listener que se ejecuta cuando el DOM está completamente cargado

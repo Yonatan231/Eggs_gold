@@ -7,14 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; // ✅ correcta
 import com.sena.eggs_gold.service.InventarioService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.boot.origin.Origin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/inventario")
@@ -42,7 +39,7 @@ public class InventarioController {
         }
 
         model.addAttribute("cliente", cliente);
-        return "inventario";
+        return "cliente/inicio";
     }
 
 //muestra los productos en administrador
