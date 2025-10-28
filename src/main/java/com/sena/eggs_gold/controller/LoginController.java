@@ -129,7 +129,7 @@ public class LoginController {
             model.addAttribute("cliente", cliente);
         }
 
-        return "historial_productos"; // el nombre del HTML (src/main/resources/templates/tienda.html)
+        return "carrito"; // el nombre del HTML (src/main/resources/templates/tienda.html)
     }
 
 }

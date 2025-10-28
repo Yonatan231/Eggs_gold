@@ -44,9 +44,9 @@ import org.springframework.ui.Model;
             return "logistica/logistica";
         }
 
-        @GetMapping("/historial_productos")
+        @GetMapping("/carrito")
         public String mostrarHistorial() {
-            return "historial_productos";
+            return "cliente/carrito";
         }
 
         @GetMapping("/productos")
