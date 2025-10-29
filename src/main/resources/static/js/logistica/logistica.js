@@ -1,31 +1,3 @@
-/* ============================================
-   VERIFICACIÓN DE SESIÓN AL CARGAR LA PÁGINA
-   ============================================ */
-
-// Obtiene la sesión del usuario desde el servidor
-fetch('/session', { credentials: 'same-origin' }) // Envía la cookie JSESSIONID
-    .then(res => res.json())
-    .then(({ usuario_id, rol }) => {
-        // Verifica si el usuario ha iniciado sesión
-        if (!usuario_id || !rol) {
-            alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
-            window.location.href = '/login'; // Redirige al login
-            return;
-        }
-
-        // Muestra información de la sesión en consola
-        console.log('ID de sesión:', usuario_id);
-        console.log('Rol:', rol);
-
-        // Si el usuario es ADMIN, carga los pedidos pendientes
-        if (rol === 'ADMIN') {
-            cargarPedidosRecientes('PENDIENTE');
-        }
-    })
-    .catch(error => {
-        console.error("Error al obtener sesión:", error);
-        window.location.href = '/login';
-    });
 
 /* ============================================
    TOGGLE DEL MENÚ LATERAL (SIDEBAR)
@@ -621,16 +593,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("❌ Error subiendo imagen:", error);
             });
     });
-});
-
-/* ============================================
-   CERRAR SESIÓN
-   ============================================ */
-
-document.getElementById("cerrar_sesion").addEventListener("click", function(e) {
-    e.preventDefault();
-    localStorage.clear(); // Limpia datos locales
-    window.location.href = "/logout"; // Llama al endpoint de Spring
 });
 
 /* ============================================

@@ -18,10 +18,6 @@ fetch('/session', { credentials: 'same-origin' })
         console.log('ID de sesión:', usuario_id);
         console.log('Rol:', rol);
 
-        // Si es administrador, cargar pedidos pendientes
-        if (rol === 'ADMIN') {
-            cargarPedidosRecientes('PENDIENTE');
-        }
     })
     .catch(error => {
         console.error("Error al obtener sesión:", error);

@@ -24,14 +24,14 @@ public class ProductoController {
     }
 
     // Mostrar formulario para agregar producto
-    @GetMapping("/agregar_producto")
+    @GetMapping("/registro_producto")
     public String mostrarFormularioAgregarProducto(Model model) {
         model.addAttribute("producto", new ProductoDTO());
-        return "agregar_producto"; // thymeleaf (src/main/resources/templates/agregar_producto.html)
+        return "registros/registro_producto";
     }
 
     // Procesar formulario de guardado
-    @PostMapping("/agregar_producto")
+    @PostMapping("/registro_producto")
     public String guardarProducto(
             @ModelAttribute ProductoDTO productoDTO,
             @RequestParam("imagenFile") MultipartFile imagenFile,
@@ -44,7 +44,7 @@ public class ProductoController {
             model.addAttribute("error", "❌ Error al guardar el producto: " + e.getMessage());
         }
         model.addAttribute("producto", new ProductoDTO()); // limpiar formulario
-        return "agregar_producto";
+        return "registros/registro_producto";
     }
 
     // Listar productos en una vista
