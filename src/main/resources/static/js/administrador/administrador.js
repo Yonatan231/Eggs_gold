@@ -1,10 +1,5 @@
 
 
-
-/* ============================================
-   MENÚ LATERAL - ABRIR Y CERRAR
-   ============================================ */
-
 // Seleccionar el botón de menú (hamburguesa)
 const btntoggle = document.querySelector('.toggle-btn');
 

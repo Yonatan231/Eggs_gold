@@ -48,7 +48,7 @@
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
     <!-- Formulario -->
-    <form th:action="@{/agregar_producto}" th:object="${producto}" method="post"
+    <form th:action="@{/registrar_producto}" th:object="${producto}" method="post"
           enctype="multipart/form-data" class="formulario-contenedor">
 
         <h2>Formulario de creación</h2>

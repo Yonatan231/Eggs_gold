@@ -21,7 +21,7 @@ public class LogisticaController {
     private EmailService emailService;
 
     // Mostrar formulario de registro de logística
-    @GetMapping("/registro_logistica")
+    @GetMapping("/registrar_logistica")
     public String mostrarFormulario(Model model, HttpSession session) {
         // Validar que el rol sea ADMIN
         String rol = (String) session.getAttribute("rol");

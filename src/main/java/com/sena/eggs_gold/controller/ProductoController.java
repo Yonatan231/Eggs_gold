@@ -24,14 +24,14 @@ public class ProductoController {
     }
 
     // Mostrar formulario para agregar producto
-    @GetMapping("/registro_producto")
+    @GetMapping("/registrar_producto")
     public String mostrarFormularioAgregarProducto(Model model) {
         model.addAttribute("producto", new ProductoDTO());
         return "registros/registro_producto";
     }
 
     // Procesar formulario de guardado
-    @PostMapping("/registro_producto")
+    @PostMapping("/registrar_producto")
     public String guardarProducto(
             @ModelAttribute ProductoDTO productoDTO,
             @RequestParam("imagenFile") MultipartFile imagenFile,

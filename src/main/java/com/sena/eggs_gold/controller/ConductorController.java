@@ -24,7 +24,7 @@ public class ConductorController {
     private EmailService emailService;
 
     // Mostrar formulario de registro de conductor (solo logística)
-    @GetMapping("/registro_conductor")
+    @GetMapping("/registrar_conductor")
     public String mostrarFormulario(Model model, HttpSession session) {
         // Validar que el rol sea ADMIN
         String rol = (String) session.getAttribute("rol");
