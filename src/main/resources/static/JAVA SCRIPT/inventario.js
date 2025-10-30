@@ -1,39 +1,3 @@
-// ========================================
-// ARCHIVO: inventario.js
-// DESCRIPCIÓN: Controla toda la funcionalidad del carrito de compras
-// ========================================
-
-/* ========================================
-   1. VERIFICACIÓN DE SESIÓN DEL USUARIO
-   ======================================== */
-
-// Esta función se ejecuta automáticamente cuando se carga la página
-// Verifica que el usuario haya iniciado sesión antes de acceder
-fetch('/session', { credentials: 'same-origin' }) // Envía la cookie de sesión al servidor
-    .then(res => res.json()) // Convierte la respuesta del servidor a formato JSON
-    .then(({ usuario_id, rol }) => {
-        // Verificamos si el usuario tiene sesión activa
-        if (!usuario_id || !rol) {
-            alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
-            window.location.href = '/login'; // Redirige a la página de login
-            return; // Salimos de la función
-        }
-
-        // Si llegamos aquí, el usuario sí tiene sesión activa
-        console.log('✅ ID de sesión:', usuario_id);
-        console.log('✅ Rol:', rol);
-
-        // Si el usuario es administrador, cargamos funciones especiales
-        if (rol === 'ADMIN') {
-            cargarPedidosRecientes('PENDIENTE');
-        }
-    })
-    .catch(error => {
-        // Si hay algún error, lo mostramos en consola y redirigimos al login
-        console.error("❌ Error al obtener sesión:", error);
-        window.location.href = '/login';
-    });
-
 
 /* ========================================
    2. INICIALIZACIÓN AL CARGAR LA PÁGINA
