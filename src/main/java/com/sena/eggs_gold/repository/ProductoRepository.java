@@ -12,6 +12,7 @@ import java.util.Map;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
+
     @Query(value = """
     SELECT 
         p.ID_PRODUCTOS AS id,
@@ -32,6 +33,4 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
           )
     """, nativeQuery = true)
     List<Map<String, Object>> buscarProductos(@Param("buscar") String buscar);
-
-
 }

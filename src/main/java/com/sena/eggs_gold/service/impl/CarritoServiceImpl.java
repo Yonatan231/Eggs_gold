@@ -134,7 +134,7 @@ public class CarritoServiceImpl implements CarritoService {
             System.out.println("Fecha asignada a venta: " + venta.getFecha());
             venta.setMetodoPago(MetodoPago.EFECTIVO);
             venta.setEstado(EstadoVenta.PENDIENTE);
-            venta.setVehiculo(vehiculoRepo.findById(5).orElseThrow()); // o el que corresponda
+            venta.setVehiculo(null); // o el que corresponda
 
 
 

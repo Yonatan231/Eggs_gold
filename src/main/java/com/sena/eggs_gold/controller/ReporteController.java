@@ -13,21 +13,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/reportes")
 public class ReporteController {
 
-    private final PedidoService pedidoService;
     private final ReporteService reporteService;
 
-    public ReporteController(PedidoService pedidoService, ReporteService reporteService) {
-        this.pedidoService = pedidoService;
+    public ReporteController(ReporteService reporteService) {
         this.reporteService = reporteService;
     }
 
-    @GetMapping("/ventas")
-    public ResponseEntity<ByteArrayResource> descargarReporteVentas() {
-        byte[] pdfBytes = reporteService.generarReporteVentas();
+    @GetMapping("/productos")
+    public ResponseEntity<ByteArrayResource> descargarReporteProductos() {
+        byte[] pdfBytes = reporteService.generarReporteProductos();
         ByteArrayResource resource = new ByteArrayResource(pdfBytes);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Reporte_Ventas.pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Reporte_Productos.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .contentLength(pdfBytes.length)
                 .body(resource);

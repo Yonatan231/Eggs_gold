@@ -55,6 +55,6 @@ public class Venta {
 
     // Many to One (muchas ventas pueden usar el mismo vehículo)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "VEHICULOS_ID", nullable = false)
+    @JoinColumn(name = "VEHICULOS_ID", nullable = true)
     private Vehiculo vehiculo;
 }

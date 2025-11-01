@@ -82,8 +82,4 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
     WHERE p.idPedidos = :idPedido
 """)
     void actualizarEstado(@Param("idPedido") Integer idPedido, @Param("estado") EstadoPedido estado);
-
-
-
-
 }

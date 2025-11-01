@@ -20,8 +20,25 @@ public class LogisticaServiceImpl implements LogisticaService {
     }
 
     @Override
+    public LogisticaDTO login(String numDocumento, String password) {
+        return logisticaRepository.findByNumDocumentoAndPassword(numDocumento, password)
+                .map(logistica -> new LogisticaDTO(
+                        logistica.getIdUsuarios(),
+                        logistica.getNombre(),
+                        logistica.getApellido(),
+                        logistica.getDireccionUsuario(),
+                        logistica.getNumDocumento(),
+                        logistica.getTelefono(),
+                        logistica.getCorreo(),
+                        logistica.getPassword(),
+                        "LOGISTICA"
+                ))
+                .orElse(null);
+    }
+
+    @Override
     public void registrarLogistica(LogisticaDTO dto) {
-        // Crear instancia de Logistica; JPA asigna tipo_usuario automáticamente
+        // Tu implementación actual
         Logistica logistica = new Logistica();
         logistica.setNombre(dto.getNombre());
         logistica.setApellido(dto.getApellido());
@@ -31,32 +48,10 @@ public class LogisticaServiceImpl implements LogisticaService {
         logistica.setCorreo(dto.getCorreo());
         logistica.setPassword(dto.getPassword());
 
-        // Asignar el rol de logística
         Rol rol = rolRepository.findById(2)
                 .orElseThrow(() -> new RuntimeException("Rol Logística no encontrado"));
         logistica.setRol(rol);
 
-        // Guardar en la base de datos
         logisticaRepository.save(logistica);
     }
-
-    @Override
-    public LogisticaDTO login(String numDocumento, String password) {
-        return logisticaRepository.findByNumDocumentoAndPassword(numDocumento, password)
-                .map(logistica -> {
-                    LogisticaDTO dto = new LogisticaDTO();
-                    dto.setIdUsuarios(logistica.getIdUsuarios());
-                    dto.setNombre(logistica.getNombre());
-                    dto.setApellido(logistica.getApellido());
-                    dto.setDireccionUsuario(logistica.getDireccionUsuario());
-                    dto.setNumDocumento(logistica.getNumDocumento());
-                    dto.setTelefono(logistica.getTelefono());
-                    dto.setCorreo(logistica.getCorreo());
-                    dto.setPassword(logistica.getPassword());
-                    return dto;
-                })
-                .orElse(null);
-    }
 }
-
-

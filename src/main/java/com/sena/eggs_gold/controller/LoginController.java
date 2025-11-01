@@ -10,6 +10,7 @@ import com.sena.eggs_gold.service.AdminService;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.LogisticaService;
 import com.sena.eggs_gold.service.ConductorService;
+import com.sena.eggs_gold.service.impl.LogisticaServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,7 +61,7 @@ public class LoginController {
             return "redirect:/inventario";
         }
 
-        // Admin
+        // Admin - necesitas tener esta variable declarada
         AdminDTO admin = adminService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (admin != null) {
             session.setAttribute("usuario_id", admin.getIdUsuarios());
@@ -69,29 +70,28 @@ public class LoginController {
             return "redirect:/administrador";
         }
 
-        // Logística
-        LogisticaDTO logistica = logisticaService.login(loginDTO.getDocumento(), loginDTO.getPassword());
-        if (logistica != null) {
-            session.setAttribute("usuario_id", logistica.getIdUsuarios());
+        // Logistica
+        LogisticaDTO Logistica = logisticaService.login(loginDTO.getDocumento(), loginDTO.getPassword());
+        if (Logistica != null) {
+            session.setAttribute("usuario_id", Logistica.getIdUsuarios());
             session.setAttribute("rol", "LOGISTICA");
-            model.addAttribute("usuario", logistica);
-            return "redirect:/logistica";
+            model.addAttribute("usuario", Logistica);
+            return "redirect:/Logistica";
         }
+
 
         // Conductor
         ConductorDTO conductor = conductorService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (conductor != null) {
             session.setAttribute("usuario_id", conductor.getIdUsuarios());
             session.setAttribute("rol", "CONDUCTOR");
-            session.setAttribute("idConductor", conductor.getIdUsuarios()); // ← agrega esta línea
+            session.setAttribute("idConductor", conductor.getIdUsuarios());
             model.addAttribute("usuario", conductor);
             return "redirect:/conductor";
         }
 
+        return "redirect:/login?error"; // Agrega esto para manejar login fallido
 
-        // Si no coincide en ninguno
-        model.addAttribute("error", "Credenciales incorrectas");
-        return "iniciar_sesion/iniciar_sesion";
     }
 
 
