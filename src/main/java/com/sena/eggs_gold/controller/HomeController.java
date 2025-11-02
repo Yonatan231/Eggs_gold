@@ -49,9 +49,9 @@ import org.springframework.ui.Model;
             return "cliente/carrito";
         }
 
-        @GetMapping("/productos")
+        @GetMapping("/inventariol")
         public String mostrarProductos() {
-            return "productos"; // nombre del archivo productos.html en /templates
+            return "logistica/inventario";
         }
 
         @GetMapping("Registro_conductor")

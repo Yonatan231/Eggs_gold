@@ -11,10 +11,10 @@
 
     <!-- Estilos base -->
     <link rel="stylesheet" href="css/conductor/conductor.css" />
-    <link rel="stylesheet" href="css/registros/registro_producto.css" />
+    <link rel="stylesheet" th:href="@{css/registros/registro_producto.css}" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg" />
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
 
 </head>
 
@@ -67,7 +67,6 @@
             <option value="A">Huevos A</option>
             <option value="AA">Huevos AA</option>
             <option value="AAA">Huevos AAA</option>
-            <!-- Añadir más opciones de categorías según sea necesario -->
         </select><br>
 
         <label for="cantidad">Cantidad disponible:</label>

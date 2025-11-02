@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Iconos de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Favicon del sitio -->
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
+    <title>EGGS GOLD - Productos</title>
+    <!-- Enlace al archivo CSS externo -->
+    <link rel="stylesheet" th:href="@{css/logistica/inventario.css}">
+</head>
+<body>
+<!-- Contenedor principal de la página -->
+<div class="main-content">
+    <div class="container">
+        <!-- Encabezado fijo de la página -->
+        <header>
+            <div class="header-top">
+                <!-- Logo y nombre de la empresa -->
+                <div class="logo-titulo">
+                    <img th:src="@{imagenes/inicio/logo.jpg}" alt="logo" width="50" height="50" />
+                    <span class="texto">EGGS GOLD</span>
+                </div>
+
+                <!-- Título principal centrado -->
+                <div class="header-title">
+                    <h1>Inventario de Productos</h1>
+                </div>
+
+                <!-- Acciones del header: búsqueda y logout -->
+                <div class="header-actions">
+                    <!-- Barra de búsqueda -->
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Buscar productos..." oninput="filtrarProductos()">
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <!-- Botón de salir -->
+                    <a th:href="@{/logistica}" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Salir
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Grid donde se mostrarán las tarjetas de productos -->
+        <div class="products-grid" id="productosContainer">
+            <!-- Mensaje de carga inicial -->
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Cargando productos...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pie de página -->
+<footer>
+    <div class="footer-content">
+        <p class="footer-quote">Cada gran negocio empieza con un buen producto.</p>
+        <div class="footer-tags">
+            <span class="tag">Innovación</span>
+            <span class="tag">Calidad</span>
+            <span class="tag">Confianza</span>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Sistema de Gestión de Productos - EGGS GOLD
+        </div>
+    </div>
+</footer>
+
+<!-- Enlace al archivo JavaScript externo -->
+<script th:src="@{js/logistica/inventario.js}"></script>
+<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
+
+</body>
+</html>

@@ -1,30 +1,3 @@
-// Verifica la sesión del usuario al cargar la página
-fetch('/session', { credentials: 'same-origin' }) // envía la cookie JSESSIONID
-    .then(res => res.json())
-    .then(({ usuario_id, rol }) => {
-        // Valida que existan los datos de sesión
-        if (!usuario_id || !rol) {
-            alert("❌ Sesión no iniciada. Redirigiendo al inicio...");
-            window.location.href = '/login'; // endpoint Thymeleaf
-            return;
-        }
-
-        // Muestra en consola los datos de sesión obtenidos
-        console.log('ID de sesión:', usuario_id);
-        console.log('Rol:', rol);
-
-        // Si el usuario es administrador, carga los pedidos pendientes
-        if (rol === 'ADMIN') {
-            cargarPedidosRecientes('PENDIENTE');
-        }
-    })
-    .catch(error => {
-        // Maneja errores de conexión y redirige al login
-        console.error("Error al obtener sesión:", error);
-        window.location.href = '/login';
-    });
-
-
 
 // === TOGGLE DEL MENÚ LATERAL ===
 // Obtiene el botón de toggle del menú lateral
@@ -467,13 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-/*cerrar sesion*/
-// Implementa la funcionalidad de cierre de sesión
-document.getElementById("cerrar_sesion").addEventListener("click", function(e) {
-    e.preventDefault();
-    localStorage.clear(); // limpia datos locales
-    window.location.href = "/logout"; // llama al endpoint de Spring
-});
 
 /*
  * COMENTARIO GENERAL

@@ -39,7 +39,7 @@ public class InventarioController {
         }
 
         model.addAttribute("cliente", cliente);
-        return "cliente/inicio";
+        return "cliente/inicio_cliente";
     }
 
 //muestra los productos en administrador

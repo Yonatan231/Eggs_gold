@@ -13,7 +13,7 @@
     <a th:href="@{inventario}" class="salir">Salir</a>
     <div class="header-contenedor">
         <div class="logo-titulo">
-            <img src="imagenes/LOGO.jpg" alt="logo" width="50" height="50" />
+            <img th:src="@{imagenes/inicio/logo.jpg}" alt="logo" width="50" height="50" />
             <span class="texto">EGGS GOLD</span>
         </div>
     </div>
@@ -82,7 +82,7 @@
 </main>
 
 <!-- Script de JavaScript -->
-<script src="js/manejo_sesion/manejo_sesion.js"></script>
+<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
 <script src="JAVA SCRIPT/inventario.js"></script>
 
 </body>

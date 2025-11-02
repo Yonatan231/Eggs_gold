@@ -76,7 +76,7 @@ public class LoginController {
             session.setAttribute("usuario_id", Logistica.getIdUsuarios());
             session.setAttribute("rol", "LOGISTICA");
             model.addAttribute("usuario", Logistica);
-            return "redirect:/Logistica";
+            return "redirect:/logistica";
         }
 
 

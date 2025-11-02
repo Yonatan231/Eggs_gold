@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" th:href="@{css/logistica/logistica.css}">
 
     <!-- Icono de la página (favicon) -->
-    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}">
 
     <title>EGGS GOLD - Panel de Logística</title>
 </head>
@@ -47,8 +47,8 @@
         </li>
 
         <!-- Enlaces del menú -->
-        <li><a th:href="@{/productos}"><i class="fas fa-boxes"></i> Productos</a></li>
-        <li><a th:href="@{agregar_producto}"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
+        <li><a th:href="@{/inventariol}"><i class="fas fa-boxes"></i> Productos</a></li>
+        <li><a href="#Pedidos"><i class="fas fa-plus-circle"></i> Pedidos</a></li>
         <li><a href="/logout" id="cerrar_sesion" class="texto"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
 </nav>
@@ -64,7 +64,7 @@
     <header role="banner">
         <div class="opciones">
             <!-- Logo de la empresa -->
-            <img src="imagenes/LOGO.jpg" alt="Logo de Eggs Gold" class="logo"/>
+            <img th:src="@{imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold" class="logo"/>
             <!-- Título de bienvenida -->
             <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">Logística</span></h1>
             <!-- Botón de notificaciones -->
@@ -263,7 +263,7 @@
      ARCHIVO DE JAVASCRIPT
      ============================================ -->
 <script src="js/logistica/logistica.js"></script>
-<script src="js/manejo_sesion/manejo_sesion.js"></script>
+<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
 
 </body>
 </html>
