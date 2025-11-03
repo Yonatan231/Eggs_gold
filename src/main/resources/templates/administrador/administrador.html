@@ -47,11 +47,10 @@
         </li>
 
         <!-- Enlaces de navegación -->
-        <li><a href="#tabla-clientes" class="nav-link"><i class="fas fa-users"></i> Clientes</a></li>
-        <li><a th:href="@{/reportes_admin.html}" class="nav-link"><i class="fas fa-chart-bar"></i> Reportes</a></li>
-        <li><a th:href="@{/agregar_producto}" class="nav-link"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
-        <li><a th:href="@{/registro_logistica}" class="nav-link"><i class="fas fa-user-plus"></i> Registro Logística</a></li>
-        <li><a th:href="@{/registro_conductor}" class="nav-link"><i class="fas fa-id-card"></i> Registrar Conductor</a></li>
+        <li><a href="#tabla-pedidos" class="nav-link"><i class="fas fa-users"></i> Clientes</a></li>
+        <li><a th:href="@{/registrar_producto}" class="nav-link"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
+        <li><a th:href="@{/registrar_logistica}" class="nav-link"><i class="fas fa-user-plus"></i> Registro Logística</a></li>
+        <li><a th:href="@{/registrar_conductor}" class="nav-link"><i class="fas fa-id-card"></i> Registrar Conductor</a></li>
         <li><a href="/logout" id="cerrar_sesion" class="nav-link texto"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
 </nav>
@@ -67,7 +66,7 @@
          ============================================ -->
     <header role="banner">
         <div class="opciones">
-            <img src="imagenes/LOGO.jpg" alt="Logo de Eggs Gold" class="logo"/>
+            <img th:src="@{imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold" class="logo"/>
             <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">Administrador</span></h1>
             <a href="notificaciones.html" class="campana-noti" aria-label="Notificaciones">
                 <i class="fas fa-bell"></i>
@@ -173,6 +172,10 @@
     <section class="seccion-tabla" aria-labelledby="titulo-productos">
         <div class="encabezado-seccion">
             <h2 id="titulo-productos">🛒 Gestión de Productos</h2>
+            <!-- Botón para descargar reporte PDF -->
+            <a href="/admin/reportes/productos" download="reporte_productos.pdf" class="btn-pdf">
+                <i class="fas fa-file-pdf"></i> Ver reporte PDF
+            </a>
         </div>
 
         <!-- Formulario de búsqueda de productos -->
@@ -262,6 +265,10 @@
     <section class="seccion-tabla" aria-labelledby="titulo-clientes" id="tabla-clientes">
         <div class="encabezado-seccion">
             <h2 id="titulo-clientes">👥 Gestión de Clientes</h2>
+            <!-- Botón para descargar reporte PDF -->
+            <a href="/admin/reportes/clientes" download="reporte_clientes.pdf" class="btn-pdf">
+                <i class="fas fa-file-pdf"></i> Ver reporte PDF
+            </a>
         </div>
 
         <!-- Formulario de búsqueda de clientes -->
@@ -343,6 +350,10 @@
     <section class="seccion-tabla" aria-labelledby="titulo-conductores" id="tabla-conductores-section">
         <div class="encabezado-seccion">
             <h2 id="titulo-conductores">🚚 Gestión de Conductores</h2>
+            <!-- Botón para descargar reporte PDF -->
+            <a href="/admin/reportes/conductores" download="reporte_conductores.pdf" class="btn-pdf">
+                <i class="fas fa-file-pdf"></i> Ver reporte PDF
+            </a>
         </div>
 
         <!-- Formulario de búsqueda de conductores -->
@@ -423,6 +434,10 @@
     <section class="seccion-tabla" aria-labelledby="titulo-logistica" id="tabla-logistica-section">
         <div class="encabezado-seccion">
             <h2 id="titulo-logistica">📊 Gestión de Logística</h2>
+            <!-- Botón para descargar reporte PDF -->
+            <a href="/admin/reportes/logistica" download="reporte_logistica.pdf" class="btn-pdf">
+                <i class="fas fa-file-pdf"></i> Ver reporte PDF
+            </a>
         </div>
 
         <!-- Formulario de búsqueda de logística -->
@@ -498,11 +513,8 @@
 
 </main>
 
-<!-- ============================================
-     SCRIPT DE JAVASCRIPT
-     Contiene toda la lógica de la aplicación
-     ============================================ -->
-<script src="JAVA SCRIPT/indexadmin.js"></script>
+<script th:src="@{/js/administrador/administrador.js}"></script>
+<script th:src="@{/js/manejo_sesion/manejo_sesion.js}"></script>
 
 </body>
 </html>

@@ -4,17 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Agregar Producto - Eggs Gold</title>
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Estilos base -->
-    <link rel="stylesheet" href="css/conductor/conductor.css" />
+    <link rel="stylesheet" th:href="@{css/conductor/conductor.css}" />
     <link rel="stylesheet" th:href="@{css/registros/registro_producto.css}" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
 </head>
 
@@ -30,7 +29,7 @@
             <h2>Panel de Administración</h2>
         </li>
         <li><a th:href="@{/administrador}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
 </nav>
 
@@ -38,10 +37,24 @@
 <main id="main-content">
     <header>
         <div class="opciones">
-            <img src="imagenes/LOGO.jpg" alt="Logo" class="logo">
+            <div class="marca-contenedor">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
+                </div>
+
+                <div class="marca-texto">
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
             <h1 class="titulo2"><i class="fas fa-cart-plus"></i> Agregar nuevo producto</h1>
         </div>
     </header>
+
+
+
+
+
 
     <!-- Mensajes -->
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
@@ -54,7 +67,7 @@
         <h2>Formulario de creación</h2>
 
         <label for="nombre">Nombre del producto:</label>
-        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Camiseta deportiva" required>
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Huevo de campo" required>
 
         <label for="descripcion">Descripción:</label>
         <textarea id="descripcion" th:field="*{descripcion}" placeholder="Agrega una breve descripción" required></textarea>

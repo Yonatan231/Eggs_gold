@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Registrar Logística - Eggs Gold</title>
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
@@ -11,10 +12,9 @@
 
     <!-- Estilos base -->
     <link rel="stylesheet" th:href="@{/css/administrador/administrador.css}">
-    <link rel="stylesheet" th:href="@{/css/registros/registro_conductor.css}">
+    <link rel="stylesheet" th:href="@{/css/registros/registro_conductor_logistica.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
             <h2>Panel de Administración</h2>
         </li>
         <li><a th:href="@{/administrador}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
 </nav>
 
@@ -36,7 +36,15 @@
 <main id="main-content">
     <header>
         <div class="opciones">
-            <img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" class="logo">
+            <div class="marca-contenedor">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
+                </div>
+
+                <div class="marca-texto">
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
             <h1 class="titulo2"><i class="fas fa-user-cog"></i> Registro de Logística</h1>
         </div>
     </header>

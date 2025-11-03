@@ -1,126 +1,198 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es">
 <head>
+    <!-- INFORMACIÓN BÁSICA DE LA PÁGINA -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Panel de logística de Eggs Gold - Gestión de pedidos e inventario">
+    <meta name="description" content="Panel de logística de Eggs Gold">
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
 
-    <!-- Icono de Font Awesome para los íconos -->
+    <!-- ICONOS DE FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Hoja de estilos CSS personalizada -->
+    <!-- ESTILOS PERSONALIZADOS -->
     <link rel="stylesheet" th:href="@{css/logistica/logistica.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
-    <!-- Icono de la página (favicon) -->
-    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}">
-
-    <title>EGGS GOLD - Panel de Logística</title>
+    <title>Panel de Logística - Eggs Gold</title>
 </head>
 <body>
 
 <!-- ============================================
-     BOTÓN PARA ABRIR/CERRAR MENÚ LATERAL EN MÓVILES
+     BOTÓN PARA ABRIR EL MENÚ EN MÓVILES
      ============================================ -->
-<button class="toggle-btn" aria-label="Abrir menú lateral" aria-expanded="false">
-    <span>&#9776;</span> <!-- Icono de hamburguesa -->
+<button class="toggle-btn">
+    ☰
 </button>
 
 <!-- ============================================
-     MENÚ LATERAL (SIDEBAR)
+     MENÚ LATERAL
      ============================================ -->
-<nav id="sidebar" aria-label="Menú de logística">
+<nav id="sidebar">
     <ul>
-        <!-- Sección del perfil del usuario -->
+        <!-- PERFIL DEL USUARIO -->
         <li class="perfil-admin">
-            <!-- Contenedor del avatar -->
             <div class="avatar-contenedor" id="avatar-contenedor">
-                <!-- Iniciales del usuario (se muestran si no hay foto) -->
+                <!-- Iniciales cuando no hay foto -->
                 <span id="avatar-iniciales">AD</span>
-                <!-- Imagen del usuario (se oculta inicialmente) -->
-                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+
+                <!-- Foto de perfil -->
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
+
                 <!-- Botón para subir foto -->
-                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">+</label>
-                <!-- Input oculto para seleccionar archivo -->
-                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+                <label for="input-foto" class="boton-subir-foto">+</label>
+                <input type="file" id="input-foto" accept="image/*" style="display: none;">
             </div>
             <h2>Panel de Logística</h2>
         </li>
 
-        <!-- Enlaces del menú -->
-        <li><a th:href="@{/inventariol}"><i class="fas fa-boxes"></i> Productos</a></li>
-        <li><a href="#Pedidos"><i class="fas fa-plus-circle"></i> Pedidos</a></li>
-        <li><a href="/logout" id="cerrar_sesion" class="texto"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <!-- OPCIONES DEL MENÚ -->
+        <li>
+            <a th:href="@{/inventariol}">
+                <i class="fas fa-boxes"></i> Productos
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/registrar_novedad}">
+                <i class="fas fa-exclamation-triangle"></i> Registro Novedad
+            </a>
+        </li>
+
+        <!-- Botón para reportar novedad -->
+        <button class="btn-novedad" id="btnNovedad">
+            <i class="fas fa-exclamation-circle"></i> Reportar Novedad
+        </button>
+
+        <li>
+            <a href="/logout" id="cerrar_sesion">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
     </ul>
 </nav>
 
 <!-- ============================================
      CONTENIDO PRINCIPAL
      ============================================ -->
-<main id="main-content" role="main">
+<main id="main-content">
 
-    <!-- ============================================
-         CABECERA
-         ============================================ -->
     <header role="banner">
         <div class="opciones">
-            <!-- Logo de la empresa -->
-            <img th:src="@{imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold" class="logo"/>
-            <!-- Título de bienvenida -->
-            <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">Logística</span></h1>
-            <!-- Botón de notificaciones -->
-            <a href="notificaciones.html" class="campana-noti" aria-label="Notificaciones">
-                <i class="fas fa-bell"></i>
-            </a>
+            <!-- Logo y marca alineados horizontalmente -->
+            <div class="marca-contenedor">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
+                </div>
+
+                <div class="marca-texto">
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
+
+            <h1 class="titulo2"> Bienvenido, <span class="resaltado">Logística</span></h1>
         </div>
     </header>
 
     <!-- ============================================
-         TARJETA DE RESUMEN - Productos en stock
+         TARJETA DE RESUMEN
          ============================================ -->
-    <section class="tarjeta-resumen productos" aria-label="Resumen de productos">
+    <section class="tarjeta-resumen productos">
         <div class="tarjeta-icono">
             <i class="fas fa-boxes"></i>
         </div>
         <div class="tarjeta-contenido">
             <h3>Productos en Stock</h3>
-            <!-- El contador se actualiza dinámicamente con JavaScript -->
             <span id="totalProductos" class="contador">3</span>
         </div>
     </section>
 
+    <!-- Modal para reportar novedad -->
+    <div class="modal" id="novedadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reportar Novedad</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <form id="novedadForm">
+                <div class="form-group">
+                    <label for="orderNumber">Número de Pedido</label>
+                    <input type="text" id="orderNumber" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoNovedad">Tipo de Novedad</label>
+                    <select id="tipoNovedad" class="form-control" required>
+                        <option value="">Seleccione un tipo</option>
+                        <option value="incompleto">Cantidad de un Producto Incompleta</option>
+                        <option value="mal-estado">Falta de Producto</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" class="form-control" placeholder="Describa la novedad en detalle..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="evidencia">Evidencia (opcional)</label>
+                    <input type="file" id="evidencia" class="form-control">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelNovedad">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ============================================
-         SECCIÓN DE PEDIDOS
+         GESTIÓN DE PEDIDOS
          ============================================ -->
-    <section class="seccion-tabla" aria-labelledby="titulo-pedidos">
+    <section class="seccion-tabla">
+
+        <!-- Título -->
         <div class="encabezado-seccion">
-            <h2 id="titulo-pedidos">📦 Gestión de Pedidos</h2>
+            <h2>📦 Gestión de Pedidos</h2>
         </div>
 
-        <!-- Formulario de búsqueda de pedidos -->
+        <!-- Buscador -->
         <form class="form-busqueda" id="form-busqueda">
-            <input type="text" name="buscar" id="buscar" placeholder="Buscar pedido..." aria-label="Buscar pedidos">
-            <button type="submit" aria-label="Buscar">
+            <input
+                    type="text"
+                    id="buscar"
+                    placeholder="Buscar pedido...">
+
+            <button type="submit">
                 <i class="fas fa-search"></i> Buscar
             </button>
         </form>
 
         <!-- Tabla de pedidos -->
         <div class="contenedor-tabla">
-            <table class="tabla-datos" id="tabla-pedidos" aria-describedby="titulo-pedidos">
+            <table class="tabla-datos" id="tabla-pedidos">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col" colspan="2">Productos</th>
-                    <th scope="col">Dirección</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Asignar</th>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th colspan="2">Productos</th>
+                    <th>Dirección</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Asignar</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Los pedidos se cargarán aquí dinámicamente con JavaScript -->
+                <!-- Los pedidos se cargan con JavaScript -->
                 </tbody>
             </table>
 
@@ -132,43 +204,49 @@
     </section>
 
     <!-- ============================================
-         SECCIÓN DE INVENTARIO
+         GESTIÓN DE INVENTARIO
          ============================================ -->
-    <section class="seccion-tabla" aria-labelledby="titulo-inventario">
+    <section class="seccion-tabla">
+
+        <!-- Título -->
         <div class="encabezado-seccion">
-            <h2 id="titulo-inventario">📊 Gestión de Inventario</h2>
+            <h2>📊 Gestión de Inventario</h2>
         </div>
 
-        <!-- Formulario de búsqueda de inventario -->
+        <!-- Buscador -->
         <form class="form-busqueda" id="form-busqueda-inventario">
-            <input type="text" name="buscar" id="buscar-inventario" placeholder="Buscar inventario..." aria-label="Buscar inventario">
-            <button type="submit" aria-label="Buscar">
+            <input
+                    type="text"
+                    id="buscar-inventario"
+                    placeholder="Buscar inventario...">
+
+            <button type="submit">
                 <i class="fas fa-search"></i> Buscar
             </button>
         </form>
 
         <!-- Tabla de inventario -->
         <div class="contenedor-tabla">
-            <table class="tabla-datos" id="tabla-productos" aria-describedby="titulo-inventario">
+            <table class="tabla-datos" id="tabla-productos">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Categoría</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Ubicación</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col">Fecha de Caducidad</th>
-                    <th scope="col">Fecha de Actualización</th>
-                    <th scope="col">Actualizar</th>
-                    <th scope="col">Eliminar</th>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Cantidad</th>
+                    <th>Ubicación</th>
+                    <th>Imagen</th>
+                    <th>Fecha de Caducidad</th>
+                    <th>Fecha de Actualización</th>
+                    <th>Actualizar</th>
+                    <th>Eliminar</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- El inventario se cargará aquí dinámicamente con JavaScript -->
+                <!-- El inventario se carga con JavaScript -->
                 </tbody>
             </table>
 
@@ -182,18 +260,19 @@
 </main>
 
 <!-- ============================================
-     MODALES (VENTANAS EMERGENTES)
+     MODAL PARA ASIGNAR PEDIDOS
      ============================================ -->
-
-<!-- Modal para asignar pedidos a conductores -->
-<div id="modal-asignar" class="modal" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-asignar">
+<div id="modal-asignar" class="modal" style="display: none;">
     <div class="modal-contenido">
-        <!-- Botón para cerrar el modal -->
-        <span class="cerrar" onclick="cerrarModalAsignar()" aria-label="Cerrar modal">&times;</span>
-        <h2 id="titulo-modal-asignar">Asignar Pedido</h2>
 
-        <!-- Formulario de asignación -->
+        <!-- Botón para cerrar -->
+        <span class="cerrar" onclick="cerrarModalAsignar()">&times;</span>
+
+        <h2>Asignar Pedido</h2>
+
+        <!-- Formulario -->
         <form id="form-asignar" method="POST">
+
             <!-- Campo oculto con el ID del pedido -->
             <input type="hidden" name="pedido_id" id="asignar_id_pedido">
 
@@ -203,25 +282,34 @@
                 <option value="">Cargando conductores...</option>
             </select>
 
-            <!-- Botones del modal -->
+            <!-- Botones -->
             <div class="modal-botones">
-                <button type="button" class="btn-cancelar" onclick="cerrarModalAsignar()">Cancelar</button>
-                <button type="submit" class="btn-guardar">Asignar</button>
+                <button type="button" class="btn-cancelar" onclick="cerrarModalAsignar()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-guardar">
+                    Asignar
+                </button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Modal para editar productos del inventario -->
-<div id="modal-editar-producto" class="modal" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-editar">
+<!-- ============================================
+     MODAL PARA EDITAR PRODUCTOS
+     ============================================ -->
+<div id="modal-editar-producto" class="modal" style="display: none;">
     <div class="modal-contenido">
-        <!-- Botón para cerrar el modal -->
-        <span class="cerrar" onclick="cerrarModal()" aria-label="Cerrar modal">&times;</span>
-        <h2 id="titulo-modal-editar">📝 Editar Producto</h2>
 
-        <!-- Formulario de edición -->
+        <!-- Botón para cerrar -->
+        <span class="cerrar" onclick="cerrarModal()">&times;</span>
+
+        <h2>📝 Editar Producto</h2>
+
+        <!-- Formulario -->
         <form id="form-editar-producto">
-            <!-- Campos ocultos con los IDs -->
+
+            <!-- Campos ocultos -->
             <input type="hidden" name="idInventario" id="editar_id_inventario">
             <input type="hidden" name="producto.idProducto" id="editar_id_producto">
 
@@ -250,20 +338,22 @@
             <label for="editar_fecha_caducidad">Fecha de Caducidad:</label>
             <input type="date" name="fechaCaducidad" id="editar_fecha_caducidad">
 
-            <!-- Botones del modal -->
+            <!-- Botones -->
             <div class="modal-botones">
-                <button type="button" class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
-                <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
+                <button type="button" class="btn-cancelar" onclick="cerrarModal()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-guardar">
+                    💾 Guardar Cambios
+                </button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- ============================================
-     ARCHIVO DE JAVASCRIPT
-     ============================================ -->
+<!-- SCRIPTS DE JAVASCRIPT -->
 <script src="js/logistica/logistica.js"></script>
-<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
+<script src="js/manejo_sesion/manejo_sesion.js"></script>
 
 </body>
 </html>

@@ -52,7 +52,7 @@ footer {
 /* ===== ICONOS DE REDES SOCIALES ===== */
 .social-icons {
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Cambiado de column a row */
     gap: 10px;
 }
 
@@ -119,9 +119,10 @@ footer {
         font-size: 13px;
     }
 
-    /* Los iconos de redes sociales se mantienen en columna */
+    /* Los iconos de redes sociales se mantienen en fila */
     .social-icons {
         gap: 8px;
+        flex-direction: row; /* Aseguramos que se mantenga en fila en tablets */
     }
 }
 

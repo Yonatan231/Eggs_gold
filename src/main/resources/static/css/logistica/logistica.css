@@ -1,150 +1,107 @@
-/* ============================================
-   RESET Y ESTILOS GENERALES
-   ============================================ */
 
-/* Elimina márgenes y rellenos por defecto de todos los elementos */
+/* ============================================
+   COLORES Y VARIABLES
+   Aquí definimos los colores principales
+   ============================================ */
+:root {
+    --color-verde: #27AE60;
+    --color-rojo: #e74c3c;
+    --color-naranja: #e67e22;
+    --color-amarillo: #F7DC6F;
+    --color-azul: #3498db;
+    --color-fondo: #FEFCF4;
+    --color-gris: #7f8c8d;
+}
+
+/* ============================================
+   RESETEO BÁSICO
+   Elimina márgenes y espacios por defecto
+   ============================================ */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
 }
 
 /* ============================================
-   VARIABLES CSS (Colores y valores reutilizables)
-   ============================================ */
-:root {
-    /* Colores principales */
-    --color-accent: #27AE60;
-    --color-success: #2ecc71;       /* Verde para éxito */
-    --color-warning: #e67e22;       /* Naranja para advertencias */
-    --color-danger: #e74c3c;        /* Rojo para eliminar */
-    --color-dark: #2c3e50;          /* Gris oscuro para textos */
-    --color-light: #f5f7fa;         /* Gris claro para fondos */
-    --color-sidebar: #F7DC6F;
-    --color-sidebar-dark: #F7DC6F;
-
-    /* Sombras */
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);
-
-    /* Transiciones */
-    --transition: all 0.3s ease;
-}
-
-/* ============================================
-   ESTILOS DEL BODY
+   BODY (Cuerpo de la página)
    ============================================ */
 body {
-    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    background-color: #FEFCF4;
     color: #333;
-    line-height: 1.6; /* Altura de línea para mejor legibilidad */
     display: flex;
-    min-height: 100vh; /* Altura mínima de toda la ventana */
+    min-height: 100vh;
 }
 
 /* ============================================
-   BOTÓN PARA ABRIR/CERRAR MENÚ (TOGGLE)
-   ============================================ */
-.toggle-btn {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    background: var(--color-dark);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    z-index: 1100; /* Encima de todo */
-    display: none; /* Oculto por defecto, se muestra en móviles */
-    transition: var(--transition);
-}
-
-.toggle-btn:hover {
-    background: #34495e;
-}
-
-/* ============================================
-   MENÚ LATERAL (SIDEBAR)
+   MENÚ LATERAL
    ============================================ */
 #sidebar {
     width: 250px;
-    background: linear-gradient(180deg, var(--color-sidebar), var(--color-sidebar-dark));
-    color: white;
-    height: 100vh; /* Altura completa de la ventana */
+    background-color: var(--color-amarillo);
+    height: 100vh;
     position: fixed;
-    overflow-y: auto; /* Scroll si el contenido es muy largo */
-    transition: var(--transition);
-    z-index: 1000;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    left: 0;
+    top: 0;
+    overflow-y: auto;
 }
 
-#sidebar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-/* Estilos de la lista del menú */
+/* Lista del menú */
 #sidebar ul {
-    list-style: none; /* Quita los puntos de la lista */
-    padding: 0;
+    list-style: none;
 }
 
 #sidebar ul li {
-    padding: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Enlaces de navegación */
-#sidebar ul li a,
-#sidebar ul li .nav-link {
-    color: #333333;
+/* Enlaces del menú */
+#sidebar ul li a {
+    color: #333;
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 15px 20px;
-    transition: var(--transition);
+    transition: all 0.3s ease;
 }
 
-#sidebar ul li a:hover,
-#sidebar ul li .nav-link:hover {
+/* Animación al pasar el mouse */
+#sidebar ul li a:hover {
     background-color: rgba(52, 152, 219, 0.2);
-    color: var(--color-accent);
+    color: var(--color-verde);
     padding-left: 25px;
 }
 
-#sidebar ul li a i,
-#sidebar ul li .nav-link i {
-    font-size: 1.1rem;
+/* Iconos del menú */
+#sidebar ul li a i {
+    font-size: 18px;
     width: 20px;
-    text-align: center;
 }
 
 /* ============================================
-   PERFIL DEL USUARIO EN EL SIDEBAR
+   PERFIL EN EL MENÚ
    ============================================ */
 .perfil-admin {
     text-align: center;
-    padding: 25px 15px !important;
+    padding: 25px 15px;
     background-color: rgba(0, 0, 0, 0.2);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .perfil-admin h2 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 10px;
+    font-size: 16px;
     color: white;
+    margin-top: 10px;
 }
 
-/* Contenedor del avatar */
+/* Avatar (foto de perfil) */
 .avatar-contenedor {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-accent), #2980b9);
+    background: linear-gradient(135deg, var(--color-verde), var(--color-azul));
     margin: 0 auto 15px;
     display: flex;
     align-items: center;
@@ -153,17 +110,15 @@ body {
     font-weight: bold;
     color: white;
     position: relative;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: var(--transition);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
+/* Animación al pasar el mouse */
 .avatar-contenedor:hover {
     transform: scale(1.05);
 }
 
-/* Imagen del avatar */
 #avatar-imagen {
     width: 100%;
     height: 100%;
@@ -171,18 +126,16 @@ body {
     border-radius: 50%;
 }
 
-/* Iniciales del avatar */
 #avatar-iniciales {
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Botón para subir foto de perfil */
+/* Botón para subir foto */
 .boton-subir-foto {
     position: absolute;
     bottom: 0;
     right: 0;
-    background: var(--color-accent);
+    background: var(--color-verde);
     color: white;
     border-radius: 50%;
     width: 28px;
@@ -192,92 +145,99 @@ body {
     justify-content: center;
     cursor: pointer;
     font-size: 14px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    transition: var(--transition);
+}
+
+/* ============================================
+   BOTÓN HAMBURGUESA (para móviles)
+   ============================================ */
+.toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 1100;
+    display: none;
+    font-size: 20px;
 }
 
 /* ============================================
    CONTENIDO PRINCIPAL
    ============================================ */
 main {
-    flex: 1; /* Ocupa el espacio restante */
-    margin-left: 250px; /* Espacio para el sidebar */
+    flex: 1;
+    margin-left: 250px;
     padding: 20px;
-    transition: var(--transition);
 }
 
 /* ============================================
    CABECERA
    ============================================ */
 header {
-    background-color: #FEFCF4;
+    background: #ffffff;
     padding: 15px 20px;
     border-radius: 10px;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
 }
 
 .opciones {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 20px;
+    position: relative;
     width: 100%;
 }
 
-/* Logo de la empresa */
-.logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
+/* Contenedor para logo y texto alineados */
+.marca-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-/* Título de bienvenida */
+/* Título centrado */
 .titulo2 {
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: 600;
-    color: var(--color-dark);
-    flex: 1;
+    color: #2c3e50;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .resaltado {
-    color: var(--color-accent);
-    font-weight: 700;
-}
-
-/* Campana de notificaciones */
-.campana-noti {
-    position: relative;
-    color: var(--color-dark);
-    font-size: 1.3rem;
-    margin-left: auto; /* Empuja el elemento hacia la derecha */
-    transition: var(--transition);
-    padding: 8px;
-}
-
-.campana-noti:hover {
-    color: var(--color-accent);
-    transform: scale(1.1);
+    color: var(--color-verde);
+    font-weight: bold;
 }
 
 /* ============================================
-   TARJETA DE RESUMEN (Productos en stock)
+   TARJETA DE RESUMEN
    ============================================ */
 .tarjeta-resumen {
     background: white;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     gap: 15px;
     margin-bottom: 30px;
+    transition: all 0.3s ease;
 }
 
+/* Animación al pasar el mouse */
 .tarjeta-resumen:hover {
-    transform: translateY(-5px); /* Eleva la tarjeta al pasar el mouse */
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Icono de la tarjeta */
@@ -288,54 +248,158 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 30px;
 }
 
-/* Color específico para productos */
 .productos .tarjeta-icono {
     background: rgba(230, 126, 34, 0.2);
-    color: var(--color-warning);
+    color: var(--color-naranja);
 }
 
 /* Contenido de la tarjeta */
 .tarjeta-contenido h3 {
-    font-size: 0.9rem;
-    color: #7f8c8d;
-    margin-bottom: 5px;
+    font-size: 14px;
+    color: var(--color-gris);
+    margin-bottom: 8px;
 }
 
 .contador {
-    font-size: 1.8rem;
+    font-size: 32px;
     font-weight: bold;
-    color: var(--color-dark);
+    color: #2c3e50;
 }
+
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 95%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-height: 95vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    color: #27AE60;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #43813f;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #333333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+textarea.form-control {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 1.2rem;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: #219653;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1e8449;
+}
+
+.btn-secondary {
+    background-color: #666;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #555;
+}
+
+
 
 /* ============================================
    SECCIONES DE TABLAS
    ============================================ */
 .seccion-tabla {
-    background: #FEFCF4;
+    background: #ffffff;
     border-radius: 10px;
-    padding: 20px;
-    box-shadow: var(--shadow);
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
 }
 
-/* Encabezado de la sección */
-.encabezado-seccion {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.encabezado-seccion h2 {
+    font-size: 22px;
+    color: #2c3e50;
     margin-bottom: 20px;
 }
 
-.encabezado-seccion h2 {
-    font-size: 1.3rem;
-    color: var(--color-dark);
-}
-
 /* ============================================
-   FORMULARIOS DE BÚSQUEDA
+   FORMULARIO DE BÚSQUEDA
    ============================================ */
 .form-busqueda {
     display: flex;
@@ -343,65 +407,70 @@ header {
     gap: 10px;
 }
 
-.form-busqueda input {
-    flex: 1; /* Ocupa todo el espacio disponible */
-    padding: 10px 15px;
+/* Campo de búsqueda */
+.form-busqueda input[type="text"] {
+    flex: 1;
+    padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 0.9rem;
-    transition: var(--transition);
+    font-size: 14px;
+    transition: all 0.3s ease;
 }
 
-.form-busqueda input:focus {
+/* Animación al hacer clic en el campo */
+.form-busqueda input[type="text"]:focus {
     outline: none;
-    border-color: var(--color-accent);
+    border-color: var(--color-verde);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
 }
 
+/* Botón de búsqueda */
 .form-busqueda button {
-    background: var(--color-accent);
+    background: var(--color-verde);
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
+    padding: 12px 25px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: var(--transition);
+    font-size: 14px;
 }
 
 .form-busqueda button:hover {
-    background: #2980b9;
+    background: #2ecc71;
 }
 
 /* ============================================
    TABLAS
    ============================================ */
 .contenedor-tabla {
-    overflow-x: auto; /* Scroll horizontal en tablas grandes */
+    overflow-x: auto;
 }
 
 .tabla-datos {
     width: 100%;
-    border-collapse: collapse; /* Une los bordes de las celdas */
+    border-collapse: collapse;
+    background: white;
+    table-layout: fixed;
 }
 
 .tabla-datos th,
 .tabla-datos td {
-    padding: 12px 15px;
+    padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid #eee;
+    width: auto;
+    word-wrap: break-word;
 }
 
-/* Encabezados de la tabla */
 .tabla-datos th {
     background-color: #f8f9fa;
-    color: var(--color-dark);
+    color: #2c3e50;
     font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
 }
 
-/* Filas de la tabla */
-.tabla-datos tr:hover {
+.tabla-datos tbody tr:hover {
     background-color: #f8f9fa;
 }
 
@@ -412,68 +481,81 @@ header {
 }
 
 /* ============================================
-   BOTONES DE ACCIÓN EN TABLAS
+   BOTONES DE ACCIÓN
    ============================================ */
-.btn-accion {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    margin-right: 5px;
-    transition: var(--transition);
-}
 
-/* Botón de asignar */
-.btn-accion.btn-asignar,
+/* Botón ASIGNAR - Verde con hover */
+.btn-asignar,
 button[onclick*="asignarPedido"] {
-    background: var(--color-success);
+    background: var(--color-verde);
     color: white;
-}
-
-.btn-accion.btn-asignar:hover,
-button[onclick*="asignarPedido"]:hover {
-    background: #27ae60;
-}
-
-/* Botón de actualizar */
-button[onclick*="actualizarProducto"] {
-    background: var(--color-accent);
-    color: white;
-    padding: 5px 10px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: var(--transition);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
+.btn-asignar:hover,
+button[onclick*="asignarPedido"]:hover {
+    background: #2ecc71;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+}
+
+/* Botón ACTUALIZAR - Azul con hover */
+.btn-actualizar,
+button[onclick*="actualizarProducto"] {
+    background: var(--color-azul);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-actualizar:hover,
 button[onclick*="actualizarProducto"]:hover {
     background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
 
-/* Botón de eliminar */
+/* Botón ELIMINAR - Rojo con hover */
+.btn-eliminar,
 button[onclick*="eliminarProducto"] {
-    background: var(--color-danger);
+    background: var(--color-rojo);
     color: white;
-    padding: 5px 10px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: var(--transition);
+    font-size: 14px;
+    transition: all 0.3s ease;
 }
 
+.btn-eliminar:hover,
 button[onclick*="eliminarProducto"]:hover {
     background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
 }
 
 /* ============================================
-   MENSAJES VACÍOS
+   MENSAJE VACÍO
    ============================================ */
 .mensaje-vacio {
     text-align: center;
-    padding: 20px;
-    color: #7f8c8d;
-    font-style: italic;
+    padding: 40px 20px;
+    color: var(--color-gris);
+    font-size: 18px;
 }
 
 /* ============================================
@@ -485,7 +567,7 @@ button[onclick*="eliminarProducto"]:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -495,40 +577,39 @@ button[onclick*="eliminarProducto"]:hover {
 .modal-contenido {
     background: white;
     border-radius: 10px;
-    padding: 25px;
+    padding: 30px;
     width: 90%;
     max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    max-height: 90vh; /* Altura máxima */
-    overflow-y: auto; /* Scroll si el contenido es muy largo */
 }
 
 .modal-contenido h2 {
     margin-bottom: 20px;
-    color: var(--color-dark);
+    color: #2c3e50;
     text-align: center;
 }
 
-/* Botón para cerrar el modal */
+/* Botón para cerrar */
 .cerrar {
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
     color: #999;
-    transition: var(--transition);
 }
 
 .cerrar:hover {
-    color: var(--color-danger);
+    color: var(--color-rojo);
 }
 
-/* Campos del formulario en el modal */
+/* Campos del formulario */
 .modal-contenido label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
-    color: var(--color-dark);
+    color: #2c3e50;
 }
 
 .modal-contenido input,
@@ -539,15 +620,16 @@ button[onclick*="eliminarProducto"]:hover {
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 0.9rem;
-    transition: var(--transition);
+    font-size: 14px;
+    transition: all 0.3s ease;
 }
 
 .modal-contenido input:focus,
 .modal-contenido select:focus,
 .modal-contenido textarea:focus {
     outline: none;
-    border-color: var(--color-accent);
+    border-color: var(--color-verde);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
 }
 
 /* Botones del modal */
@@ -565,7 +647,7 @@ button[onclick*="eliminarProducto"]:hover {
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s ease;
 }
 
 .btn-cancelar:hover {
@@ -573,55 +655,54 @@ button[onclick*="eliminarProducto"]:hover {
 }
 
 .btn-guardar {
-    background: var(--color-success);
+    background: var(--color-verde);
     color: white;
     border: none;
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: var(--transition);
+    transition: all 0.3s ease;
 }
 
 .btn-guardar:hover {
-    background: #27ae60;
+    background: #2ecc71;
 }
 
 /* ============================================
-   DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
+   RESPONSIVE PARA MÓVILES
    ============================================ */
 @media (max-width: 768px) {
-    /* Mostrar botón de toggle en móviles */
+    /* Muestra el botón hamburguesa */
     .toggle-btn {
         display: block;
     }
 
-    /* Ocultar sidebar por defecto en móviles */
+    /* Oculta el menú por defecto */
     #sidebar {
-        width: 0;
-        overflow: hidden;
+        left: -250px;
     }
 
-    /* El contenido principal ocupa todo el ancho */
+    /* Muestra el menú cuando está activo */
+    #sidebar.active {
+        left: 0;
+    }
+
+    /* El contenido ocupa todo el ancho */
     main {
         margin-left: 0;
+        padding: 15px;
     }
 
-    /* Sidebar activo en móviles */
-    #sidebar.active {
-        width: 250px;
+    /* Ajustes del header */
+    header {
+        margin-top: 50px;
     }
 
-    /* Ajustar encabezado de sección */
-    .encabezado-seccion {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+    .titulo2 {
+        font-size: 18px;
     }
 
-    /* Formulario de búsqueda en columna */
+    /* Buscador en columna */
     .form-busqueda {
         flex-direction: column;
     }
@@ -630,41 +711,44 @@ button[onclick*="eliminarProducto"]:hover {
         width: 100%;
     }
 
-    /* Ajustar opciones del header */
-    .opciones {
-        flex-wrap: wrap;
-    }
-
-    .titulo2 {
-        font-size: 1.2rem;
-    }
-
-    /* Tablas con scroll horizontal */
+    /* Tabla con scroll */
     .tabla-datos {
-        font-size: 0.85rem;
+        min-width: 600px;
     }
 
-    .tabla-datos th,
-    .tabla-datos td {
-        padding: 8px 10px;
-    }
-
-    /* Modal más pequeño en móviles */
+    /* Modal más pequeño */
     .modal-contenido {
         width: 95%;
         padding: 20px;
     }
 }
 
-/* ============================================
-   DISEÑO RESPONSIVE PARA TABLETS
-   ============================================ */
-@media (max-width: 1024px) and (min-width: 769px) {
-    #sidebar {
-        width: 200px;
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .titulo2 {
+        font-size: 16px;
     }
 
-    main {
-        margin-left: 200px;
+    .tarjeta-resumen {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contador {
+        font-size: 24px;
+    }
+
+    .seccion-tabla {
+        padding: 15px;
+    }
+
+    .tabla-datos th,
+    .tabla-datos td {
+        padding: 10px 8px;
+        font-size: 13px;
     }
 }
+
+/* ============================================
+   FIN DE LOS ESTILOS
+   ============================================ */

@@ -8,8 +8,9 @@
     <!-- Favicon del sitio -->
     <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
     <title>EGGS GOLD - Productos</title>
-    <!-- Enlace al archivo CSS externo -->
+
     <link rel="stylesheet" th:href="@{css/logistica/inventario.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
 <body>
 <!-- Contenedor principal de la página -->
@@ -19,9 +20,15 @@
         <header>
             <div class="header-top">
                 <!-- Logo y nombre de la empresa -->
-                <div class="logo-titulo">
-                    <img th:src="@{imagenes/inicio/logo.jpg}" alt="logo" width="50" height="50" />
-                    <span class="texto">EGGS GOLD</span>
+                <div class="marca">
+                    <div class="logo">
+                        <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+                    </div>
+
+                    <div>
+                        <h1 class="titulo">Eggs Gold</h1>
+                        <p class="subtitulo">Huevos frescos a tu puerta</p>
+                    </div>
                 </div>
 
                 <!-- Título principal centrado -->

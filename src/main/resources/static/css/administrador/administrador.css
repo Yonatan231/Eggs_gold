@@ -194,21 +194,19 @@ header {
     justify-content: space-between;
     gap: 20px;
     width: 100%;
-}
-
-.logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* Importante para el centrado absoluto */
 }
 
 .titulo2 {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--color-dark);
-    flex: 1;
+    position: absolute; /* Posicionamiento absoluto */
+    left: 50%; /* Centrado horizontal */
+    transform: translateX(-50%); /* Ajuste fino del centrado */
+    margin: 0;
+    text-align: center;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
 
 .resaltado {
@@ -223,6 +221,7 @@ header {
     text-decoration: none;
     transition: var(--transition);
     padding: 8px;
+    margin-left: auto; /* Empuja la campana hacia la derecha */
 }
 
 .campana-noti:hover {

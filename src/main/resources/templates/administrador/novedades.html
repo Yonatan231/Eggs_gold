@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Novedades - Administrador</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{css/administrador/novedades.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+</head>
+<body>
+<header>
+    <div class="header-top">
+        <!-- Logo y nombre de la empresa -->
+        <div class="marca">
+            <div class="logo">
+                <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+            </div>
+
+            <div>
+                <h1 class="titulo">Eggs Gold</h1>
+                <p class="subtitulo">Huevos frescos a tu puerta</p>
+            </div>
+        </div>
+
+        <!-- Título principal centrado -->
+        <div class="header-title">
+            <h1>Notificaciones</h1>
+        </div>
+
+        <div class="header-actions">
+            <form th:action="@{/administrador}">
+                <button type="submit" class="btn-link">
+                    <i class="fas fa-external-link-alt"></i> Regresar
+                </button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Ejemplo con Thymeleaf -->
+        <tr th:each="novedad : ${listaNovedades}">
+            <td th:text="${novedad.id}"></td>
+            <td th:text="${novedad.tipo}"></td>
+            <td th:text="${novedad.descripcion}"></td>
+            <td th:text="${#temporals.format(novedad.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${novedad.usuario.nombre}"></td>
+            <td th:text="${novedad.usuario.rol}"></td>
+            <td>
+                <form th:action="@{/admin/novedades/eliminar/{id}(id=${novedad.id})}" method="post">
+                    <button type="submit" class="btn">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        <!-- Mensaje si no hay novedades -->
+        <tr th:if="${#lists.isEmpty(listaNovedades)}">
+            <td colspan="7" class="empty-message">No hay novedades registradas</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <p class="footer-quote">Cada gran negocio empieza con un buen producto.</p>
+        <div class="footer-tags">
+            <span class="tag">Innovación</span>
+            <span class="tag">Calidad</span>
+            <span class="tag">Confianza</span>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Sistema de Gestión de Productos - EGGS GOLD
+        </div>
+    </div>
+</footer>
+
+<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
+</body>
+</html>

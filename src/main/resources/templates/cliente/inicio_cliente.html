@@ -1,25 +1,29 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Enlace al archivo CSS personalizado -->
-    <link rel="stylesheet" href="css/cliente/cliente.css">
-    <link rel="stylesheet" href="css/inicio/pie_pagina.css">
-    <link rel="stylesheet" href="css/inicio/inicio.css">
-    <!-- Enlace al favicon (ícono de la pestaña) -->
-    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg">
-    <title>EGGS GOLD - Inventario</title>
+    <link rel="stylesheet" th:href="@{css/cliente/cliente.css}">
+    <link rel="stylesheet" th:href="@{css/inicio/pie_pagina.css}">
+    <link rel="stylesheet" th:href="@{css/inicio/inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+    <title>EGGS GOLD - Inicio Compra</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 </head>
 <body>
 <!-- ========== ENCABEZADO (HEADER) ========== -->
 <header>
     <!-- Contenedor principal del encabezado -->
     <div class="header-contenedor">
-        <!-- Logo y título de la empresa -->
-        <div class="logo-titulo">
-            <img src="imagenes/LOGO.jpg" alt="logo" width="50" height="50" />
-            <span class="texto">EGGS GOLD</span>
+        <div class="marca">
+            <div class="logo">
+                <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+            </div>
+            <div>
+                <h1 class="titulo">Eggs Gold</h1>
+                <p class="subtitulo">Huevos frescos a tu puerta</p>
+            </div>
         </div>
 
         <!-- Contenedor de búsqueda y usuario -->
@@ -59,8 +63,8 @@
 
                     <!-- Menú desplegable del perfil -->
                     <div class="perfil-menu" id="perfil-menu">
-                        <a th:href="@{/perfil}">Mi Perfil</a>
-                        <a th:href="@{/pedidos}">Mis Pedidos</a>
+                        <a th:href="@{/mi_perfil}">Mi Perfil</a>
+                        <a th:href="@{/historial_pedidos}">Mis Pedidos</a>
                         <li><a href="/logout" id="cerrar_sesion" >Cerrar Sesión</a></li>
                     </div>
                 </div>
@@ -131,8 +135,6 @@
 <!-- Enlace al archivo JavaScript con la funcionalidad -->
 <script src="js/manejo_sesion/manejo_sesion.js" defer></script>
 <script src="js/cliente/cliente.js" defer></script>
-
-
 
 </body>
 </html>

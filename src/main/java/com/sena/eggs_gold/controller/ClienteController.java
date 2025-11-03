@@ -64,5 +64,16 @@ public class ClienteController {
         }
     }
 
+    @GetMapping("/mi_perfil")
+    public String mostrarDatosCuenta() {
+        return "cliente/datos_cuenta";
+    }
+
+    @GetMapping("/historial_pedidos")
+    public String mostrarHistorialPedidos() {
+        return "cliente/historial_pedidos";
+    }
+
+
 
 }

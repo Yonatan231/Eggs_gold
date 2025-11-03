@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Registrar Vehículo - Eggs Gold</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet"
@@ -12,9 +13,8 @@
     <!-- Estilos base (asumiendo que existen) -->
     <link rel="stylesheet" th:href="@{/css/administrador/administrador.css}">
     <link rel="stylesheet" th:href="@{/css/registros/registro_vehiculo.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}">
 </head>
 <body>
 <nav id="sidebar">
@@ -26,7 +26,7 @@
             <h2>Panel de Administración</h2>
         </li>
         <li><a th:href="@{/conductor}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a id="cerrar_sesion" href="/logout" class="nav-link">
+        <li><a id="cerrar_sesion" th:href="@{/logout}" class="nav-link">
             <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
         </a></li>
 
@@ -38,7 +38,16 @@
     <header>
         <div class="opciones">
             <!-- Logo de la empresa -->
-            <img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" class="logo">
+            <div class="marca">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+                </div>
+
+                <div>
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
             <!-- Título de la página con icono -->
             <h1 class="titulo2"><i class="fas fa-car"></i> Registro de Vehículo</h1>
         </div>

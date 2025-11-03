@@ -1,4 +1,9 @@
-/* Estilos para el formulario de registro de vehículo - Basado en registro_conductor.css */
+.marca-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 body {
     background-color: #FEFCF4;
 }

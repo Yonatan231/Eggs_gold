@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Consulta de Pedidos</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+    <link rel="stylesheet" th:href="@{css/cliente/historial_pedidos.css}">
+</head>
+<body>
+<header>
+    <div class="header-top">
+        <!-- Logo y nombre de la empresa -->
+        <div class="marca">
+            <div class="logo">
+                <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+            </div>
+            <div>
+                <h1 class="titulo">Eggs Gold</h1>
+                <p class="subtitulo">Huevos frescos a tu puerta</p>
+            </div>
+        </div> <!-- Cierre agregado aquí -->
+
+        <!-- Título principal centrado -->
+        <div class="header-title">
+            <h1>Consulta tus Pedidos</h1>
+        </div>
+
+        <!-- Acciones del header -->
+        <div class="header-actions">
+            <!-- Botón para reportar novedad -->
+            <button class="btn-novedad" id="btnNovedad">
+                <i class="fas fa-exclamation-circle"></i> Reportar Novedad
+            </button>
+            <form th:action="@{inventario}">
+                <button type="submit" class="btn-link">
+                    <i class="fas fa-external-link-alt"></i> Regresar
+                </button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="tabs">
+        <div class="tab active" data-tab="all">Todos los Pedidos</div>
+        <div class="tab" data-tab="delivered">Entregados</div>
+        <div class="tab" data-tab="shipping">En Camino</div>
+    </div>
+
+    <section class="orders-section active" id="all-orders">
+        <div class="orders-grid" id="orders-container-all"></div>
+    </section>
+
+    <section class="orders-section" id="delivered-orders">
+        <div class="orders-grid" id="orders-container-delivered"></div>
+    </section>
+
+    <section class="orders-section" id="shipping-orders">
+        <div class="orders-grid" id="orders-container-shipping"></div>
+    </section>
+</div>
+
+<!-- Modal para reportar novedad -->
+<div class="modal" id="novedadModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Reportar Novedad</h2>
+            <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+        <form id="novedadForm">
+            <div class="form-group">
+                <label for="orderNumber">Número de Pedido</label>
+                <input type="text" id="orderNumber" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tipoNovedad">Tipo de Novedad</label>
+                <select id="tipoNovedad" class="form-control" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="incompleto">Pedido Incompleto</option>
+                    <option value="mal-estado">Pedido en Mal Estado</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" class="form-control" placeholder="Describa la novedad en detalle..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="evidencia">Evidencia (opcional)</label>
+                <input type="file" id="evidencia" class="form-control">
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancelNovedad">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <p class="footer-quote">Cada gran negacio empieza con un buen producto.</p>
+        <div class="footer-tags">
+            <span class="tag">Innovación</span>
+            <span class="tag">Calidad</span>
+            <span class="tag">Confianza</span>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Sistema de Gestión de Productos - EGGS GOLD
+        </div>
+    </div>
+</footer>
+
+<script th:src="@{js/cliente/historial_pedidos.js}"></script>
+<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
+
+</body>
+</html>
+

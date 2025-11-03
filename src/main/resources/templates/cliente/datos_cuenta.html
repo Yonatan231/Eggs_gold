@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Datos Personales</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
+
+    <link rel="stylesheet" th:href="@{css/cliente/datos_cuenta.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+</head>
+<body>
+<!-- Contenedor principal de la página -->
+<div class="container">
+    <!-- Encabezado con fondo amarillo -->
+    <header>
+        <!-- Contenedor para organizar logo y texto del encabezado -->
+        <div class="header-content">
+            <!-- Sección del logo y nombre de la empresa -->
+            <div class="marca">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+                </div>
+                <div>
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
+            <!-- Texto principal del encabezado -->
+            <div class="header-text">
+                <!-- Título principal -->
+                <h1>Mis Datos Personales</h1>
+                <!-- Descripción del formulario -->
+                <p>Gestiona tu información personal y de contacto</p>
+                <!-- Botón Volver en la parte superior derecha -->
+                <a href="javascript:history.back()" class="btn-volver">Volver</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección principal del perfil de usuario -->
+    <div class="user-profile">
+        <!-- Contenedor para mensajes de alerta (éxito/error) -->
+        <div id="alertMessage" class="alert"></div>
+
+        <!-- Formulario de datos personales -->
+        <form id="userDataForm">
+            <!-- Fila para nombre y apellido -->
+            <div class="form-row">
+                <!-- Grupo de campo: Nombre -->
+                <div class="form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <!-- Grupo de campo: Apellido -->
+                <div class="form-group">
+                    <label for="apellido">Apellido *</label>
+                    <input type="text" id="apellido" name="apellido" required>
+                </div>
+            </div>
+
+            <!-- Grupo de campo: Dirección -->
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion">
+            </div>
+
+            <!-- Fila para tipo y número de documento -->
+            <div class="form-row">
+                <!-- Grupo de campo: Tipo de documento -->
+                <div class="form-group">
+                    <label for="tipoDocumento">Tipo de Documento *</label>
+                    <select id="tipoDocumento" name="tipoDocumento" required>
+                        <option value="">Seleccione un tipo</option>
+                        <option value="DNI">CC</option>
+                        <option value="Cédula">CED</option>
+                    </select>
+                </div>
+                <!-- Grupo de campo: Número de documento (solo lectura) -->
+                <div class="form-group">
+                    <label for="numeroDocumento">Número de Documento</label>
+                    <input type="text" id="numeroDocumento" name="numeroDocumento" disabled>
+                    <div class="readonly-note">Este campo no se puede modificar</div>
+                </div>
+            </div>
+
+            <!-- Fila para teléfono y correo electrónico -->
+            <div class="form-row">
+                <!-- Grupo de campo: Teléfono -->
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono">
+                </div>
+                <!-- Grupo de campo: Correo electrónico -->
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico *</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+            </div>
+
+            <!-- Grupo de campo: Contraseña con botón para mostrar/ocultar -->
+            <div class="form-group password-toggle">
+                <label for="contrasena">Contraseña *</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+                <button type="button" class="toggle-password">Mostrar</button>
+            </div>
+
+            <!-- Grupo de campo: Fecha de creación (solo lectura) -->
+            <div class="form-group">
+                <label for="fechaCreacion">Fecha de Creación de Cuenta</label>
+                <input type="text" id="fechaCreacion" name="fechaCreacion" disabled>
+                <div class="readonly-note">Este campo no se puede modificar</div>
+            </div>
+
+            <!-- Botones de acción del formulario -->
+            <div class="form-actions">
+                <!-- Botón para cancelar cambios -->
+                <button type="button" id="btnCancel" class="btn btn-secondary">Cancelar</button>
+                <!-- Botón para habilitar edición -->
+                <button type="button" id="btnEdit" class="btn btn-primary">Editar Datos</button>
+                <!-- Botón para guardar cambios -->
+                <button type="submit" id="btnSave" class="btn btn-success">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Enlace al archivo JavaScript externo -->
+<script th:src="@{js/cliente/datos_cuenta.js}"></script>
+<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
+</body>
+</html>

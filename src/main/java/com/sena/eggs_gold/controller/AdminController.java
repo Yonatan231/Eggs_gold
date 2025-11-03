@@ -19,5 +19,11 @@ public class AdminController {
         return "administrador/admistrador"; // admin.html en src/main/resources/templates
     }
 
+    @GetMapping("/novedades")
+    public String mostrarNovedades() {
+        return "administrador/novedades";
+    }
+
+
 }
 

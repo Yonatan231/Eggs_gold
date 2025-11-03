@@ -15,40 +15,6 @@ header {
     z-index: 1000;
 }
 
-/* ===== MARCA Y LOGO ===== */
-.marca {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--color-principal), #e6c33a);
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.titulo {
-    font-size: 18px;
-    color: var(--color-secundario);
-}
-
-.subtitulo {
-    font-size: 12px;
-    color: #666;
-}
-
 /* ===== BOTÓN HAMBURGUESA PARA MÓVILES ===== */
 /* Este botón solo se muestra en pantallas pequeñas */
 .menu-toggle {
