@@ -1,74 +1,94 @@
 /* ===== ENCABEZADO (HEADER) ===== */
+/* El header es la barra superior que contiene el logo y el menú */
 header {
-    /* Posición fija para que el header siempre esté visible al hacer scroll */
+    /* Posición fija: el header siempre está visible, incluso al hacer scroll */
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+
+    /* Color de fondo del header (definido en las variables CSS) */
     background: var(--color-fondo);
+
+    /* Flexbox para organizar los elementos horizontalmente */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* Separa el logo del menú */
+    align-items: center; /* Centra verticalmente */
+
+    /* Espaciado interno del header */
     padding: 16px 24px;
+
+    /* Sombra sutil debajo del header */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    /* z-index alto para que el header esté sobre otros elementos */
+
+    /* z-index alto: asegura que el header esté sobre otros elementos */
     z-index: 1000;
 }
 
+/* ===== CLASE PARA ENLACES ACTIVOS DURANTE EL SCROLL ===== */
+/* Esta clase se aplica automáticamente al enlace de la sección visible */
+.activo-scroll {
+    background-color: var(--color-verde);
+    color: #fff;
+    /* Pequeño desplazamiento hacia arriba para dar efecto */
+    transform: translateY(-1px);
+}
+
 /* ===== BOTÓN HAMBURGUESA PARA MÓVILES ===== */
-/* Este botón solo se muestra en pantallas pequeñas */
+/* Este botón (las 3 rayitas) solo aparece en pantallas pequeñas */
 .menu-toggle {
     display: none; /* Oculto por defecto en pantallas grandes */
-    flex-direction: column;
-    background: none;
-    border: none;
-    cursor: pointer;
+    flex-direction: column; /* Las 3 líneas se apilan verticalmente */
+    background: none; /* Sin fondo */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Manita al pasar el mouse */
     padding: 5px;
-    z-index: 1001;
+    z-index: 1001; /* Por encima del header */
 }
 
 /* Las tres líneas del botón hamburguesa */
 .menu-toggle span {
-    width: 25px;
-    height: 3px;
-    background-color: var(--color-secundario);
-    margin: 3px 0;
-    transition: 0.3s;
-    border-radius: 3px;
+    width: 25px; /* Ancho de cada línea */
+    height: 3px; /* Grosor de cada línea */
+    background-color: var(--color-secundario); /* Color de las líneas */
+    margin: 3px 0; /* Espacio entre líneas */
+    transition: 0.3s; /* Animación suave al transformarse */
+    border-radius: 3px; /* Bordes redondeados */
 }
 
-/* ===== NAVEGACIÓN ===== */
+/* ===== NAVEGACIÓN (MENÚ) ===== */
 nav {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; /* Elementos del menú en fila */
+    align-items: center; /* Centra verticalmente */
+    gap: 10px; /* Espacio entre los enlaces */
 }
 
-/* Estilo general de los enlaces de navegación */
+/* Estilo general de los enlaces del menú (Inicio, Productos, etc.) */
 nav a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    color: var(--color-secundario);
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-weight: bold;
-    /* Transiciones suaves para los efectos */
+    text-decoration: none; /* Sin subrayado */
+    color: var(--color-secundario); /* Color del texto */
+    padding: 8px 12px; /* Espaciado interno */
+    border-radius: 6px; /* Bordes redondeados */
+    font-weight: bold; /* Texto en negrita */
+
+    /* Transiciones suaves para los efectos hover */
     transition: background 0.3s, color 0.3s, transform 0.2s;
 }
 
-/* Quitar el contorno al hacer clic */
+/* Quitar el contorno azul al hacer clic en los enlaces */
 nav a:focus {
     outline: none;
     box-shadow: none;
 }
 
-/* Efecto hover: fondo verde y texto blanco */
+/* Efecto hover: cuando pasas el mouse sobre un enlace */
 nav a:hover {
-    background-color: var(--color-verde);
-    color: #fff;
-    transform: translateY(-1px);
+    background-color: var(--color-verde); /* Fondo verde */
+    color: #fff; /* Texto blanco */
+    transform: translateY(-1px); /* Sube ligeramente */
 }
 
 /* Enlace activo: se mantiene con fondo verde */
@@ -92,7 +112,7 @@ nav a.activo {
     background-color: var(--color-verde);
 }
 
-/* Imagen del carrito */
+/* Imagen del ícono del carrito */
 .carrito img {
     width: 28px;
     height: 28px;
@@ -102,16 +122,17 @@ nav a.activo {
 
 /* Agranda el ícono del carrito al hacer hover */
 .carrito:hover img {
-    transform: scale(1.15);
+    transform: scale(1.15); /* Aumenta el tamaño 15% */
 }
 
 /* ==========================================
    MEDIA QUERIES PARA RESPONSIVE
+   Hacen que el sitio se vea bien en móviles y tablets
    ========================================== */
 
 /* ===== TABLETS Y PANTALLAS MEDIANAS (768px o menos) ===== */
 @media (max-width: 768px) {
-    /* Reducir padding del header */
+    /* Reducir el espaciado interno del header en tablets */
     header {
         padding: 12px 16px;
     }
@@ -123,36 +144,40 @@ nav a.activo {
 
     /* Navegación en modo móvil */
     nav {
-        /* Posición absoluta para que se superponga al contenido */
+        /* Posición absoluta: se superpone al contenido */
         position: absolute;
         top: 100%; /* Justo debajo del header */
         left: 0;
         right: 0;
         background: var(--color-fondo);
-        /* Cambiar a columna vertical */
+
+        /* Cambiar a columna vertical (enlaces uno debajo del otro) */
         flex-direction: column;
         gap: 0;
+
         /* Ocultar el menú por defecto */
         max-height: 0;
         overflow: hidden;
-        /* Transición suave al abrir/cerrar */
+
+        /* Transición suave al abrir/cerrar el menú */
         transition: max-height 0.3s ease-in-out;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* Cuando el menú está activo (clase añadida por JavaScript) */
+    /* Cuando el menú está activo (se añade con JavaScript) */
     nav.active {
         max-height: 500px; /* Altura suficiente para mostrar todos los enlaces */
     }
 
     /* Enlaces de navegación en móvil */
     nav a {
-        width: 100%;
+        width: 100%; /* Ocupan todo el ancho */
         padding: 15px 20px;
-        border-radius: 0;
-        /* Borde inferior para separar los enlaces */
+        border-radius: 0; /* Sin bordes redondeados en móvil */
+
+        /* Borde inferior para separar los enlaces visualmente */
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        justify-content: flex-start;
+        justify-content: flex-start; /* Alinea el texto a la izquierda */
     }
 
     /* Quitar el borde del último enlace */
@@ -203,7 +228,7 @@ nav a.activo {
         font-size: 10px;
     }
 
-    /* Reducir el gap de la marca */
+    /* Reducir el espacio de la marca (logo + texto) */
     .marca {
         gap: 8px;
     }
@@ -229,16 +254,19 @@ nav a.activo {
 }
 
 /* ===== ANIMACIÓN DEL BOTÓN HAMBURGUESA AL ACTIVARSE ===== */
-/* Cuando el menú está activo, transforma el botón en una "X" */
+/* Cuando el menú está activo, el botón se transforma en una "X" */
 @media (max-width: 768px) {
+    /* Primera línea: rota y se mueve hacia abajo */
     nav.active ~ .menu-toggle span:nth-child(1) {
         transform: rotate(-45deg) translate(-5px, 6px);
     }
 
+    /* Segunda línea: se vuelve invisible */
     nav.active ~ .menu-toggle span:nth-child(2) {
         opacity: 0;
     }
 
+    /* Tercera línea: rota y se mueve hacia arriba */
     nav.active ~ .menu-toggle span:nth-child(3) {
         transform: rotate(45deg) translate(-5px, -6px);
     }

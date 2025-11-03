@@ -36,9 +36,10 @@
 
     <!-- Navegación: se oculta en móvil y se muestra al hacer clic en el botón -->
     <nav id="navMenu">
-        <a th:href="@{/inicio}" class="activo">Inicio</a>
-        <a href="#productos">Promociones</a>
+        <!-- CORREGIDO: href="#inicio" en lugar de "#menu-toggle" -->
+        <a href="#inicio">Inicio</a>
         <a href="#sobre">Sobre nosotros</a>
+        <a href="#productos">Productos</a>
         <a th:href="@{/contacto}">Contacto</a>
         <a th:href="@{/registro_cliente}">Registrarse</a>
         <a th:href="@{/iniciar_sesion}">Iniciar Sesión</a>
@@ -50,8 +51,8 @@
 
 <!-- ===== CONTENIDO PRINCIPAL ===== -->
 <main>
-    <!-- Sección de portada -->
-    <section class="inicio">
+    <!-- Sección de portada - AGREGADO: id="inicio" para que el enlace funcione -->
+    <section id="inicio" class="inicio">
         <div class="inicio-imagen-grande">
             <img th:src="@{/imagenes/inicio/portada.jpg}" alt="Huevos frescos" class="imagen-principal">
         </div>
@@ -59,13 +60,19 @@
 
     <!-- Sección sobre nosotros -->
     <section id="sobre" class="sobre-nosotros">
-        <h2>Sobre nosotros</h2>
+        <h1>Sobre nosotros</h1>
         <p>
             Somos productores locales apasionados por ofrecer productos frescos y de la más alta calidad. Nuestras gallinas viven libres y felices, en un entorno natural y saludable, lo que nos permite garantizar huevos frescos, nutritivos y con un sabor auténtico que se nota en cada bocado. Cuidamos cada detalle del proceso, desde la cría hasta la recolección, asegurando que cada huevo cumpla con nuestros estrictos estándares de frescura y sabor.
         </p>
         <p>
             Con más de 10 años de experiencia en la producción y distribución de huevos, hemos desarrollado un sistema eficiente que nos permite ofrecer entregas rápidas, seguras y confiables en toda la región. Nos enorgullece apoyar la economía local y mantener una relación cercana con nuestros clientes, brindando un servicio personalizado y productos que reflejan nuestro compromiso con la calidad y el bienestar animal.
         </p>
+
+        <h2>Nuestra Pasión: Gallinas Libres, Huevos Excepcionales</h2>
+        <p>
+            Nuestras gallinas no son simplemente criadas; son cuidadas. Viven en libertad, en amplios espacios donde pueden picotear, escarbar y disfrutar del sol y el aire fresco. Este entorno natural y saludable es el pilar fundamental de nuestro trabajo. Una gallina feliz y sin estrés es la clave para obtener un huevo de verdadera calidad. Este compromiso con su bienestar se traduce directamente en un producto final con un sabor auténtico y una textura cremosa que se nota en cada bocado, desde el desayuno más sencillo hasta la receta más elaborada.
+        </p>
+
     </section>
 
     <!-- Sección de productos -->
@@ -74,24 +81,28 @@
         <div class="productos">
             <article class="tarjeta">
                 <img th:src="@{/imagenes/inicio/huevos1.jpg}" alt="Caja de 12 huevos">
-                <h3>Caja x12</h3>
+                <h3>Caja x24</h3>
                 <p class="precio">$15.000</p>
-                <button class="boton boton-amarillo">Añadir</button>
+                <!-- CORREGIDO: Ahora es un enlace que lleva a iniciar sesión -->
+                <a th:href="@{/iniciar_sesion}" class="boton boton-amarillo">Comprar</a>
             </article>
 
             <article class="tarjeta">
-                <img src="https://picsum.photos/seed/eggs2/600/400" alt="Huevos orgánicos">
+                <img th:src="@{/imagenes/inicio/huevos_azules.png}" alt="Huevos Azules X12">
+                <h3>Suscripción semanal</h3>
+                <p class="precio">$20.000</p>
+                <!-- CORREGIDO: Ahora es un enlace que lleva a iniciar sesión -->
+                <a th:href="@{/iniciar_sesion}" class="boton boton-amarillo">Comprar</a>
+            </article>
+
+            <article class="tarjeta">
+                <img th:src="@{/imagenes/inicio/huevos_organicos.jpg}" alt="Huevos orgánicos">
                 <h3>Huevos orgánicos x6</h3>
                 <p class="precio">$4.000</p>
-                <button class="boton boton-amarillo">Añadir</button>
+                <!-- CORREGIDO: Ahora es un enlace que lleva a iniciar sesión -->
+                <a th:href="@{/iniciar_sesion}" class="boton boton-amarillo">Comprar</a>
             </article>
 
-            <article class="tarjeta">
-                <img src="https://picsum.photos/seed/eggs3/600/400" alt="Suscripción semanal">
-                <h3>Suscripción semanal</h3>
-                <p class="precio">$20.000 / mes</p>
-                <button class="boton boton-amarillo">Suscribirme</button>
-            </article>
         </div>
     </section>
 
@@ -107,10 +118,10 @@
     <section class="galeria">
         <h2>Galería del campo</h2>
         <div class="galeria-grid">
-            <img src="https://picsum.photos/seed/farm1/800/600" alt="Granja">
+            <img th:src="@{/imagenes/inicio/gallina1.png}">
             <img src="https://picsum.photos/seed/farm2/800/600" alt="Recolectando huevos">
+            <img th:src="@{/imagenes/inicio/gallina.png}" alt="Campo verde">
             <img src="https://picsum.photos/seed/farm3/800/600" alt="Gallinas libres">
-            <img src="https://picsum.photos/seed/farm4/800/600" alt="Campo verde">
         </div>
     </section>
 </main>

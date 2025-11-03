@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio Sesion</title>
+    <title>Registro Cliente - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
     <!-- Ruta hacia el CSS -->
     <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
@@ -11,38 +11,42 @@
     <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
     <link rel="stylesheet" th:href="@{/css/registros/registro_cliente.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
-
 </head>
 
 <body>
-      <!-- ===== ENCABEZADO ===== -->
-  <header>
-   <div class="marca">
-  <!-- Logo como imagen -->
-  <div class="logo">
-      <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
-  </div>
+<!-- ===== ENCABEZADO ===== -->
+<header>
+    <div class="marca">
+        <!-- Logo como imagen -->
+        <div class="logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
 
-  <div>
-    <h1 class="titulo">Eggs Gold</h1>
-    <p class="subtitulo">Huevos frescos a tu puerta</p>
-  </div>
-</div>
+        <div>
+            <h1 class="titulo">Eggs Gold</h1>
+            <p class="subtitulo">Huevos frescos a tu puerta</p>
+        </div>
+    </div>
 
+    <!-- Botón hamburguesa para menú móvil (solo se ve en pantallas pequeñas) -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
-    <nav>
-      <a th:href="@{/inicio}">Inicio</a>
-      <a href="#productos">Promociones</a>
-      <a href="#sobre">Sobre nosotros</a>
-      <a th:href="@{contacto}">Contacto</a>
-      <a th:href="@{/registro_cliente}" class = "activo">Registrarse</a>
-      <a th:href="@{/iniciar_sesion}">Iniciar Sesión</a>
-      <a href="../carrito/carrito.html" class="carrito">
-        <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
-      </a>
+    <nav id="navMenu">
+        <a th:href="@{/inicio}">Inicio</a>
+        <a th:href="@{/inicio#sobre}">Sobre nosotros</a>
+        <a th:href="@{/inicio#productos}">Productos</a>
+        <a th:href="@{/contacto}">Contacto</a>
+        <a th:href="@{/registro_cliente}" class="activo">Registrarse</a>
+        <a th:href="@{/iniciar_sesion}">Iniciar Sesión</a>
+        <a th:href="@{/inventario}" class="carrito">
+            <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
+        </a>
     </nav>
-  </header>
-
+</header>
 
 <main>
     <!-- Mensajes de éxito y error -->
@@ -113,49 +117,51 @@
 
                 <!-- Enlace a login -->
                 <div class="enlace-login">
-                    ¿Ya tienes una cuenta? <a href="../inicio_sesion/inicio_sesion.html">Inicia sesión aquí</a>
+                    ¿Ya tienes una cuenta? <a th:href="@{/iniciar_sesion}">Inicia sesión aquí</a>
                 </div>
             </form>
         </div>
     </div>
 </main>
 
+<!-- Pie de página -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
+        </div>
 
-      <!-- Pie de página -->
- <footer>
-  <div class="footer-container">
-    <div class="footer-logo">
-      <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
-    </div>
+        <div class="footer-section">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
 
-    <div class="footer-section">
-      <h2>CONTÁCTANOS</h2>
-      <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
-      <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
-    </div>
+        <div class="footer-section">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la Empresa</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Socios</a>
+        </div>
 
-    <div class="footer-section">
-      <h2>INFO SITIO</h2>
-      <a href="#">Política de la Empresa</a>
-      <a href="#">Política de Privacidad</a>
-      <a href="#">Socios</a>
+        <div class="footer-section">
+            <h2>SÍGUENOS</h2>
+            <div class="social-icons">
+                <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
+                </a>
+                <a href="https://www.youtube.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
+                </a>
+            </div>
+        </div>
     </div>
-
-    <div class="footer-section">
-      <h2>SÍGUENOS</h2>
-      <div class="social-icons">
-        <a href="https://es-la.facebook.com/index.php/" target="_blank">
-          <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
-        </a>
-        <a href="https://www.instagram.com/" target="_blank">
-          <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
-        </a>
-        <a href="https://www.youtube.com/" target="_blank">
-          <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
-        </a>
-      </div>
-    </div>
-  </div>
 </footer>
+
+<!-- Script JavaScript para el menú móvil -->
+<script th:src="@{/js/inicio/inicio.js}"></script>
 </body>
 </html>

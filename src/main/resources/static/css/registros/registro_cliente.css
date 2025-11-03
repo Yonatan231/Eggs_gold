@@ -1,4 +1,3 @@
-
 :root {
     --color-principal: #F4D03F;
     --color-secundario: #1C2833;
@@ -133,4 +132,97 @@ input:focus {
     color: green;
     font-size: 14px;
     text-align: center;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInLeft {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* ========== MEDIA QUERIES PARA DISEÑO RESPONSIVE ========== */
+
+/* Para tablets y pantallas medianas (hasta 1024px) */
+@media (max-width: 1024px) {
+    .form-wrapper {
+        gap: 30px;
+        padding: 30px;
+    }
+
+    .registro-img {
+        max-width: 250px;
+    }
+}
+
+/* Para tablets pequeñas y móviles grandes (hasta 768px) */
+@media (max-width: 768px) {
+    main {
+        padding: 40px 10px;
+    }
+
+    .form-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px 20px;
+    }
+
+    .titulo-registro {
+        position: static;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .registro-img {
+        max-width: 200px;
+        order: -1; /* Coloca la imagen arriba en móviles */
+    }
+
+    .form-card {
+        width: 100%;
+    }
+}
+
+/* Para móviles pequeños (hasta 480px) */
+@media (max-width: 480px) {
+    main {
+        padding: 20px 10px;
+    }
+
+    .form-wrapper {
+        padding: 20px 15px;
+        gap: 15px;
+    }
+
+    .titulo-registro {
+        font-size: 20px;
+    }
+
+    .registro-img {
+        max-width: 180px;
+    }
+
+    input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .boton-registrarse {
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .enlace-login a {
+        font-size: 13px;
+    }
 }

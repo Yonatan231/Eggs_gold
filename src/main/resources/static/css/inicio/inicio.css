@@ -78,6 +78,13 @@ main {
 .boton-amarillo {
     background: var(--color-principal);
     color: var(--color-secundario);
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.boton-amarillo:hover {
+    background: #27AE60;
+    color: #ffffff;
 }
 
 /* ===== SECCIÓN DE PRODUCTOS ===== */

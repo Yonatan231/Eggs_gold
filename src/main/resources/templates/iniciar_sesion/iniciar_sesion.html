@@ -39,12 +39,12 @@
     <!-- Navegación: se oculta en móvil y se muestra al hacer clic en el botón -->
     <nav id="navMenu">
         <a th:href="@{/inicio}">Inicio</a>
-        <a href="#productos">Promociones</a>
-        <a href="#sobre">Sobre nosotros</a>
+        <a th:href="@{/inicio#sobre}">Sobre nosotros</a>
+        <a th:href="@{/inicio#productos}">Productos</a>
         <a th:href="@{/contacto}">Contacto</a>
         <a th:href="@{/registro_cliente}">Registrarse</a>
         <a th:href="@{/iniciar_sesion}" class="activo">Iniciar Sesión</a>
-        <a href="../carrito/carrito.html" class="carrito">
+        <a th:href="@{/inventario}" class="carrito">
             <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
         </a>
     </nav>
