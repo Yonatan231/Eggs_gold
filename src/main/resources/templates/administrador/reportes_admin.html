@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Crear Reporte - Eggs Gold</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos base -->
+    <link rel="stylesheet" th:href="@{/css/administrador/administrador.css}">
+    <link rel="stylesheet" th:href="@{/css/registros/registro_conductor.css}"> <!-- Usa el mismo estilo limpio -->
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/LOGO.jpg}">
+</head>
+
+<body>
+<!-- Sidebar -->
+<nav id="sidebar">
+    <ul>
+        <li class="perfil-admin">
+            <div class="avatar-contenedor">
+                <span id="avatar-iniciales">AD</span>
+            </div>
+            <h2>Panel de Administración</h2>
+        </li>
+        <li><a th:href="@{/administrador}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+        <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<!-- Contenido principal -->
+<main id="main-content">
+    <header>
+        <div class="opciones">
+            <img th:src="@{/imagenes/LOGO.jpg}" alt="Logo" class="logo">
+            <h1 class="titulo2"><i class="fas fa-file-alt"></i> Crear Reporte</h1>
+        </div>
+    </header>
+
+    <!-- Mensajes -->
+    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <!-- Formulario -->
+    <form th:action="@{/crear_reporte}" th:object="${reporte}" method="post"
+          enctype="multipart/form-data" class="formulario-contenedor">
+
+        <h2>Formulario de Reporte</h2>
+
+        <label for="titulo">Título del Reporte:</label>
+        <input type="text" id="titulo" th:field="*{titulo}" placeholder="Ingrese el título" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" th:field="*{descripcion}" rows="5"
+                  placeholder="Escriba una descripción detallada" required></textarea>
+
+        <label for="archivo">Adjuntar Archivo:</label>
+        <input type="file" id="archivo" name="archivo">
+
+        <button type="submit" class="btn-guardar">
+            <i class="fas fa-paper-plane"></i> Enviar Reporte
+        </button>
+    </form>
+</main>
+</body>
+</html>
