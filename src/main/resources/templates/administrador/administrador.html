@@ -4,15 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="Panel de administración de Eggs Gold - Gestión de pedidos, productos y usuarios">
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}">
 
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Hoja de estilos personalizada -->
     <link rel="stylesheet" href="css/administrador/administrador.css" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpg" href="imagenes/LOGO.jpg" />
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
     <title>EGGS GOLD - Panel de Administración</title>
 </head>
@@ -47,11 +46,12 @@
         </li>
 
         <!-- Enlaces de navegación -->
-        <li><a href="#tabla-pedidos" class="nav-link"><i class="fas fa-users"></i> Clientes</a></li>
+        <li><a href="#titulo-pedidos" class="nav-link"><i class="fas fa-users"></i> Pedidos</a></li>
+        <li><a href="#titulo-productos" class="nav-link"><i class="fas fa-users"></i> Productos</a></li>
         <li><a th:href="@{/registrar_producto}" class="nav-link"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
         <li><a th:href="@{/registrar_logistica}" class="nav-link"><i class="fas fa-user-plus"></i> Registro Logística</a></li>
         <li><a th:href="@{/registrar_conductor}" class="nav-link"><i class="fas fa-id-card"></i> Registrar Conductor</a></li>
-        <li><a href="/logout" id="cerrar_sesion" class="nav-link texto"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <li><a th:href="@{/logout}" id="cerrar_sesion" class="nav-link texto"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
 </nav>
 
@@ -66,9 +66,18 @@
          ============================================ -->
     <header role="banner">
         <div class="opciones">
-            <img th:src="@{imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold" class="logo"/>
+            <div class="marca">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+                </div>
+
+                <div>
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
             <h1 class="titulo2">👋 Bienvenido, <span class="resaltado">Administrador</span></h1>
-            <a href="notificaciones.html" class="campana-noti" aria-label="Notificaciones">
+            <a th:href="@{/novedades}" class="campana-noti" aria-label="Notificaciones">
                 <i class="fas fa-bell"></i>
                 <span class="notificacion-contador" id="notificacion-contador" style="display: none;">0</span>
             </a>
