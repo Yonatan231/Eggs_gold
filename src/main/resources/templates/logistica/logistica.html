@@ -47,23 +47,21 @@
         </li>
 
         <!-- OPCIONES DEL MENÚ -->
+        <!-- Opción 1: Productos -->
         <li>
             <a th:href="@{/inventariol}">
                 <i class="fas fa-boxes"></i> Productos
             </a>
         </li>
 
+        <!-- Opción 2: Reportar Novedad (CORREGIDO - ahora es un enlace como las demás) -->
         <li>
-            <a th:href="@{/registrar_novedad}">
-                <i class="fas fa-exclamation-triangle"></i> Registro Novedad
+            <a href="#" id="btnNovedad">
+                <i class="fas fa-exclamation-circle"></i> Reportar Novedad
             </a>
         </li>
 
-        <!-- Botón para reportar novedad -->
-        <button class="btn-novedad" id="btnNovedad">
-            <i class="fas fa-exclamation-circle"></i> Reportar Novedad
-        </button>
-
+        <!-- Opción 3: Cerrar Sesión -->
         <li>
             <a href="/logout" id="cerrar_sesion">
                 <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -77,6 +75,7 @@
      ============================================ -->
 <main id="main-content">
 
+    <!-- CABECERA -->
     <header role="banner">
         <div class="opciones">
             <!-- Logo y marca alineados horizontalmente -->
@@ -96,56 +95,84 @@
     </header>
 
     <!-- ============================================
-         TARJETA DE RESUMEN
+         TARJETAS DE RESUMEN (NUEVO - Ahora hay 2 tarjetas)
          ============================================ -->
-    <section class="tarjeta-resumen productos">
-        <div class="tarjeta-icono">
-            <i class="fas fa-boxes"></i>
+    <section class="contenedor-cuadros">
+
+        <!-- Tarjeta 1: Productos en Stock -->
+        <div class="tarjeta-resumen productos">
+            <div class="tarjeta-icono">
+                <i class="fas fa-boxes"></i>
+            </div>
+            <div class="tarjeta-contenido">
+                <h3>Productos en Stock</h3>
+                <span id="totalProductos" class="contador">3</span>
+            </div>
         </div>
-        <div class="tarjeta-contenido">
-            <h3>Productos en Stock</h3>
-            <span id="totalProductos" class="contador">3</span>
+
+        <!-- Tarjeta 2: Pedidos Pendientes (NUEVA) -->
+        <div class="tarjeta-resumen pedidos-pendientes">
+            <div class="tarjeta-icono">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="tarjeta-contenido">
+                <h3>Pedidos Pendientes</h3>
+                <span id="totalPedidosPendientes" class="contador">0</span>
+            </div>
         </div>
+
     </section>
 
-    <!-- Modal para reportar novedad -->
+    <!-- ============================================
+         MODAL PARA REPORTAR NOVEDAD
+         Este es un cuadro que aparece encima de todo cuando se hace clic en "Reportar Novedad"
+         ============================================ -->
     <div class="modal" id="novedadModal">
         <div class="modal-content">
+            <!-- Encabezado del modal con título y botón de cerrar -->
             <div class="modal-header">
                 <h2>Reportar Novedad</h2>
                 <button class="close-modal" id="closeModal">&times;</button>
             </div>
+
+            <!-- Formulario para reportar la novedad -->
             <form id="novedadForm">
+                <!-- Campo 1: Número de Pedido -->
                 <div class="form-group">
                     <label for="orderNumber">Número de Pedido</label>
                     <input type="text" id="orderNumber" class="form-control" required>
                 </div>
 
+                <!-- Campo 2: Tipo de Novedad (selector desplegable) -->
                 <div class="form-group">
                     <label for="tipoNovedad">Tipo de Novedad</label>
                     <select id="tipoNovedad" class="form-control" required>
                         <option value="">Seleccione un tipo</option>
                         <option value="incompleto">Cantidad de un Producto Incompleta</option>
-                        <option value="mal-estado">Falta de Producto</option>
+                        <option value="falta-producto">Falta de Producto</option>
                         <option value="otro">Otro</option>
                     </select>
                 </div>
 
+                <!-- Campo 3: Descripción detallada -->
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
                     <textarea id="descripcion" class="form-control" placeholder="Describa la novedad en detalle..." required></textarea>
                 </div>
 
+                <!-- Campo 4: Fecha del incidente -->
                 <div class="form-group">
                     <label for="fecha">Fecha</label>
                     <input type="date" id="fecha" class="form-control" required>
                 </div>
 
+                <!-- Campo 5: Evidencia (foto o archivo opcional) -->
                 <div class="form-group">
                     <label for="evidencia">Evidencia (opcional)</label>
                     <input type="file" id="evidencia" class="form-control">
                 </div>
 
+                <!-- Botones de acción -->
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancelNovedad">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Enviar Reporte</button>

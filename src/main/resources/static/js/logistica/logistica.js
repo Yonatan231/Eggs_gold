@@ -14,6 +14,7 @@ botonMenu.addEventListener('click', function () {
     const menuLateral = document.getElementById('sidebar');
 
     // Si el menú está abierto, lo cierra. Si está cerrado, lo abre
+    // toggle() significa "cambiar": si tiene la clase la quita, si no la tiene la agrega
     menuLateral.classList.toggle('active');
 });
 
@@ -25,7 +26,35 @@ botonMenu.addEventListener('click', function () {
 document.addEventListener("DOMContentLoaded", function() {
     cargarPedidosRecientes();  // Carga los pedidos
     cargarInventario();         // Carga el inventario
+    actualizarContadorPedidosPendientes(); // Actualiza el contador de pedidos pendientes (NUEVO)
 });
+
+
+// ============================================
+// FUNCIÓN: actualizarContadorPedidosPendientes() (NUEVA)
+// Cuenta los pedidos con estado "Aprobado" y actualiza la tarjeta
+// ============================================
+function actualizarContadorPedidosPendientes() {
+    // Pedimos los datos al servidor
+    fetch("http://localhost:8080/api/pedido/listar")
+        .then(response => response.json())
+        .then(data => {
+            // Verificamos si la respuesta fue exitosa
+            if (data.success && data.pedidos) {
+                // Filtramos solo los pedidos que están "Aprobados" (pendientes de asignar)
+                const pedidosPendientes = data.pedidos.filter(pedido => pedido.estado === 'Aprobado');
+
+                // Actualizamos el número en la tarjeta
+                const contadorElement = document.getElementById('totalPedidosPendientes');
+                if (contadorElement) {
+                    contadorElement.textContent = pedidosPendientes.length;
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar contador de pedidos pendientes:', error);
+        });
+}
 
 
 // ============================================
@@ -34,22 +63,22 @@ document.addEventListener("DOMContentLoaded", function() {
 // ============================================
 function cargarPedidosRecientes() {
 
-    // Pedimos los datos al servidor
+    // Pedimos los datos al servidor usando fetch (es como pedir información)
     fetch("http://localhost:8080/api/pedido/listar")
-        .then(response => response.json())
+        .then(response => response.json()) // Convertimos la respuesta a formato JSON
         .then(data => {
 
             // Verificamos si la respuesta fue exitosa
             if (!data.success) {
                 alert("No se pudieron cargar los pedidos.");
-                return;
+                return; // Salimos de la función
             }
 
-            const pedidos = data.pedidos;
-            const rol = data.rol;
-            const tbody = document.querySelector('#tabla-pedidos tbody');
+            const pedidos = data.pedidos; // Los pedidos que nos envió el servidor
+            const rol = data.rol; // El rol del usuario (LOGISTICA, CONDUCTOR, etc.)
+            const tbody = document.querySelector('#tabla-pedidos tbody'); // Cuerpo de la tabla
 
-            // Limpiamos la tabla antes de llenarla
+            // Limpiamos la tabla antes de llenarla (eliminamos filas anteriores)
             tbody.innerHTML = "";
 
             // Si no hay pedidos, mostramos un mensaje
@@ -58,13 +87,13 @@ function cargarPedidosRecientes() {
                 return;
             }
 
-            // Recorremos cada pedido
+            // Recorremos cada pedido (forEach es como un bucle "para cada")
             pedidos.forEach(function(pedido) {
 
-                // Creamos una nueva fila
+                // Creamos una nueva fila <tr> para el pedido
                 const fila = document.createElement('tr');
 
-                // Decidimos qué botón mostrar según el estado
+                // Decidimos qué botón mostrar según el estado del pedido
                 let accionHTML = "";
 
                 if (rol === "LOGISTICA" && pedido.estado === 'Aprobado') {
@@ -84,7 +113,7 @@ function cargarPedidosRecientes() {
                     accionHTML = `<span style="color: green; font-weight: bold;">✓ EN CAMINO</span>`;
                 }
                 else {
-                    // En otros casos
+                    // En otros casos, mostramos un guión
                     accionHTML = "—";
                 }
 
@@ -103,8 +132,12 @@ function cargarPedidosRecientes() {
                 // Agregamos la fila a la tabla
                 tbody.appendChild(fila);
             });
+
+            // Actualizamos el contador de pedidos pendientes después de cargar
+            actualizarContadorPedidosPendientes();
         })
         .catch(error => {
+            // Si hay un error, lo mostramos en la consola
             console.error('Error al cargar pedidos:', error);
             document.querySelector('#tabla-pedidos tbody').innerHTML =
                 '<tr><td colspan="9">Error al cargar los pedidos.</td></tr>';
@@ -120,16 +153,22 @@ function cargarInventario() {
 
     // Pedimos el inventario al servidor
     fetch("http://localhost:8080/inventario/detalle")
-        .then(response => response.json())
+        .then(response => response.json()) // Convertimos la respuesta a JSON
         .then(data => {
 
-            const tabla = document.querySelector('#tabla-productos tbody');
+            const tabla = document.querySelector('#tabla-productos tbody'); // Cuerpo de la tabla
 
             // Limpiamos la tabla
             tabla.innerHTML = '';
 
-            // Si hay productos
+            // Si hay productos en el inventario
             if (Array.isArray(data) && data.length > 0) {
+
+                // Actualizamos el contador de productos en la tarjeta
+                const contadorProductos = document.getElementById('totalProductos');
+                if (contadorProductos) {
+                    contadorProductos.textContent = data.length;
+                }
 
                 // Recorremos cada producto
                 data.forEach(function(producto) {
@@ -153,12 +192,19 @@ function cargarInventario() {
                         </tr>
                     `;
 
+                    // Agregamos la fila a la tabla
                     tabla.innerHTML += fila;
                 });
             }
             else {
                 // Si no hay productos
                 tabla.innerHTML = `<tr><td colspan="13">No hay productos en el inventario</td></tr>`;
+
+                // Ponemos el contador en 0
+                const contadorProductos = document.getElementById('totalProductos');
+                if (contadorProductos) {
+                    contadorProductos.textContent = '0';
+                }
             }
         })
         .catch(error => {
@@ -169,22 +215,23 @@ function cargarInventario() {
 
 // ============================================
 // FUNCIÓN: asignarPedido()
-// Abre el modal para asignar un pedido
+// Abre el modal para asignar un pedido a un conductor
 // ============================================
 function asignarPedido(idPedido) {
 
-    // Mostramos el modal
+    // Mostramos el modal (cambiamos display a 'flex')
     document.getElementById('modal-asignar').style.display = 'flex';
 
-    // Guardamos el ID del pedido en el campo oculto
+    // Guardamos el ID del pedido en el campo oculto del formulario
     document.getElementById('asignar_id_pedido').value = idPedido;
 
-    // Obtenemos la lista de conductores
+    // Obtenemos la lista de conductores disponibles
     fetch('/entregados')
         .then(response => response.json())
         .then(data => {
 
             const select = document.getElementById('select-conductor');
+            // Limpiamos el selector y agregamos la opción por defecto
             select.innerHTML = '<option value="">Seleccione un conductor</option>';
 
             // Agregamos cada conductor al selector
@@ -204,26 +251,27 @@ function asignarPedido(idPedido) {
 
 // ============================================
 // FUNCIÓN: cerrarModalAsignar()
-// Cierra el modal de asignación
+// Cierra el modal de asignación y limpia el formulario
 // ============================================
 function cerrarModalAsignar() {
     document.getElementById('modal-asignar').style.display = 'none';
-    document.getElementById('form-asignar').reset();
+    document.getElementById('form-asignar').reset(); // Limpia los campos del formulario
 }
 
 
 // ============================================
 // ENVIAR ASIGNACIÓN DE PEDIDO
+// Cuando el usuario envía el formulario de asignación
 // ============================================
 document.getElementById('form-asignar').addEventListener('submit', function (e) {
-    e.preventDefault(); // Evita que se recargue la página
+    e.preventDefault(); // Evita que se recargue la página (comportamiento por defecto)
 
-    const formData = new FormData(this);
+    const formData = new FormData(this); // Obtenemos todos los datos del formulario
 
     // Enviamos la asignación al servidor
     fetch('/api/pedido/asignar', {
-        method: 'POST',
-        body: formData
+        method: 'POST', // Método POST para enviar datos
+        body: formData // Los datos del formulario
     })
         .then(response => response.json())
         .then(data => {
@@ -231,7 +279,7 @@ document.getElementById('form-asignar').addEventListener('submit', function (e) 
             if (data.success) {
                 alert("✓ Pedido asignado correctamente");
                 cerrarModalAsignar();
-                cargarPedidosRecientes(); // Recargamos la tabla
+                cargarPedidosRecientes(); // Recargamos la tabla para ver los cambios
             } else {
                 alert("Error: " + data.message);
             }
@@ -255,12 +303,12 @@ function actualizarProducto(id) {
         return;
     }
 
-    // Obtenemos los datos del producto
+    // Obtenemos los datos del producto desde el servidor
     fetch(`/inventario/${id}`)
         .then(response => response.json())
         .then(data => {
 
-            // Llenamos los campos del formulario
+            // Llenamos los campos del formulario con los datos del producto
             document.getElementById('editar_id_inventario').value = data.idInventario;
             document.getElementById('editar_id_producto').value = data.producto.idProducto;
             document.getElementById('editar_nombre').value = data.producto.nombre;
@@ -283,23 +331,24 @@ function actualizarProducto(id) {
 
 // ============================================
 // FUNCIÓN: cerrarModal()
-// Cierra el modal de edición
+// Cierra el modal de edición de productos
 // ============================================
 function cerrarModal() {
     document.getElementById("modal-editar-producto").style.display = "none";
-    document.getElementById('form-editar-producto').reset();
+    document.getElementById('form-editar-producto').reset(); // Limpia el formulario
 }
 
 
 // ============================================
 // ENVIAR ACTUALIZACIÓN DE PRODUCTO
+// Cuando el usuario envía el formulario de edición
 // ============================================
 document.getElementById('form-editar-producto').addEventListener('submit', function (e) {
     e.preventDefault(); // Evita que se recargue la página
 
-    const formData = new FormData(this);
+    const formData = new FormData(this); // Obtenemos los datos del formulario
 
-    // Enviamos los datos actualizados
+    // Enviamos los datos actualizados al servidor
     fetch('/inventario/actualizar', {
         method: 'POST',
         body: formData
@@ -310,7 +359,7 @@ document.getElementById('form-editar-producto').addEventListener('submit', funct
             if (data.success) {
                 alert("Producto actualizado correctamente");
                 cerrarModal();
-                cargarInventario(); // Recargamos el inventario
+                cargarInventario(); // Recargamos el inventario para ver los cambios
             } else {
                 alert("Error al actualizar: " + data.message);
             }
@@ -327,23 +376,23 @@ document.getElementById('form-editar-producto').addEventListener('submit', funct
 // ============================================
 function eliminarProducto(id) {
 
-    // Pedimos confirmación
+    // Pedimos confirmación al usuario
     if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-        return;
+        return; // Si cancela, salimos de la función
     }
 
-    // Enviamos la petición de eliminación
+    // Enviamos la petición de eliminación al servidor
     fetch("http://localhost:8080/inventario/eliminar", {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json' // Indicamos que enviamos JSON
         },
-        body: JSON.stringify({ id: id })
+        body: JSON.stringify({ id: id }) // Convertimos el ID a formato JSON
     })
         .then(response => response.json())
         .then(data => {
 
-            alert(data.message);
+            alert(data.message); // Mostramos el mensaje del servidor
 
             if (data.success) {
                 cargarInventario(); // Recargamos el inventario
@@ -358,17 +407,17 @@ function eliminarProducto(id) {
 
 // ============================================
 // BÚSQUEDA DE PEDIDOS
-// Filtra la tabla mientras escribes
+// Filtra la tabla mientras el usuario escribe
 // ============================================
 document.addEventListener("DOMContentLoaded", function () {
 
     const inputBuscar = document.getElementById("buscar");
     const tbody = document.querySelector("#tabla-pedidos tbody");
 
-    // Cuando el usuario escribe
+    // Cuando el usuario escribe en el campo de búsqueda
     inputBuscar.addEventListener("keyup", function() {
 
-        const textoBusqueda = inputBuscar.value.toLowerCase();
+        const textoBusqueda = inputBuscar.value.toLowerCase(); // Convertimos a minúsculas
 
         // Si no hay texto, mostramos todos los pedidos
         if (textoBusqueda === "") {
@@ -376,23 +425,24 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Obtenemos todas las filas
+        // Obtenemos todas las filas de la tabla
         const filas = tbody.querySelectorAll("tr");
-        let hayResultados = false;
+        let hayResultados = false; // Variable para saber si encontramos algo
 
         // Revisamos cada fila
         filas.forEach(function(fila) {
-            const contenido = fila.textContent.toLowerCase();
+            const contenido = fila.textContent.toLowerCase(); // Texto de la fila en minúsculas
 
+            // Si el texto de búsqueda está en la fila, la mostramos
             if (contenido.includes(textoBusqueda)) {
-                fila.style.display = "";
+                fila.style.display = ""; // Mostramos la fila
                 hayResultados = true;
             } else {
-                fila.style.display = "none";
+                fila.style.display = "none"; // Ocultamos la fila
             }
         });
 
-        // Si no hay resultados
+        // Si no hay resultados, mostramos un mensaje
         if (!hayResultados && tbody.children.length > 0) {
             tbody.innerHTML = `
                 <tr>
@@ -408,7 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ============================================
 // BÚSQUEDA DE INVENTARIO
-// Filtra la tabla mientras escribes
+// Filtra la tabla de productos mientras el usuario escribe
 // ============================================
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -420,7 +470,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const textoBusqueda = inputBuscar.value.toLowerCase();
 
-        // Si no hay texto, mostramos todo
+        // Si no hay texto, mostramos todo el inventario
         if (textoBusqueda === "") {
             cargarInventario();
             return;
@@ -458,7 +508,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ============================================
 // GESTIÓN DE FOTO DE PERFIL
-// Permite subir y mostrar la foto
+// Permite subir y mostrar la foto del usuario
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -466,7 +516,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const avatarIniciales = document.getElementById("avatar-iniciales");
     const inputFoto = document.getElementById("input-foto");
 
-    // Obtenemos el ID del usuario
+    // Obtenemos el ID del usuario desde sessionStorage (memoria del navegador)
     const usuarioId = sessionStorage.getItem("usuarioId") || 1;
 
     // Cargamos la foto del servidor (si existe)
@@ -494,28 +544,28 @@ document.addEventListener("DOMContentLoaded", function() {
     // Cuando el usuario selecciona una foto nueva
     inputFoto.addEventListener("change", function() {
 
-        const archivo = inputFoto.files[0];
+        const archivo = inputFoto.files[0]; // El archivo que seleccionó
 
         if (!archivo) {
-            return;
+            return; // Si no hay archivo, salimos
         }
 
         // Validamos que sea una imagen
         if (!archivo.type.startsWith('image/')) {
             alert("Por favor selecciona una imagen válida");
-            inputFoto.value = "";
+            inputFoto.value = ""; // Limpiamos el input
             return;
         }
 
         // Validamos el tamaño (máximo 5MB)
-        const maxSize = 5 * 1024 * 1024;
+        const maxSize = 5 * 1024 * 1024; // 5MB en bytes
         if (archivo.size > maxSize) {
             alert("La imagen es muy grande. Máximo 5MB");
             inputFoto.value = "";
             return;
         }
 
-        // Creamos el FormData
+        // Creamos el FormData para enviar el archivo
         const formData = new FormData();
         formData.append("foto", archivo);
 
@@ -528,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(data => {
 
                 if (data.success) {
-                    // Actualizamos la imagen
+                    // Actualizamos la imagen en la página
                     avatarImg.src = data.ruta;
                     avatarImg.style.display = "block";
                     avatarIniciales.style.display = "none";
@@ -547,12 +597,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // ============================================
 // CERRAR MODALES AL HACER CLIC FUERA
+// Si el usuario hace clic fuera del cuadro, se cierra
 // ============================================
 window.onclick = function(event) {
     const modalAsignar = document.getElementById('modal-asignar');
     const modalEditar = document.getElementById('modal-editar-producto');
 
-    // Si se hace clic fuera del modal, lo cerramos
+    // Si se hace clic en el fondo oscuro (fuera del modal), lo cerramos
     if (event.target === modalAsignar) {
         modalAsignar.style.display = 'none';
     }
@@ -563,29 +614,36 @@ window.onclick = function(event) {
 }
 
 
-// Elementos del DOM relacionados con el modal
+// ============================================
+// MODAL DE NOVEDADES - REPORTAR NOVEDAD
+// ============================================
+
+// Obtenemos los elementos del DOM (Document Object Model - el HTML)
 const btnNovedad = document.getElementById('btnNovedad');
 const novedadModal = document.getElementById('novedadModal');
 const closeModal = document.getElementById('closeModal');
 const cancelNovedad = document.getElementById('cancelNovedad');
 const novedadForm = document.getElementById('novedadForm');
 
-// Modal de novedades
+// Cuando se hace clic en el botón "Reportar Novedad"
 btnNovedad.addEventListener('click', () => {
-    novedadModal.style.display = 'flex';
-    // Establecer fecha actual por defecto
+    novedadModal.style.display = 'flex'; // Mostramos el modal
+
+    // Establecemos la fecha actual por defecto en el campo de fecha
     document.getElementById('fecha').valueAsDate = new Date();
 });
 
+// Cuando se hace clic en el botón de cerrar (X)
 closeModal.addEventListener('click', () => {
-    novedadModal.style.display = 'none';
+    novedadModal.style.display = 'none'; // Ocultamos el modal
 });
 
+// Cuando se hace clic en el botón "Cancelar"
 cancelNovedad.addEventListener('click', () => {
-    novedadModal.style.display = 'none';
+    novedadModal.style.display = 'none'; // Ocultamos el modal
 });
 
-// Cerrar modal al hacer clic fuera del contenido
+// Cerrar modal al hacer clic fuera del contenido (en el fondo oscuro)
 window.addEventListener('click', (e) => {
     if (e.target === novedadModal) {
         novedadModal.style.display = 'none';
@@ -594,10 +652,11 @@ window.addEventListener('click', (e) => {
 
 // Envío del formulario de novedad
 novedadForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evitamos que se recargue la página
 
-    // Aquí iría la lógica para enviar el formulario
+    // Aquí iría la lógica para enviar el formulario al servidor
+    // Por ahora solo mostramos un mensaje de confirmación
     alert('Novedad reportada correctamente. Nos contactaremos pronto.');
-    novedadModal.style.display = 'none';
-    novedadForm.reset();
+    novedadModal.style.display = 'none'; // Cerramos el modal
+    novedadForm.reset(); // Limpiamos el formulario
 });

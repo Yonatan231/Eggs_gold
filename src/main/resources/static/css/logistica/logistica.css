@@ -1,7 +1,6 @@
-
 /* ============================================
    COLORES Y VARIABLES
-   Aquí definimos los colores principales
+   Aquí definimos los colores principales que usaremos en toda la página
    ============================================ */
 :root {
     --color-verde: #27AE60;
@@ -15,737 +14,782 @@
 
 /* ============================================
    RESETEO BÁSICO
-   Elimina márgenes y espacios por defecto
+   Elimina márgenes y espacios por defecto del navegador
    ============================================ */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Hace que el ancho incluya padding y border */
 }
 
 /* ============================================
    BODY (Cuerpo de la página)
    ============================================ */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #FEFCF4;
-    color: #333;
-    display: flex;
-    min-height: 100vh;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-color: #FEFCF4; /* Color de fondo */
+    color: #333; /* Color del texto */
+    display: flex; /* Organiza los elementos en fila */
+    min-height: 100vh; /* Altura mínima: toda la pantalla */
 }
 
 /* ============================================
-   MENÚ LATERAL
+   MENÚ LATERAL (SIDEBAR)
    ============================================ */
 #sidebar {
-    width: 250px;
-    background-color: var(--color-amarillo);
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    overflow-y: auto;
+    width: 250px; /* Ancho del menú */
+    background-color: var(--color-amarillo); /* Color de fondo amarillo */
+    height: 100vh; /* Altura completa de la pantalla */
+    position: fixed; /* Se queda fijo aunque hagas scroll */
+    left: 0; /* Pegado al lado izquierdo */
+    top: 0; /* Pegado arriba */
+    overflow-y: auto; /* Si el contenido es largo, permite hacer scroll */
 }
 
-/* Lista del menú */
+/* Lista del menú (ul = lista sin ordenar) */
 #sidebar ul {
-    list-style: none;
+    list-style: none; /* Quita los puntos de la lista */
 }
 
+/* Cada elemento de la lista (li = list item) */
 #sidebar ul li {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea divisoria sutil */
 }
 
-/* Enlaces del menú */
+/* Enlaces del menú (a = anchor/enlace) */
 #sidebar ul li a {
-    color: #333;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px 20px;
-    transition: all 0.3s ease;
+    color: #333; /* Color del texto */
+    text-decoration: none; /* Quita el subrayado */
+    display: flex; /* Organiza el icono y el texto en fila */
+    align-items: center; /* Centra verticalmente */
+    gap: 10px; /* Espacio entre el icono y el texto */
+    padding: 15px 20px; /* Espacio interno */
+    transition: all 0.3s ease; /* Animación suave de 0.3 segundos */
 }
 
-/* Animación al pasar el mouse */
+/* Animación cuando paso el mouse sobre el enlace */
 #sidebar ul li a:hover {
-    background-color: rgba(52, 152, 219, 0.2);
-    color: var(--color-verde);
-    padding-left: 25px;
+    background-color: rgba(52, 152, 219, 0.2); /* Fondo azul claro */
+    color: var(--color-verde); /* Texto verde */
+    padding-left: 25px; /* Se mueve 5px hacia la derecha */
 }
 
-/* Iconos del menú */
+/* Iconos del menú (i = elemento para iconos) */
 #sidebar ul li a i {
-    font-size: 18px;
-    width: 20px;
+    font-size: 18px; /* Tamaño del icono */
+    width: 20px; /* Ancho fijo para alinear todos los iconos */
 }
 
 /* ============================================
    PERFIL EN EL MENÚ
    ============================================ */
 .perfil-admin {
-    text-align: center;
-    padding: 25px 15px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    text-align: center; /* Centra todo el contenido */
+    padding: 25px 15px; /* Espacio interno */
+    background-color: rgba(0, 0, 0, 0.2); /* Fondo oscuro semi-transparente */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* Línea divisoria */
 }
 
 .perfil-admin h2 {
-    font-size: 16px;
-    color: white;
-    margin-top: 10px;
+    font-size: 16px; /* Tamaño del texto */
+    color: white; /* Color blanco */
+    margin-top: 10px; /* Espacio arriba */
 }
 
-/* Avatar (foto de perfil) */
+/* ============================================
+   AVATAR (Foto de perfil)
+   ============================================ */
 .avatar-contenedor {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-verde), var(--color-azul));
-    margin: 0 auto 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    width: 80px; /* Ancho del círculo */
+    height: 80px; /* Alto del círculo */
+    border-radius: 50%; /* Lo convierte en círculo */
+    background: linear-gradient(135deg, var(--color-verde), var(--color-azul)); /* Degradado verde-azul */
+    margin: 0 auto 15px; /* Centrado horizontalmente con espacio abajo */
+    display: flex; /* Para centrar el contenido */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    font-size: 28px; /* Tamaño de las iniciales */
+    font-weight: bold; /* Texto en negrita */
+    color: white; /* Color blanco */
+    position: relative; /* Permite posicionar el botón de subir foto */
+    cursor: pointer; /* Cambia el cursor a manita */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
-/* Animación al pasar el mouse */
+/* Animación cuando paso el mouse sobre el avatar */
 .avatar-contenedor:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Se agranda un 5% */
 }
 
+/* Imagen del avatar */
 #avatar-imagen {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
+    width: 100%; /* Ocupa todo el ancho */
+    height: 100%; /* Ocupa todo el alto */
+    object-fit: cover; /* Recorta la imagen para que encaje */
+    border-radius: 50%; /* Mantiene la forma circular */
 }
 
+/* Iniciales del avatar */
 #avatar-iniciales {
-    font-weight: bold;
+    font-weight: bold; /* Texto en negrita */
 }
 
-/* Botón para subir foto */
+/* Botón para subir foto (el símbolo +) */
 .boton-subir-foto {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: var(--color-verde);
-    color: white;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 14px;
+    position: absolute; /* Se posiciona dentro del avatar */
+    bottom: 0; /* Pegado abajo */
+    right: 0; /* Pegado a la derecha */
+    background: var(--color-verde); /* Fondo verde */
+    color: white; /* Símbolo blanco */
+    border-radius: 50%; /* Forma circular */
+    width: 28px; /* Ancho */
+    height: 28px; /* Alto */
+    display: flex; /* Para centrar el símbolo + */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del símbolo + */
 }
 
 /* ============================================
    BOTÓN HAMBURGUESA (para móviles)
    ============================================ */
 .toggle-btn {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    background: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    z-index: 1100;
-    display: none;
-    font-size: 20px;
+    position: fixed; /* Se queda fijo en la pantalla */
+    top: 15px; /* Separación desde arriba */
+    left: 15px; /* Separación desde la izquierda */
+    background: #2c3e50; /* Fondo oscuro */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 10px 15px; /* Espacio interno */
+    cursor: pointer; /* Cambia el cursor a manita */
+    z-index: 1100; /* Aparece encima de todo */
+    display: none; /* Oculto por defecto (solo se muestra en móviles) */
+    font-size: 20px; /* Tamaño del icono */
 }
 
 /* ============================================
-   CONTENIDO PRINCIPAL
+   CONTENIDO PRINCIPAL (MAIN)
    ============================================ */
 main {
-    flex: 1;
-    margin-left: 250px;
-    padding: 20px;
+    flex: 1; /* Ocupa todo el espacio disponible */
+    margin-left: 250px; /* Deja espacio para el menú lateral */
+    padding: 20px; /* Espacio interno */
 }
 
 /* ============================================
-   CABECERA
+   CABECERA (HEADER)
    ============================================ */
 header {
-    background: #ffffff;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 25px;
+    background: #ffffff; /* Fondo blanco */
+    padding: 15px 20px; /* Espacio interno */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    margin-bottom: 25px; /* Espacio abajo */
 }
 
 .opciones {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    position: relative;
-    width: 100%;
+    display: flex; /* Organiza los elementos en fila */
+    align-items: center; /* Centra verticalmente */
+    justify-content: space-between; /* Espacio entre elementos */
+    gap: 20px; /* Espacio entre elementos */
+    position: relative; /* Permite posicionar el título en el centro */
+    width: 100%; /* Ocupa todo el ancho */
 }
 
 /* Contenedor para logo y texto alineados */
 .marca-contenedor {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    display: flex; /* Organiza logo y texto en fila */
+    align-items: center; /* Centra verticalmente */
+    gap: 15px; /* Espacio entre logo y texto */
 }
 
-/* Título centrado */
+/* Título centrado "Bienvenido, Logística" */
 .titulo2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #2c3e50;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
-    text-align: center;
-    white-space: nowrap;
+    font-size: 24px; /* Tamaño del texto */
+    font-weight: 600; /* Grosor medio-alto */
+    color: #2c3e50; /* Color oscuro */
+    position: absolute; /* Se posiciona de manera absoluta */
+    left: 50%; /* Se mueve al 50% del contenedor */
+    transform: translateX(-50%); /* Se centra perfectamente */
+    margin: 0; /* Sin márgenes */
+    text-align: center; /* Texto centrado */
+    white-space: nowrap; /* No se divide en varias líneas */
 }
 
 .resaltado {
-    color: var(--color-verde);
-    font-weight: bold;
+    color: var(--color-verde); /* Color verde */
+    font-weight: bold; /* Texto en negrita */
 }
 
 /* ============================================
-   TARJETA DE RESUMEN
+   CONTENEDOR DE TARJETAS DE RESUMEN
+   (NUEVO - Ahora soporta múltiples tarjetas en una cuadrícula)
    ============================================ */
-.tarjeta-resumen {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 30px;
-    transition: all 0.3s ease;
+.contenedor-cuadros {
+    display: grid; /* Usa una cuadrícula */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Columnas flexibles */
+    gap: 20px; /* Espacio entre tarjetas */
+    margin-bottom: 30px; /* Espacio abajo */
 }
 
-/* Animación al pasar el mouse */
+/* ============================================
+   TARJETAS DE RESUMEN
+   ============================================ */
+.tarjeta-resumen {
+    background: white; /* Fondo blanco */
+    border-radius: 10px; /* Esquinas redondeadas */
+    padding: 20px; /* Espacio interno */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    display: flex; /* Organiza icono y contenido en fila */
+    align-items: center; /* Centra verticalmente */
+    gap: 15px; /* Espacio entre icono y contenido */
+    transition: all 0.3s ease; /* Animación suave */
+}
+
+/* Animación cuando paso el mouse sobre la tarjeta */
 .tarjeta-resumen:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px); /* Se eleva 5px hacia arriba */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra más grande */
 }
 
 /* Icono de la tarjeta */
 .tarjeta-icono {
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
+    width: 60px; /* Ancho */
+    height: 60px; /* Alto */
+    border-radius: 10px; /* Esquinas redondeadas */
+    display: flex; /* Para centrar el icono */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    font-size: 30px; /* Tamaño del icono */
 }
 
+/* Color del icono de Productos en Stock */
 .productos .tarjeta-icono {
-    background: rgba(230, 126, 34, 0.2);
-    color: var(--color-naranja);
+    background: rgba(230, 126, 34, 0.15); /* Fondo naranja claro */
+    color: var(--color-naranja); /* Icono naranja */
 }
 
-/* Contenido de la tarjeta */
+/* Color del icono de Pedidos Pendientes (NUEVO) */
+.pedidos-pendientes .tarjeta-icono {
+    background: rgba(52, 152, 219, 0.15); /* Fondo azul claro */
+    color: var(--color-azul); /* Icono azul */
+}
+
+/* Contenido de la tarjeta (texto) */
 .tarjeta-contenido h3 {
-    font-size: 14px;
-    color: var(--color-gris);
-    margin-bottom: 8px;
+    font-size: 14px; /* Tamaño del texto */
+    color: var(--color-gris); /* Color gris */
+    margin-bottom: 8px; /* Espacio abajo */
 }
 
 .contador {
-    font-size: 32px;
-    font-weight: bold;
-    color: #2c3e50;
+    font-size: 32px; /* Tamaño grande para el número */
+    font-weight: bold; /* Texto en negrita */
+    color: #2c3e50; /* Color oscuro */
 }
 
-
-/* Modal Styles */
+/* ============================================
+   MODAL (Ventana emergente para Reportar Novedad)
+   ============================================ */
 .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Se queda fijo en la pantalla */
+    top: 0; /* Pegado arriba */
+    left: 0; /* Pegado a la izquierda */
+    width: 100%; /* Ocupa todo el ancho */
+    height: 100%; /* Ocupa todo el alto */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+    z-index: 1000; /* Aparece encima de todo */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    padding: 10px; /* Espacio interno */
 }
 
+/* Contenido del modal (el cuadro blanco) */
 .modal-content {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    width: 95%;
-    max-width: 600px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    max-height: 95vh;
-    overflow-y: auto;
+    background-color: white; /* Fondo blanco */
+    padding: 1.5rem; /* Espacio interno */
+    border-radius: 10px; /* Esquinas redondeadas */
+    width: 95%; /* Ancho del 95% en móviles */
+    max-width: 600px; /* Ancho máximo en pantallas grandes */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
+    max-height: 95vh; /* Altura máxima */
+    overflow-y: auto; /* Permite scroll si el contenido es largo */
 }
 
+/* Encabezado del modal */
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid #eee;
+    display: flex; /* Organiza título y botón cerrar en fila */
+    justify-content: space-between; /* Espacio entre título y botón */
+    align-items: center; /* Centra verticalmente */
+    margin-bottom: 1.2rem; /* Espacio abajo */
+    padding-bottom: 0.8rem; /* Espacio interno abajo */
+    border-bottom: 1px solid #eee; /* Línea divisoria */
 }
 
 .modal-header h2 {
-    color: #27AE60;
+    color: #27AE60; /* Color verde */
 }
 
+/* Botón de cerrar (X) */
 .close-modal {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #43813f;
+    background: none; /* Sin fondo */
+    border: none; /* Sin borde */
+    font-size: 1.5rem; /* Tamaño grande */
+    cursor: pointer; /* Cambia el cursor a manita */
+    color: #43813f; /* Color verde oscuro */
 }
 
+/* Grupo de formulario (cada campo del formulario) */
 .form-group {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.2rem; /* Espacio abajo */
 }
 
+/* Etiqueta del campo */
 .form-group label {
-    display: block;
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-    color: #333333;
+    display: block; /* Ocupa toda la línea */
+    margin-bottom: 0.4rem; /* Espacio abajo */
+    font-weight: 600; /* Texto en negrita */
+    color: #333333; /* Color oscuro */
 }
 
+/* Campos del formulario (input, select, textarea) */
 .form-control {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 8px; /* Espacio interno */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-size: 1rem; /* Tamaño del texto */
 }
 
+/* Área de texto (textarea) */
 textarea.form-control {
-    min-height: 90px;
-    resize: vertical;
+    min-height: 90px; /* Altura mínima */
+    resize: vertical; /* Permite cambiar solo el alto */
 }
 
+/* Contenedor de botones del formulario */
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 1.2rem;
+    display: flex; /* Organiza los botones en fila */
+    justify-content: flex-end; /* Alineados a la derecha */
+    gap: 8px; /* Espacio entre botones */
+    margin-top: 1.2rem; /* Espacio arriba */
 }
 
+/* Estilo general de botones */
 .btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    padding: 8px 16px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-weight: 600; /* Texto en negrita */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
+/* Animación cuando paso el mouse sobre cualquier botón */
 .btn:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Se agranda un 5% */
 }
 
+/* Botón principal (verde) */
 .btn-primary {
-    background-color: #219653;
-    color: white;
+    background-color: #219653; /* Fondo verde */
+    color: white; /* Texto blanco */
 }
 
+/* Animación del botón principal */
 .btn-primary:hover {
-    background-color: #1e8449;
+    background-color: #1e8449; /* Verde más oscuro */
 }
 
+/* Botón secundario (gris) */
 .btn-secondary {
-    background-color: #666;
-    color: white;
+    background-color: #666; /* Fondo gris */
+    color: white; /* Texto blanco */
 }
 
+/* Animación del botón secundario */
 .btn-secondary:hover {
-    background-color: #555;
+    background-color: #555; /* Gris más oscuro */
 }
-
-
 
 /* ============================================
    SECCIONES DE TABLAS
    ============================================ */
 .seccion-tabla {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 25px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
+    background: #ffffff; /* Fondo blanco */
+    border-radius: 10px; /* Esquinas redondeadas */
+    padding: 25px; /* Espacio interno */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    margin-bottom: 30px; /* Espacio abajo */
 }
 
 .encabezado-seccion h2 {
-    font-size: 22px;
-    color: #2c3e50;
-    margin-bottom: 20px;
+    font-size: 22px; /* Tamaño del texto */
+    color: #2c3e50; /* Color oscuro */
+    margin-bottom: 20px; /* Espacio abajo */
 }
 
 /* ============================================
    FORMULARIO DE BÚSQUEDA
    ============================================ */
 .form-busqueda {
-    display: flex;
-    margin-bottom: 20px;
-    gap: 10px;
+    display: flex; /* Organiza campo y botón en fila */
+    margin-bottom: 20px; /* Espacio abajo */
+    gap: 10px; /* Espacio entre campo y botón */
 }
 
 /* Campo de búsqueda */
 .form-busqueda input[type="text"] {
-    flex: 1;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: all 0.3s ease;
+    flex: 1; /* Ocupa todo el espacio disponible */
+    padding: 12px 15px; /* Espacio interno */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-size: 14px; /* Tamaño del texto */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
-/* Animación al hacer clic en el campo */
+/* Animación cuando hago clic en el campo de búsqueda */
 .form-busqueda input[type="text"]:focus {
-    outline: none;
-    border-color: var(--color-verde);
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+    outline: none; /* Quita el borde predeterminado del navegador */
+    border-color: var(--color-verde); /* Borde verde */
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); /* Resplandor verde */
 }
 
 /* Botón de búsqueda */
 .form-busqueda button {
-    background: var(--color-verde);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 12px 25px;
-    cursor: pointer;
-    font-size: 14px;
+    background: var(--color-verde); /* Fondo verde */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 12px 25px; /* Espacio interno */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del texto */
 }
 
+/* Animación del botón de búsqueda */
 .form-busqueda button:hover {
-    background: #2ecc71;
+    background: #2ecc71; /* Verde más claro */
 }
 
 /* ============================================
    TABLAS
    ============================================ */
 .contenedor-tabla {
-    overflow-x: auto;
+    overflow-x: auto; /* Permite scroll horizontal si la tabla es muy ancha */
 }
 
 .tabla-datos {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    table-layout: fixed;
+    width: 100%; /* Ocupa todo el ancho */
+    border-collapse: collapse; /* Elimina espacios entre celdas */
+    background: white; /* Fondo blanco */
+    table-layout: fixed; /* Las columnas tienen el mismo ancho */
 }
 
+/* Celdas de la tabla (th = encabezado, td = datos) */
 .tabla-datos th,
 .tabla-datos td {
-    padding: 14px 16px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-    width: auto;
-    word-wrap: break-word;
+    padding: 14px 16px; /* Espacio interno */
+    text-align: left; /* Texto alineado a la izquierda */
+    border-bottom: 1px solid #eee; /* Línea divisoria */
+    width: auto; /* Las columnas se distribuyen equitativamente */
+    word-wrap: break-word; /* El texto largo se divide en varias líneas */
 }
 
+/* Encabezado de la tabla */
 .tabla-datos th {
-    background-color: #f8f9fa;
-    color: #2c3e50;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
+    background-color: #f8f9fa; /* Fondo gris muy claro */
+    color: #2c3e50; /* Texto oscuro */
+    font-weight: 600; /* Texto en negrita */
+    font-size: 14px; /* Tamaño del texto */
+    text-transform: uppercase; /* Texto en mayúsculas */
 }
 
+/* Animación cuando paso el mouse sobre una fila */
 .tabla-datos tbody tr:hover {
-    background-color: #f8f9fa;
+    background-color: #f8f9fa; /* Fondo gris muy claro */
 }
 
 /* Imágenes dentro de las tablas */
 .tabla-datos img {
-    border-radius: 5px;
-    object-fit: cover;
+    border-radius: 5px; /* Esquinas redondeadas */
+    object-fit: cover; /* Recorta la imagen para que encaje */
 }
 
 /* ============================================
-   BOTONES DE ACCIÓN
+   BOTONES DE ACCIÓN EN LAS TABLAS
    ============================================ */
 
-/* Botón ASIGNAR - Verde con hover */
+/* Botón ASIGNAR - Verde con animación */
 .btn-asignar,
 button[onclick*="asignarPedido"] {
-    background: var(--color-verde);
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    background: var(--color-verde); /* Fondo verde */
+    color: white; /* Texto blanco */
+    padding: 8px 16px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del texto */
+    font-weight: 500; /* Grosor medio */
+    transition: all 0.3s ease; /* Animación suave */
+    display: inline-flex; /* Se comporta como un bloque en línea */
+    align-items: center; /* Centra verticalmente */
+    gap: 5px; /* Espacio entre elementos */
 }
 
+/* Animación del botón ASIGNAR */
 .btn-asignar:hover,
 button[onclick*="asignarPedido"]:hover {
-    background: #2ecc71;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+    background: #2ecc71; /* Verde más claro */
+    transform: translateY(-2px); /* Se eleva 2px */
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3); /* Sombra verde */
 }
 
-/* Botón ACTUALIZAR - Azul con hover */
+/* Botón ACTUALIZAR - Azul con animación */
 .btn-actualizar,
 button[onclick*="actualizarProducto"] {
-    background: var(--color-azul);
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
+    background: var(--color-azul); /* Fondo azul */
+    color: white; /* Texto blanco */
+    padding: 8px 16px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del texto */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
+/* Animación del botón ACTUALIZAR */
 .btn-actualizar:hover,
 button[onclick*="actualizarProducto"]:hover {
-    background: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    background: #2980b9; /* Azul más oscuro */
+    transform: translateY(-2px); /* Se eleva 2px */
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3); /* Sombra azul */
 }
 
-/* Botón ELIMINAR - Rojo con hover */
+/* Botón ELIMINAR - Rojo con animación */
 .btn-eliminar,
 button[onclick*="eliminarProducto"] {
-    background: var(--color-rojo);
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
+    background: var(--color-rojo); /* Fondo rojo */
+    color: white; /* Texto blanco */
+    padding: 8px 16px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del texto */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
+/* Animación del botón ELIMINAR */
 .btn-eliminar:hover,
 button[onclick*="eliminarProducto"]:hover {
-    background: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+    background: #c0392b; /* Rojo más oscuro */
+    transform: translateY(-2px); /* Se eleva 2px */
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3); /* Sombra roja */
 }
 
 /* ============================================
-   MENSAJE VACÍO
+   MENSAJE VACÍO (cuando no hay datos)
    ============================================ */
 .mensaje-vacio {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--color-gris);
-    font-size: 18px;
+    text-align: center; /* Texto centrado */
+    padding: 40px 20px; /* Espacio interno */
+    color: var(--color-gris); /* Color gris */
+    font-size: 18px; /* Tamaño del texto */
 }
 
 /* ============================================
-   MODALES (VENTANAS EMERGENTES)
+   MODALES ADICIONALES (VENTANAS EMERGENTES)
+   Para asignar pedidos y editar productos
    ============================================ */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
 .modal-contenido {
-    background: white;
-    border-radius: 10px;
-    padding: 30px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background: white; /* Fondo blanco */
+    border-radius: 10px; /* Esquinas redondeadas */
+    padding: 30px; /* Espacio interno */
+    width: 90%; /* Ancho del 90% */
+    max-width: 500px; /* Ancho máximo */
+    max-height: 90vh; /* Altura máxima */
+    overflow-y: auto; /* Permite scroll si el contenido es largo */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
 }
 
 .modal-contenido h2 {
-    margin-bottom: 20px;
-    color: #2c3e50;
-    text-align: center;
+    margin-bottom: 20px; /* Espacio abajo */
+    color: #2c3e50; /* Color oscuro */
+    text-align: center; /* Texto centrado */
 }
 
-/* Botón para cerrar */
+/* Botón para cerrar (X) */
 .cerrar {
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #999;
+    float: right; /* Se posiciona a la derecha */
+    font-size: 28px; /* Tamaño grande */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cambia el cursor a manita */
+    color: #999; /* Color gris */
 }
 
+/* Animación del botón cerrar */
 .cerrar:hover {
-    color: var(--color-rojo);
+    color: var(--color-rojo); /* Se vuelve rojo */
 }
 
-/* Campos del formulario */
+/* Campos del formulario dentro del modal */
 .modal-contenido label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #2c3e50;
+    display: block; /* Ocupa toda la línea */
+    margin-bottom: 5px; /* Espacio abajo */
+    font-weight: 500; /* Grosor medio */
+    color: #2c3e50; /* Color oscuro */
 }
 
 .modal-contenido input,
 .modal-contenido select,
 .modal-contenido textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: all 0.3s ease;
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 10px; /* Espacio interno */
+    margin-bottom: 15px; /* Espacio abajo */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-size: 14px; /* Tamaño del texto */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
+/* Animación cuando hago clic en los campos */
 .modal-contenido input:focus,
 .modal-contenido select:focus,
 .modal-contenido textarea:focus {
-    outline: none;
-    border-color: var(--color-verde);
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+    outline: none; /* Quita el borde predeterminado */
+    border-color: var(--color-verde); /* Borde verde */
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); /* Resplandor verde */
 }
 
-/* Botones del modal */
+/* Contenedor de botones del modal */
 .modal-botones {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+    display: flex; /* Organiza los botones en fila */
+    justify-content: flex-end; /* Alineados a la derecha */
+    gap: 10px; /* Espacio entre botones */
+    margin-top: 20px; /* Espacio arriba */
 }
 
+/* Botón CANCELAR del modal */
 .btn-cancelar {
-    background: #95a5a6;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    background: #95a5a6; /* Fondo gris */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 10px 15px; /* Espacio interno */
+    cursor: pointer; /* Cambia el cursor a manita */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
+/* Animación del botón CANCELAR */
 .btn-cancelar:hover {
-    background: #7f8c8d;
+    background: #7f8c8d; /* Gris más oscuro */
 }
 
+/* Botón GUARDAR del modal */
 .btn-guardar {
-    background: var(--color-verde);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    background: var(--color-verde); /* Fondo verde */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 10px 15px; /* Espacio interno */
+    cursor: pointer; /* Cambia el cursor a manita */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
+/* Animación del botón GUARDAR */
 .btn-guardar:hover {
-    background: #2ecc71;
+    background: #2ecc71; /* Verde más claro */
 }
 
 /* ============================================
    RESPONSIVE PARA MÓVILES
+   Estos estilos se aplican solo en pantallas pequeñas
    ============================================ */
 @media (max-width: 768px) {
-    /* Muestra el botón hamburguesa */
+    /* Muestra el botón hamburguesa en móviles */
     .toggle-btn {
         display: block;
     }
 
-    /* Oculta el menú por defecto */
+    /* Oculta el menú por defecto en móviles */
     #sidebar {
-        left: -250px;
+        left: -250px; /* Lo mueve fuera de la pantalla */
     }
 
     /* Muestra el menú cuando está activo */
     #sidebar.active {
-        left: 0;
+        left: 0; /* Lo trae de vuelta a la pantalla */
     }
 
-    /* El contenido ocupa todo el ancho */
+    /* El contenido ocupa todo el ancho en móviles */
     main {
-        margin-left: 0;
-        padding: 15px;
+        margin-left: 0; /* Sin margen izquierdo */
+        padding: 15px; /* Menos espacio interno */
     }
 
-    /* Ajustes del header */
+    /* Ajustes del header en móviles */
     header {
-        margin-top: 50px;
+        margin-top: 50px; /* Espacio arriba para el botón hamburguesa */
     }
 
     .titulo2 {
-        font-size: 18px;
+        font-size: 18px; /* Texto más pequeño */
     }
 
-    /* Buscador en columna */
+    /* Tarjetas en una sola columna en móviles */
+    .contenedor-cuadros {
+        grid-template-columns: 1fr; /* Una sola columna */
+    }
+
+    /* Buscador en columna en móviles */
     .form-busqueda {
-        flex-direction: column;
+        flex-direction: column; /* Organiza en columna */
     }
 
     .form-busqueda button {
-        width: 100%;
+        width: 100%; /* El botón ocupa todo el ancho */
     }
 
-    /* Tabla con scroll */
+    /* Tabla con scroll horizontal en móviles */
     .tabla-datos {
-        min-width: 600px;
+        min-width: 600px; /* Ancho mínimo para hacer scroll */
     }
 
-    /* Modal más pequeño */
+    /* Modal más pequeño en móviles */
     .modal-contenido {
-        width: 95%;
-        padding: 20px;
+        width: 95%; /* Ocupa el 95% del ancho */
+        padding: 20px; /* Menos espacio interno */
     }
 }
 
-/* Móviles pequeños */
+/* Móviles pequeños (menos de 480px) */
 @media (max-width: 480px) {
     .titulo2 {
-        font-size: 16px;
+        font-size: 16px; /* Texto aún más pequeño */
     }
 
+    /* Tarjetas en columna con texto centrado */
     .tarjeta-resumen {
-        flex-direction: column;
-        text-align: center;
+        flex-direction: column; /* Organiza en columna */
+        text-align: center; /* Texto centrado */
     }
 
     .contador {
-        font-size: 24px;
+        font-size: 24px; /* Número más pequeño */
     }
 
+    /* Menos espacio interno en secciones */
     .seccion-tabla {
         padding: 15px;
     }
 
+    /* Celdas más pequeñas en la tabla */
     .tabla-datos th,
     .tabla-datos td {
-        padding: 10px 8px;
-        font-size: 13px;
+        padding: 10px 8px; /* Menos espacio interno */
+        font-size: 13px; /* Texto más pequeño */
     }
 }
 
