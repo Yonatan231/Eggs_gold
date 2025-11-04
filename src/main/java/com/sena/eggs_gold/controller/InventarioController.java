@@ -49,9 +49,6 @@ public class InventarioController {
         return inventarioService.obtenerProductosDisponibles(); // Servicio que implementa la lógica de SQL
     }
 
-
-
-
         @PostMapping("/agregar")
         @ResponseBody
         public ResponseEntity<?> agregarInventario(@RequestBody InventarioRequestDTO dto) {

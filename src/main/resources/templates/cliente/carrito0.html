@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
+
+    <link rel="stylesheet" th:href="@{css/cliente/carrito0.css}">
+    <link rel="stylesheet" th:href="@{css/inicio/logo.css}">
+</head>
+
+<body>
+<!-- Encabezado de la página -->
+<header class="header-principal">
+    <div class="header-top">
+        <!-- Logo y nombre de la empresa -->
+        <div class="marca">
+            <div class="logo">
+                <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+            </div>
+            <div>
+                <h1 class="titulo">Eggs Gold</h1>
+                <p class="subtitulo">Huevos frescos a tu puerta</p>
+            </div>
+        </div>
+
+        <!-- Título principal centrado -->
+        <div class="header-title">
+            <h1>Carrito</h1>
+        </div>
+
+        <div class="header-actions">
+            <a th:href="@{inventario}" class="btn-link salir">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </div>
+    </div>
+</header>
+
+
+<!-- Contenedor principal -->
+<main>
+    <div class="container">
+        <!-- Indicador de pasos -->
+        <div class="pasos">
+            <div class="paso activo" id="paso1">
+                <div class="circulo-paso">1</div>
+                <div>Carrito</div>
+            </div>
+            <div class="paso" id="paso2">
+                <div class="circulo-paso">2</div>
+                <div>Datos</div>
+            </div>
+            <div class="paso" id="paso3">
+                <div class="circulo-paso">3</div>
+                <div>Confirmación</div>
+            </div>
+        </div>
+
+        <!-- Título principal -->
+        <h1>Historial de Productos</h1>
+
+        <!-- Sección del carrito -->
+        <div id="carrito" class="lista-carrito">
+            <h2>Productos en el Carrito</h2>
+
+            <!-- Lista de productos en el carrito -->
+            <ul id="productos-carrito">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </ul>
+
+            <!-- Sección de dirección de entrega -->
+            <div class="seccion-direccion">
+                <label for="direccion">📍 Ingrese su dirección de entrega:</label>
+                <input
+                        type="text"
+                        id="direccion"
+                        placeholder="Calle 123, Barrio, Ciudad"
+                        required
+                >
+            </div>
+
+            <!-- Total del carrito -->
+            <h3 id="total-carrito">Total: $0</h3>
+
+            <!-- Contenedor para el botón de confirmar -->
+            <div id="confirmar-pedido-container"></div>
+
+            <!-- Mensaje de carrito vacío (oculto inicialmente) -->
+            <div id="carrito-vacio" class="carrito-vacio oculto">
+                <div class="icono-carrito-vacio">🛒</div>
+                <h3>Tu carrito está vacío</h3>
+                <p>Agrega productos desde el inventario para comenzar tu compra</p>
+                <a th:href="@{inventario}" class="boton-ir-inventario">
+                    Ver Productos
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Script de JavaScript -->
+<script th:src="@{js/manejo_sesion/manejo_sesion.js}"></script>
+<script src="JAVA SCRIPT/inventario.js"></script>
+
+</body>
+</html>

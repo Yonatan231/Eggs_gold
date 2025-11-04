@@ -1,0 +1,511 @@
+/* ========================================
+   ESTILOS GENERALES Y RESET
+   ======================================== */
+
+/* Aplicamos box-sizing a todos los elementos para facilitar el cálculo de tamaños */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilos base del body - Fondo color crema como el original */
+body {
+    margin: 0;
+    padding: 20px;
+    background: #FEFCF4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========================================
+   HEADER (ENCABEZADO)
+   ======================================== */
+
+.header-principal {
+    background-color: #F7DC6F;
+    color: #333333;
+    padding: 12px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.titulo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333333;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+.subtitulo {
+    font-size: 0.9rem;
+    color: #333333;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.header-title {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0 15px;
+}
+
+.header-title h1 {
+    font-size: 1.8rem;
+    color: #333333;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.salir {
+    background-color: #27AE60;
+    color: white;
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.salir:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+}
+
+
+/* ========================================
+   MAIN Y CONTENEDOR PRINCIPAL
+   ======================================== */
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* ========================================
+   INDICADOR DE PASOS
+   ======================================== */
+
+.pasos {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+/* Línea conectora entre los pasos */
+.pasos::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background-color: #e0e0e0;
+    z-index: 1;
+}
+
+.paso {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+}
+
+/* Círculo de cada paso */
+.circulo-paso {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #7f8c8d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+/* Paso activo - Color amarillo */
+.paso.activo .circulo-paso {
+    background-color: #F7DC6F;
+    color: white;
+}
+
+/* Paso completado - Color verde */
+.paso.completado .circulo-paso {
+    background-color: #2ecc71;
+    color: white;
+}
+
+/* ========================================
+   TÍTULOS PRINCIPALES
+   ======================================== */
+
+.container h1, .container h2 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+.container h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* ========================================
+   CARRITO DE COMPRAS
+   ======================================== */
+
+.lista-carrito {
+    margin-top: 20px;
+}
+
+/* Lista de productos */
+#productos-carrito {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+/* Cada producto en la lista */
+#productos-carrito li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border-left: 4px solid #27AE60;
+}
+
+#productos-carrito li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background-color: #e8f4fc;
+}
+
+/* Información del producto */
+.info-producto {
+    flex-grow: 1;
+}
+
+.nombre-producto {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.detalles-producto {
+    color: #7f8c8d;
+    font-size: 0.95em;
+}
+
+/* Botón de eliminar producto */
+.eliminar-item {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.eliminar-item:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* ========================================
+   SECCIÓN DE DIRECCIÓN
+   ======================================== */
+
+.seccion-direccion {
+    margin: 25px 0;
+}
+
+.seccion-direccion label {
+    display: block;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+/* Input de dirección */
+#direccion {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all 0.3s;
+}
+
+#direccion:focus {
+    border-color: #F7DC6F;
+    box-shadow: 0 0 0 2px rgba(247, 220, 111, 0.2);
+    outline: none;
+}
+
+/* ========================================
+   TOTAL DEL CARRITO
+   ======================================== */
+
+#total-carrito {
+    text-align: right;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 25px 0;
+    padding: 15px;
+    background-color: #F7DC6F;
+    color: white;
+    border-radius: 10px;
+}
+
+/* ========================================
+   BOTÓN DE CONFIRMAR PEDIDO
+   ======================================== */
+
+#confirmar-pedido-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#confirmar-pedido-container button {
+    background: #27AE60;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: 100%;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+#confirmar-pedido-container button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
+}
+
+#confirmar-pedido-container button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ========================================
+   MENSAJE DE CARRITO VACÍO
+   ======================================== */
+
+.carrito-vacio {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.icono-carrito-vacio {
+    font-size: 5em;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.carrito-vacio h3 {
+    color: #2c3e50;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.carrito-vacio p {
+    color: #7f8c8d;
+    font-size: 1.1em;
+    margin-bottom: 25px;
+}
+
+/* Botón para ir al inventario */
+.boton-ir-inventario {
+    display: inline-block;
+    background: #27AE60;
+    color: white;
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.boton-ir-inventario:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+}
+
+/* ========================================
+   CLASES AUXILIARES
+   ======================================== */
+
+/* Clase para ocultar elementos */
+.oculto {
+    display: none !important;
+}
+
+/* Mensaje vacío simple */
+.mensaje-vacio {
+    text-align: center;
+    padding: 30px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN (ADAPTACIÓN A MÓVILES)
+   ======================================== */
+
+/* Para tablets y dispositivos medianos */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header-principal {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header-principal h1 {
+        font-size: 1.5em;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .pasos {
+        font-size: 0.9em;
+    }
+
+    .circulo-paso {
+        width: 35px;
+        height: 35px;
+    }
+
+    #productos-carrito li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .eliminar-item {
+        align-self: flex-end;
+    }
+
+    #total-carrito {
+        font-size: 1.2em;
+    }
+}
+
+/* Para móviles pequeños */
+@media (max-width: 480px) {
+    .header-principal h1 {
+        font-size: 1.3em;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .container h1 {
+        font-size: 1.5em;
+    }
+
+    .pasos {
+        font-size: 0.8em;
+    }
+
+    .circulo-paso {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9em;
+    }
+
+    #confirmar-pedido-container button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+/* Animación de entrada para los productos */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#productos-carrito li {
+    animation: fadeInUp 0.5s ease;
+}
+
+/* Animación de pulso para el botón */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(46, 204, 113, 0.5);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    }
+}
+
+#confirmar-pedido-container button:not(:disabled) {
+    animation: pulse 2s infinite;
+}
