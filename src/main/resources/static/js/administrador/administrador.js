@@ -1414,6 +1414,39 @@ if (btnVerPdf) {
     btnVerPdf.addEventListener("click", function() {
         window.open("/admin/reportes/pedidos-usuarios", "_blank");
     });
+    // === GRÁFICO DE PEDIDOS POR MES ===
+    fetch("/admin/api/graficas/pedidos")
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById("graficoPedidos"), {
+                type: "bar",
+                data: {
+                    labels: data.meses,
+                    datasets: [{
+                        label: "Pedidos",
+                        data: data.valores,
+                        borderWidth: 1
+                    }]
+                }
+            });
+        });
+
+// === GRÁFICO DE PRODUCTOS MÁS VENDIDOS ===
+    fetch("/admin/api/graficas/productos")
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById("graficoProductos"), {
+                type: "pie",
+                data: {
+                    labels: data.productos,
+                    datasets: [{
+                        data: data.cantidades,
+                        borderWidth: 1
+                    }]
+                }
+            });
+        });
+
 }
 
 

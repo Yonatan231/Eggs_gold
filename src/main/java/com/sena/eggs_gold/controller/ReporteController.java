@@ -19,26 +19,39 @@ public class ReporteController {
         this.reporteService = reporteService;
     }
 
-    @GetMapping("/productos")
-    public ResponseEntity<ByteArrayResource> descargarReporteProductos() {
-        byte[] pdfBytes = reporteService.generarReporteProductos();
-        ByteArrayResource resource = new ByteArrayResource(pdfBytes);
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Reporte_Productos.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .contentLength(pdfBytes.length)
-                .body(resource);
+    @GetMapping("/reporte-pedidos")
+    public ResponseEntity<ByteArrayResource> pedidosUsuarios() {
+        return buildResponse(reporteService.generarReportePedidosUsuarios(), "Reporte_Pedidos.pdf");
     }
 
-    @GetMapping("/pedidos-usuarios")
-    public ResponseEntity<byte[]> descargarReportePedidosUsuarios() {
-        byte[] pdf = reporteService.generarReportePedidosUsuarios();
+    @GetMapping("/reporte-productos")
+    public ResponseEntity<ByteArrayResource> productos() {
+        return buildResponse(reporteService.generarReporteProductos(), "Reporte_Productos.pdf");
+    }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("reporte_pedidos_usuarios", "reporte_pedidos_usuarios.pdf");
+    @GetMapping("/reporte-clientes")
+    public ResponseEntity<ByteArrayResource> clientes() {
+        return buildResponse(reporteService.generarReporteCliente(), "Reporte_Clientes.pdf");
+    }
 
-        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    @GetMapping("/reporte-conductores")
+    public ResponseEntity<ByteArrayResource> conductores() {
+        return buildResponse(reporteService.generarReporteConductor(), "Reporte_Conductores.pdf");
+    }
+
+    @GetMapping("/reporte-logistica")
+    public ResponseEntity<ByteArrayResource> logistica() {
+        return buildResponse(reporteService.generarReporteLogistica(), "Reporte_Logistica.pdf");
+    }
+
+    private ResponseEntity<ByteArrayResource> buildResponse(byte[] bytes, String filename) {
+        ByteArrayResource resource = new ByteArrayResource(bytes);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(bytes.length)
+                .body(resource);
     }
 }

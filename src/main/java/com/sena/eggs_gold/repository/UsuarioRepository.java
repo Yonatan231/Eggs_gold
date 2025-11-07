@@ -4,6 +4,7 @@ import com.sena.eggs_gold.dto.ClientePedidosDTO;
 import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.dto.ConductorPedidosDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
+import com.sena.eggs_gold.model.entity.Rol;
 import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.model.enums.Estado;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
@@ -97,6 +98,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
             "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
     List<Usuario> buscarLogisticaPorEstado(String buscar, Estado estado);
 
+    // ✅ Trae todos los roles registrados
+    @Query("SELECT r FROM com.sena.eggs_gold.model.entity.Rol r")
+    List<Rol> findAllRoles();
+
+    @Query("SELECT u.correo FROM Usuario u WHERE u.rol.idRoles IN :rolIds AND u.correo IS NOT NULL")
+    List<String> findEmailsByRolIds(List<Integer> rolIds);
 
 }
 

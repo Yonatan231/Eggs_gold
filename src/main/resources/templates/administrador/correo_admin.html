@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eggs Gold - Envío de Correos Masivos</title>
+
+    <!-- Ícono y fuentes -->
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Estilos base -->
+    <link rel="stylesheet" th:href="@{/css/administrador/administrador.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+    <link rel="stylesheet" th:href="@{/css/administrador/correo_admin.css}">
+</head>
+
+<body>
+<!-- Botón menú responsive -->
+<button class="toggle-btn" aria-label="Abrir menú lateral" aria-expanded="false">
+    <span>&#9776;</span>
+</button>
+
+<!-- =================== SIDEBAR =================== -->
+<nav id="sidebar">
+    <ul>
+        <li class="perfil-admin">
+            <div class="avatar-contenedor">
+                <span id="avatar-iniciales">AD</span>
+            </div>
+            <h2>Panel de Administración</h2>
+        </li>
+        <li><a th:href="@{/administrador}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<!-- =================== CONTENIDO PRINCIPAL =================== -->
+<main id="main-content" role="main">
+    <header role="banner">
+        <div class="opciones">
+            <div class="marca">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+                </div>
+                <div>
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
+            <h1 class="titulo2">📧 Envío de Correos Masivos</h1>
+        </div>
+    </header>
+
+    <!-- =================== FORMULARIO =================== -->
+    <section class="seccion-tabla" aria-labelledby="titulo-correos">
+        <div class="encabezado-seccion">
+            <h2 id="titulo-correos">✉️ Enviar Correos Masivos</h2>
+            <p>Selecciona los roles destinatarios y redacta el mensaje que deseas enviar.</p>
+        </div>
+
+        <!-- 🔹 Se agrega id="correoForm" -->
+        <form id="correoForm" th:action="@{/correos/enviar}" method="post" class="form-envio-correos">
+
+            <!-- 🔹 Contenedor de roles -->
+            <label>Seleccionar Roles Destinatarios:</label>
+            <div class="roles-container">
+                <div class="role-card selectable"
+                     th:each="rol : ${roles}"
+                     th:data-id="${rol.idRoles}"
+                     th:data-nombre="${rol.nombreRol.toLowerCase()}">
+
+                    <div class="icono-rol" th:switch="${rol.nombreRol.toLowerCase()}">
+                        <i th:case="'administrador'" class="fas fa-crown"></i>
+                        <i th:case="'logistica'" class="fas fa-boxes"></i>
+                        <i th:case="'conductor'" class="fas fa-truck"></i>
+                        <i th:case="'cliente'" class="fas fa-user"></i>
+                        <i th:case="*" class="fas fa-user-circle"></i>
+                    </div>
+
+                    <p th:text="${rol.nombreRol}">Rol</p>
+                </div>
+            </div>
+
+            <input type="hidden" id="rolIds" name="rolIds"/>
+
+            <label for="asunto">Asunto del Correo:</label>
+            <input type="text" id="asunto" name="asunto"
+                   placeholder="Ej: Promociones de la semana" required>
+
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" rows="6"
+                      placeholder="Escribe aquí el contenido del correo..." required></textarea>
+
+            <div class="acciones-seccion">
+                <button id="btnEnviarCorreos" type="submit" class="btn-enviar">
+                    <i class="fas fa-paper-plane"></i> Enviar Correos
+                </button>
+            </div>
+
+            <p th:if="${success}" style="color:green; font-weight:bold;" th:text="${success}"></p>
+            <p th:if="${error}" style="color:red; font-weight:bold;" th:text="${error}"></p>
+        </form>
+    </section>
+</main>
+
+<!-- Scripts -->
+<script th:src="@{/js/manejo_sesion/manejo_sesion.js}" defer></script>
+<script th:src="@{/js/administrador/correo_admin.js}" defer></script>
+</body>
+</html>

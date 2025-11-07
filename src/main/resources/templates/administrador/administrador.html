@@ -48,6 +48,7 @@
         <!-- Enlaces de navegación -->
         <li><a href="#titulo-pedidos" class="nav-link"><i class="fas fa-users"></i> Pedidos</a></li>
         <li><a href="#titulo-productos" class="nav-link"><i class="fas fa-users"></i> Productos</a></li>
+        <li><a th:href="@{/correos}" class="nav-link"><i class="fas fa-envelope"></i> Correos</a></li>
         <li><a th:href="@{/registrar_producto}" class="nav-link"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
         <li><a th:href="@{/registrar_logistica}" class="nav-link"><i class="fas fa-user-plus"></i> Registro Logística</a></li>
         <li><a th:href="@{/registrar_conductor}" class="nav-link"><i class="fas fa-id-card"></i> Registrar Conductor</a></li>
@@ -133,7 +134,7 @@
             <h2 id="titulo-pedidos">📦 Reporte de Pedidos Realizados</h2>
             <div class="acciones-seccion">
                 <!-- Botón para descargar reporte PDF -->
-                <a href="/admin/reportes/pedidos-usuarios" download="reporte_pedidos_usuarios.pdf" class="btn-pdf">
+                <a href="/admin/reportes/reporte-pedidos" download="Reporte_Pedidos.pdf" class="btn-pdf">
                     <i class="fas fa-file-pdf"></i> Ver reporte PDF
                 </a>
             </div>
@@ -182,7 +183,7 @@
         <div class="encabezado-seccion">
             <h2 id="titulo-productos">🛒 Gestión de Productos</h2>
             <!-- Botón para descargar reporte PDF -->
-            <a href="/admin/reportes/productos" download="reporte_productos.pdf" class="btn-pdf">
+            <a href="/admin/reportes/reporte-productos" download="Reporte_Productos.pdf" class="btn-pdf">
                 <i class="fas fa-file-pdf"></i> Ver reporte PDF
             </a>
         </div>
@@ -275,7 +276,7 @@
         <div class="encabezado-seccion">
             <h2 id="titulo-clientes">👥 Gestión de Clientes</h2>
             <!-- Botón para descargar reporte PDF -->
-            <a href="/admin/reportes/clientes" download="reporte_clientes.pdf" class="btn-pdf">
+            <a href="/admin/reportes/reporte-clientes" download="Reporte_Clientes.pdf" class="btn-pdf">
                 <i class="fas fa-file-pdf"></i> Ver reporte PDF
             </a>
         </div>
@@ -360,7 +361,7 @@
         <div class="encabezado-seccion">
             <h2 id="titulo-conductores">🚚 Gestión de Conductores</h2>
             <!-- Botón para descargar reporte PDF -->
-            <a href="/admin/reportes/conductores" download="reporte_conductores.pdf" class="btn-pdf">
+            <a href="/admin/reportes/reporte-conductores" download="Reporte_Conductores.pdf" class="btn-pdf">
                 <i class="fas fa-file-pdf"></i> Ver reporte PDF
             </a>
         </div>
@@ -444,7 +445,7 @@
         <div class="encabezado-seccion">
             <h2 id="titulo-logistica">📊 Gestión de Logística</h2>
             <!-- Botón para descargar reporte PDF -->
-            <a href="/admin/reportes/logistica" download="reporte_logistica.pdf" class="btn-pdf">
+            <a href="/admin/reportes/reporte-logistica" download="Reporte_Logistica.pdf" class="btn-pdf">
                 <i class="fas fa-file-pdf"></i> Ver reporte PDF
             </a>
         </div>
