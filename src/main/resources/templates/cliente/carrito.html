@@ -209,12 +209,45 @@
     </div>
 </div>
 
+<script th:src="@{/js/manejo_sesion/manejo_sesion.js}"></script>
+<script th:src="@{/js/manejo_sesion/foto_panel.js}"></script>
+
+
 <script>
     // PRODUCTOS DE PRUEBA - Lista ampliada para testing
-    /*let carrito = [
-        { id: 1, nombre: "Camiseta Básica Negra", precio: 25.99, cantidad: 2 },
-        { id: 2, nombre: "Pantalón Jeans Clásico", precio: 45.50, cantidad: 1 },
-    ];*/
+
+    let carrito = []; // vacío al inicio
+
+    // 🔹 Cargar los productos del backend al abrir la página
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch(`/api/carrito/temporal?usuario=${usuarioId}`)  // Ajusta el endpoint según tu backend (por ejemplo /carrito/usuario/{id})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error al obtener el carrito");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    carrito = data.map(p => ({
+                        id: p.id || p.productoId,
+                        nombre: p.nombre || p.productoNombre,
+                        precio: p.precio || 0,
+                        cantidad: p.cantidad || 1
+                    }));
+                    actualizarCarrito();
+                } else {
+                    document.getElementById("lista-productos").innerHTML =
+                        '<div class="carrito-vacio">Tu carrito está vacío</div>';
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error al cargar productos del carrito:", error);
+                document.getElementById("lista-productos").innerHTML =
+                    '<div class="carrito-vacio">Error al cargar el carrito</div>';
+            });
+    });
+
 
     let metodoPagoSeleccionado = null;
 
@@ -235,6 +268,7 @@
             totalGeneral.textContent = 'Total: $0.00';
             return;
         }
+
 
         carrito.forEach(producto => {
             const productoElemento = document.createElement('div');
@@ -298,14 +332,43 @@
                 }
             });
         });
+        agregarEventosEliminar();
 
-        document.querySelectorAll('.eliminar').forEach(boton => {
-            boton.addEventListener('click', function() {
-                const id = parseInt(this.getAttribute('data-id'));
-                carrito = carrito.filter(p => p.id !== id);
-                actualizarCarrito();
+        function agregarEventosEliminar() {
+            document.querySelectorAll(".eliminar").forEach(boton => {
+                boton.addEventListener("click", () => {
+                    const id = boton.getAttribute("data-id");
+
+                    if (confirm("¿Estás seguro de eliminar este producto del carrito?")) {
+                        fetch(`/api/carrito/eliminar?id=${id}`, {
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded"
+                            },
+                            body: `id=${id}`
+                        })
+                            .then(response => response.text())
+                            .then(msg => {
+                                alert(msg);
+                                // refresca el carrito desde backend
+                                fetch(`/api/carrito/temporal?usuario=${usuarioId}`)
+                                    .then(resp => resp.json())
+                                    .then(data => {
+                                        carrito = data.map(p => ({
+                                            id: p.id || p.productoId,
+                                            nombre: p.nombre || p.productoNombre,
+                                            precio: p.precio || 0,
+                                            cantidad: p.cantidad || 1
+                                        }));
+                                        actualizarCarrito();
+                                    });
+                            })
+                            .catch(error => console.error("❌ Error al eliminar el producto:", error));
+                    }
+                });
             });
-        });
+        }
+
     }
 
     function actualizarPasos(pasoActual) {
@@ -482,13 +545,16 @@
             actualizarPasos(1);
 
             // Restaurar productos de prueba para nueva compra
-            carrito = [
+          /*  carrito = [
                 { id: 1, nombre: "Camiseta Básica Negra", precio: 25.99, cantidad: 2 },
                 { id: 2, nombre: "Pantalón Jeans Clásico", precio: 45.50, cantidad: 1 },
 
             ];
+            actualizarCarrito();*/
+            carrito=[];
             actualizarCarrito();
         });
+
 
         // Formatear número de tarjeta
         document.getElementById('numero-tarjeta').addEventListener('input', function(e) {
