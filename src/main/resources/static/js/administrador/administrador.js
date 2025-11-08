@@ -1311,143 +1311,75 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+    /* ============================================
+       CARGAR ESTADÍSTICAS DEL DASHBOARD
+       Muestra en las tarjetas superiores:
+       - Total de usuarios registrados
+       - Ventas del día
+       - Productos en stock
+       ============================================ */
 
-/* ============================================
-   GESTIÓN DE FOTO DE PERFIL
-   Permite subir y mostrar la foto del administrador
-   ============================================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-    const avatarImg = document.getElementById("avatar-imagen");
-    const avatarIniciales = document.getElementById("avatar-iniciales");
-    const inputFoto = document.getElementById("input-foto");
-
-    // Obtener ID del usuario (puedes ajustar esto según tu sistema)
-    const usuarioId = sessionStorage.getItem("usuarioId") || 1;
-
-    // Obtener foto actual del servidor
-    fetch(`/usuarios/${usuarioId}/foto`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.ruta) {
-                // Si hay foto, mostrarla
-                avatarImg.src = data.ruta;
-                avatarImg.style.display = "block";
-                avatarIniciales.style.display = "none";
-            } else {
-                // Si no hay foto, mostrar iniciales
-                const iniciales = data.iniciales || "AD";
-                avatarIniciales.textContent = iniciales;
-                avatarImg.style.display = "none";
-                avatarIniciales.style.display = "flex";
-            }
-        })
-        .catch(error => {
-            console.error("❌ Error obteniendo foto:", error);
-        });
-
-    // Evento para subir nueva imagen
-    inputFoto.addEventListener("change", () => {
-        const archivo = inputFoto.files[0];
-        if (!archivo) return;
-
-        // Crear formulario para enviar la imagen
-        const formData = new FormData();
-        formData.append("foto", archivo);
-
-        // Enviar al servidor
-        fetch(`/usuarios/${usuarioId}/foto`, {
-            method: "POST",
-            body: formData
-        })
-            .then(res => res.json())
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch("/api/dashboard")
+            .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    // Actualizar imagen en la interfaz
-                    avatarImg.src = data.ruta;
-                    avatarImg.style.display = "block";
-                    avatarIniciales.style.display = "none";
-                    alert("✅ Foto actualizada correctamente");
-                } else {
-                    alert("❌ " + data.message);
-                }
+                // Actualizar contenido de las tarjetas
+                document.getElementById("totalUsuarios").textContent = data.usuarios;
+                document.getElementById("totalVentas").textContent = `${data.ventas}`;
+                document.getElementById("totalProductos").textContent = data.productos;
             })
             .catch(error => {
-                console.error("❌ Error subiendo imagen:", error);
-                alert("❌ Error al subir la imagen");
+                console.error("❌ Error cargando resumen:", error);
             });
     });
-});
 
 
-/* ============================================
-   CARGAR ESTADÍSTICAS DEL DASHBOARD
-   Muestra en las tarjetas superiores:
-   - Total de usuarios registrados
-   - Ventas del día
-   - Productos en stock
-   ============================================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("/api/dashboard")
-        .then(response => response.json())
-        .then(data => {
-            // Actualizar contenido de las tarjetas
-            document.getElementById("totalUsuarios").textContent = data.usuarios;
-            document.getElementById("totalVentas").textContent = `${data.ventas}`;
-            document.getElementById("totalProductos").textContent = data.productos;
-        })
-        .catch(error => {
-            console.error("❌ Error cargando resumen:", error);
-        });
-});
-
-
-/* ============================================
-   DESCARGAR REPORTE PDF
-   Abre el PDF en una nueva pestaña
-   ============================================ */
+    /* ============================================
+       DESCARGAR REPORTE PDF
+       Abre el PDF en una nueva pestaña
+       ============================================ */
 
 // Si existe el botón de ver PDF
-const btnVerPdf = document.getElementById("btn-ver-pdf");
-if (btnVerPdf) {
-    btnVerPdf.addEventListener("click", function() {
-        window.open("/admin/reportes/pedidos-usuarios", "_blank");
-    });
-    // === GRÁFICO DE PEDIDOS POR MES ===
-    fetch("/admin/api/graficas/pedidos")
-        .then(res => res.json())
-        .then(data => {
-            new Chart(document.getElementById("graficoPedidos"), {
-                type: "bar",
-                data: {
-                    labels: data.meses,
-                    datasets: [{
-                        label: "Pedidos",
-                        data: data.valores,
-                        borderWidth: 1
-                    }]
-                }
-            });
+    const btnVerPdf = document.getElementById("btn-ver-pdf");
+    if (btnVerPdf) {
+        btnVerPdf.addEventListener("click", function () {
+            window.open("/admin/reportes/pedidos-usuarios", "_blank");
         });
+        // === GRÁFICO DE PEDIDOS POR MES ===
+        fetch("/admin/api/graficas/pedidos")
+            .then(res => res.json())
+            .then(data => {
+                new Chart(document.getElementById("graficoPedidos"), {
+                    type: "bar",
+                    data: {
+                        labels: data.meses,
+                        datasets: [{
+                            label: "Pedidos",
+                            data: data.valores,
+                            borderWidth: 1
+                        }]
+                    }
+                });
+            });
 
 // === GRÁFICO DE PRODUCTOS MÁS VENDIDOS ===
-    fetch("/admin/api/graficas/productos")
-        .then(res => res.json())
-        .then(data => {
-            new Chart(document.getElementById("graficoProductos"), {
-                type: "pie",
-                data: {
-                    labels: data.productos,
-                    datasets: [{
-                        data: data.cantidades,
-                        borderWidth: 1
-                    }]
-                }
+        fetch("/admin/api/graficas/productos")
+            .then(res => res.json())
+            .then(data => {
+                new Chart(document.getElementById("graficoProductos"), {
+                    type: "pie",
+                    data: {
+                        labels: data.productos,
+                        datasets: [{
+                            data: data.cantidades,
+                            borderWidth: 1
+                        }]
+                    }
+                });
             });
-        });
 
-}
+    }
+
 
 
 

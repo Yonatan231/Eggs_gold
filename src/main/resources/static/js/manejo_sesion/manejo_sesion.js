@@ -26,6 +26,10 @@ fetch('/session', { credentials: 'same-origin' })
         window.idSesion = usuario_id;
         window.rolSesion = rol;
 
+        // 🆕 NUEVO: También guardar en sessionStorage para compatibilidad
+        sessionStorage.setItem("usuarioId", usuario_id);
+        sessionStorage.setItem("rolUsuario", rol);
+
         // También guardar en localStorage como respaldo
         const datosCliente = {
             idUsuarios: usuario_id,
@@ -35,6 +39,7 @@ fetch('/session', { credentials: 'same-origin' })
         localStorage.setItem("cliente", JSON.stringify(datosCliente));
 
         console.log("✅ ID de sesión disponible globalmente:", window.idSesion);
+        console.log("✅ ID de sesión guardado en sessionStorage:", sessionStorage.getItem("usuarioId"));
 
         // Disparar evento personalizado para notificar que la sesión está lista
         window.dispatchEvent(new CustomEvent('sesionCargada', {
@@ -55,11 +60,6 @@ fetch('/session', { credentials: 'same-origin' })
    CERRAR SESIÓN
    Limpia datos locales y cierra la sesión
    ============================================ */
-/* ============================================
-   CERRAR SESIÓN
-   Limpia datos locales y cierra la sesión
-   ============================================ */
-
 const btnCerrarSesion = document.getElementById("cerrar_sesion");
 if (btnCerrarSesion) {
     btnCerrarSesion.addEventListener("click", function(e) {

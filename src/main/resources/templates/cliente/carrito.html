@@ -122,7 +122,7 @@
             <p>Tu pedido ha sido procesado correctamente.</p>
             <p>Recibirás una confirmación por correo electrónico pronto.</p>
             <a th:href="@{/historial_pedidos}" class="boton-principal">📋 Ver historial de pedidos</a>
-            <a th:href="@{/inventario}" class="boton-secundario">Realizar nueva compra</a>
+            <a id="nueva-compra" th:href="@{/inventario}" class="boton-secundario">Realizar nueva compra</a>
         </div>
     </div>
 </div>
@@ -211,10 +211,10 @@
 
 <script>
     // PRODUCTOS DE PRUEBA - Lista ampliada para testing
-    let carrito = [
+    /*let carrito = [
         { id: 1, nombre: "Camiseta Básica Negra", precio: 25.99, cantidad: 2 },
         { id: 2, nombre: "Pantalón Jeans Clásico", precio: 45.50, cantidad: 1 },
-    ];
+    ];*/
 
     let metodoPagoSeleccionado = null;
 
@@ -473,7 +473,7 @@
         document.getElementById('continuar-pedido').addEventListener('click', mostrarFormularioPedido);
         document.getElementById('volver-carrito').addEventListener('click', volverAlCarrito);
         document.getElementById('confirmar-pedido').addEventListener('click', confirmarPedido);
-        document.getElementById('ver-historial').addEventListener('click', function() {
+        document.getElementById('vista-carrito').addEventListener('click', function() {
             alert('Aquí se mostraría el historial de pedidos');
         });
         document.getElementById('nueva-compra').addEventListener('click', function() {
