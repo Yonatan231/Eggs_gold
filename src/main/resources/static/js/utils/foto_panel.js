@@ -1,10 +1,3 @@
-
-
-/* ============================================
-   GESTIÓN DE FOTO DE PERFIL - FUNCIÓN REUTILIZABLE
-   Este archivo contiene la función para manejar
-   la foto de perfil del usuario
-   ============================================ */
 const usuarioId = window.idSesion || sessionStorage.getItem("usuarioId") ;
 
 
