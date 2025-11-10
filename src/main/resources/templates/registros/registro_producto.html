@@ -23,8 +23,11 @@
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
-            <div class="avatar-contenedor">
+            <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">AD</span>
+                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+
+                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
             </div>
             <h2>Panel de Administración</h2>
         </li>
@@ -50,11 +53,6 @@
             <h1 class="titulo2"><i class="fas fa-cart-plus"></i> Agregar nuevo producto</h1>
         </div>
     </header>
-
-
-
-
-
 
     <!-- Mensajes -->
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
@@ -119,6 +117,7 @@
 </script>
 
 <script th:src="@{js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/foto_panel.js}"></script>
 
 </body>
 </html>

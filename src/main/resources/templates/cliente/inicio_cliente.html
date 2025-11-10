@@ -45,9 +45,8 @@
                     </a>
                 </div>
 
-                <!-- PERFIL (solo visible si el usuario está logueado) -->
-                <div class="perfil-contenedor"
-                     th:if="${cliente != null}">
+                <!-- PERFIL (siempre visible porque el usuario está logueado) -->
+                <div class="perfil-contenedor">
                     <!-- Círculo con iniciales del cliente -->
                     <div class="perfil-circulo"
                          th:text="${#strings.substring(cliente.nombre, 0, 1).toUpperCase()} + ${#strings.substring(cliente.apellido, 0, 1).toUpperCase()}">
@@ -64,14 +63,8 @@
                     <div class="perfil-menu" id="perfil-menu">
                         <a th:href="@{/mi_perfil}">Mi Perfil</a>
                         <a th:href="@{/historial_pedidos}">Mis Pedidos</a>
-                        <li><a href="/logout" id="cerrar_sesion" >Cerrar Sesión</a></li>
+                        <li><a href="/logout" id="cerrar_sesion">Cerrar Sesión</a></li>
                     </div>
-                </div>
-
-                <!-- SI NO ESTÁ LOGUEADO (mostrar enlaces de registro e inicio de sesión) -->
-                <div class="login-registro-links" th:if="${cliente == null}">
-                    <a th:href="@{/registro}" class="nav-link">REGISTRARSE</a>
-                    <a th:href="@{/login}" class="nav-link">INICIAR SESIÓN</a>
                 </div>
             </div>
         </div>

@@ -32,7 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     // RUTA DONDE SE GUARDARÁN LAS FOTOS DE PERFIL (FUERA DEL PROYECTO)
     // Esta carpeta se crea automáticamente si no existe
-    private static final String DIRECTORIO_UPLOADS = "C:/eggs-gold-uploads/fotos";
+    private static final String DIRECTORIO_UPLOADS = "C:/eggs_gold_uploads/perfil";
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -143,7 +143,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         // 5. CREAR la ruta relativa que se guardará en la base de datos
         // Esta ruta es la que usará el navegador para cargar la imagen
-        String rutaRelativa = "/uploads/fotos/" + nombreArchivo;
+        String rutaRelativa = "/uploads/perfil/" + nombreArchivo;
 
         // 6. ACTUALIZAR la base de datos con la nueva ruta
         Usuario usuario = usuarioRepository.findById(usuarioId)

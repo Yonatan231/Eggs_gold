@@ -25,8 +25,11 @@
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
-            <div class="avatar-contenedor">
+            <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">AD</span>
+                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                
+                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
             </div>
             <h2>Panel de Administración</h2>
         </li>
@@ -107,5 +110,6 @@
 <!-- Scripts -->
 <script th:src="@{/js/utils/manejo_sesion.js}" defer></script>
 <script th:src="@{/js/administrador/correo_admin.js}" defer></script>
+<script th:src="@{/js/utils/foto_panel.js}"></script>
 </body>
 </html>

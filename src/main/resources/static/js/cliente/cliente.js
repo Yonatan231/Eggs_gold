@@ -131,7 +131,7 @@ function mostrarProductos(productos) {
     productos.forEach(producto => {
         const productoHTML = `
             <div>
-                <img src="/imagenes/${producto.imagen}" 
+                <img src="/uploads/productos/${producto.imagen.trim()}"  
                      class="producto1" 
                      alt="${producto.nombre}" 
                      onerror="this.style.display='none'">
@@ -191,7 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// ========== AGREGAR PRODUCTO AL CARRITO ==========
 // ========== AGREGAR PRODUCTO AL CARRITO ==========
 function agregarAlCarrito(idProducto, precioProducto, cantidad) {
     // Verifica que tengamos el ID del usuario

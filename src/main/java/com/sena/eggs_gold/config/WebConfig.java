@@ -10,19 +10,16 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        // CONFIGURACIÓN 1: Carpeta de UPLOADS (fotos de perfil)
-        // ==================================================
-        // Cuando el navegador pide: http://localhost:8080/uploads/fotos/perfil_123.jpg
-        // Spring Boot busca en: C:/eggs-gold-uploads/fotos/perfil_123.jpg
-        registry.addResourceHandler("/uploads/fotos/**")  // URL que escribirá el navegador
-                .addResourceLocations("file:C:/eggs-gold-uploads/fotos/");  // Carpeta real en tu PC
+        // carpeta para las fotos de perfil
+        registry.addResourceHandler("/uploads/perfil/**")
+                .addResourceLocations("file:C:/eggs_gold_uploads/perfil/");
+
+        // carpeta para las fotos de los productos
+        registry.addResourceHandler("/uploads/productos/**")
+                .addResourceLocations("file:C:/eggs_gold_uploads/productos/");
 
 
-        // CONFIGURACIÓN 2: Imágenes estáticas del proyecto (logos, productos, etc.)
-        // =========================================================================
-        // Esta configuración mantiene funcionando las imágenes que ya tienes
-        // Cuando el navegador pide: http://localhost:8080/imagenes/logo.jpg
-        // Spring Boot busca en: src/main/resources/static/imagenes/logo.jpg
+        // configuracion para mantener las imagenes por defecto (logo, inicio...)
         registry.addResourceHandler("/imagenes/**")
                 .addResourceLocations("classpath:/static/imagenes/");
 

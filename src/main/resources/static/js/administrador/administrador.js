@@ -177,7 +177,7 @@ function cargarProductos() {
                 // Crear celda con imagen del producto
                 const imagen = document.createElement("td");
                 const imgTag = document.createElement("img");
-                imgTag.src = `imagenes/${producto.imagen.trim()}`;
+                imgTag.src = `/uploads/productos/${producto.imagen.trim()}`;
                 imgTag.alt = producto.nombre;
                 imgTag.width = 50;
                 imgTag.height = 50;
@@ -988,7 +988,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     const tdImagen = document.createElement("td");
                     const img = document.createElement("img");
-                    img.src = `imagenes/${producto.imagen}`;
+                    img.src = `/uploads/productos/${producto.imagen}`;
                     img.width = 50;
                     img.alt = "Producto";
                     tdImagen.appendChild(img);

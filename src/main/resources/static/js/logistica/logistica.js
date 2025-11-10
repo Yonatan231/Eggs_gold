@@ -184,7 +184,7 @@ function cargarInventario() {
                             <td>${producto.estado}</td>
                             <td>${producto.cantidadDisponible}</td>
                             <td>${producto.ubicacion}</td>
-                            <td><img src="imagenes/${producto.imagen}" width="50" alt="${producto.nombre}"></td>
+                            <td><img src="/uploads/productos/${producto.imagen}" width="50" alt="${producto.nombre}"></td>
                             <td>${producto.fechaCaducidad || ''}</td>
                             <td>${producto.fechaActualizacion}</td>
                             <td><button class="btn-actualizar" onclick="actualizarProducto(${producto.idInventario})">Actualizar</button></td>

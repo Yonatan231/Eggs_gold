@@ -95,10 +95,10 @@ function renderizarProductos(lista) {
         // Construimos el HTML de la tarjeta
         card.innerHTML = `
             <div class="product-image-container">
-                <img src="imagenes/${producto.imagen.trim()}" 
+                <img src="/uploads/productos/${producto.imagen.trim()}" 
                      alt="${producto.nombre}" 
                      class="product-image"
-                     onerror="this.src='imagenes/default-product.jpg'">
+                     onerror="this.src='/imagenes/default-product.jpg'">
                 
                 <!-- Badge de estado del producto (ACTIVO/INACTIVO) -->
                 <div class="product-badge ${producto.estado === 'INACTIVO' ? 'badge-inactive' : 'badge-active'}">
