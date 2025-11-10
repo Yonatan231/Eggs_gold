@@ -40,9 +40,6 @@ dependencies {
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
     implementation 'org.mindrot:jbcrypt:0.4'
 
-
-
-
 }
 
 

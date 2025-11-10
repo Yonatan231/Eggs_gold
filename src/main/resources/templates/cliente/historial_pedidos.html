@@ -126,7 +126,10 @@
 </footer>
 
 <script th:src="@{js/cliente/historial_pedidos.js}"></script>
-<script th:src="@{js/utils/manejo_sesion.js}"></script>
+
+<script th:src="@{/js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script> validarRolPagina('CLIENTE'); </script>
 
 </body>
 </html>

@@ -378,10 +378,12 @@
     </div>
 </div>
 
-<!-- SCRIPTS DE JAVASCRIPT -->
-<script th:src="@{js/utils/manejo_sesion.js}"></script>
 <script th:src="@{js/logistica/logistica.js}"></script>
 <script th:src="@{js/utils/foto_panel.js}"></script>
+
+<script th:src="@{/js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script> validarRolPagina('LOGISTICA'); </script>
 
 
 

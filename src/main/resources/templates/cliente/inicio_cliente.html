@@ -125,8 +125,11 @@
 </footer>
 
 <!-- Enlace al archivo JavaScript con la funcionalidad -->
-<script th:src="@{js/utils/manejo_sesion.js}"></script>
-<script src="js/cliente/cliente.js" defer></script>
+<script th:src="@{js/cliente/cliente.js}"></script>
+
+<script th:src="@{/js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script> validarRolPagina('CLIENTE'); </script>
 
 </body>
 </html>

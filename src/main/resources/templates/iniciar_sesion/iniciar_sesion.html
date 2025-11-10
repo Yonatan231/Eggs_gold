@@ -153,5 +153,9 @@
 
 <!-- Script JavaScript para el menú móvil -->
 <script th:src="@{/js/inicio/inicio.js}"></script>
+<script>
+    // Limpiar indicador de sesión cerrada al entrar al login
+    sessionStorage.removeItem('sesion_cerrada');
+</script>
 </body>
 </html>
