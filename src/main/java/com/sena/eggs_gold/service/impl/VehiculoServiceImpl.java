@@ -48,8 +48,7 @@ public class VehiculoServiceImpl implements VehiculoService {
         // Campos fijos
         vehiculo.setEstado(Estado.ACTIVO);
 
-        // Relación con el conductor
-        vehiculo.setConductores(List.of(conductor));
+        vehiculo.setUsuario(conductor);
 
         // Guardar en BD
         return vehiculoRepository.save(vehiculo);

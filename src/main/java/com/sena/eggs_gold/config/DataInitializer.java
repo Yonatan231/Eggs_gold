@@ -24,7 +24,6 @@ public class DataInitializer {
 
                     Admin admin = new Admin();
                     admin.setRol(rolAdmin);
-                    admin.setVehiculo(null);
                     admin.setNombre("Admin");
                     admin.setApellido("Principal");
                     admin.setDireccionUsuario("Oficina central");
