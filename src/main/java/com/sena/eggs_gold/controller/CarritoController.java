@@ -1,74 +1,181 @@
 package com.sena.eggs_gold.controller;
 
-import com.sena.eggs_gold.dto.CarritoTemporalDTO;
-import com.sena.eggs_gold.dto.ItemCarritoRequestDTO;
+import com.sena.eggs_gold.dto.CarritoDTO;
+import com.sena.eggs_gold.model.entity.Carrito;
 import com.sena.eggs_gold.service.CarritoService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/api/carrito")
+@Controller
+@RequestMapping("/carrito")
 public class CarritoController {
 
-    @Autowired
-    private CarritoService carritoService;
+    private final CarritoService carritoService;
 
-    @PostMapping("/agregar")
-    public ResponseEntity<String> agregarItem(
-            @ModelAttribute ItemCarritoRequestDTO request,
+    public CarritoController(CarritoService carritoService) {
+        this.carritoService = carritoService;
+    }
+
+    // Mostrar vista del carrito
+    @GetMapping
+    public String mostrarCarrito() {
+        return "cliente/carrito";
+    }
+
+    // Agregar producto al carrito
+    @PostMapping("/api/agregar")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> agregarAlCarrito(
+            @RequestBody Map<String, Object> datos,
             HttpSession session) {
+
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            // Recuperar usuario desde la sesión
-            Integer usuarioId = (Integer) session.getAttribute("usuario_id");
-            if (usuarioId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("⚠️ Usuario no autenticado");
+            Integer idUsuario = (Integer) session.getAttribute("usuario_id");
+
+            if (idUsuario == null) {
+                response.put("success", false);
+                response.put("message", "❌ Debes iniciar sesión para agregar productos al carrito");
+                return ResponseEntity.badRequest().body(response);
             }
 
-            request.setUsuario(usuarioId); // 👈 forzamos el id de sesión
+            Integer idProducto = Integer.parseInt(datos.get("idProducto").toString());
+            Integer cantidad = Integer.parseInt(datos.get("cantidad").toString());
 
-            String mensaje = carritoService.AgregarOactualizarItem(request);
-            return ResponseEntity.ok(mensaje);
+            if (cantidad <= 0) {
+                response.put("success", false);
+                response.put("message", "❌ La cantidad debe ser mayor a 0");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            Carrito carrito = carritoService.agregarAlCarrito(idUsuario, idProducto, cantidad);
+
+            response.put("success", true);
+            response.put("message", "✅ Producto agregado al carrito");
+            response.put("cantidadCarrito", carritoService.contarProductosEnCarrito(idUsuario));
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("❌ Error: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "❌ Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
-
-    @GetMapping("/temporal")
-    public ResponseEntity<?> obtenerCarritoTemporal(HttpSession session) {
-        Integer usuarioId = (Integer) session.getAttribute("usuario_id");
-        if (usuarioId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Usuario no autenticado"));
-        }
-
-        List<CarritoTemporalDTO> carrito = carritoService.obtenerCarritoPorUsuario(usuarioId);
-        return ResponseEntity.ok(carrito);
-    }
-
-
-    @DeleteMapping("/eliminar")
-    public ResponseEntity<String> eliminarItem(@RequestParam Integer id) {
-        if (id == null || id <= 0) {
-            return ResponseEntity.badRequest().body("❌ ID no válido.");
-        }
+    // Obtener productos del carrito
+    @GetMapping("/api/obtener")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerCarrito(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
 
         try {
-            carritoService.eliminarItemPorId(id);
-            return ResponseEntity.ok("✅ Producto eliminado del carrito.");
+            Integer idUsuario = (Integer) session.getAttribute("usuario_id");
+
+            if (idUsuario == null) {
+                response.put("success", false);
+                response.put("message", "❌ Debes iniciar sesión");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            List<CarritoDTO> productos = carritoService.obtenerCarritoUsuario(idUsuario);
+            Float total = carritoService.calcularTotal(idUsuario);
+
+            response.put("success", true);
+            response.put("productos", productos);
+            response.put("total", total);
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("❌ Error al eliminar: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "❌ Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
+    // Actualizar cantidad de un producto
+    @PutMapping("/api/actualizar/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> actualizarCantidad(
+            @PathVariable Integer id,
+            @RequestBody Map<String, Object> datos) {
 
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Integer nuevaCantidad = Integer.parseInt(datos.get("cantidad").toString());
+            boolean actualizado = carritoService.actualizarCantidad(id, nuevaCantidad);
+
+            if (actualizado) {
+                response.put("success", true);
+                response.put("message", "✅ Cantidad actualizada");
+            } else {
+                response.put("success", false);
+                response.put("message", "❌ Error al actualizar");
+            }
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "❌ Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    // Eliminar producto del carrito
+    @DeleteMapping("/api/eliminar/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> eliminarDelCarrito(@PathVariable Integer id) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            boolean eliminado = carritoService.eliminarDelCarrito(id);
+
+            if (eliminado) {
+                response.put("success", true);
+                response.put("message", "✅ Producto eliminado del carrito");
+            } else {
+                response.put("success", false);
+                response.put("message", "❌ Error al eliminar");
+            }
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "❌ Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    // Obtener contador del carrito
+    @GetMapping("/api/contador")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerContador(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Integer idUsuario = (Integer) session.getAttribute("usuario_id");
+
+            if (idUsuario == null) {
+                response.put("cantidad", 0);
+                return ResponseEntity.ok(response);
+            }
+
+            Integer cantidad = carritoService.contarProductosEnCarrito(idUsuario);
+            response.put("cantidad", cantidad);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("cantidad", 0);
+            return ResponseEntity.ok(response);
+        }
+    }
 }
-
-

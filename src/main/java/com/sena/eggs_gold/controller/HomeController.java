@@ -39,20 +39,11 @@ import org.springframework.ui.Model;
 
 
 
-        @GetMapping("/logistica")
+        @GetMapping("/logistica_inicio")
         public String logistica(){
-            return "logistica/logistica";
+            return "logistica/logistica_inicio";
         }
 
-        @GetMapping("/carrito")
-        public String mostrarHistorial() {
-            return "cliente/carrito";
-        }
-
-        @GetMapping("/inventariol")
-        public String mostrarProductos() {
-            return "logistica/inventario";
-        }
 
         @GetMapping("Registro_conductor")
         public String registroConductor() {

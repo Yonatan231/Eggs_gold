@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Enlace al archivo CSS personalizado -->
-    <link rel="stylesheet" th:href="@{css/cliente/cliente.css}">
-    <link rel="stylesheet" th:href="@{css/inicio/pie_pagina.css}">
-    <link rel="stylesheet" th:href="@{css/inicio/inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/cliente/cliente.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
     <title>EGGS GOLD - Inicio Compra</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
@@ -14,7 +13,6 @@
 <body>
 <!-- ========== ENCABEZADO (HEADER) ========== -->
 <header>
-    <!-- Contenedor principal del encabezado -->
     <div class="header-contenedor">
         <div class="marca">
             <div class="logo">
@@ -26,40 +24,31 @@
             </div>
         </div>
 
-        <!-- Contenedor de búsqueda y usuario -->
         <div class="busqueda-usuario">
-            <!-- Barra de búsqueda de productos -->
             <div class="barra-busqueda">
                 <input type="text" id="buscador-productos" placeholder="Buscar productos..." />
                 <button type="submit">🔍 Buscar</button>
             </div>
 
-            <!-- Contenedor para carrito y perfil -->
             <div class="carrito-perfil">
-                <!-- Carrito de compras con contador -->
                 <div class="carro7">
                     <a th:href="@{/carrito}">
                         <img th:src="@{/imagenes/inicio/carrito_compras.png}" width="20" height="20"/>
-                        <!-- Contador de productos en el carrito -->
                         <span id="contador-carrito">0</span>
                     </a>
                 </div>
 
-                <!-- PERFIL (siempre visible porque el usuario está logueado) -->
                 <div class="perfil-contenedor">
-                    <!-- Círculo con iniciales del cliente -->
                     <div class="perfil-circulo"
                          th:text="${#strings.substring(cliente.nombre, 0, 1).toUpperCase()} + ${#strings.substring(cliente.apellido, 0, 1).toUpperCase()}">
                         YA
                     </div>
 
-                    <!-- Nombre del cliente con flecha desplegable -->
                     <div class="perfil-nombre">
                         <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
                         <span class="flecha-abajo"></span>
                     </div>
 
-                    <!-- Menú desplegable del perfil -->
                     <div class="perfil-menu" id="perfil-menu">
                         <a th:href="@{/mi_perfil}">Mi Perfil</a>
                         <a th:href="@{/historial_pedidos}">Mis Pedidos</a>
@@ -73,9 +62,24 @@
 
 <!-- ========== CONTENIDO PRINCIPAL ========== -->
 <main>
-    <!-- Sección de productos en inventario -->
     <section class="seccion-productos">
         <h2 class="titulo-seccion">NUESTROS PRODUCTOS</h2>
+
+        <!-- ✅ Mensaje de carga -->
+        <div id="mensaje-carga" style="text-align: center; padding: 40px;">
+            <p style="font-size: 1.2rem; color: #666;">⏳ Cargando productos...</p>
+        </div>
+
+        <!-- ✅ Mensaje de error (oculto por defecto) -->
+        <div id="mensaje-error" style="display: none; text-align: center; padding: 40px;">
+            <p style="font-size: 1.2rem; color: #c62828;">❌ Error al cargar productos</p>
+        </div>
+
+        <!-- ✅ Mensaje sin productos (oculto por defecto) -->
+        <div id="mensaje-sin-productos" style="display: none; text-align: center; padding: 40px;">
+            <p style="font-size: 1.2rem; color: #666;">📦 No hay productos disponibles en este momento</p>
+        </div>
+
         <!-- Contenedor donde se cargarán los productos dinámicamente -->
         <div class="productos" id="productos-container">
             <!-- Los productos se cargarán aquí mediante JavaScript -->
@@ -86,19 +90,16 @@
 <!-- ========== PIE DE PÁGINA (FOOTER) ========== -->
 <footer>
     <div class="footer-container">
-        <!-- Logo del footer -->
         <div class="footer-logo">
             <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
         </div>
 
-        <!-- Sección de contacto -->
         <div class="footer-section">
             <h2>CONTÁCTANOS</h2>
             <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
             <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
         </div>
 
-        <!-- Sección de información del sitio -->
         <div class="footer-section">
             <h2>INFO SITIO</h2>
             <a href="#">Política de la Empresa</a>
@@ -106,7 +107,6 @@
             <a href="#">Socios</a>
         </div>
 
-        <!-- Sección de redes sociales -->
         <div class="footer-section">
             <h2>SÍGUENOS</h2>
             <div class="social-icons">
@@ -124,9 +124,8 @@
     </div>
 </footer>
 
-<!-- Enlace al archivo JavaScript con la funcionalidad -->
-<script th:src="@{js/cliente/cliente.js}"></script>
-
+<!-- ✅ SCRIPTS -->
+<script th:src="@{/js/cliente/productos_cliente.js}"></script>
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('CLIENTE'); </script>

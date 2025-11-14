@@ -1,9 +1,9 @@
 package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.ClientePedidosDTO;
-import com.sena.eggs_gold.dto.ConductorPedidosDTO;
+import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
-import com.sena.eggs_gold.model.enums.Estado;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
@@ -28,23 +28,27 @@ public class UsuarioController {
         this.usuarioRepository = usuarioRepository;
         this.usuarioService = usuarioService;
     }
+
     public void registrarUsuario(Usuario nuevoUsuario) {
         if (usuarioRepository.existsByNumDocumento(nuevoUsuario.getNumDocumento())) {
             throw new IllegalArgumentException("El documento ya está registrado.");
         }
         usuarioRepository.save(nuevoUsuario);
     }
+
     @GetMapping("/clientes/pedidos")
     @ResponseBody
     public List<ClientePedidosDTO> obtenerClientesConPedidos() {
         return usuarioService.obtenerClientesConPedidos();
     }
 
+    // ✅ CORREGIDO: Cambiado ConductorPedidosDTO por ConductorDTO
     @GetMapping("/conductores/pedidos-entregados")
     @ResponseBody
-    public List<ConductorPedidosDTO> obtenerConductoresConPedidosEntregados() {
+    public List<ConductorDTO> obtenerConductoresConPedidosEntregados() {
         return usuarioService.obtenerConductoresConPedidosEntregados();
     }
+
     @GetMapping("logistica/ver")
     @ResponseBody
     public List<LogisticaDTO> listarLogistica() {
@@ -57,7 +61,6 @@ public class UsuarioController {
                 .map(u -> ResponseEntity.ok().body("{\"success\":true}"))
                 .orElse(ResponseEntity.badRequest().body("{\"success\":false, \"error\":\"ID NO ENCONTRADO\"}"));
     }
-
 
     @GetMapping("/usuarios/activos")
     public List<Usuario> listarActivos() {
@@ -73,19 +76,19 @@ public class UsuarioController {
     @GetMapping("clientes/activos")
     @ResponseBody
     public List<Usuario> getClientesActivos(@RequestParam(defaultValue = "") String buscar) {
-        return usuarioService.buscarClientePorEstado(buscar, Estado.ACTIVO);
+        return usuarioService.buscarClientePorEstado(buscar, EstadoUsuario.ACTIVO);
     }
 
     @GetMapping("conductores/activos")
     @ResponseBody
     public List<Usuario> getConductoresActivos(@RequestParam(defaultValue = "") String buscar) {
-        return usuarioService.buscarConductorPorEstado(buscar, Estado.ACTIVO);
+        return usuarioService.buscarConductorPorEstado(buscar, EstadoUsuario.ACTIVO);
     }
 
     @GetMapping("logistica/activos")
     @ResponseBody
     public List<Usuario> getLogisticaActivos(@RequestParam(defaultValue = "") String buscar) {
-        return usuarioService.buscarLogisticaPorEstado(buscar, Estado.ACTIVO);
+        return usuarioService.buscarLogisticaPorEstado(buscar, EstadoUsuario.ACTIVO);
     }
 
     @PostMapping("/usuarios/{id}/foto")
@@ -105,7 +108,6 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuarios/{id}/foto")
-
     public ResponseEntity<?> obtenerFotoPerfil(@PathVariable Integer id) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
@@ -126,9 +128,4 @@ public class UsuarioController {
             return ResponseEntity.ok(Map.of("success", false, "iniciales", iniciales));
         }
     }
-
-
 }
-
-
-

@@ -1,23 +1,10 @@
 package com.sena.eggs_gold.model.enums;
 
-/**
- * Enum para estado del pedido
- */
 public enum EstadoPedido {
-    RECHAZADO("Rechazado"),
-    APROBADO("Aprobado"),
-    PENDIENTE("Pendiente"),
-    ENTREGADO("Entregado"),
-    EN_CAMINO("En_camino"),
-    ASIGNADO("Asignado");
-
-    private final String descripcion;
-
-    EstadoPedido(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
+    PENDIENTE,           // El pedido acaba de crearse
+    EN_ALISTAMIENTO,     // El pedido se está preparando
+    LISTO,               // El pedido está listo para enviar
+    ASIGNADO,            // Se asignó un conductor al pedido
+    EN_CAMINO,           // El conductor está llevando el pedido
+    ENTREGADO            // El pedido ya llegó al cliente
 }

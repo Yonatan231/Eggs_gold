@@ -12,25 +12,23 @@ import java.util.Map;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-
+    // ✅ CORREGIDO: Query sin CANTIDAD
     @Query(value = """
-    SELECT 
-        p.ID_PRODUCTOS AS id,
-        p.NOMBRE AS nombre,
-        p.PRECIO AS precio,
-        p.CATEGORIA AS categoria,
-        p.DESCRIPCION AS descripcion,
-        p.ESTADO AS estado,
-        p.IMAGEN AS imagen,
-        p.CANTIDAD AS cantidad
-    FROM productos p
-    WHERE p.CANTIDAD > 0
-      AND p.ESTADO = 'DISPONIBLE'
-      AND (
-            :buscar IS NULL 
-            OR :buscar = '' 
-            OR CONCAT(p.NOMBRE, ' ', p.CATEGORIA, ' ', p.DESCRIPCION, ' ', p.ESTADO) LIKE %:buscar%
-          )
+        SELECT 
+            p.ID_PRODUCTOS AS id,
+            p.NOMBRE AS nombre,
+            p.PRECIO AS precio,
+            p.CATEGORIA AS categoria,
+            p.DESCRIPCION AS descripcion,
+            p.ESTADO AS estado,
+            p.IMAGEN AS imagen
+        FROM productos p
+        WHERE p.ESTADO = 'DISPONIBLE'
+          AND (
+                :buscar IS NULL 
+                OR :buscar = '' 
+                OR CONCAT(p.NOMBRE, ' ', p.CATEGORIA, ' ', p.DESCRIPCION, ' ', p.ESTADO) LIKE %:buscar%
+              )
     """, nativeQuery = true)
     List<Map<String, Object>> buscarProductos(@Param("buscar") String buscar);
 }

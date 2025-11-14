@@ -2,10 +2,8 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.ProductoBusquedaDTO;
 import com.sena.eggs_gold.dto.ProductoDTO;
-import com.sena.eggs_gold.dto.ProductoDisponibleDTO;
 import com.sena.eggs_gold.model.entity.Producto;
 import com.sena.eggs_gold.model.enums.EstadoProducto;
-import com.sena.eggs_gold.repository.InventarioRepository;
 import com.sena.eggs_gold.repository.ProductoRepository;
 import com.sena.eggs_gold.service.ProductoService;
 import jakarta.persistence.EntityNotFoundException;
@@ -30,7 +28,6 @@ public class ProductoServiceImpl implements ProductoService {
 
     private final ProductoRepository productoRepository;
 
-    // Inyectamos la ruta base desde application.properties
     @Value("${app.upload.path}")
     private String uploadBasePath;
 
@@ -45,10 +42,9 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setDescripcion(productoDTO.getDescripcion());
         producto.setPrecio(productoDTO.getPrecio());
         producto.setCategoria(productoDTO.getCategoria());
-        producto.setCantidad(productoDTO.getCantidad());
 
         if (productoDTO.getEstado() == null) {
-            producto.setEstado(EstadoProducto.DISPONIBLE); // valor por defecto
+            producto.setEstado(EstadoProducto.DISPONIBLE);
         } else {
             producto.setEstado(productoDTO.getEstado());
         }
@@ -62,39 +58,23 @@ public class ProductoServiceImpl implements ProductoService {
         productoRepository.save(producto);
     }
 
-    /**
-     * Método auxiliar para guardar la imagen del producto en el disco
-     * @param archivo MultipartFile con la imagen
-     * @return String con el nombre único generado para el archivo
-     * @throws IOException si hay error al guardar
-     */
     private String guardarImagenProducto(MultipartFile archivo) throws IOException {
-        // Crear la ruta completa a la carpeta de productos
         Path directorioProductos = Paths.get(uploadBasePath + "productos");
 
-        // Crear el directorio si no existe
         if (!Files.exists(directorioProductos)) {
             Files.createDirectories(directorioProductos);
         }
 
-        // Obtener la extensión del archivo original
         String nombreOriginal = archivo.getOriginalFilename();
         String extension = "";
         if (nombreOriginal != null && nombreOriginal.contains(".")) {
             extension = nombreOriginal.substring(nombreOriginal.lastIndexOf("."));
         }
 
-        // Generar un nombre único para evitar conflictos
-        // Formato: producto_UUID_timestamp.extension
         String nombreUnico = "producto_" + UUID.randomUUID().toString() + "_" + System.currentTimeMillis() + extension;
-
-        // Crear la ruta completa del archivo
         Path rutaArchivo = directorioProductos.resolve(nombreUnico);
-
-        // Copiar el archivo al disco
         Files.copy(archivo.getInputStream(), rutaArchivo, StandardCopyOption.REPLACE_EXISTING);
 
-        // Retornar solo el nombre del archivo (no la ruta completa)
         return nombreUnico;
     }
 
@@ -107,7 +87,6 @@ public class ProductoServiceImpl implements ProductoService {
                         prod.getNombre(),
                         prod.getPrecio(),
                         prod.getCategoria(),
-                        prod.getCantidad(),
                         prod.getDescripcion(),
                         prod.getImagen(),
                         prod.getEstado()
@@ -120,13 +99,12 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con id " + id));
 
-        // Actualizar campos
+        // Actualizar campos (sin cantidad)
         producto.setNombre(datosProducto.getNombre());
         producto.setPrecio(datosProducto.getPrecio());
         producto.setCategoria(datosProducto.getCategoria());
         producto.setDescripcion(datosProducto.getDescripcion());
         producto.setEstado(datosProducto.getEstado());
-        producto.setCantidad(datosProducto.getCantidad());
 
         return productoRepository.save(producto);
     }
@@ -158,7 +136,6 @@ public class ProductoServiceImpl implements ProductoService {
             dto.setDescripcion((String) row.get("descripcion"));
             dto.setEstado((String) row.get("estado"));
             dto.setImagen((String) row.get("imagen"));
-            dto.setCantidadDisponible((Integer) row.get("cantidadDisponible"));
             resultado.add(dto);
         }
 

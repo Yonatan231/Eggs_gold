@@ -3,11 +3,14 @@ package com.sena.eggs_gold.service.impl;
 import com.sena.eggs_gold.dto.ClienteDTO;
 import com.sena.eggs_gold.model.entity.Cliente;
 import com.sena.eggs_gold.model.entity.Rol;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
+import com.sena.eggs_gold.model.enums.TipoDocumento;
 import com.sena.eggs_gold.repository.ClienteRepository;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.service.ClienteService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -31,16 +34,24 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setNumDocumento(dto.getNumDocumento());
         cliente.setTelefono(dto.getTelefono());
         cliente.setCorreo(dto.getCorreo());
-        cliente.setTelefono(dto.getTelefono());
         cliente.setPassword(dto.getPassword());
 
+        // ✅ CAMPO OBLIGATORIO: Asignar ESTADO como ACTIVO
+        cliente.setEstado(EstadoUsuario.ACTIVO);
+
+        // ✅ CAMPO OBLIGATORIO: Asignar TIPO_DOCUMENTO (por defecto CEDULA_CIUDADANIA)
+        cliente.setTipoDocumento(TipoDocumento.CC);
+
+        // ✅ CAMPO OBLIGATORIO: Asignar FECHA_REGISTRO con la fecha actual
+        cliente.setFechaRegistro(LocalDate.now());
+
+        // ✅ Asignar el ROL de Cliente (ID = 4)
         Rol rol = rolRepository.findById(4)
                 .orElseThrow(() -> new RuntimeException("Rol por defecto (ID 4) no encontrado"));
         cliente.setRol(rol);
 
-
+        // ✅ Guardar en la base de datos
         Cliente guardado = clienteRepository.save(cliente);
-
     }
 
     public ClienteDTO login(String numDocumento, String password){
@@ -59,8 +70,5 @@ public class ClienteServiceImpl implements ClienteService {
                     return dto;
                 })
                 .orElse(null);
-
     }
-
-
 }

@@ -3,7 +3,7 @@ package com.sena.eggs_gold.service.impl;
 import com.sena.eggs_gold.dto.VehiculoDTO;
 import com.sena.eggs_gold.model.entity.Conductor;
 import com.sena.eggs_gold.model.entity.Vehiculo;
-import com.sena.eggs_gold.model.enums.Estado;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.repository.ConductorRepository;
 import com.sena.eggs_gold.repository.VehiculoRepository;
 import com.sena.eggs_gold.service.VehiculoService;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class VehiculoServiceImpl implements VehiculoService {
@@ -46,7 +45,7 @@ public class VehiculoServiceImpl implements VehiculoService {
         }
 
         // Campos fijos
-        vehiculo.setEstado(Estado.ACTIVO);
+        vehiculo.setEstado(EstadoUsuario.ACTIVO);
 
         vehiculo.setUsuario(conductor);
 

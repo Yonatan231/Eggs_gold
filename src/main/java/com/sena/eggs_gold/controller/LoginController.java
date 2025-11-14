@@ -10,7 +10,6 @@ import com.sena.eggs_gold.service.AdminService;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.LogisticaService;
 import com.sena.eggs_gold.service.ConductorService;
-import com.sena.eggs_gold.service.impl.LogisticaServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +57,7 @@ public class LoginController {
             session.setAttribute("rol", "CLIENTE");
             session.setAttribute("cliente", cliente);
             model.addAttribute("usuario", cliente);
-            return "redirect:/inventario";
+            return "redirect:/inicio_cliente";
         }
 
         // Admin - necesitas tener esta variable declarada
@@ -76,7 +75,7 @@ public class LoginController {
             session.setAttribute("usuario_id", Logistica.getIdUsuarios());
             session.setAttribute("rol", "LOGISTICA");
             model.addAttribute("usuario", Logistica);
-            return "redirect:/logistica";
+            return "redirect:/logistica_inicio";
         }
 
 
@@ -113,24 +112,12 @@ public class LoginController {
         return response;
     }
 
-
-    // Logout (equivalente a session_destroy() en PHP)
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
     }
 
-    @GetMapping("/tienda")
-    public String mostrarTienda(HttpSession session, Model model) {
-        Cliente cliente = (Cliente) session.getAttribute("cliente");
-
-        if (cliente != null) {
-            model.addAttribute("cliente", cliente);
-        }
-
-        return "carrito"; // el nombre del HTML (src/main/resources/templates/tienda.html)
-    }
 
 }
 

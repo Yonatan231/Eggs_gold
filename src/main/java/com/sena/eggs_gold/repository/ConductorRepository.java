@@ -20,7 +20,7 @@ public interface ConductorRepository extends JpaRepository<Conductor, Integer> {
         u.direccionUsuario, u.telefono, COUNT(p))
     FROM Usuario u
     JOIN u.rol r
-    LEFT JOIN Pedido p ON p.usuario.idUsuarios = u.idUsuarios AND p.estado = 'ENTREGADO'
+    LEFT JOIN Pedido p ON p.conductor.idUsuarios = u.idUsuarios AND p.estado = 'ENTREGADO'
     WHERE r.idRoles = 3 AND u.estado = 'ACTIVO'
     GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono
     """)

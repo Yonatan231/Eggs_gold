@@ -133,21 +133,18 @@ function actualizarEstado(idPedido, nuevoEstado) {
         });
 }
 
-
 /* ============================================
    CARGAR PRODUCTOS EN LA TABLA
-   Muestra todos los productos del inventario
+   Muestra todos los productos
    ============================================ */
 
 function cargarProductos() {
-    // Obtener productos desde el servidor
-    fetch("http://localhost:8080/inventario/producto")
+    fetch("/api/productos")
         .then(response => response.json())
         .then(productos => {
             const tabla = document.querySelector("#tabla-productos tbody");
-            tabla.innerHTML = ""; // Limpiar tabla
+            tabla.innerHTML = "";
 
-            // Recorrer cada producto
             productos.forEach(producto => {
                 const fila = document.createElement("tr");
 
@@ -159,14 +156,10 @@ function cargarProductos() {
                 nombre.textContent = producto.nombre;
 
                 const precio = document.createElement("td");
-                // Formatear precio con separador de miles
                 precio.textContent = `$${parseInt(producto.precio).toLocaleString("es-CO")}`;
 
                 const categoria = document.createElement("td");
                 categoria.textContent = producto.categoria;
-
-                const cantidad = document.createElement("td");
-                cantidad.textContent = producto.cantidad;
 
                 const descripcion = document.createElement("td");
                 descripcion.textContent = producto.descripcion;
@@ -177,10 +170,20 @@ function cargarProductos() {
                 // Crear celda con imagen del producto
                 const imagen = document.createElement("td");
                 const imgTag = document.createElement("img");
-                imgTag.src = `/uploads/productos/${producto.imagen.trim()}`;
-                imgTag.alt = producto.nombre;
-                imgTag.width = 50;
-                imgTag.height = 50;
+
+                // ✅ CORREGIDO: Validar que la imagen existe antes de mostrarla
+                if (producto.imagen && producto.imagen.trim() !== '') {
+                    imgTag.src = `/uploads/productos/${producto.imagen.trim()}`;
+                    imgTag.alt = producto.nombre;
+                    imgTag.width = 50;
+                    imgTag.height = 50;
+                } else {
+                    // Imagen por defecto si no hay imagen
+                    imgTag.src = '/uploads/productos/default.png';
+                    imgTag.alt = 'Sin imagen';
+                    imgTag.width = 50;
+                    imgTag.height = 50;
+                }
                 imagen.appendChild(imgTag);
 
                 // Botón para actualizar producto
@@ -191,25 +194,22 @@ function cargarProductos() {
                 btnActualizar.onclick = () => abrirModalActualizar(producto);
                 tdActualizar.appendChild(btnActualizar);
 
-                // Botón para eliminar producto
+                // Botón para descontinuar producto
                 const tdEliminar = document.createElement("td");
                 const btnEliminar = document.createElement("button");
-                btnEliminar.textContent = "🗑️ Eliminar";
+                btnEliminar.textContent = "🗑️ Descontinuar";
                 btnEliminar.className = "btn-accion btn-danger";
                 btnEliminar.onclick = () => eliminarProducto(producto.idProducto);
                 tdEliminar.appendChild(btnEliminar);
 
-                // Agregar todas las celdas a la fila
                 fila.appendChild(id);
                 fila.appendChild(nombre);
                 fila.appendChild(precio);
                 fila.appendChild(categoria);
-                fila.appendChild(cantidad);
                 fila.appendChild(descripcion);
                 fila.appendChild(estado);
                 fila.appendChild(imagen);
                 fila.appendChild(tdActualizar);
-                fila.appendChild(tdEliminar);
 
                 // Agregar fila completa a la tabla
                 tabla.appendChild(fila);
@@ -222,9 +222,7 @@ function cargarProductos() {
 }
 
 // Ejecutar al cargar la página
-cargarProductos();
-
-
+document.addEventListener("DOMContentLoaded", cargarProductos);
 /* ============================================
    CARGAR CLIENTES EN LA TABLA
    Muestra todos los usuarios con rol CLIENTE
@@ -468,7 +466,6 @@ function abrirModalActualizar(producto) {
     document.getElementById("update-nombre").value = producto.nombre;
     document.getElementById("update-precio").value = producto.precio;
     document.getElementById("update-categoria").value = producto.categoria;
-    document.getElementById("update-cantidad").value = producto.cantidad;
     document.getElementById("update-descripcion").value = producto.descripcion;
     document.getElementById("update-estado").value = producto.estado;
 
@@ -483,24 +480,23 @@ function cerrarModal() {
 
 // Enviar formulario de actualización de producto
 document.getElementById("formActualizarProducto").addEventListener("submit", function(e) {
-    e.preventDefault(); // Evitar que recargue la página
+    e.preventDefault();
 
     const id = document.getElementById("update-id").value;
 
-    // Construir objeto con los datos del producto
+    // Construir objeto con los datos del producto (sin cantidad)
     const producto = {
         nombre: document.getElementById("update-nombre").value,
         precio: parseFloat(document.getElementById("update-precio").value),
         categoria: document.getElementById("update-categoria").value,
-        cantidad: document.getElementById("update-cantidad").value,
         descripcion: document.getElementById("update-descripcion").value,
         estado: document.getElementById("update-estado").value
     };
 
     console.log("📦 Enviando producto:", producto);
 
-    // Enviar petición PUT al servidor
-    fetch("http://localhost:8080/actualizar/" + id, {
+    // ✅ CORREGIDO: Endpoint actualizado
+    fetch(`/api/productos/actualizar/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -512,7 +508,7 @@ document.getElementById("formActualizarProducto").addEventListener("submit", fun
             if (data.success) {
                 alert("✅ Producto actualizado correctamente.");
                 cerrarModal();
-                cargarProductos(); // Recargar tabla
+                cargarProductos();
             } else {
                 alert("❌ Error al actualizar: " + (data.error || "desconocido"));
             }
@@ -529,19 +525,19 @@ document.getElementById("formActualizarProducto").addEventListener("submit", fun
    ============================================ */
 
 function eliminarProducto(id) {
-    // Confirmar antes de eliminar
-    if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-        fetch(`/descontinuar?id=${id}`, {
+    if (confirm("¿Estás seguro de que quieres marcar este producto como DESCONTINUADO?")) {
+        // ✅ CORREGIDO: Endpoint actualizado
+        fetch(`/api/productos/descontinuar?id=${id}`, {
             method: "PUT"
         })
             .then(response => response.text())
             .then(data => {
                 alert(data);
-                cargarProductos(); // Recargar tabla
+                cargarProductos();
             })
             .catch(error => {
-                console.error("❌ Error al eliminar el producto:", error);
-                alert("❌ No se pudo eliminar el producto.");
+                console.error("❌ Error al descontinuar el producto:", error);
+                alert("❌ No se pudo descontinuar el producto.");
             });
     }
 }
@@ -956,7 +952,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (data.length === 0) {
                     tbody.innerHTML = `
                     <tr>
-                        <td colspan="10" style="text-align: center;">❌ No se encontraron resultados</td>
+                        <td colspan="8" style="text-align: center;">❌ No se encontraron resultados</td>
                     </tr>`;
                     return;
                 }
@@ -964,7 +960,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 data.forEach(producto => {
                     const fila = document.createElement("tr");
 
-                    // Crear todas las celdas
+                    // Crear todas las celdas (sin cantidad)
                     const tdId = document.createElement("td");
                     tdId.textContent = producto.idProducto;
 
@@ -972,13 +968,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     tdNombre.textContent = producto.nombre;
 
                     const tdPrecio = document.createElement("td");
-                    tdPrecio.textContent = `${parseInt(producto.precio).toLocaleString("es-CO")}`;
+                    tdPrecio.textContent = `$${parseInt(producto.precio).toLocaleString("es-CO")}`;
 
                     const tdCategoria = document.createElement("td");
                     tdCategoria.textContent = producto.categoria;
-
-                    const tdCantidad = document.createElement("td");
-                    tdCantidad.textContent = producto.cantidad;
 
                     const tdDescripcion = document.createElement("td");
                     tdDescripcion.textContent = producto.descripcion;
@@ -1008,12 +1001,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     btnEliminar.onclick = () => eliminarProducto(producto.idProducto);
                     tdEliminar.appendChild(btnEliminar);
 
-                    // Agregar todas las celdas
+                    // Agregar todas las celdas (sin cantidad)
                     fila.appendChild(tdId);
                     fila.appendChild(tdNombre);
                     fila.appendChild(tdPrecio);
                     fila.appendChild(tdCategoria);
-                    fila.appendChild(tdCantidad);
                     fila.appendChild(tdDescripcion);
                     fila.appendChild(tdEstado);
                     fila.appendChild(tdImagen);
@@ -1027,7 +1019,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("❌ Error:", error);
                 tbody.innerHTML = `
                 <tr>
-                    <td colspan="10" style="text-align: center;">❌ Error al buscar productos</td>
+                    <td colspan="8" style="text-align: center;">❌ Error al buscar productos</td>
                 </tr>`;
             });
     }
@@ -1041,7 +1033,6 @@ document.addEventListener("DOMContentLoaded", function() {
         buscarProductos(inputBuscar.value);
     });
 });
-
 
 /* ============================================
    BÚSQUEDA DE CLIENTES

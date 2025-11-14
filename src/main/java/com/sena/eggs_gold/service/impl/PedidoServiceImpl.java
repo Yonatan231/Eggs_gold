@@ -1,181 +1,180 @@
 package com.sena.eggs_gold.service.impl;
 
-import com.sena.eggs_gold.dto.PedidoBusquedaDTO;
-import com.sena.eggs_gold.dto.PedidoConductorDTO;
-import com.sena.eggs_gold.dto.PedidoConductorHistorialDTO;
 import com.sena.eggs_gold.dto.PedidoDTO;
-import com.sena.eggs_gold.model.entity.Pedido;
-import com.sena.eggs_gold.model.entity.Usuario;
+import com.sena.eggs_gold.model.entity.*;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
-import com.sena.eggs_gold.repository.PedidoRepository;
-import com.sena.eggs_gold.repository.PedidoRepositoryHistorial;
-import com.sena.eggs_gold.repository.UsuarioRepository;
+import com.sena.eggs_gold.model.enums.MetodoPago;
+import com.sena.eggs_gold.repository.*;
 import com.sena.eggs_gold.service.PedidoService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
-    private final PedidoRepositoryHistorial pedidoRepositoryHistorial;
-
-    @Autowired
-    UsuarioRepository usuarioRepository;
     private final PedidoRepository pedidoRepository;
+    private final DetallePedidoRepository detallePedidoRepository;
+    private final CarritoRepository carritoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final InventarioRepository inventarioRepository;
 
-    public PedidoServiceImpl(PedidoRepositoryHistorial pedidoRepositoryHistorial, PedidoRepository pedidoRepository) {
-        this.pedidoRepositoryHistorial = pedidoRepositoryHistorial;
+    public PedidoServiceImpl(PedidoRepository pedidoRepository,
+                             DetallePedidoRepository detallePedidoRepository,
+                             CarritoRepository carritoRepository,
+                             UsuarioRepository usuarioRepository,
+                             InventarioRepository inventarioRepository) {
         this.pedidoRepository = pedidoRepository;
+        this.detallePedidoRepository = detallePedidoRepository;
+        this.carritoRepository = carritoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.inventarioRepository = inventarioRepository;
     }
 
     @Override
     @Transactional
-    public List<PedidoDTO> obtenerPedidosPorRol(String rol, EstadoPedido estado) {
-        List<Pedido> pedidos;
+    public Pedido crearPedidoDesdeCarrito(Integer idUsuario, PedidoDTO pedidoDTO) {
+        // 1. Buscar usuario
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        if ("ADMIN".equalsIgnoreCase(rol)) {
-            // Administrador ve todos los pedidos
-            pedidos = pedidoRepository.findAllByOrderByFechaCreacionDesc();
-        } else if ("LOGISTICA".equalsIgnoreCase(rol)) {
-            // Logística solo ve pedidos aprobados
-            pedidos = pedidoRepository.findByEstado(EstadoPedido.APROBADO);
-        } else {
-            // Otros roles no ven pedidos
-            pedidos = List.of();
+        // 2. Obtener productos del carrito
+        List<Carrito> productosCarrito = carritoRepository
+                .findByUsuarioIdUsuariosAndConfirmado(idUsuario, false);
+
+        if (productosCarrito.isEmpty()) {
+            throw new RuntimeException("El carrito está vacío");
         }
 
-        // Filtrado opcional por estado
-        if (estado != null && estado != EstadoPedido.PENDIENTE) {
-            pedidos = pedidos.stream()
-                    .filter(p -> p.getEstado() == estado)
-                    .toList();
+        // 3. Validar stock disponible
+        if (!validarStockDisponible(idUsuario)) {
+            throw new RuntimeException("No hay stock suficiente para algunos productos");
         }
 
-        // Convertir a DTO
-        return pedidos.stream().map(p -> {
-            List<String> productos = p.getVentas().stream()
-                    .map(v -> v.getProducto().getNombre() + " (x" + v.getCantidad() + ")")
-                    .toList();
+        // 4. Crear el pedido
+        Pedido pedido = new Pedido();
+        pedido.setCliente(usuario);
+        pedido.setDireccion(pedidoDTO.getDireccion());
+        pedido.setDetalleCliente(pedidoDTO.getDetalleCliente());
+        pedido.setEstado(EstadoPedido.PENDIENTE);
 
-            return new PedidoDTO(
-                    p.getIdPedidos(),
-                    p.getUsuario().getNombre(),
-                    productos,
-                    p.getDireccion(),
-                    p.getEstado().getDescripcion(),
-                    p.getFechaCreacion(),
-                    p.getTotal()
+        // Convertir método de pago de String a Enum
+        if (pedidoDTO.getMetodoPago() != null) {
+            pedido.setMetodoPago(MetodoPago.valueOf(pedidoDTO.getMetodoPago().toUpperCase()));
+        }
+
+        // Calcular cantidad total
+        int cantidadTotal = productosCarrito.stream()
+                .mapToInt(Carrito::getCantidad)
+                .sum();
+        pedido.setCantidadTotal(cantidadTotal);
+
+        // Guardar el pedido
+        Pedido pedidoGuardado = pedidoRepository.save(pedido);
+
+        // 5. Crear detalles del pedido y descontar del inventario
+        for (Carrito itemCarrito : productosCarrito) {
+            // Crear detalle
+            DetallePedido detalle = new DetallePedido();
+            detalle.setPedido(pedidoGuardado);
+            detalle.setProducto(itemCarrito.getProducto());
+            detalle.setCantidad(itemCarrito.getCantidad());
+            detalle.setPrecioUnitario(BigDecimal.valueOf(itemCarrito.getProducto().getPrecio()));
+            detallePedidoRepository.save(detalle);
+
+            // ✅ CORREGIDO: Descontar del inventario
+            descontarInventario(itemCarrito.getProducto().getIdProducto(), itemCarrito.getCantidad());
+        }
+
+        // ✅ CORREGIDO: ELIMINAR los productos del carrito (en lugar de solo marcar como confirmado)
+        carritoRepository.deleteAll(productosCarrito);
+
+        // ALTERNATIVA: Si quieres mantener historial, puedes usar esto en su lugar:
+        // productosCarrito.forEach(item -> {
+        //     item.setConfirmado(true);
+        //     carritoRepository.save(item);
+        // });
+
+        return pedidoGuardado;
+    }
+
+    @Override
+    public boolean validarStockDisponible(Integer idUsuario) {
+        // Obtener productos del carrito
+        List<Carrito> productosCarrito = carritoRepository
+                .findByUsuarioIdUsuariosAndConfirmado(idUsuario, false);
+
+        // Validar cada producto
+        for (Carrito item : productosCarrito) {
+            Integer idProducto = item.getProducto().getIdProducto();
+            Integer cantidadSolicitada = item.getCantidad();
+
+            // Obtener stock disponible del inventario
+            Integer stockDisponible = obtenerStockDisponible(idProducto);
+
+            if (stockDisponible < cantidadSolicitada) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // ✅ Método auxiliar para obtener stock disponible
+    private Integer obtenerStockDisponible(Integer idProducto) {
+        List<Inventario> inventarios = inventarioRepository
+                .findByProductoIdProductoAndCantidadDisponibleGreaterThan(idProducto, 0);
+
+        return inventarios.stream()
+                .mapToInt(Inventario::getCantidadDisponible)
+                .sum();
+    }
+
+    // ✅ CORREGIDO: Método completo para descontar del inventario (FIFO)
+    private void descontarInventario(Integer idProducto, Integer cantidadADescontar) {
+        // Obtener inventarios disponibles del producto (ordenados por fecha de caducidad - FIFO)
+        List<Inventario> inventarios = inventarioRepository
+                .findByProductoIdProductoAndCantidadDisponibleGreaterThan(idProducto, 0);
+
+        if (inventarios.isEmpty()) {
+            throw new RuntimeException("No hay inventario disponible para el producto ID: " + idProducto);
+        }
+
+        // Ordenar por fecha de caducidad (primero los que vencen antes - FIFO)
+        inventarios.sort((i1, i2) -> i1.getFechaCaducidad().compareTo(i2.getFechaCaducidad()));
+
+        int cantidadRestante = cantidadADescontar;
+
+        // Descontar de los inventarios disponibles
+        for (Inventario inventario : inventarios) {
+            if (cantidadRestante <= 0) {
+                break; // Ya se descontó toda la cantidad necesaria
+            }
+
+            int cantidadDisponibleEnEsteInventario = inventario.getCantidadDisponible();
+
+            if (cantidadDisponibleEnEsteInventario >= cantidadRestante) {
+                // Este inventario tiene suficiente para completar el pedido
+                inventario.setCantidadDisponible(cantidadDisponibleEnEsteInventario - cantidadRestante);
+                cantidadRestante = 0;
+            } else {
+                // Este inventario no tiene suficiente, usar todo lo disponible
+                cantidadRestante -= cantidadDisponibleEnEsteInventario;
+                inventario.setCantidadDisponible(0);
+            }
+
+            // Guardar el inventario actualizado
+            inventarioRepository.save(inventario);
+        }
+
+        // Si después de recorrer todos los inventarios aún queda cantidad por descontar
+        if (cantidadRestante > 0) {
+            throw new RuntimeException(
+                    "No hay suficiente stock disponible. Faltaron " + cantidadRestante +
+                            " unidades del producto ID: " + idProducto
             );
-        }).toList();
-    }
-    @Override
-    public boolean aprobarPedido(Integer idPedidos) {
-        Pedido pedido = pedidoRepository.findById(idPedidos)
-                .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
-
-        pedido.setEstado(EstadoPedido.APROBADO);
-        pedidoRepository.save(pedido);
-
-        return true;
-    }
-
-    @Override
-    public boolean actualizarEstado(Integer idPedido, EstadoPedido nuevoEstado) {
-        Pedido pedido = pedidoRepository.findById(idPedido)
-                .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
-
-        pedido.setEstado(nuevoEstado);
-
-        if (nuevoEstado == EstadoPedido.ENTREGADO) {
-            pedido.setFechaEntrega(LocalDateTime.now());
         }
-
-        pedidoRepository.save(pedido);
-        return true;
     }
-
-    @Transactional
-    @Override
-    public boolean asignarPedido(Integer pedidoId, Integer conductorId) {
-        Usuario conductor = usuarioRepository.findById(conductorId)
-                .filter(u -> u.getRol().getIdRoles() == 3)
-                .orElse(null);
-
-        if (conductor == null) return false;
-
-        pedidoRepository.asignarConductor(pedidoId, conductorId);
-        return true;
-    }
-
-    @Override
-    public List<PedidoBusquedaDTO> buscarPedidos(String buscar) {
-        List<Map<String, Object>> resultados = pedidoRepository.buscarPedidos(buscar);
-        return resultados.stream().map(this::mapearDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<PedidoConductorDTO> obtenerPedidosPorConductor(Integer conductorId) {
-        List<Map<String, Object>> resultados = pedidoRepository.obtenerPedidosAsignados(conductorId);
-
-        return resultados.stream().map(row -> {
-            PedidoConductorDTO dto = new PedidoConductorDTO();
-            dto.setIdPedidos((int) ((Integer) row.get("idPedido")));
-            dto.setNombreCliente((String) row.get("nombreCliente"));
-            dto.setApellidoCliente((String) row.get("apellidoCliente"));
-            dto.setTelefono((String) row.get("telefono"));
-            dto.setDireccion((String) row.get("direccion"));
-            dto.setEstado(EstadoPedido.valueOf((String) row.get("estado")));
-            dto.setProductos((String) row.get("productos"));
-            return dto;
-        }).collect(Collectors.toList());
-
-    }
-    @Override
-    @Transactional
-    public boolean actualizarEstadoPedido(Integer idPedido, EstadoPedido estado) {
-        try {
-            pedidoRepository.actualizarEstado(idPedido, estado);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-
-    }
-
-    @Override
-    public List<PedidoConductorHistorialDTO> obtenerPedidosPorConductorHistorial(Integer conductorId) {
-        return pedidoRepositoryHistorial.buscarPedidosPorConductor(conductorId);
-    }
-
-    private PedidoBusquedaDTO mapearDTO(Map<String, Object> row) {
-        PedidoBusquedaDTO dto = new PedidoBusquedaDTO();
-        dto.setIdPedidos((Integer) row.get("idPedidos"));
-        dto.setNombreUsuario((String) row.get("nombreUsuario"));
-        dto.setNombreProducto((String) row.get("nombreProducto"));
-        dto.setPrecio(row.get("precio") != null ? Double.valueOf(row.get("precio").toString()) : null);
-        dto.setCantidad((Integer) row.get("cantidad"));
-        dto.setDireccion((String) row.get("direccion"));
-        dto.setEstado((String) row.get("estado"));
-        dto.setFechaCreacion(row.get("fechaCreacion") != null
-                ? ((Timestamp) row.get("fechaCreacion")).toLocalDateTime()
-                : null);
-        dto.setTotal(row.get("total") != null ? Double.valueOf(row.get("total").toString()) : null);
-        return dto;
-    }
-
-
 }
-
-
-

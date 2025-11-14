@@ -1,6 +1,6 @@
 package com.sena.eggs_gold.model.entity;
 
-import com.sena.eggs_gold.model.enums.Estado;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -36,7 +36,7 @@ public class Vehiculo {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false)
-    private Estado estado;
+    private EstadoUsuario estado;
 
     @Column(name = "MODELO", nullable = false, length = 55)
     private String modelo;

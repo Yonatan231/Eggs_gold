@@ -32,7 +32,7 @@
         </div>
 
         <div class="header-actions">
-            <a th:href="@{inventario}" class="btn-link salir">
+            <a th:href="@{/inicio_cliente}" class="btn-link salir">
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
         </div>
@@ -122,7 +122,7 @@
             <p>Tu pedido ha sido procesado correctamente.</p>
             <p>Recibirás una confirmación por correo electrónico pronto.</p>
             <a th:href="@{/historial_pedidos}" class="boton-principal">📋 Ver historial de pedidos</a>
-            <a id="nueva-compra" th:href="@{/inventario}" class="boton-secundario">Realizar nueva compra</a>
+            <a id="nueva-compra" th:href="@{/inicio_cliente}" class="boton-secundario">Realizar nueva compra</a>
         </div>
     </div>
 </div>
@@ -210,7 +210,6 @@
 </div>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
-<script th:src="@{/js/utils/foto_panel.js}"></script>
 <script th:src="@{/js/cliente/carrito.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('CLIENTE'); </script>

@@ -76,13 +76,14 @@ public class RoleInterceptor implements HandlerInterceptor {
                 uri.equals("/logistica/ver") ||
                 uri.equals("/conductores/pedidos-entregados") ||
                 uri.startsWith("/eliminar/")) {
-            return "ADMIN".equals(rol);
+            return "ADMIN".equals(rol) || "LOGISTICA".equals(rol);
         }
 
         // vistas para logistica
         if (uri.startsWith("/logistica") ||
                 uri.startsWith("/inventariol") ||
                 uri.equals("/inventario/producto") ||
+                uri.equals("/inventario/agregar") ||
                 uri.startsWith("/inventario/detalle")) {
             return "LOGISTICA".equals(rol) || "ADMIN".equals(rol);
         }
