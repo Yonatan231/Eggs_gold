@@ -46,22 +46,30 @@
             <h2>Panel de Conductor</h2>
         </li>
 
-        <!-- OPCIONES DEL MENÚ -->
-        <!-- Opción 1: Registrar Vehículo -->
         <li>
             <a href="/registro_vehiculo">
-                <i class="fas fa-truck"></i> Registrar Vehículo
+                <i class="fas fa-truck"></i> Ver Asignados
             </a>
         </li>
 
-        <!-- Opción 2: Reportar Novedad (CORREGIDO - ahora es un enlace como las demás) -->
+        <li>
+            <a href="/registro_vehiculo">
+                <i class="fas fa-truck"></i> Ver Historial
+            </a>
+        </li>
+
         <li>
             <a href="#" id="btnNovedad">
                 <i class="fas fa-exclamation-circle"></i> Reportar Novedad
             </a>
         </li>
 
-        <!-- Opción 3: Cerrar Sesión -->
+        <li>
+            <a href="/registro_vehiculo">
+                <i class="fas fa-truck"></i> Registrar Vehículo
+            </a>
+        </li>
+
         <li>
             <a href="/logout" id="cerrar_sesion">
                 <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -70,9 +78,6 @@
     </ul>
 </nav>
 
-<!-- ============================================
-     CONTENIDO PRINCIPAL
-     ============================================ -->
 <main id="main-content">
 
     <!-- CABECERA -->
@@ -182,101 +187,6 @@
         </div>
     </div>
 
-    <!-- ============================================
-         PEDIDOS ASIGNADOS
-         ============================================ -->
-    <section class="seccion-tabla">
-
-        <!-- Título -->
-        <div class="encabezado-seccion">
-            <h2>📦 Pedidos Asignados</h2>
-        </div>
-
-        <!-- Buscador -->
-        <form class="form-busqueda" id="form-busqueda-conductor">
-            <input
-                    type="text"
-                    id="buscar-conductor"
-                    placeholder="Buscar pedidos...">
-
-            <button type="submit">
-                <i class="fas fa-search"></i> Buscar
-            </button>
-        </form>
-
-        <!-- Tabla de pedidos -->
-        <div class="contenedor-tabla">
-            <table class="tabla-datos" id="tabla-pedidos_asignados">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Cliente</th>
-                    <th>Teléfono</th>
-                    <th>Dirección</th>
-                    <th>Productos</th>
-                    <th>Estado</th>
-                    <th>Acción</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Los pedidos se cargan con JavaScript -->
-                </tbody>
-            </table>
-
-            <!-- Mensaje cuando no hay pedidos -->
-            <div id="mensaje-sin-pedidos" class="mensaje-vacio" style="display: none;">
-                <p>No hay pedidos asignados para mostrar.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         HISTORIAL DE PEDIDOS
-         ============================================ -->
-    <section class="seccion-tabla">
-
-        <!-- Título -->
-        <div class="encabezado-seccion">
-            <h2>📋 Historial de Pedidos</h2>
-        </div>
-
-        <!-- Buscador -->
-        <form class="form-busqueda" id="form-busqueda-historial">
-            <input
-                    type="text"
-                    id="buscar-historial"
-                    placeholder="Buscar en historial...">
-
-            <button type="submit">
-                <i class="fas fa-search"></i> Buscar
-            </button>
-        </form>
-
-        <!-- Tabla de historial -->
-        <div class="contenedor-tabla">
-            <table class="tabla-datos" id="tabla-pedidos">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Tipo de producto</th>
-                    <th>Dirección</th>
-                    <th>Precio</th>
-                    <th>Estado</th>
-                    <th>Fecha</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- El historial se carga con JavaScript -->
-                </tbody>
-            </table>
-
-            <!-- Mensaje cuando no hay historial -->
-            <div id="mensaje-sin-historial" class="mensaje-vacio" style="display: none;">
-                <p>No hay historial de pedidos para mostrar.</p>
-            </div>
-        </div>
-    </section>
 
 </main>
 
