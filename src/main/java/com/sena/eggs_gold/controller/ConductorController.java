@@ -174,6 +174,7 @@ public class ConductorController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> entregarPedido(
             @PathVariable Integer idPedido,
+            @RequestBody Map<String, String> datos, // ✅ CAMBIAR
             HttpSession session) {
 
         Map<String, Object> response = new HashMap<>();
@@ -187,7 +188,10 @@ public class ConductorController {
                 return ResponseEntity.status(401).body(response);
             }
 
-            conductorService.marcarPedidoEntregado(idPedido, idConductor);
+            // ✅ OBTENER OBSERVACIÓN DEL BODY
+            String observacion = datos.get("observacion");
+
+            conductorService.marcarPedidoEntregado(idPedido, idConductor, observacion);
 
             response.put("success", true);
             response.put("message", "Pedido marcado como entregado");

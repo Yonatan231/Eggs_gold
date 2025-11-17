@@ -2,6 +2,9 @@
 // SCRIPT PARA INICIO DEL CONDUCTOR
 // ============================================
 
+// Variable global para el ID del pedido a entregar
+let pedidoAEntregar = null;
+
 // ============================================
 // BOTÓN PARA ABRIR/CERRAR EL MENÚ
 // ============================================
@@ -102,25 +105,36 @@ function mostrarMensajeVacio() {
 
 // ============================================
 // FUNCIÓN: marcarEntregado(idPedido)
-// Marca el pedido como entregado
+// Abre modal para confirmar entrega
 // ============================================
 function marcarEntregado(idPedido) {
-    if (!confirm("¿Confirma que este pedido ha sido entregado?")) {
-        return;
-    }
+    pedidoAEntregar = idPedido;
+    document.getElementById('pedidoIdEntrega').textContent = idPedido;
+    document.getElementById('observacionEntrega').value = '';
+    document.getElementById('modalEntregarPedido').style.display = 'flex';
+}
 
-    fetch('/api/conductor/entregar-pedido/' + idPedido, {
+// ============================================
+// FUNCIÓN: confirmarEntrega()
+// Confirma la entrega con observación
+// ============================================
+function confirmarEntrega() {
+    const observacion = document.getElementById('observacionEntrega').value;
+
+    fetch('/api/conductor/entregar-pedido/' + pedidoAEntregar, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+            observacion: observacion
+        })
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 alert("✓ " + data.message);
-
-                // Recargar pedidos
+                cerrarModalEntrega();
                 cargarPedidosEnCamino();
             } else {
                 alert('Error: ' + data.message);
@@ -130,6 +144,15 @@ function marcarEntregado(idPedido) {
             console.error('Error:', error);
             alert('Error al marcar el pedido como entregado');
         });
+}
+
+// ============================================
+// FUNCIÓN: cerrarModalEntrega()
+// Cierra el modal de entrega
+// ============================================
+function cerrarModalEntrega() {
+    document.getElementById('modalEntregarPedido').style.display = 'none';
+    pedidoAEntregar = null;
 }
 
 // ============================================
@@ -230,6 +253,7 @@ function verRuta(direccion) {
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('modalDetallePedido');
     const novedadModal = document.getElementById('novedadModal');
+    const modalEntrega = document.getElementById('modalEntregarPedido');
 
     if (e.target === modal) {
         cerrarModal();
@@ -237,6 +261,10 @@ window.addEventListener('click', function(e) {
 
     if (e.target === novedadModal) {
         novedadModal.style.display = 'none';
+    }
+
+    if (e.target === modalEntrega) {
+        cerrarModalEntrega();
     }
 });
 

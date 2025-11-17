@@ -138,9 +138,10 @@ public class ConductorServiceImpl implements ConductorService {
     }
 
     // ✅ NUEVO: Marcar como entregado
+    // ✅ MODIFICAR: Marcar como entregado CON COMENTARIO
     @Override
     @Transactional
-    public void marcarPedidoEntregado(Integer idPedido, Integer idConductor) {
+    public void marcarPedidoEntregado(Integer idPedido, Integer idConductor, String observacion) {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
@@ -158,6 +159,12 @@ public class ConductorServiceImpl implements ConductorService {
         // Cambiar estado a ENTREGADO y registrar fecha
         pedido.setEstado(EstadoPedido.ENTREGADO);
         pedido.setFechaEntrega(LocalDateTime.now());
+
+        // ✅ AGREGAR OBSERVACIÓN DEL CONDUCTOR
+        if (observacion != null && !observacion.trim().isEmpty()) {
+            pedido.setObservacionConductor(observacion);
+        }
+
         pedidoRepository.save(pedido);
     }
 
@@ -183,6 +190,7 @@ public class ConductorServiceImpl implements ConductorService {
         map.put("detalleCliente", pedido.getDetalleCliente());
         map.put("cantidadTotal", pedido.getCantidadTotal());
         map.put("estado", pedido.getEstado().toString());
+        map.put("observacionConductor", pedido.getObservacionConductor());
 
         // Datos del cliente
         if (pedido.getCliente() != null) {

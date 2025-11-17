@@ -450,6 +450,32 @@ td {
     }
 }
 
+/* Modal para entregar pedido */
+.btn-confirmar {
+    background-color: #27AE60;
+    color: white;
+}
+
+.btn-confirmar:hover {
+    background-color: #229954;
+}
+
+.form-group {
+    margin: 20px 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group i {
+    margin-right: 5px;
+    color: #27AE60;
+}
+
 /* ============================================
    FIN DE LOS ESTILOS
    ============================================ */

@@ -263,6 +263,38 @@
         </div>
     </div>
 
+    <!-- ============================================
+     MODAL PARA ENTREGAR PEDIDO (NUEVO)
+     ============================================ -->
+    <div id="modalEntregarPedido" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar" onclick="cerrarModalEntrega()">&times;</span>
+
+            <h2>Entregar Pedido #<span id="pedidoIdEntrega"></span></h2>
+
+            <div class="form-group">
+                <label for="observacionEntrega">
+                    <i class="fas fa-comment"></i> Observación (opcional):
+                </label>
+                <textarea
+                        id="observacionEntrega"
+                        placeholder="Ej: Cliente recibió conforme, sin novedades..."
+                        rows="4"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+            </textarea>
+            </div>
+
+            <div class="modal-botones">
+                <button class="btn-modal btn-cancelar" onclick="cerrarModalEntrega()">
+                    Cancelar
+                </button>
+                <button class="btn-modal btn-confirmar" onclick="confirmarEntrega()">
+                    <i class="fas fa-check"></i> Confirmar Entrega
+                </button>
+            </div>
+        </div>
+    </div>
+
 
 </main>
 

@@ -26,9 +26,11 @@ public interface ConductorService {
     // ✅ NUEVO: Aceptar pedido (cambiar a EN_CAMINO)
     void aceptarPedido(Integer idPedido, Integer idConductor);
 
-    // ✅ NUEVO: Marcar pedido como entregado
-    void marcarPedidoEntregado(Integer idPedido, Integer idConductor);
+    // ✅ MODIFICAR: Marcar pedido como entregado (ahora con observación)
+    void marcarPedidoEntregado(Integer idPedido, Integer idConductor, String observacion);
 
     // ✅ NUEVO: Obtener historial de pedidos entregados
     List<Map<String, Object>> obtenerHistorialPedidos(Integer idConductor);
+
+
 }
