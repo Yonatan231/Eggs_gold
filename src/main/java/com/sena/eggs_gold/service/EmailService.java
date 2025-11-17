@@ -1,5 +1,6 @@
 package com.sena.eggs_gold.service;
 
+import com.sena.eggs_gold.model.entity.Factura;
 import jakarta.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -14,4 +15,6 @@ public interface EmailService {
     void enviarCorreoBienvenida(String para, String nombreUsuario);
 
     void enviarCorreoCambioEstado(String para, String nombreUsuario, String nuevoEstado);
+
+    void enviarFacturaPorCorreo(Factura factura);
 }
