@@ -193,6 +193,16 @@ public class LogisticaServiceImpl implements LogisticaService {
         resultado.put("productos", productos);
         resultado.put("cantidadTotal", pedido.getCantidadTotal());
 
+        // ✅ AGREGAR INFORMACIÓN DEL CLIENTE
+        if (pedido.getCliente() != null) {
+            resultado.put("clienteNombre", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
+            resultado.put("clienteTelefono", pedido.getCliente().getTelefono());
+        }
+
+        // ✅ AGREGAR DIRECCIÓN Y COMENTARIO
+        resultado.put("direccion", pedido.getDireccion());
+        resultado.put("detalleCliente", pedido.getDetalleCliente());
+
         return resultado;
     }
 

@@ -2,18 +2,28 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.model.entity.Conductor;
+import com.sena.eggs_gold.model.entity.Pedido;
+import com.sena.eggs_gold.model.entity.DetallePedido;
 import com.sena.eggs_gold.model.entity.Rol;
+import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
 import com.sena.eggs_gold.repository.ConductorRepository;
+import com.sena.eggs_gold.repository.PedidoRepository;
+import com.sena.eggs_gold.repository.DetallePedidoRepository;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ConductorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class ConductorServiceImpl implements ConductorService {
@@ -23,10 +33,17 @@ public class ConductorServiceImpl implements ConductorService {
 
     private final ConductorRepository conductorRepository;
     private final RolRepository rolRepository;
+    private final PedidoRepository pedidoRepository;
+    private final DetallePedidoRepository detallePedidoRepository;
 
-    public ConductorServiceImpl(ConductorRepository conductorRepository, RolRepository rolRepository) {
+    public ConductorServiceImpl(ConductorRepository conductorRepository,
+                                RolRepository rolRepository,
+                                PedidoRepository pedidoRepository,
+                                DetallePedidoRepository detallePedidoRepository) {
         this.conductorRepository = conductorRepository;
         this.rolRepository = rolRepository;
+        this.pedidoRepository = pedidoRepository;
+        this.detallePedidoRepository = detallePedidoRepository;
     }
 
     @Override
@@ -40,25 +57,18 @@ public class ConductorServiceImpl implements ConductorService {
         conductor.setCorreo(dto.getCorreo());
         conductor.setPassword(dto.getPassword());
         conductor.setFechaRegistro(LocalDate.now());
-
-        // ✅ CORREGIDO: Asignar estado ACTIVO por defecto
         conductor.setEstado(EstadoUsuario.ACTIVO);
 
-        // ✅ CORREGIDO: Asignar tipo de documento (puedes obtenerlo del DTO o usar un valor por defecto)
-        // Opción 1: Si viene en el DTO
         if (dto.getTipoDocumento() != null) {
             conductor.setTipoDocumento(dto.getTipoDocumento());
         } else {
-            // Opción 2: Valor por defecto si no viene en el DTO
-            conductor.setTipoDocumento(TipoDocumento.CC); // Cédula de ciudadanía por defecto
+            conductor.setTipoDocumento(TipoDocumento.CC);
         }
 
-        // Asignar el rol de conductor (ROL_ID = 3)
         Rol rol = rolRepository.findById(3)
                 .orElseThrow(() -> new RuntimeException("Rol Conductor no encontrado"));
         conductor.setRol(rol);
 
-        // Guardar en la base de datos
         conductorRepository.save(conductor);
     }
 
@@ -83,7 +93,111 @@ public class ConductorServiceImpl implements ConductorService {
 
     @Override
     public List<ConductorDTO> obtenerConductoresConPedidosEntregados() {
-        // ✅ CORREGIDO: Usar el método correcto del repositorio
         return usuarioRepository.findConductoresConPedidosEntregados();
     }
+
+    // ✅ NUEVO: Obtener pedidos asignados
+    @Override
+    public List<Map<String, Object>> obtenerPedidosAsignados(Integer idConductor) {
+        List<Pedido> pedidos = pedidoRepository
+                .findByConductorIdUsuariosAndEstadoOrderByFechaCreacionDesc(idConductor, EstadoPedido.ASIGNADO);
+
+        return pedidos.stream().map(this::convertirPedidoAMap).collect(Collectors.toList());
+    }
+
+    // ✅ NUEVO: Obtener pedidos en camino
+    @Override
+    public List<Map<String, Object>> obtenerPedidosEnCamino(Integer idConductor) {
+        List<Pedido> pedidos = pedidoRepository
+                .findByConductorIdUsuariosAndEstado(idConductor, EstadoPedido.EN_CAMINO);
+
+        return pedidos.stream().map(this::convertirPedidoAMap).collect(Collectors.toList());
+    }
+
+    // ✅ NUEVO: Aceptar pedido
+    @Override
+    @Transactional
+    public void aceptarPedido(Integer idPedido, Integer idConductor) {
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        // Validar que el pedido esté asignado a este conductor
+        if (pedido.getConductor() == null ||
+                !pedido.getConductor().getIdUsuarios().equals(idConductor)) {
+            throw new RuntimeException("Este pedido no está asignado a ti");
+        }
+
+        // Validar estado
+        if (pedido.getEstado() != EstadoPedido.ASIGNADO) {
+            throw new RuntimeException("El pedido debe estar en estado ASIGNADO");
+        }
+
+        // Cambiar estado a EN_CAMINO
+        pedido.setEstado(EstadoPedido.EN_CAMINO);
+        pedidoRepository.save(pedido);
+    }
+
+    // ✅ NUEVO: Marcar como entregado
+    @Override
+    @Transactional
+    public void marcarPedidoEntregado(Integer idPedido, Integer idConductor) {
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        // Validar que el pedido esté asignado a este conductor
+        if (pedido.getConductor() == null ||
+                !pedido.getConductor().getIdUsuarios().equals(idConductor)) {
+            throw new RuntimeException("Este pedido no está asignado a ti");
+        }
+
+        // Validar estado
+        if (pedido.getEstado() != EstadoPedido.EN_CAMINO) {
+            throw new RuntimeException("El pedido debe estar EN_CAMINO");
+        }
+
+        // Cambiar estado a ENTREGADO y registrar fecha
+        pedido.setEstado(EstadoPedido.ENTREGADO);
+        pedido.setFechaEntrega(LocalDateTime.now());
+        pedidoRepository.save(pedido);
+    }
+
+    // ✅ NUEVO: Obtener historial
+    @Override
+    public List<Map<String, Object>> obtenerHistorialPedidos(Integer idConductor) {
+        List<Pedido> pedidos = pedidoRepository
+                .findByConductorIdUsuariosAndEstadoOrderByFechaEntregaDesc(idConductor, EstadoPedido.ENTREGADO);
+
+        return pedidos.stream().map(pedido -> {
+            Map<String, Object> map = convertirPedidoAMap(pedido);
+            map.put("fechaEntrega", pedido.getFechaEntrega());
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    // ✅ MÉTODO AUXILIAR: Convertir pedido a Map
+    private Map<String, Object> convertirPedidoAMap(Pedido pedido) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("idPedido", pedido.getIdPedidos());
+        map.put("fechaCreacion", pedido.getFechaCreacion());
+        map.put("direccion", pedido.getDireccion());
+        map.put("detalleCliente", pedido.getDetalleCliente());
+        map.put("cantidadTotal", pedido.getCantidadTotal());
+        map.put("estado", pedido.getEstado().toString());
+
+        // Datos del cliente
+        if (pedido.getCliente() != null) {
+            map.put("clienteNombre", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
+            map.put("clienteTelefono", pedido.getCliente().getTelefono());
+        }
+
+        // Contar tipos de productos
+        List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
+        map.put("tiposProductos", detalles.size());
+
+        return map;
+    }
+
+
+
+
 }

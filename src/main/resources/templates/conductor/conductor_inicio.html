@@ -158,49 +158,7 @@
                 </thead>
 
                 <tbody id="tablaPedidosDiaBody">
-                <!-- Ejemplo de pedido 1 -->
-                <tr>
-                    <td>21</td>
-                    <td>Carlos Ruiz</td>
-                    <td>Calle 30 # 8-22</td>
-                    <td>123 454 6789</td>
-                    <td>Dejar en la puerta</td>
-                    <td>2</td>
-                    <td>5 unidades</td>
-                    <td>
-                        <button class="btn-accion-tabla btn-ruta" onclick="verRuta(21)">
-                            Ver Ruta
-                        </button>
-                        <button class="btn-accion-tabla btn-entregado" onclick="marcarEntregado(21)">
-                            Entregar
-                        </button>
-                        <button class="btn-accion-tabla btn-ver-pedido" onclick="verDetalle(21)">
-                            Ver
-                        </button>
-                    </td>
-                </tr>
 
-                <!-- Ejemplo de pedido 2 -->
-                <tr>
-                    <td>22</td>
-                    <td>María Ruiz</td>
-                    <td>Calle 30 # 8-52</td>
-                    <td>453 454 6789</td>
-                    <td>Ninguno</td>
-                    <td>9</td>
-                    <td>50 unidades</td>
-                    <td>
-                        <button class="btn-accion-tabla btn-ruta" onclick="verRuta(22)">
-                            Ver Ruta
-                        </button>
-                        <button class="btn-accion-tabla btn-entregado" onclick="marcarEntregado(22)">
-                            Entregar
-                        </button>
-                        <button class="btn-accion-tabla btn-ver-pedido" onclick="verDetalle(22)">
-                            Ver
-                        </button>
-                    </td>
-                </tr>
                 </tbody>
             </table>
 
@@ -308,8 +266,8 @@
 
 </main>
 
-<script th:src="@{js/conductor/conductor_inicio.js}"></script>
-<script th:src="@{js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/conductor/conductor_inicio.js}"></script>
+<script th:src="@{/js/utils/foto_panel.js}"></script>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>

@@ -1,118 +1,139 @@
 // ============================================
 // SCRIPT PARA PEDIDOS ASIGNADOS DEL CONDUCTOR
-// Versión simplificada para principiantes
 // ============================================
-
-// ============================================
-// DATOS DE EJEMPLO (simulan el servidor)
-// ============================================
-const pedidosEjemplo = {
-    15: {
-        cliente: "Juan Pérez",
-        direccion: "Calle 12 # 5-10",
-        telefono: "321 456 7890",
-        productos: [
-            { nombre: "Huevo Verde", categoria: "AA", cantidad: 2 },
-            { nombre: "Huevo de Campo", categoria: "A", cantidad: 1 }
-        ]
-    },
-    16: {
-        cliente: "María González",
-        direccion: "Carrera 20 # 22-33",
-        telefono: "310 234 5678",
-        productos: [
-            { nombre: "Huevo Orgánico", categoria: "AAA", cantidad: 2 }
-        ]
-    },
-    17: {
-        cliente: "Carlos Rodríguez",
-        direccion: "Avenida 15 # 30-45",
-        telefono: "315 678 9012",
-        productos: [
-            { nombre: "Huevo Blanco", categoria: "AA", cantidad: 3 },
-            { nombre: "Huevo Moreno", categoria: "A", cantidad: 2 }
-        ]
-    }
-};
 
 // ============================================
 // BOTÓN PARA ABRIR/CERRAR EL MENÚ
 // ============================================
 const botonMenu = document.querySelector('.toggle-btn');
 
-// Cuando se hace clic en el botón del menú
 botonMenu.addEventListener('click', function () {
     const menuLateral = document.getElementById('sidebar');
-
-    // Si el menú está abierto, lo cierra. Si está cerrado, lo abre
     menuLateral.classList.toggle('active');
 });
 
 // ============================================
 // CUANDO LA PÁGINA CARGA
-// Ejecuta estas funciones automáticamente
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    actualizarContador(); // Actualiza el contador de pedidos
+    cargarPedidosAsignados();
 });
 
 // ============================================
+// FUNCIÓN: cargarPedidosAsignados()
+// Obtiene los pedidos asignados desde el servidor
+// ============================================
+function cargarPedidosAsignados() {
+    fetch('/api/conductor/pedidos-asignados')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarPedidosEnTabla(data.pedidos);
+            } else {
+                console.error('Error:', data.message);
+                mostrarSinPedidos();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarSinPedidos();
+        });
+}
+
+// ============================================
+// FUNCIÓN: mostrarPedidosEnTabla(pedidos)
+// Muestra los pedidos en la tabla
+// ============================================
+function mostrarPedidosEnTabla(pedidos) {
+    const tbody = document.getElementById('tablaBody');
+    const tabla = document.getElementById('tablaPedidos');
+    const sinPedidos = document.getElementById('sin-pedidos');
+
+    tbody.innerHTML = '';
+
+    if (pedidos.length === 0) {
+        mostrarSinPedidos();
+        return;
+    }
+
+    tabla.style.display = 'table';
+    sinPedidos.style.display = 'none';
+
+    pedidos.forEach(pedido => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td>${pedido.idPedido}</td>
+            <td>${pedido.clienteNombre || 'Cliente'}</td>
+            <td>${pedido.direccion}</td>
+            <td>${pedido.clienteTelefono || 'N/A'}</td>
+            <td>${pedido.tiposProductos}</td>
+            <td>${pedido.cantidadTotal} unidades</td>
+            <td>
+                <button class="btn-accion btn-aceptar" onclick="aceptarPedido(${pedido.idPedido})">
+                    Aceptar
+                </button>
+                <button class="btn-accion btn-ver" onclick="verDetalle(${pedido.idPedido})">
+                    Ver
+                </button>
+            </td>
+        `;
+        tbody.appendChild(fila);
+    });
+
+    actualizarContador();
+}
+
+// ============================================
+// FUNCIÓN: mostrarSinPedidos()
+// Muestra mensaje cuando no hay pedidos
+// ============================================
+function mostrarSinPedidos() {
+    document.getElementById('tablaPedidos').style.display = 'none';
+    document.getElementById('sin-pedidos').style.display = 'block';
+    document.getElementById('contador').textContent = '0';
+}
+
+// ============================================
 // FUNCIÓN: actualizarContador()
-// Cuenta cuántos pedidos hay en la tabla
+// Actualiza el contador de pedidos
 // ============================================
 function actualizarContador() {
-    // Obtiene todas las filas de pedidos
     const filas = document.querySelectorAll('#tablaBody tr');
-
-    // Cuenta cuántas filas hay
-    const total = filas.length;
-
-    // Actualiza el número en el contador
-    document.getElementById('contador').textContent = total;
-
-    // Si no hay pedidos, muestra el mensaje
-    if (total === 0) {
-        document.getElementById('tablaPedidos').style.display = 'none';
-        document.getElementById('sin-pedidos').style.display = 'block';
-    } else {
-        document.getElementById('tablaPedidos').style.display = 'table';
-        document.getElementById('sin-pedidos').style.display = 'none';
-    }
+    document.getElementById('contador').textContent = filas.length;
 }
 
 // ============================================
 // FUNCIÓN: aceptarPedido(idPedido)
-// Simula aceptar un pedido
+// Acepta un pedido asignado
 // ============================================
 function aceptarPedido(idPedido) {
-    // Pedimos confirmación
     if (!confirm('¿Deseas aceptar el pedido #' + idPedido + '?')) {
-        return; // Si dice que no, no hace nada
+        return;
     }
 
-    // Busca la fila del pedido
-    const filas = document.querySelectorAll('#tablaBody tr');
-    let filaEliminar = null;
-
-    // Busca la fila que contiene este pedido
-    filas.forEach(function(fila) {
-        const idCelda = fila.querySelector('td:first-child').textContent;
-        if (idCelda == idPedido) {
-            filaEliminar = fila;
+    fetch('/api/conductor/aceptar-pedido/' + idPedido, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         }
-    });
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarMensaje(data.message, 'success');
 
-    // Si encontró la fila
-    if (filaEliminar) {
-        // Elimina la fila
-        filaEliminar.remove();
-
-        // Actualiza el contador
-        actualizarContador();
-
-        // Muestra mensaje de éxito
-        mostrarMensaje('✓ Pedido #' + idPedido + ' aceptado correctamente', 'success');
-    }
+                // Recargar pedidos después de 1 segundo
+                setTimeout(() => {
+                    cargarPedidosAsignados();
+                }, 1000);
+            } else {
+                mostrarMensaje('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarMensaje('Error al aceptar el pedido', 'error');
+        });
 }
 
 // ============================================
@@ -120,37 +141,39 @@ function aceptarPedido(idPedido) {
 // Abre el modal con los detalles del pedido
 // ============================================
 function verDetalle(idPedido) {
-    // Poner el ID del pedido en el título del modal
     document.getElementById('pedidoId').textContent = idPedido;
 
-    // Obtener los datos del pedido
-    const pedido = pedidosEjemplo[idPedido];
+    fetch('/api/conductor/detalle-pedido/' + idPedido)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const detalle = data.detalle;
 
-    // Si existe el pedido
-    if (pedido) {
-        // Llenar la información del cliente
-        document.getElementById('clienteNombre').textContent = pedido.cliente;
-        document.getElementById('clienteDireccion').textContent = pedido.direccion;
-        document.getElementById('clienteTelefono').textContent = pedido.telefono;
+                // Llenar información del cliente
+                document.getElementById('clienteNombre').textContent = detalle.clienteNombre || 'N/A';
+                document.getElementById('clienteDireccion').textContent = detalle.direccion || 'N/A';
+                document.getElementById('clienteTelefono').textContent = detalle.clienteTelefono || 'N/A';
 
-        // Llenar la lista de productos
-        const lista = document.getElementById('listaProductos');
-        lista.innerHTML = ''; // Limpiar la lista
+                // Llenar lista de productos
+                const lista = document.getElementById('listaProductos');
+                lista.innerHTML = '';
 
-        // Agregar cada producto a la lista
-        pedido.productos.forEach(function(producto) {
-            const li = document.createElement('li');
-            li.textContent = producto.nombre + ' - Categoría: ' + producto.categoria + ' - ' + producto.cantidad + ' unidades';
-            lista.appendChild(li);
+                detalle.productos.forEach(producto => {
+                    const li = document.createElement('li');
+                    li.textContent = `${producto.nombre} - Categoría: ${producto.categoria} - ${producto.cantidad} unidades`;
+                    lista.appendChild(li);
+                });
+
+                // Mostrar modal
+                document.getElementById('modalDetallePedido').style.display = 'flex';
+            } else {
+                alert('Error al cargar detalles: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar los detalles del pedido');
         });
-
-        // Mostrar el modal
-        document.getElementById('modalDetallePedido').style.display = 'flex';
-
-    } else {
-        // Si no existe, mostrar alerta
-        alert('No hay datos disponibles para este pedido');
-    }
 }
 
 // ============================================
@@ -159,7 +182,7 @@ function verDetalle(idPedido) {
 // ============================================
 function cerrarModal() {
     const modal = document.getElementById('modalDetallePedido');
-    modal.style.display = 'none'; // Oculta el modal
+    modal.style.display = 'none';
 }
 
 // ============================================
@@ -167,13 +190,8 @@ function cerrarModal() {
 // Acepta el pedido desde el modal
 // ============================================
 function aceptarDesdeModal() {
-    // Obtener el ID del pedido del modal
     const idPedido = document.getElementById('pedidoId').textContent;
-
-    // Cerrar el modal
     cerrarModal();
-
-    // Aceptar el pedido
     aceptarPedido(idPedido);
 }
 
@@ -184,18 +202,15 @@ function aceptarDesdeModal() {
 function mostrarMensaje(texto, tipo) {
     let mensaje;
 
-    // Selecciona el tipo de mensaje
     if (tipo === 'success') {
         mensaje = document.getElementById('mensaje-success');
     } else {
         mensaje = document.getElementById('mensaje-error');
     }
 
-    // Mostrar el mensaje
     mensaje.textContent = texto;
     mensaje.style.display = 'block';
 
-    // Ocultar el mensaje después de 3 segundos
     setTimeout(function() {
         mensaje.style.display = 'none';
     }, 3000);
@@ -203,12 +218,10 @@ function mostrarMensaje(texto, tipo) {
 
 // ============================================
 // CERRAR MODAL AL HACER CLIC FUERA
-// Si el usuario hace clic fuera del modal, se cierra
 // ============================================
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('modalDetallePedido');
 
-    // Si hace clic en el fondo oscuro (no en el contenido)
     if (e.target === modal) {
         cerrarModal();
     }

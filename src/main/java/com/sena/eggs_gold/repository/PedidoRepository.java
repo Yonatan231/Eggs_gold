@@ -18,4 +18,13 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
     // Buscar pedidos pendientes para logística
     List<Pedido> findByEstadoOrderByFechaCreacionDesc(EstadoPedido estado);
+
+    // ✅ NUEVO: Buscar pedidos por conductor y estado
+    List<Pedido> findByConductorIdUsuariosAndEstado(Integer idConductor, EstadoPedido estado);
+
+    // ✅ NUEVO: Buscar pedidos asignados a conductor (estado ASIGNADO)
+    List<Pedido> findByConductorIdUsuariosAndEstadoOrderByFechaCreacionDesc(Integer idConductor, EstadoPedido estado);
+
+    // ✅ NUEVO: Buscar pedidos entregados por conductor
+    List<Pedido> findByConductorIdUsuariosAndEstadoOrderByFechaEntregaDesc(Integer idConductor, EstadoPedido estado);
 }

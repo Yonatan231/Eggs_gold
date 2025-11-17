@@ -1,9 +1,11 @@
 package com.sena.eggs_gold.service;
 
 import com.sena.eggs_gold.dto.ConductorDTO;
+import com.sena.eggs_gold.model.entity.Usuario;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ConductorService {
 
@@ -13,15 +15,20 @@ public interface ConductorService {
     // Para login de conductor
     ConductorDTO login(String numDocumento, String password);
 
-    @Query("""
-    SELECT new com.sena.eggs_gold.dto.ConductorDTO(u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono, COUNT(p))
-    FROM Usuario u
-    JOIN u.rol r
-    LEFT JOIN Pedido p ON p.usuario.idUsuarios = u.idUsuarios AND p.estado = 'ENTREGADO'
-    WHERE r.idRoles = 3 AND u.estado = 'ACTIVO'
-    GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono
-""")
     List<ConductorDTO> obtenerConductoresConPedidosEntregados();
+
+    // ✅ NUEVO: Obtener pedidos asignados al conductor
+    List<Map<String, Object>> obtenerPedidosAsignados(Integer idConductor);
+
+    // ✅ NUEVO: Obtener pedidos en camino del conductor
+    List<Map<String, Object>> obtenerPedidosEnCamino(Integer idConductor);
+
+    // ✅ NUEVO: Aceptar pedido (cambiar a EN_CAMINO)
+    void aceptarPedido(Integer idPedido, Integer idConductor);
+
+    // ✅ NUEVO: Marcar pedido como entregado
+    void marcarPedidoEntregado(Integer idPedido, Integer idConductor);
+
+    // ✅ NUEVO: Obtener historial de pedidos entregados
+    List<Map<String, Object>> obtenerHistorialPedidos(Integer idConductor);
 }
-
-
