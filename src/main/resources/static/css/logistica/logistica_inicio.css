@@ -685,6 +685,83 @@ header {
 }
 
 /* ============================================
+   MODAL ASIGNAR CONDUCTOR
+   ============================================ */
+.buscar-conductor {
+    margin: 20px 0;
+}
+
+.lista-conductores {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 20px 0;
+}
+
+.conductor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    transition: all 0.3s;
+}
+
+.conductor-item:hover {
+    background-color: #fff3cd;
+    border-color: #FFD700;
+}
+
+.conductor-info h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.conductor-info p {
+    margin: 2px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.btn-seleccionar {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-seleccionar:hover {
+    background-color: #218838;
+}
+
+.sin-conductores {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+    font-style: italic;
+}
+
+.btn-asignar {
+    background-color: #007bff;
+}
+
+.btn-asignar:hover {
+    background-color: #0056b3;
+}
+
+/* Ajuste para filas con estado LISTO */
+tr[data-estado="listo"] {
+    background-color: #d4edda;
+}
+
+/* ============================================
    MODAL DE REPORTAR NOVEDAD
    Estilos específicos para el formulario de novedades
    ============================================ */

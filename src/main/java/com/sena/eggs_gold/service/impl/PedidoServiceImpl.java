@@ -190,4 +190,49 @@ public class PedidoServiceImpl implements PedidoService {
             );
         }
     }
+
+    // ✅ NUEVO: Cambiar estado a LISTO
+    @Override
+    @Transactional
+    public void marcarPedidoComoListo(Integer idPedido) {
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        if (pedido.getEstado() != EstadoPedido.EN_ALISTAMIENTO) {
+            throw new RuntimeException("El pedido debe estar en alistamiento");
+        }
+
+        pedido.setEstado(EstadoPedido.LISTO);
+        pedidoRepository.save(pedido);
+    }
+
+    // ✅ NUEVO: Asignar conductor
+    @Override
+    @Transactional
+    public void asignarConductor(Integer idPedido, Integer idConductor) {
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        Usuario conductor = usuarioRepository.findById(idConductor)
+                .orElseThrow(() -> new RuntimeException("Conductor no encontrado"));
+
+        if (pedido.getEstado() != EstadoPedido.LISTO) {
+            throw new RuntimeException("El pedido debe estar listo");
+        }
+
+        pedido.setConductor(conductor);
+        pedido.setEstado(EstadoPedido.ASIGNADO);
+        pedidoRepository.save(pedido);
+    }
+
+    // ✅ NUEVO: Obtener conductores disponibles
+    @Override
+    public List<Usuario> obtenerConductoresDisponibles() {
+        return usuarioRepository.findAll().stream()
+                .filter(u -> u.getRol().getIdRoles() == 3) // Rol conductor
+                .filter(u -> u.getEstado() == com.sena.eggs_gold.model.enums.EstadoUsuario.ACTIVO)
+                .toList();
+    }
+
+
 }

@@ -140,9 +140,10 @@ public class LogisticaServiceImpl implements LogisticaService {
 
     @Override
     public List<Map<String, Object>> obtenerPedidosEnAlistamiento(Integer idLogistica) {
-        // Buscar pedidos que estén EN_ALISTAMIENTO y asignados a este usuario
+        // ✅ Buscar pedidos que estén EN_ALISTAMIENTO O LISTO y asignados a este usuario
         List<Pedido> pedidos = pedidoRepository.findAll().stream()
-                .filter(p -> p.getEstado() == EstadoPedido.EN_ALISTAMIENTO
+                .filter(p -> (p.getEstado() == EstadoPedido.EN_ALISTAMIENTO
+                        || p.getEstado() == EstadoPedido.LISTO) // ✅ INCLUIR AMBOS ESTADOS
                         && p.getLogistica() != null
                         && p.getLogistica().getIdUsuarios().equals(idLogistica))
                 .collect(Collectors.toList());
@@ -153,10 +154,16 @@ public class LogisticaServiceImpl implements LogisticaService {
             pedidoMap.put("idPedido", pedido.getIdPedidos());
             pedidoMap.put("cantidadTotal", pedido.getCantidadTotal());
             pedidoMap.put("fechaCreacion", pedido.getFechaCreacion());
+            pedidoMap.put("estado", pedido.getEstado().toString()); // ✅ AGREGAR ESTADO para el JS
 
             // Contar tipos de productos
             List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
             pedidoMap.put("tiposProductos", detalles.size());
+
+            // ✅ AGREGAR NOMBRE DEL CLIENTE
+            if (pedido.getCliente() != null) {
+                pedidoMap.put("cliente", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
+            }
 
             return pedidoMap;
         }).collect(Collectors.toList());

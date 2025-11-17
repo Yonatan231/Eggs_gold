@@ -247,6 +247,29 @@
         </div>
     </div>
 
+    <!-- ============================================
+     MODAL PARA ASIGNAR CONDUCTOR (NUEVO)
+     ============================================ -->
+    <div id="modalAsignarConductor" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar" onclick="cerrarModalConductor()">&times;</span>
+
+            <h2>Asignar Conductor - Pedido #<span id="pedidoIdAsignar"></span></h2>
+
+            <div class="buscar-conductor">
+                <input type="text" id="buscarConductor" placeholder="Buscar conductor por nombre o documento..." class="input-buscar">
+            </div>
+
+            <div class="lista-conductores" id="listaConductores">
+                <!-- Se llena dinámicamente -->
+            </div>
+
+            <div class="modal-botones">
+                <button class="btn-cancelar" onclick="cerrarModalConductor()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <script th:src="@{js/logistica/logistica_inicio.js}"></script>

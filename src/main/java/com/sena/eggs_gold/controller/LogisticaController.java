@@ -1,8 +1,10 @@
 package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.LogisticaDTO;
+import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.service.LogisticaService;
 import com.sena.eggs_gold.service.EmailService;
+import com.sena.eggs_gold.service.PedidoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ public class LogisticaController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PedidoService pedidoService;
 
     // Mostrar formulario de registro de logística
     @GetMapping("/registrar_logistica")
@@ -206,4 +211,67 @@ public class LogisticaController {
             return ResponseEntity.status(500).body(response);
         }
     }
+
+    // ✅ NUEVO: Obtener conductores disponibles
+    @GetMapping("/api/logistica/conductores")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerConductores() {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<Usuario> conductores = pedidoService.obtenerConductoresDisponibles(); // ✅ CAMBIAR logisticaService por pedidoService
+
+            List<Map<String, String>> conductoresDTO = conductores.stream()
+                    .map(c -> {
+                        Map<String, String> dto = new HashMap<>();
+                        dto.put("id", c.getIdUsuarios().toString());
+                        dto.put("nombre", c.getNombre() + " " + c.getApellido());
+                        dto.put("documento", c.getNumDocumento());
+                        dto.put("telefono", c.getTelefono());
+                        return dto;
+                    })
+                    .toList();
+
+            response.put("success", true);
+            response.put("conductores", conductoresDTO);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    // ✅ NUEVO: Asignar conductor a pedido
+    @PostMapping("/api/logistica/asignar-conductor")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> asignarConductor(
+            @RequestBody Map<String, Integer> datos) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Integer idPedido = datos.get("idPedido");
+            Integer idConductor = datos.get("idConductor");
+
+            if (idPedido == null || idConductor == null) {
+                response.put("success", false);
+                response.put("message", "Datos incompletos");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            pedidoService.asignarConductor(idPedido, idConductor); // ✅ CAMBIAR logisticaService por pedidoService
+
+            response.put("success", true);
+            response.put("message", "Conductor asignado exitosamente");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
 }
