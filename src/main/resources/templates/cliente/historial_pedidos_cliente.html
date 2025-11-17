@@ -23,7 +23,7 @@
                 <h1 class="titulo">Eggs Gold</h1>
                 <p class="subtitulo">Huevos frescos a tu puerta</p>
             </div>
-        </div> <!-- Cierre agregado aquí -->
+        </div>
 
         <!-- Título principal centrado -->
         <div class="header-title">
@@ -48,21 +48,25 @@
 <div class="container">
     <div class="tabs">
         <div class="tab active" data-tab="all">Todos los Pedidos</div>
-        <div class="tab" data-tab="delivered">Entregados</div>
-        <div class="tab" data-tab="shipping">En Camino</div>
-        <div class="tab" data-tab="shipping">En Alistamiento</div>
+        <div class="tab" data-tab="entregado">Entregados</div>
+        <div class="tab" data-tab="entrega">En Camino</div>
+        <div class="tab" data-tab="alistamiento">En Alistamiento</div>
     </div>
 
     <section class="orders-section active" id="all-orders">
         <div class="orders-grid" id="orders-container-all"></div>
     </section>
 
-    <section class="orders-section" id="delivered-orders">
+    <section class="orders-section" id="entregado-orders">
         <div class="orders-grid" id="orders-container-delivered"></div>
     </section>
 
-    <section class="orders-section" id="shipping-orders">
+    <section class="orders-section" id="entrega-orders">
         <div class="orders-grid" id="orders-container-shipping"></div>
+    </section>
+
+    <section class="orders-section" id="alistamiento-orders">
+        <div class="orders-grid" id="orders-container-alistamiento"></div>
     </section>
 </div>
 
@@ -113,7 +117,7 @@
 </div>
 
 <!-- ============================================
-     MODAL PARA VER FACTURA (NUEVO)
+     MODAL PARA VER FACTURA
      ============================================ -->
 <div class="modal" id="facturaModal">
     <div class="modal-content modal-factura">
@@ -157,4 +161,3 @@
 
 </body>
 </html>
-

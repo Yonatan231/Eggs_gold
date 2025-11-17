@@ -29,7 +29,7 @@ function mostrarProductosCarrito(productos) {
     if (!productos || productos.length === 0) {
         lista.innerHTML = `
             <div style="text-align: center; padding: 40px;">
-                <p style="font-size: 1.2rem; color: #666;">🛒 Tu carrito está vacío</p>
+                <p style="font-size: 1.2rem; color: #666;"> Tu carrito está vacío</p>
                 <a href="/inicio_cliente" style="color: #F7DC6F; text-decoration: none; font-weight: bold;">
                     ← Continuar comprando
                 </a>

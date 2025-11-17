@@ -82,7 +82,7 @@ function crearTarjetaProducto(producto) {
 
     const categoria = document.createElement("p");
     categoria.className = "producto-categoria";
-    categoria.textContent = `📦 ${producto.categoria}`;
+    categoria.textContent = ` ${producto.categoria}`;
 
     const descripcion = document.createElement("p");
     descripcion.className = "producto-descripcion";

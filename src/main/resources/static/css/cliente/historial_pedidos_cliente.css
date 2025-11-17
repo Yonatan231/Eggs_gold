@@ -29,7 +29,6 @@ header {
     flex-wrap: wrap;
 }
 
-
 .header-title {
     flex-grow: 1;
     text-align: center;
@@ -77,8 +76,8 @@ header {
     display: flex;
     align-items: center;
     gap: 5px;
-    border: none;           /* quita el borde gris */
-    cursor: pointer;        /* muestra el puntero de botón */
+    border: none;
+    cursor: pointer;
 }
 
 .btn-link:hover {
@@ -120,9 +119,19 @@ header {
     color: #ffff;
 }
 
+/* ✅ SECCIONES OCULTAS POR DEFECTO */
+.orders-section {
+    display: none;
+}
+
+.orders-section.active {
+    display: block;
+}
+
+/* ✅ GRID DE 2 COLUMNAS FIJO */
 .orders-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 15px;
     margin-bottom: 1.5rem;
 }
@@ -348,117 +357,6 @@ textarea.form-control {
     background-color: #555;
 }
 
-/* Footer Styles */
-footer {
-    background: #F7DC6F;
-    color: #333333;
-    padding: 30px 15px;
-    text-align: center;
-    margin-top: auto;
-}
-
-.footer-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.footer-quote {
-    font-size: 1.4rem;
-    font-weight: 300;
-    font-style: italic;
-    margin-bottom: 15px;
-    line-height: 1.4;
-}
-
-.footer-tags {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.tag {
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: #27AE60;
-}
-
-.footer-copyright {
-    border-top: 1px solid #333333;
-    padding-top: 15px;
-    font-size: 0.9rem;
-    color: #333333;
-}
-
-/* Media Queries */
-@media (max-width: 1024px) {
-    .orders-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .header-top {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .header-title {
-        margin: 0;
-        order: -1;
-    }
-
-    .orders-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .order-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .order-details {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-tags {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .modal-content {
-        padding: 1.2rem;
-        width: 98%;
-    }
-}
-
-@media (max-width: 480px) {
-    .header-actions {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .btn-novedad, .btn-link {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .tabs {
-        flex-direction: column;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-    .modal-content {
-        padding: 1rem;
-        width: 99%;
-    }
-}
-
-
 /* Estilos para el modal de factura */
 .modal-factura {
     max-width: 800px;
@@ -564,7 +462,85 @@ footer {
     transform: scale(1.05);
 }
 
+/* Footer Styles */
+footer {
+    background: #F7DC6F;
+    color: #333333;
+    padding: 30px 15px;
+    text-align: center;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-quote {
+    font-size: 1.4rem;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.footer-tags {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #27AE60;
+}
+
+.footer-copyright {
+    border-top: 1px solid #333333;
+    padding-top: 15px;
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .header-title {
+        margin: 0;
+        order: -1;
+    }
+
+    /* ✅ 1 COLUMNA EN MÓVILES */
+    .orders-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-details {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-tags {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .modal-content {
+        padding: 1.2rem;
+        width: 98%;
+    }
+
     .factura-info {
         grid-template-columns: 1fr;
     }
@@ -576,5 +552,30 @@ footer {
     .factura-table th,
     .factura-table td {
         padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-novedad, .btn-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .modal-content {
+        padding: 1rem;
+        width: 99%;
     }
 }

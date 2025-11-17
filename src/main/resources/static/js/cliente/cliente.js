@@ -145,7 +145,7 @@ function mostrarProductos(productos) {
                         data-id="${producto.idProducto}" 
                         data-nombre="${producto.nombre}" 
                         data-precio="${producto.precio}">
-                    🛒 Agregar al carrito
+                     Agregar al carrito
                 </button>
             </div>
         `;
@@ -262,7 +262,7 @@ function actualizarContadorCarrito() {
     fetch(`/api/carrito/temporal?usuario=${usuarioId}`)
         .then(response => response.json())
         .then(carrito => {
-            console.log("📦 Respuesta carrito:", carrito);
+            console.log(" Respuesta carrito:", carrito);
 
             if (!Array.isArray(carrito)) {
                 console.error("⚠️ El carrito no es un array:", carrito);
@@ -410,7 +410,7 @@ function confirmarPedido() {
         return;
     }
 
-    console.log("📦 Confirmando pedido con dirección:", direccion);
+    console.log(" Confirmando pedido con dirección:", direccion);
 
     fetch(`/api/pedido/confirmar`, {
         method: "POST",

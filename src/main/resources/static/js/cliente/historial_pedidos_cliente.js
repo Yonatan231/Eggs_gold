@@ -5,21 +5,10 @@ let todosLosPedidos = [];
 let pedidoIdParaFactura = null;
 
 // ============================================
-// ELEMENTOS DEL DOM
+// ELEMENTOS DEL DOM (se inicializarán después)
 // ============================================
-const tabs = document.querySelectorAll('.tab');
-const orderSections = document.querySelectorAll('.orders-section');
-const btnNovedad = document.getElementById('btnNovedad');
-const novedadModal = document.getElementById('novedadModal');
-const closeModal = document.getElementById('closeModal');
-const cancelNovedad = document.getElementById('cancelNovedad');
-const novedadForm = document.getElementById('novedadForm');
-
-// Modal de factura
-const facturaModal = document.getElementById('facturaModal');
-const closeFacturaModal = document.getElementById('closeFacturaModal');
-const closeFacturaBtn = document.getElementById('closeFacturaBtn');
-const downloadFacturaBtn = document.getElementById('downloadFacturaBtn');
+let tabs, orderSections, btnNovedad, novedadModal, closeModal, cancelNovedad, novedadForm;
+let facturaModal, closeFacturaModal, closeFacturaBtn, downloadFacturaBtn;
 
 // ============================================
 // CARGAR PEDIDOS DESDE EL SERVIDOR
@@ -59,7 +48,7 @@ function mapearEstado(estado) {
         return {
             categoria: 'entrega',
             clase: 'status-camino',
-            texto: 'En Entrega'
+            texto: 'En Camino'
         };
     } else if (estado === 'ENTREGADO') {
         return {
@@ -157,10 +146,14 @@ function mostrarPedidosPorFiltro(filtro) {
         });
     }
 
-    const containerId = filtro === 'all' ? 'orders-container-all' :
-        filtro === 'entregado' ? 'orders-container-delivered' :
-            'orders-container-shipping';
+    const containerMap = {
+        'all': 'orders-container-all',
+        'entregado': 'orders-container-delivered',
+        'entrega': 'orders-container-shipping',
+        'alistamiento': 'orders-container-alistamiento'
+    };
 
+    const containerId = containerMap[filtro];
     displayOrders(pedidosFiltrados, containerId);
 }
 
@@ -169,6 +162,11 @@ function mostrarPedidosPorFiltro(filtro) {
 // ============================================
 function displayOrders(orders, containerId) {
     const container = document.getElementById(containerId);
+
+    if (!container) {
+        console.error('Container no encontrado:', containerId);
+        return;
+    }
 
     if (orders.length === 0) {
         container.innerHTML = `
@@ -187,9 +185,14 @@ function displayOrders(orders, containerId) {
 // MOSTRAR SIN PEDIDOS
 // ============================================
 function mostrarSinPedidos(filtro) {
-    const containerId = filtro === 'all' ? 'orders-container-all' :
-        filtro === 'entregado' ? 'orders-container-delivered' :
-            'orders-container-shipping';
+    const containerMap = {
+        'all': 'orders-container-all',
+        'entregado': 'orders-container-delivered',
+        'entrega': 'orders-container-shipping',
+        'alistamiento': 'orders-container-alistamiento'
+    };
+
+    const containerId = containerMap[filtro] || 'orders-container-all';
     displayOrders([], containerId);
 }
 
@@ -281,74 +284,106 @@ function mostrarFacturaEnModal(factura) {
 // ============================================
 function descargarFacturaPDF() {
     if (!pedidoIdParaFactura) return;
-
     window.open('/api/cliente/factura/' + pedidoIdParaFactura + '/pdf', '_blank');
 }
 
 // ============================================
-// EVENT LISTENERS
+// INICIALIZACIÓN Y EVENT LISTENERS
 // ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar elementos del DOM
+    tabs = document.querySelectorAll('.tab');
+    orderSections = document.querySelectorAll('.orders-section');
+    btnNovedad = document.getElementById('btnNovedad');
+    novedadModal = document.getElementById('novedadModal');
+    closeModal = document.getElementById('closeModal');
+    cancelNovedad = document.getElementById('cancelNovedad');
+    novedadForm = document.getElementById('novedadForm');
+    facturaModal = document.getElementById('facturaModal');
+    closeFacturaModal = document.getElementById('closeFacturaModal');
+    closeFacturaBtn = document.getElementById('closeFacturaBtn');
+    downloadFacturaBtn = document.getElementById('downloadFacturaBtn');
 
-// Navegación por pestañas
-tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+    // Navegación por pestañas
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remover clase active
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
 
-        orderSections.forEach(section => section.classList.remove('active'));
+            // Ocultar todas las secciones
+            orderSections.forEach(section => section.classList.remove('active'));
 
-        const filtros = ['all', 'entregado', 'entrega', 'alistamiento'];
-        const filtro = filtros[index];
+            // Obtener filtro y mostrar sección
+            const filtro = tab.getAttribute('data-tab');
+            const seccion = document.getElementById(`${filtro}-orders`);
 
-        document.getElementById(`${filtros[index]}-orders`).classList.add('active');
-        mostrarPedidosPorFiltro(filtro);
+            if (seccion) {
+                seccion.classList.add('active');
+            }
+
+            // Filtrar pedidos
+            mostrarPedidosPorFiltro(filtro);
+        });
     });
-});
 
-// Modal de novedades
-btnNovedad.addEventListener('click', () => {
-    novedadModal.style.display = 'flex';
-    document.getElementById('fecha').valueAsDate = new Date();
-});
-
-closeModal.addEventListener('click', () => {
-    novedadModal.style.display = 'none';
-});
-
-cancelNovedad.addEventListener('click', () => {
-    novedadModal.style.display = 'none';
-});
-
-// Modal de factura
-closeFacturaModal.addEventListener('click', () => {
-    facturaModal.style.display = 'none';
-});
-
-closeFacturaBtn.addEventListener('click', () => {
-    facturaModal.style.display = 'none';
-});
-
-downloadFacturaBtn.addEventListener('click', descargarFacturaPDF);
-
-// Cerrar modal al hacer clic fuera
-window.addEventListener('click', (e) => {
-    if (e.target === novedadModal) {
-        novedadModal.style.display = 'none';
+    // Modal de novedades
+    if (btnNovedad) {
+        btnNovedad.addEventListener('click', () => {
+            novedadModal.style.display = 'flex';
+            document.getElementById('fecha').valueAsDate = new Date();
+        });
     }
-    if (e.target === facturaModal) {
-        facturaModal.style.display = 'none';
+
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            novedadModal.style.display = 'none';
+        });
     }
-});
 
-// Envío del formulario de novedad
-novedadForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Novedad reportada correctamente. Nos contactaremos pronto.');
-    novedadModal.style.display = 'none';
-    novedadForm.reset();
-});
+    if (cancelNovedad) {
+        cancelNovedad.addEventListener('click', () => {
+            novedadModal.style.display = 'none';
+        });
+    }
 
-// ============================================
-// INICIALIZAR LA PÁGINA
-// ============================================
-window.addEventListener('load', cargarPedidos);
+    // Modal de factura
+    if (closeFacturaModal) {
+        closeFacturaModal.addEventListener('click', () => {
+            facturaModal.style.display = 'none';
+        });
+    }
+
+    if (closeFacturaBtn) {
+        closeFacturaBtn.addEventListener('click', () => {
+            facturaModal.style.display = 'none';
+        });
+    }
+
+    if (downloadFacturaBtn) {
+        downloadFacturaBtn.addEventListener('click', descargarFacturaPDF);
+    }
+
+    // Formulario de novedad
+    if (novedadForm) {
+        novedadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Novedad reportada correctamente. Nos contactaremos pronto.');
+            novedadModal.style.display = 'none';
+            novedadForm.reset();
+        });
+    }
+
+    // Cerrar modales al hacer clic fuera
+    window.addEventListener('click', (e) => {
+        if (e.target === novedadModal) {
+            novedadModal.style.display = 'none';
+        }
+        if (e.target === facturaModal) {
+            facturaModal.style.display = 'none';
+        }
+    });
+
+    // Cargar pedidos al iniciar
+    cargarPedidos();
+});
