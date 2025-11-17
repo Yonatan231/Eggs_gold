@@ -1,15 +1,14 @@
 package com.sena.eggs_gold.model.entity;
 
-import com.sena.eggs_gold.model.enums.Estado;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
-
 
 @Entity
 @Table(name = "usuarios")
@@ -25,57 +24,43 @@ public class Usuario {
     @Column(name = "ID_USUARIOS")
     private Integer idUsuarios;
 
-    @ManyToOne
-    @JoinColumn(name = "VEHICULO_ID")
-    private Vehiculo vehiculo;
-
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
 
-    @Column(name = "APELLIDO")
+    @Column(name = "APELLIDO", nullable = false, length = 45)
     private String apellido;
 
-    @Column(name = "DIRECCION_USUARIO")
+    @Column(name = "DIRECCION_USUARIO", nullable = false, length = 120)
     private String direccionUsuario;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TIPO_DOCUMENTO")
-    private TipoDocumento tipoDocumento = TipoDocumento.CC ;
+    @Column(name = "TIPO_DOCUMENTO", nullable = false)
+    private TipoDocumento tipoDocumento;
 
-    @Column(name = "NUM_DOCUMENTO", unique = true, nullable = false)
+    @Column(name = "NUM_DOCUMENTO", nullable = false, length = 20)
     private String numDocumento;
 
-    @Column(name = "TELEFONO")
+    @Column(name = "TELEFONO", nullable = false, length = 20)
     private String telefono;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESTADO")
-    private Estado estado = Estado.ACTIVO;
+    @Column(name = "ESTADO", nullable = false)
+    private EstadoUsuario estado;
 
-    @Column(name = "CORREO")
+    @Column(name = "CORREO", nullable = false, length = 45)
     private String correo;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false, length = 120)
     private String password;
 
-    @Column(name = "FECHA_REGISTRO")
+    @Column(name = "FECHA_REGISTRO", nullable = false)
     private LocalDate fechaRegistro;
 
-    @Column(name = "FOTO_PANEL")
+    @Column(name = "FOTO_PANEL", columnDefinition = "TEXT")
     private String fotoPanel;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROL_ID")
+    @JoinColumn(name = "ROL_ID", nullable = false)
     private Rol rol;
-
-    @OneToMany()
-    private List<UsuarioPrivilegio> usuarioPrivilegios;
-
-    @PrePersist
-    protected void onCreate() {
-        this.fechaRegistro = LocalDate.now();
-    }
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pedido> pedidos;
 }
-

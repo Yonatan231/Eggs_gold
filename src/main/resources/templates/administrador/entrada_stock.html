@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Registrar Entrada de Stock - Eggs Gold</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos base -->
+    <link rel="stylesheet" th:href="@{/css/conductor/conductor.css}" />
+    <link rel="stylesheet" th:href="@{/css/administrador/entrada_stock.css}" />
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+    <ul>
+        <li class="perfil-admin">
+            <div class="avatar-contenedor" id="avatar-contenedor">
+                <span id="avatar-iniciales">AD</span>
+                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+            </div>
+            <h2>Panel de Administración</h2>
+        </li>
+        <li><a th:href="@{/administrador}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<!-- Contenido principal -->
+<main id="main-content">
+    <header>
+        <div class="opciones">
+            <div class="marca-contenedor">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
+                </div>
+                <div class="marca-texto">
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
+            <h1 class="titulo2"><i class="fas fa-box-open"></i> Registrar Entrada de Stock</h1>
+        </div>
+    </header>
+
+    <!-- Mensajes -->
+    <div id="mensaje-success" class="alert alert-success" style="display: none;"></div>
+    <div id="mensaje-error" class="alert alert-error" style="display: none;"></div>
+
+    <!-- Formulario -->
+    <form id="entradaForm" class="formulario-contenedor">
+        <h2>Formulario de entrada de inventario</h2>
+
+        <label for="producto">Producto:</label>
+        <select id="producto" name="producto" required>
+            <option value="">-- Seleccionar producto --</option>
+            <!-- Las opciones se cargarán dinámicamente -->
+        </select>
+
+        <label for="cantidad">Cantidad (unidades):</label>
+        <input type="number" id="cantidad" name="cantidad"
+               min="1" placeholder="Ej. 100" required>
+
+        <label for="proveedor">Proveedor:</label>
+        <input type="text" id="proveedor" name="proveedor"
+               placeholder="Nombre del proveedor" required>
+
+        <button type="submit" class="btn-guardar">
+            <i class="fas fa-check-circle"></i> Registrar Entrada
+        </button>
+    </form>
+</main>
+
+<script th:src="@{/js/administrador/entrada_stock.js}"></script>
+<script th:src="@{/js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script> validarRolPagina('ADMIN'); </script>
+
+</body>
+</html>

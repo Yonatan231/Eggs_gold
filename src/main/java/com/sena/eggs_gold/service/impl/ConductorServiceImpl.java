@@ -3,6 +3,8 @@ package com.sena.eggs_gold.service.impl;
 import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.model.entity.Conductor;
 import com.sena.eggs_gold.model.entity.Rol;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
+import com.sena.eggs_gold.model.enums.TipoDocumento;
 import com.sena.eggs_gold.repository.ConductorRepository;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
@@ -39,7 +41,19 @@ public class ConductorServiceImpl implements ConductorService {
         conductor.setPassword(dto.getPassword());
         conductor.setFechaRegistro(LocalDate.now());
 
-        // Asignar el rol de conductor
+        // ✅ CORREGIDO: Asignar estado ACTIVO por defecto
+        conductor.setEstado(EstadoUsuario.ACTIVO);
+
+        // ✅ CORREGIDO: Asignar tipo de documento (puedes obtenerlo del DTO o usar un valor por defecto)
+        // Opción 1: Si viene en el DTO
+        if (dto.getTipoDocumento() != null) {
+            conductor.setTipoDocumento(dto.getTipoDocumento());
+        } else {
+            // Opción 2: Valor por defecto si no viene en el DTO
+            conductor.setTipoDocumento(TipoDocumento.CC); // Cédula de ciudadanía por defecto
+        }
+
+        // Asignar el rol de conductor (ROL_ID = 3)
         Rol rol = rolRepository.findById(3)
                 .orElseThrow(() -> new RuntimeException("Rol Conductor no encontrado"));
         conductor.setRol(rol);
@@ -61,7 +75,6 @@ public class ConductorServiceImpl implements ConductorService {
                     dto.setTelefono(conductor.getTelefono());
                     dto.setCorreo(conductor.getCorreo());
                     dto.setPassword(conductor.getPassword());
-                  //  dto.setTipoUsuario("Conductor");
                     dto.setFechaRegistro(conductor.getFechaRegistro());
                     return dto;
                 })
@@ -70,10 +83,7 @@ public class ConductorServiceImpl implements ConductorService {
 
     @Override
     public List<ConductorDTO> obtenerConductoresConPedidosEntregados() {
-        return usuarioRepository.listarConductoresConPedidosEntregados();
-
-
-
+        // ✅ CORREGIDO: Usar el método correcto del repositorio
+        return usuarioRepository.findConductoresConPedidosEntregados();
     }
 }
-

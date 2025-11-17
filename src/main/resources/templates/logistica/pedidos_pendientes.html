@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pedidos Pendientes - Eggs Gold</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos base -->
+    <link rel="stylesheet" th:href="@{/css/conductor/conductor.css}" />
+    <link rel="stylesheet" th:href="@{/css/logistica/pedidos_pendientes.css}" />
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+    <ul>
+        <li class="perfil-admin">
+            <div class="avatar-contenedor" id="avatar-contenedor">
+                <span id="avatar-iniciales">LG</span>
+                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+            </div>
+            <h2>Panel de Logística</h2>
+        </li>
+        <li><a th:href="@{/logistica_inicio}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+</nav>
+
+<!-- Contenido principal -->
+<main id="main-content">
+    <header>
+        <div class="opciones">
+            <div class="marca-contenedor">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
+                </div>
+                <div class="marca-texto">
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
+            <h1 class="titulo2"><i class="fas fa-clipboard-list"></i> Pedidos Pendientes</h1>
+        </div>
+    </header>
+
+    <!-- Mensajes -->
+    <div id="mensaje-success" class="alert alert-success" style="display: none;"></div>
+    <div id="mensaje-error" class="alert alert-error" style="display: none;"></div>
+
+    <!-- Contenedor de la tabla -->
+    <div class="tabla-contenedor">
+        <div class="tabla-header">
+            <h2><i class="fas fa-list-alt"></i> Lista de Pedidos</h2>
+            <div class="contador-pendientes">
+                <span id="contador">0</span> pedidos pendientes
+            </div>
+        </div>
+
+        <!-- Tabla de pedidos -->
+        <div class="tabla-wrapper">
+            <table id="tablaPedidos">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID Pedido</th>
+                    <th><i class="fas fa-sort-numeric-up"></i> Total Unidades</th>
+                    <th><i class="fas fa-box"></i> Tipos de Productos</th>
+                    <th><i class="fas fa-calendar-alt"></i> Fecha Creación</th>
+                    <th><i class="fas fa-tools"></i> Acción</th>
+                </tr>
+                </thead>
+                <tbody id="tablaBody">
+                <!-- Ejemplo de pedido 1 -->
+                <tr>
+                    <td>101</td>
+                    <td>24</td>
+                    <td>2</td>
+                    <td>2025-11-13 10:30</td>
+                    <td><button class="btn-tomar" onclick="tomarPedido(101)"><i class="fas fa-hand-paper"></i> Tomar</button></td>
+                </tr>
+
+                <!-- Ejemplo de pedido 2 -->
+                <tr>
+                    <td>102</td>
+                    <td>36</td>
+                    <td>3</td>
+                    <td>2025-11-13 10:31</td>
+                    <td><button class="btn-tomar" onclick="tomarPedido(102)"><i class="fas fa-hand-paper"></i> Tomar</button></td>
+                </tr>
+
+                <!-- Ejemplo de pedido 3 -->
+                <tr>
+                    <td>103</td>
+                    <td>12</td>
+                    <td>1</td>
+                    <td>2025-11-13 10:35</td>
+                    <td><button class="btn-tomar" onclick="tomarPedido(103)"><i class="fas fa-hand-paper"></i> Tomar</button></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Mensaje cuando no hay pedidos -->
+            <div id="sin-pedidos" class="sin-pedidos" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <p>No hay pedidos pendientes</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/js/logistica/pedidos_pendientes.js}"></script>
+<script th:src="@{/js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script> validarRolPagina('LOGISTICA'); </script>
+
+</body>
+</html>

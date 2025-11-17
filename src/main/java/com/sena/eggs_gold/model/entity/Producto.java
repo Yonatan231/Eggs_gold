@@ -8,9 +8,6 @@ import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
 
-/**
- * Entidad JPA para la tabla productos
- */
 @Entity
 @Table(name = "productos")
 @Data
@@ -26,7 +23,7 @@ public class Producto {
     @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
 
-    @Column(name = "PRECIO", nullable = false)
+    @Column(name = "precio")
     private Float precio;
 
     @Enumerated(EnumType.STRING)
@@ -39,9 +36,6 @@ public class Producto {
     @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false)
     private EstadoProducto estado;
-
-    @Column(name = "CANTIDAD", length = 255)
-    private Integer cantidad;
 
     @Column(name = "imagen", nullable = false, length = 255)
     private String imagen;

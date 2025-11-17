@@ -2,8 +2,7 @@ package com.sena.eggs_gold.config;
 
 import com.sena.eggs_gold.model.entity.Admin;
 import com.sena.eggs_gold.model.entity.Rol;
-import com.sena.eggs_gold.model.entity.Usuario;
-import com.sena.eggs_gold.model.enums.Estado;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
@@ -24,14 +23,13 @@ public class DataInitializer {
 
                     Admin admin = new Admin();
                     admin.setRol(rolAdmin);
-                    admin.setVehiculo(null);
                     admin.setNombre("Admin");
                     admin.setApellido("Principal");
                     admin.setDireccionUsuario("Oficina central");
                     admin.setTipoDocumento(TipoDocumento.CC);
                     admin.setNumDocumento("123456789");
                     admin.setTelefono("0000000000");
-                    admin.setEstado(Estado.ACTIVO);
+                    admin.setEstado(EstadoUsuario.ACTIVO);
                     admin.setCorreo("admin@tuapp.com");
                     admin.setPassword("1234"); // 🔒 Deberías encriptar la contraseña
                     admin.setFechaRegistro(LocalDate.now());

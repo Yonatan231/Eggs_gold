@@ -1,21 +1,27 @@
 package com.sena.eggs_gold.service;
 
-import com.sena.eggs_gold.dto.CarritoTemporalDTO;
-import com.sena.eggs_gold.dto.ConfirmarPedidoRequestDTO;
-import com.sena.eggs_gold.dto.ItemCarritoRequestDTO;
+import com.sena.eggs_gold.dto.CarritoDTO;
+import com.sena.eggs_gold.model.entity.Carrito;
 
 import java.util.List;
 
 public interface CarritoService {
-    String AgregarOactualizarItem(ItemCarritoRequestDTO itemCarritoRequestDTO);
 
-    List<CarritoTemporalDTO> obtenerCarritoPorUsuario(Integer usuario);
+    // Agregar producto al carrito
+    Carrito agregarAlCarrito(Integer idUsuario, Integer idProducto, Integer cantidad);
 
-    void eliminarItemPorId(Integer id);
+    // Listar productos del carrito del usuario
+    List<CarritoDTO> obtenerCarritoUsuario(Integer idUsuario);
 
-    String confirmarPedido(ConfirmarPedidoRequestDTO dto);
+    // Actualizar cantidad de un producto en el carrito
+    boolean actualizarCantidad(Integer idCarrito, Integer nuevaCantidad);
 
+    // Eliminar producto del carrito
+    boolean eliminarDelCarrito(Integer idCarrito);
 
+    // Obtener total del carrito
+    Float calcularTotal(Integer idUsuario);
 
-
+    // Contar productos en el carrito
+    Integer contarProductosEnCarrito(Integer idUsuario);
 }

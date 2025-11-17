@@ -3,13 +3,13 @@ package com.sena.eggs_gold.model.enums;
 /**
  * Enum para estado del usuario
  */
-public enum Estado {
+public enum EstadoUsuario {
     ACTIVO("Activo"),
     INACTIVO("Inactivo");
 
     private final String descripcion;
 
-    Estado(String descripcion) {
+    EstadoUsuario(String descripcion) {
         this.descripcion = descripcion;
     }
 

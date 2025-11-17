@@ -1,25 +1,15 @@
 package com.sena.eggs_gold.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class PedidoDTO {
-
-    private Integer idPedidos;
-    private String nombreUsuario;
-    private List<String> productos; // Lista de productos con cantidades
+    private String telefono;
     private String direccion;
-    private String estado;
-    private LocalDateTime fechaCreacion;
-    private BigDecimal total;
-
-
+    private String detalleCliente;  // Comentario opcional
+    private String metodoPago;
 }

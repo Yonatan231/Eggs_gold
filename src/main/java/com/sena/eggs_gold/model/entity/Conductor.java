@@ -12,4 +12,3 @@ import lombok.EqualsAndHashCode;
 public class Conductor extends Usuario {
 
 }
-

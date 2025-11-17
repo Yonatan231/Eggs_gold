@@ -2,12 +2,10 @@ package com.sena.eggs_gold.repository;
 
 import com.sena.eggs_gold.dto.ClientePedidosDTO;
 import com.sena.eggs_gold.dto.ConductorDTO;
-import com.sena.eggs_gold.dto.ConductorPedidosDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.model.entity.Rol;
 import com.sena.eggs_gold.model.entity.Usuario;
-import com.sena.eggs_gold.model.enums.Estado;
-import com.sena.eggs_gold.model.enums.TipoDocumento;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,28 +21,29 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 
     @Query("SELECT new com.sena.eggs_gold.dto.ClientePedidosDTO( " +
             "u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono, COUNT(p)) " +
-            "FROM Usuario u LEFT JOIN u.pedidos p " +
-            "WHERE u.rol.idRoles = 4 AND u.estado = com.sena.eggs_gold.model.enums.Estado.ACTIVO " +
-            "GROUP BY  u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono")
+            "FROM Usuario u LEFT JOIN Pedido p ON p.cliente.idUsuarios = u.idUsuarios " +
+            "WHERE u.rol.idRoles = 4 AND u.estado = com.sena.eggs_gold.model.enums.EstadoUsuario.ACTIVO " +
+            "GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono")
     List<ClientePedidosDTO> findClientesConPedidos();
 
-
-    @Query(value = """
-        SELECT u.ID_USUARIOS, 
-               u.NOMBRE, 
-               u.APELLIDO, 
-               u.NUM_DOCUMENTO, 
-               u.DIRECCION_USUARIO, 
-               u.TELEFONO,
-               (SELECT COUNT(*) 
-                FROM pedidos p 
-                WHERE p.USUARIOS_ID = u.ID_USUARIOS 
-                AND p.ESTADO = 'ENTREGADO') AS pedidos_entregados
-        FROM usuarios u
-        WHERE u.ROL_ID = 3
-                AND u.ESTADO = 'ACTIVO'
-        """, nativeQuery = true)
-    List<Object[]> findConductoresConPedidosEntregados();
+    // ✅ CORREGIDO: Usar JPQL en lugar de SQL nativo y usar ID_CONDUCTOR en lugar de USUARIOS_ID
+    @Query("""
+        SELECT new com.sena.eggs_gold.dto.ConductorDTO(
+            u.idUsuarios, 
+            u.nombre, 
+            u.apellido, 
+            u.numDocumento, 
+            u.direccionUsuario, 
+            u.telefono, 
+            COUNT(p)
+        )
+        FROM Usuario u
+        LEFT JOIN Pedido p ON p.conductor.idUsuarios = u.idUsuarios 
+            AND p.estado = com.sena.eggs_gold.model.enums.EstadoPedido.ENTREGADO
+        WHERE u.rol.idRoles = 3 AND u.estado = com.sena.eggs_gold.model.enums.EstadoUsuario.ACTIVO
+        GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono
+    """)
+    List<ConductorDTO> findConductoresConPedidosEntregados();
 
     @Query("""
            SELECT new com.sena.eggs_gold.dto.LogisticaDTO(
@@ -59,23 +58,20 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
                u.rol.nombreRol
            )
            FROM Usuario u
-           WHERE u.rol.idRoles = 2 AND u.estado = com.sena.eggs_gold.model.enums.Estado.ACTIVO
+           WHERE u.rol.idRoles = 2 AND u.estado = com.sena.eggs_gold.model.enums.EstadoUsuario.ACTIVO
            """)
     List<LogisticaDTO> findAllLogistica();
 
-    List<Usuario> findByEstado(Estado estado);
-
+    List<Usuario> findByEstado(EstadoUsuario estado);
 
     @Query("SELECT COUNT(u) FROM Usuario u WHERE u.rol.idRoles = ?1")
     long countByRolId(int rolId);
 
-
     @Query("""
     SELECT new com.sena.eggs_gold.dto.ConductorDTO(u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono, COUNT(p))
     FROM Usuario u
-    JOIN u.rol r
-    LEFT JOIN Pedido p ON p.usuario.idUsuarios = u.idUsuarios AND p.estado = 'ENTREGADO'
-    WHERE r.idRoles = 3 AND u.estado = 'ACTIVO'
+    LEFT JOIN Pedido p ON p.conductor.idUsuarios = u.idUsuarios AND p.estado = com.sena.eggs_gold.model.enums.EstadoPedido.ENTREGADO
+    WHERE u.rol.idRoles = 3 AND u.estado = com.sena.eggs_gold.model.enums.EstadoUsuario.ACTIVO
     GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono
 """)
     List<ConductorDTO> listarConductoresConPedidosEntregados();
@@ -84,19 +80,19 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
             "WHERE u.rol.idRoles = 4 " +
             "AND u.estado = :estado " +
             "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
-    List<Usuario> buscarClientePorEstado(String buscar, Estado estado);
+    List<Usuario> buscarClientePorEstado(String buscar, EstadoUsuario estado);
 
     @Query("SELECT u FROM Usuario u " +
             "WHERE u.rol.idRoles = 3 " +
             "AND u.estado = :estado " +
             "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
-    List<Usuario> buscarConductorPorEstado(String buscar, Estado estado);
+    List<Usuario> buscarConductorPorEstado(String buscar, EstadoUsuario estado);
 
     @Query("SELECT u FROM Usuario u " +
             "WHERE u.rol.idRoles = 2 " +
             "AND u.estado = :estado " +
             "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
-    List<Usuario> buscarLogisticaPorEstado(String buscar, Estado estado);
+    List<Usuario> buscarLogisticaPorEstado(String buscar, EstadoUsuario estado);
 
     // ✅ Trae todos los roles registrados
     @Query("SELECT r FROM com.sena.eggs_gold.model.entity.Rol r")
@@ -104,7 +100,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 
     @Query("SELECT u.correo FROM Usuario u WHERE u.rol.idRoles IN :rolIds AND u.correo IS NOT NULL")
     List<String> findEmailsByRolIds(List<Integer> rolIds);
-
 }
-
-

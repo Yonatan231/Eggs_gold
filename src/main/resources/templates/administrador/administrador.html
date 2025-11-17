@@ -47,6 +47,7 @@
 
         <!-- Enlaces de navegación -->
         <li><a href="#titulo-pedidos" class="nav-link"><i class="fas fa-users"></i> Pedidos</a></li>
+        <li><a th:href="@{/entrada_stock}" class="nav-link"><i class="fas fa-users"></i> Llegada Stock</a></li>
         <li><a href="#titulo-productos" class="nav-link"><i class="fas fa-users"></i> Productos</a></li>
         <li><a th:href="@{/correos}" class="nav-link"><i class="fas fa-envelope"></i> Correos</a></li>
         <li><a th:href="@{/registrar_producto}" class="nav-link"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
@@ -205,12 +206,10 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Precio</th>
                     <th scope="col">Categoría</th>
-                    <th scope="col">Cantidad</th>
                     <th scope="col">Descripción</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Imagen</th>
                     <th scope="col">Actualizar</th>
-                    <th scope="col">Eliminar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -246,9 +245,6 @@
 
                 <label for="update-descripcion">Descripción:</label>
                 <textarea name="descripcion" id="update-descripcion" rows="3"></textarea>
-
-                <label for="update-cantidad">Cantidad en Stock:</label>
-                <input type="number" name="cantidad" id="update-cantidad" required>
 
                 <label for="update-estado">Estado:</label>
                 <select name="estado" id="update-estado" required>

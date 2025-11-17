@@ -1,22 +1,18 @@
 package com.sena.eggs_gold.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
-/**
- * Entidad JPA para la tabla temporal_pedidos
- * Representa pedidos temporales o carrito de compras
- */
 @Entity
-@Table(name = "temporal_pedidos")
+@Table(name = "carrito")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemporalPedido {
+public class Carrito {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,26 +23,20 @@ public class TemporalPedido {
     private Integer cantidad;
 
     @Column(name = "confirmado", columnDefinition = "TINYINT(1) DEFAULT 0")
-    private Boolean confirmado = false;
+    private Boolean confirmado;
 
-    @Column(name = "fecha", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime fecha;
-
-    // Relaciones JPA - Many to One (muchos pedidos temporales pueden ser del mismo usuario)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    // Many to One (muchos pedidos temporales pueden incluir el mismo producto)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
 
     @PrePersist
     protected void onCreate() {
-        if (fecha == null) {
-            fecha = LocalDateTime.now();
-        }
         if (confirmado == null) {
             confirmado = false;
         }

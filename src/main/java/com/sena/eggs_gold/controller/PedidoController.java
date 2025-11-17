@@ -1,159 +1,103 @@
 package com.sena.eggs_gold.controller;
 
-import com.sena.eggs_gold.dto.*;
-import com.sena.eggs_gold.model.enums.EstadoPedido;
-import com.sena.eggs_gold.service.CarritoService;
+import com.sena.eggs_gold.dto.PedidoDTO;
+import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.service.PedidoService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/api/pedido")
+@Controller
+@RequestMapping("/pedido")
 public class PedidoController {
 
-    private final CarritoService carritoService;
     private final PedidoService pedidoService;
 
-    public PedidoController(CarritoService carritoService, PedidoService pedidoService) {
-        this.carritoService = carritoService;
+    public PedidoController(PedidoService pedidoService) {
         this.pedidoService = pedidoService;
     }
 
-    // -------------------------
-    // Confirmar pedido (cliente)
-    // -------------------------
-    @PostMapping("/confirmar")
-    public ResponseEntity<String> confirmarPedido(HttpSession session, @RequestBody ConfirmarPedidoRequestDTO dto) {
-        try {
-            ClienteDTO cliente = (ClienteDTO) session.getAttribute("cliente");
+    // Validar stock antes de continuar
+    @GetMapping("/api/validar-stock")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> validarStock(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
 
-            if (cliente == null) {
-                return ResponseEntity.status(401).body("❌ Cliente no autenticado");
+        try {
+            Integer idUsuario = (Integer) session.getAttribute("usuario_id");
+
+            if (idUsuario == null) {
+                response.put("success", false);
+                response.put("message", "❌ Sesión no válida");
+                return ResponseEntity.badRequest().body(response);
             }
 
-            dto.setUsuarioId(cliente.getIdUsuarios());
+            boolean stockDisponible = pedidoService.validarStockDisponible(idUsuario);
 
-            String mensaje = carritoService.confirmarPedido(dto);
-            return ResponseEntity.ok(mensaje);
+            if (stockDisponible) {
+                response.put("success", true);
+                response.put("message", "✅ Stock disponible");
+            } else {
+                response.put("success", false);
+                response.put("message", "❌ No hay suficiente stock para algunos productos");
+            }
+
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("❌ Error al confirmar pedido: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "❌ Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
-    // -------------------------
-    // Listar pedidos (admin/logística)
-    // -------------------------
-    @GetMapping("/listar")
-
-    public Map<String, Object> listarPedidos(
-            @RequestParam(name = "estado", required = false) EstadoPedido estado,
+    // Confirmar pedido
+    @PostMapping("/api/confirmar")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> confirmarPedido(
+            @RequestBody PedidoDTO pedidoDTO,
             HttpSession session) {
 
-        String rol = (String) session.getAttribute("rol");
-
-        List<PedidoDTO> pedidos = pedidoService.obtenerPedidosPorRol(rol, estado);
-
         Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        response.put("rol", rol);
-        response.put("pedidos", pedidos);
 
-        return response;
-    }
-
-    @PostMapping("/{id}/aprobar")
-    public ResponseEntity<String> aprobarPedido(@PathVariable Integer id) {
-        boolean aprobado = pedidoService.aprobarPedido(id);
-
-        if (aprobado) {
-            return ResponseEntity.ok("ok");
-        } else {
-            return ResponseEntity.badRequest().body("error: no se pudo aprobar");
-        }
-    }
-
-    @PostMapping("/actualizar-estado")
-    public ResponseEntity<?> actualizarEstado(
-            @RequestParam("id_pedido") Integer idPedido,
-            @RequestParam("estado") EstadoPedido estado) {
         try {
-            boolean actualizado = pedidoService.actualizarEstado(idPedido, estado);
-            if (actualizado) {
-                return ResponseEntity.ok(Map.of("success", true));
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("error", "No se pudo actualizar"));
+            Integer idUsuario = (Integer) session.getAttribute("usuario_id");
+
+            if (idUsuario == null) {
+                response.put("success", false);
+                response.put("message", "❌ Debes iniciar sesión");
+                return ResponseEntity.badRequest().body(response);
             }
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("error", e.getMessage()));
+
+            // Validaciones
+            if (pedidoDTO.getDireccion() == null || pedidoDTO.getDireccion().trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "❌ La dirección es obligatoria");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            if (pedidoDTO.getMetodoPago() == null || pedidoDTO.getMetodoPago().trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "❌ Debes seleccionar un método de pago");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Crear pedido
+            Pedido pedido = pedidoService.crearPedidoDesdeCarrito(idUsuario, pedidoDTO);
+
+            response.put("success", true);
+            response.put("message", "✅ Pedido confirmado exitosamente");
+            response.put("idPedido", pedido.getIdPedidos());
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "❌ Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
-
-    @PostMapping("/asignar")
-
-    public ResponseEntity<Map<String, Object>> asignarPedido(@RequestParam Integer pedido_id,
-                                                             @RequestParam Integer conductor_id) {
-        boolean asignado = pedidoService.asignarPedido(pedido_id, conductor_id);
-        if (asignado) {
-            return ResponseEntity.ok(Map.of("success", true));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("success", false, "message", "Conductor inválido o error al asignar"));
-        }
-
-    }
-
-    @GetMapping("/conductor")
-    public ResponseEntity<?> obtenerPedidosConductor(HttpSession session) {
-        Object conductorIdObj = session.getAttribute("usuario_id");
-        if (conductorIdObj == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("success", false, "message", "No autenticado"));
-        }
-
-        Integer conductorId = Integer.valueOf(conductorIdObj.toString());
-        List<PedidoConductorDTO> pedidos = pedidoService.obtenerPedidosPorConductor(conductorId);
-        return ResponseEntity.ok(Map.of("success", true, "data", pedidos));
-    }
-
-    @PostMapping("/actualizar-estado-conductor")
-    public ResponseEntity<?> actualizarEstado(@RequestBody ActualizarEstadoDTO dto) {
-        if (dto.getIdPedido() == null || dto.getEstado() == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Faltan datos"));
-        }
-
-        boolean actualizado = pedidoService.actualizarEstadoPedido(dto.getIdPedido(), dto.getEstado());
-
-        if (actualizado) {
-            return ResponseEntity.ok(Map.of("success", true));
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "No se pudo actualizar"));
-        }
-    }
-
-    @GetMapping("/conductor/historial")
-    public ResponseEntity<?> obtenerPedidosConductorHistorial(HttpSession session) {
-        Object conductorIdObj = session.getAttribute("usuario_id");
-        if (conductorIdObj == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("success", false, "message", "No hay sesión iniciada"));
-        }
-
-        Integer conductorId = Integer.valueOf(conductorIdObj.toString());
-        List<PedidoConductorHistorialDTO> pedidos = pedidoService.obtenerPedidosPorConductorHistorial(conductorId);
-        return ResponseEntity.ok(Map.of("success", true, "data", pedidos));
-    }
-
 }
-

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- INFORMACIÓN BÁSICA DE LA PÁGINA -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de logística de Eggs Gold">
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
+
+    <!-- ICONOS DE FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ESTILOS PERSONALIZADOS -->
+    <link rel="stylesheet" th:href="@{css/logistica/logistica_inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+
+    <title>Panel de Logística - Eggs Gold</title>
+</head>
+<body>
+
+<!-- ============================================
+     BOTÓN PARA ABRIR EL MENÚ EN MÓVILES
+     ============================================ -->
+<button class="toggle-btn">
+    ☰
+</button>
+
+<!-- ============================================
+     MENÚ LATERAL
+     ============================================ -->
+<nav id="sidebar">
+    <ul>
+        <!-- PERFIL DEL USUARIO -->
+        <li class="perfil-admin">
+            <div class="avatar-contenedor" id="avatar-contenedor">
+                <!-- Iniciales cuando no hay foto -->
+                <span id="avatar-iniciales">AD</span>
+
+                <!-- Foto de perfil -->
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
+
+                <!-- Botón para subir foto -->
+                <label for="input-foto" class="boton-subir-foto">+</label>
+                <input type="file" id="input-foto" accept="image/*" style="display: none;">
+            </div>
+            <h2>Panel de Logística</h2>
+        </li>
+
+        <!-- OPCIONES DEL MENÚ -->
+        <!-- Opción 1: Pedidos Pendientes -->
+        <li>
+            <a th:href="@{/pedidos_pendientes}">
+                <i class="fas fa-clock"></i> Pedidos Pendientes
+            </a>
+        </li>
+
+        <!-- Opción 2: Aprobar Entrada -->
+        <li>
+            <a th:href="@{/aprobar_entrada}">
+                <i class="fas fa-clipboard-check"></i> Aprobar Entrada
+            </a>
+        </li>
+
+        <!-- Opción 3: Reportar Novedad -->
+        <li>
+            <a href="#" id="btnNovedad">
+                <i class="fas fa-exclamation-circle"></i> Reportar Novedad
+            </a>
+        </li>
+
+        <!-- Opción 4: Cerrar Sesión -->
+        <li>
+            <a href="/logout" id="cerrar_sesion">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- ============================================
+     CONTENIDO PRINCIPAL
+     ============================================ -->
+<main id="main-content">
+
+    <!-- CABECERA -->
+    <header role="banner">
+        <div class="opciones">
+            <!-- Logo y marca alineados horizontalmente -->
+            <div class="marca-contenedor">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
+                </div>
+
+                <div class="marca-texto">
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
+
+            <h1 class="titulo2"> Bienvenido, <span class="resaltado">Logística</span></h1>
+        </div>
+    </header>
+
+    <!-- ============================================
+         TARJETAS DE RESUMEN (MODIFICADAS)
+         ============================================ -->
+    <section class="contenedor-cuadros">
+
+        <!-- Tarjeta 1: Pedidos Nuevos -->
+        <div class="tarjeta-resumen pedidos-nuevos">
+            <div class="tarjeta-icono">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <div class="tarjeta-contenido">
+                <h3>Pedidos Nuevos</h3>
+                <span id="totalPedidosNuevos" class="contador">0</span>
+            </div>
+        </div>
+
+        <!-- Tarjeta 2: Entradas Pendientes -->
+        <div class="tarjeta-resumen entradas-pendientes">
+            <div class="tarjeta-icono">
+                <i class="fas fa-truck-loading"></i>
+            </div>
+            <div class="tarjeta-contenido">
+                <h3>Entradas Pendientes</h3>
+                <span id="totalEntradasPendientes" class="contador">0</span>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         SECCIÓN DE PEDIDOS PARA ALISTAR (NUEVO)
+         ============================================ -->
+    <section class="seccion-tabla">
+        <div class="encabezado-tabla">
+            <h2><i class="fas fa-clipboard-list"></i> Pedidos para Alistar</h2>
+
+            <!-- Barra de búsqueda -->
+            <div class="contenedor-busqueda">
+                <input type="text" id="buscar" placeholder="Buscar por ID de pedido..." class="input-buscar">
+            </div>
+        </div>
+
+        <!-- Tabla de pedidos -->
+        <div class="tabla-contenedor-scroll">
+            <table id="tablaPedidos" class="tabla-datos">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID Pedido</th>
+                    <th><i class="fas fa-box"></i> Tipos de productos</th>
+                    <th><i class="fas fa-sort-numeric-up"></i> Cantidad total</th>
+                    <th><i class="fas fa-calendar-alt"></i> Fecha creación</th>
+                    <th><i class="fas fa-tools"></i> Acciones</th>
+                </tr>
+                </thead>
+
+                <tbody id="tablaPedidosBody">
+                <!-- Ejemplo de pedido 1 -->
+                <tr>
+                    <td>101</td>
+                    <td>3</td>
+                    <td>18</td>
+                    <td>2025-11-13</td>
+                    <td>
+                        <button onclick="abrirModal(101)" class="btn-ver">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Ejemplo de pedido 2 -->
+                <tr>
+                    <td>102</td>
+                    <td>2</td>
+                    <td>12</td>
+                    <td>2025-11-13</td>
+                    <td>
+                        <button onclick="abrirModal(102)" class="btn-ver">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Ejemplo de pedido 3 -->
+                <tr>
+                    <td>103</td>
+                    <td>1</td>
+                    <td>24</td>
+                    <td>2025-11-14</td>
+                    <td>
+                        <button onclick="abrirModal(103)" class="btn-ver">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Mensaje cuando no hay pedidos -->
+            <div id="mensajeVacio" class="mensaje-vacio" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <p>No hay pedidos para alistar</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         MODAL PARA VER DETALLES DEL PEDIDO (NUEVO)
+         ============================================ -->
+    <div id="modalDetallePedido" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+
+            <h2>Pedido #<span id="pedidoId"></span></h2>
+
+            <div class="detalle-pedido">
+                <h3><i class="fas fa-boxes"></i> Productos del Pedido:</h3>
+                <ul id="listaProductos" class="lista-productos"></ul>
+            </div>
+
+            <div class="modal-botones">
+                <button class="btn-cancelar" onclick="cerrarModal()">Cerrar</button>
+                <button class="btn-guardar" onclick="marcarListo()">
+                    <i class="fas fa-check"></i> Marcar como Listo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         MODAL PARA REPORTAR NOVEDAD
+         ============================================ -->
+    <div class="modal" id="novedadModal">
+        <div class="modal-content">
+            <!-- Encabezado del modal con título y botón de cerrar -->
+            <div class="modal-header">
+                <h2>Reportar Novedad</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+
+            <!-- Formulario para reportar la novedad -->
+            <form id="novedadForm">
+                <!-- Campo 1: Número de Pedido -->
+                <div class="form-group">
+                    <label for="orderNumber">Número de Pedido</label>
+                    <input type="text" id="orderNumber" class="form-control" required>
+                </div>
+
+                <!-- Campo 2: Tipo de Novedad (selector desplegable) -->
+                <div class="form-group">
+                    <label for="tipoNovedad">Tipo de Novedad</label>
+                    <select id="tipoNovedad" class="form-control" required>
+                        <option value="">Seleccione un tipo</option>
+                        <option value="incompleto">Cantidad de un Producto Incompleta</option>
+                        <option value="falta-producto">Falta de Producto</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <!-- Campo 3: Descripción detallada -->
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" class="form-control" placeholder="Describa la novedad en detalle..." required></textarea>
+                </div>
+
+                <!-- Campo 4: Fecha del incidente -->
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha" class="form-control" required>
+                </div>
+
+                <!-- Campo 5: Evidencia (foto o archivo opcional) -->
+                <div class="form-group">
+                    <label for="evidencia">Evidencia (opcional)</label>
+                    <input type="file" id="evidencia" class="form-control">
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelNovedad">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</main>
+
+<script th:src="@{js/logistica/logistica_inicio.js}"></script>
+<script th:src="@{js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script> validarRolPagina('LOGISTICA'); </script>
+
+</body>
+</html>

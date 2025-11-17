@@ -24,6 +24,11 @@ public class AdminController {
         return "administrador/novedades";
     }
 
+    @GetMapping("/entrada_stock")
+    public String mostrarLlegadaStock() {
+        return "administrador/entrada_stock"; // admin.html en src/main/resources/templates
+    }
+
 
 }
 

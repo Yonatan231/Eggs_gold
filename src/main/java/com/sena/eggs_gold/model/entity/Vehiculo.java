@@ -1,13 +1,12 @@
 package com.sena.eggs_gold.model.entity;
 
-import com.sena.eggs_gold.model.enums.Estado;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Entidad JPA para la tabla vehiculos
@@ -21,8 +20,13 @@ public class Vehiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_VEHICULOS")          /// //////////////////
+    @Column(name = "ID_VEHICULOS")
     private Integer idVehiculos;
+
+    // Relación ManyToOne - Muchos vehículos pertenecen a un usuario
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario") // Corregido: coincide con la columna SQL
+    private Usuario usuario;
 
     @Column(name = "PLACA", nullable = false, length = 20)
     private String placa;
@@ -31,8 +35,8 @@ public class Vehiculo {
     private String color;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESTADO", nullable = false) ///////////////////
-    private Estado estado;
+    @Column(name = "ESTADO", nullable = false)
+    private EstadoUsuario estado;
 
     @Column(name = "MODELO", nullable = false, length = 55)
     private String modelo;
@@ -47,9 +51,12 @@ public class Vehiculo {
     private Float kilometraje;
 
     @Column(name = "FECHA_REGISTRO", nullable = false)
-    private LocalDate fechaRegistro = LocalDate.now();
+    private LocalDate fechaRegistro;
 
-    // Relación bidireccional - Un vehículo puede ser usado por muchos usuarios
-    @OneToMany(mappedBy = "vehiculo")
-    private List<Conductor> conductores;
+    @PrePersist
+    protected void onCreate() {
+        if (this.fechaRegistro == null) {
+            this.fechaRegistro = LocalDate.now();
+        }
+    }
 }

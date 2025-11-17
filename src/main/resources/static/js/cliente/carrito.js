@@ -1,494 +1,423 @@
-// ========================================
-// VARIABLES GLOBALES
-// ========================================
+/* ============================================
+   CARGAR CARRITO
+   ============================================ */
 
-let carrito = []; // Array para almacenar productos del carrito
-let metodoPagoSeleccionado = null; // Método de pago seleccionado por el usuario
+document.addEventListener('DOMContentLoaded', () => {
+    cargarCarrito();
+    configurarEventos();
+});
 
-// ========================================
-// CARGA INICIAL DEL CARRITO
-// ========================================
-
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("🔄 Iniciando carga del carrito...");
-
-    // ✅ El backend obtiene el usuario_id desde la sesión automáticamente
-    // NO necesitamos pasar el usuario en la URL
-    fetch('/api/carrito/temporal', {
-        method: 'GET',
-        credentials: 'include'  // 🔒 Importante: mantiene la sesión
-    })
-        .then(response => {
-            console.log("📥 Respuesta del servidor:", response.status);
-
-            if (!response.ok) {
-                if (response.status === 401) {
-                    throw new Error("No estás autenticado. Por favor inicia sesión.");
-                }
-                throw new Error("Error al obtener el carrito");
-            }
-            return response.json();
-        })
+function cargarCarrito() {
+    fetch('/carrito/api/obtener')
+        .then(response => response.json())
         .then(data => {
-            console.log("📦 Carrito recibido del servidor:", data);
-
-            if (Array.isArray(data) && data.length > 0) {
-                carrito = data.map(p => ({
-                    id: p.id || p.productoId,
-                    nombre: p.nombre || p.productoNombre,
-                    precio: p.precio || 0,
-                    cantidad: p.cantidad || 1
-                }));
-                console.log("✅ Carrito procesado:", carrito);
-                actualizarCarrito();
+            if (data.success) {
+                mostrarProductosCarrito(data.productos);
+                actualizarTotal(data.total);
             } else {
-                console.log("📭 Carrito vacío");
-                document.getElementById("lista-productos").innerHTML =
-                    '<div class="carrito-vacio">Tu carrito está vacío</div>';
+                console.error("Error:", data.message);
             }
         })
         .catch(error => {
-            console.error("❌ Error al cargar productos del carrito:", error);
-            document.getElementById("lista-productos").innerHTML =
-                '<div class="carrito-vacio">❌ ' + error.message + '</div>';
+            console.error("❌ Error al cargar carrito:", error);
         });
-});
-
-// ========================================
-// FUNCIONES DE CÁLCULO
-// ========================================
-
-function calcularTotal() {
-    return carrito.reduce((total, producto) => {
-        return total + (producto.precio * producto.cantidad);
-    }, 0);
 }
 
-// ========================================
-// FUNCIONES DE ACTUALIZACIÓN DEL CARRITO
-// ========================================
+function mostrarProductosCarrito(productos) {
+    const lista = document.getElementById("lista-productos");
 
-function actualizarCarrito() {
-    const listaProductos = document.getElementById('lista-productos');
-    const totalGeneral = document.getElementById('total-general');
-
-    listaProductos.innerHTML = '';
-
-    if (carrito.length === 0) {
-        listaProductos.innerHTML = '<div class="carrito-vacio">Tu carrito está vacío</div>';
-        totalGeneral.textContent = 'Total: $0.00';
+    if (!productos || productos.length === 0) {
+        lista.innerHTML = `
+            <div style="text-align: center; padding: 40px;">
+                <p style="font-size: 1.2rem; color: #666;">🛒 Tu carrito está vacío</p>
+                <a href="/inicio_cliente" style="color: #F7DC6F; text-decoration: none; font-weight: bold;">
+                    ← Continuar comprando
+                </a>
+            </div>
+        `;
         return;
     }
 
-    carrito.forEach(producto => {
-        const productoElemento = document.createElement('div');
-        productoElemento.className = 'producto';
+    lista.innerHTML = "";
 
-        productoElemento.innerHTML = `
-                    <div class="producto-info">
-                        <div class="producto-nombre">${producto.nombre}</div>
-                        <div class="producto-precio">$${producto.precio.toFixed(2)}</div>
-                    </div>
-                    <div class="cantidad">
-                        <button class="disminuir" data-id="${producto.id}">-</button>
-                        <input type="number" value="${producto.cantidad}" min="1" data-id="${producto.id}">
-                        <button class="aumentar" data-id="${producto.id}">+</button>
-                    </div>
-                    <button class="eliminar" data-id="${producto.id}">Eliminar</button>
-                `;
-
-        listaProductos.appendChild(productoElemento);
-    });
-
-    totalGeneral.textContent = `Total: $${calcularTotal().toFixed(2)}`;
-    agregarEventListeners();
-}
-
-function agregarEventListeners() {
-    // Botón aumentar cantidad
-    document.querySelectorAll('.aumentar').forEach(boton => {
-        boton.addEventListener('click', function() {
-            const id = parseInt(this.getAttribute('data-id'));
-            const producto = carrito.find(p => p.id === id);
-            if (producto) {
-                producto.cantidad++;
-                actualizarCarrito();
-            }
-        });
-    });
-
-    // Botón disminuir cantidad
-    document.querySelectorAll('.disminuir').forEach(boton => {
-        boton.addEventListener('click', function() {
-            const id = parseInt(this.getAttribute('data-id'));
-            const producto = carrito.find(p => p.id === id);
-            if (producto && producto.cantidad > 1) {
-                producto.cantidad--;
-                actualizarCarrito();
-            }
-        });
-    });
-
-    // Input de cantidad
-    document.querySelectorAll('.cantidad input').forEach(input => {
-        input.addEventListener('change', function() {
-            const id = parseInt(this.getAttribute('data-id'));
-            const producto = carrito.find(p => p.id === id);
-            if (producto) {
-                const nuevaCantidad = parseInt(this.value);
-                if (nuevaCantidad > 0) {
-                    producto.cantidad = nuevaCantidad;
-                    actualizarCarrito();
-                } else {
-                    this.value = producto.cantidad;
-                }
-            }
-        });
-    });
-
-    agregarEventosEliminar();
-}
-
-function agregarEventosEliminar() {
-    document.querySelectorAll(".eliminar").forEach(boton => {
-        boton.addEventListener("click", () => {
-            const id = boton.getAttribute("data-id");
-
-            if (confirm("¿Estás seguro de eliminar este producto del carrito?")) {
-                fetch(`/api/carrito/eliminar?id=${id}`, {
-                    method: "DELETE",
-                    credentials: 'include'
-                })
-                    .then(response => response.text())
-                    .then(msg => {
-                        alert(msg);
-                        // Refresca el carrito desde backend (sin usuario en URL)
-                        fetch('/api/carrito/temporal', {
-                            credentials: 'include'
-                        })
-                            .then(resp => resp.json())
-                            .then(data => {
-                                if (Array.isArray(data) && data.length > 0) {
-                                    carrito = data.map(p => ({
-                                        id: p.id || p.productoId,
-                                        nombre: p.nombre || p.productoNombre,
-                                        precio: p.precio || 0,
-                                        cantidad: p.cantidad || 1
-                                    }));
-                                } else {
-                                    carrito = [];
-                                }
-                                actualizarCarrito();
-                            });
-                    })
-                    .catch(error => console.error("❌ Error al eliminar el producto:", error));
-            }
-        });
+    productos.forEach(producto => {
+        const item = document.createElement("div");
+        item.className = "producto-carrito";
+        item.innerHTML = `
+            <div class="info-producto">
+                <h4>${producto.nombreProducto}</h4>
+                <p>Precio: $${parseInt(producto.precioUnitario).toLocaleString("es-CO")}</p>
+            </div>
+            <div class="cantidad-producto">
+                <button onclick="cambiarCantidad(${producto.id}, ${producto.cantidad - 1})">-</button>
+                <span>${producto.cantidad}</span>
+                <button onclick="cambiarCantidad(${producto.id}, ${producto.cantidad + 1})">+</button>
+            </div>
+            <div class="subtotal-producto">
+                $${parseInt(producto.subtotal).toLocaleString("es-CO")}
+            </div>
+            <button class="btn-eliminar" onclick="eliminarProducto(${producto.id})">🗑️</button>
+        `;
+        lista.appendChild(item);
     });
 }
 
-// ========================================
-// FUNCIONES DE NAVEGACIÓN
-// ========================================
-
-function actualizarPasos(pasoActual) {
-    document.querySelectorAll('.paso').forEach(paso => {
-        paso.classList.remove('activo', 'completado');
-    });
-
-    if (pasoActual === 1) {
-        document.getElementById('paso1').classList.add('activo');
-    } else if (pasoActual === 2) {
-        document.getElementById('paso1').classList.add('completado');
-        document.getElementById('paso2').classList.add('activo');
-    } else if (pasoActual === 3) {
-        document.getElementById('paso1').classList.add('completado');
-        document.getElementById('paso2').classList.add('completado');
-        document.getElementById('paso3').classList.add('activo');
+function actualizarTotal(total) {
+    const totalElement = document.getElementById("total-general");
+    if (totalElement) {
+        totalElement.textContent = `Total: $${parseInt(total).toLocaleString("es-CO")}`;
     }
 }
 
-function mostrarFormularioPedido() {
-    document.getElementById('vista-carrito').classList.add('oculto');
-    document.getElementById('formulario-pedido').classList.remove('oculto');
-    actualizarPasos(2);
-}
-
-function volverAlCarrito() {
-    document.getElementById('formulario-pedido').classList.add('oculto');
-    document.getElementById('vista-carrito').classList.remove('oculto');
-    actualizarPasos(1);
-}
-
-// ========================================
-// FUNCIONES DE MÉTODO DE PAGO
-// ========================================
-
-function seleccionarMetodoPago(metodo) {
-    document.querySelectorAll('.metodo-pago').forEach(elemento => {
-        elemento.classList.remove('seleccionado');
-    });
-
-    const elementoMetodo = document.querySelector(`.metodo-pago[data-metodo="${metodo}"]`);
-    if (elementoMetodo) {
-        elementoMetodo.classList.add('seleccionado');
-        const radioButton = elementoMetodo.querySelector('input[type="radio"]');
-        radioButton.checked = true;
-        metodoPagoSeleccionado = metodo;
-    }
-}
-
-// ========================================
-// FUNCIONES DE MODALES
-// ========================================
-
-function abrirModal(tipo) {
-    const total = calcularTotal();
-
-    if (tipo === 'nequi') {
-        document.getElementById('monto-nequi').textContent = `$${total.toFixed(2)}`;
-        document.getElementById('modal-nequi').classList.add('activo');
-    } else if (tipo === 'visa') {
-        document.getElementById('monto-visa').textContent = `$${total.toFixed(2)}`;
-        document.getElementById('modal-visa').classList.add('activo');
-    }
-}
-
-function cerrarModal(tipo) {
-    if (tipo === 'nequi') {
-        document.getElementById('modal-nequi').classList.remove('activo');
-        limpiarFormularioNequi();
-    } else if (tipo === 'visa') {
-        document.getElementById('modal-visa').classList.remove('activo');
-        limpiarFormularioVisa();
-    }
-}
-
-function limpiarFormularioNequi() {
-    document.getElementById('telefono-nequi').value = '';
-    document.getElementById('codigo-nequi').value = '';
-}
-
-function limpiarFormularioVisa() {
-    document.getElementById('numero-tarjeta').value = '';
-    document.getElementById('nombre-tarjeta').value = '';
-    document.getElementById('fecha-exp').value = '';
-    document.getElementById('cvv').value = '';
-}
-
-// ========================================
-// FUNCIONES DE PROCESAMIENTO DE PAGO
-// ========================================
-
-function procesarPagoNequi() {
-    const telefono = document.getElementById('telefono-nequi').value.trim();
-    const codigo = document.getElementById('codigo-nequi').value.trim();
-
-    // Validaciones del formulario de Nequi
-    if (!telefono || !codigo) {
-        alert('⚠️ Por favor, completa todos los campos requeridos');
+function cambiarCantidad(idCarrito, nuevaCantidad) {
+    if (nuevaCantidad <= 0) {
+        eliminarProducto(idCarrito);
         return;
     }
 
-    if (codigo.length !== 4) {
-        alert('⚠️ El código de confirmación debe tener 4 dígitos');
-        return;
-    }
-
-    // Mostrar mensaje de procesamiento
-    console.log('💳 Procesando pago con Nequi...');
-    console.log('Teléfono:', telefono);
-    console.log('Código:', codigo);
-
-    // Cerramos el modal
-    cerrarModal('nequi');
-
-    // ✅ Llamamos a la función que crea el pedido en la BD
-    finalizarPedido();
-}
-
-function procesarPagoVisa() {
-    const numeroTarjeta = document.getElementById('numero-tarjeta').value.replace(/\s/g, '');
-    const nombreTarjeta = document.getElementById('nombre-tarjeta').value.trim();
-    const fechaExp = document.getElementById('fecha-exp').value.trim();
-    const cvv = document.getElementById('cvv').value.trim();
-
-    // Validaciones del formulario de VISA
-    if (!numeroTarjeta || !nombreTarjeta || !fechaExp || !cvv) {
-        alert('⚠️ Por favor, completa todos los campos requeridos');
-        return;
-    }
-
-    if (cvv.length !== 3) {
-        alert('⚠️ El CVV debe tener 3 dígitos');
-        return;
-    }
-
-    if (numeroTarjeta.length < 13 || numeroTarjeta.length > 19) {
-        alert('⚠️ Número de tarjeta inválido');
-        return;
-    }
-
-    // Mostrar mensaje de procesamiento
-    console.log('💳 Procesando pago con VISA...');
-    console.log('Tarjeta:', numeroTarjeta.slice(-4)); // Solo mostramos últimos 4 dígitos
-
-    // Cerramos el modal
-    cerrarModal('visa');
-
-    // ✅ Llamamos a la función que crea el pedido en la BD
-    finalizarPedido();
-}
-
-function finalizarPedido() {
-    // 📦 1. Obtenemos los datos del formulario
-    const direccion = document.getElementById('direccion').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-    const comentarios = document.getElementById('comentarios').value.trim();
-
-    // 🔍 2. Validación adicional
-    if (!direccion) {
-        alert('⚠️ Por favor ingresa una dirección de entrega.');
-        return;
-    }
-
-    console.log('📤 Enviando pedido al servidor...');
-    console.log('📍 Dirección:', direccion); // ✅ AGREGADO para debug
-
-    fetch('/api/pedido/confirmar', {
-        method: 'POST',
+    fetch(`/carrito/api/actualizar/${idCarrito}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        credentials: 'include',
-        body: JSON.stringify({
-            direccion: direccion  // ✅ Asegúrate que esto no sea vacío
-        })
+        body: JSON.stringify({ cantidad: nuevaCantidad })
     })
-        .then(response => {
-            console.log('📥 Respuesta recibida:', response);
-
-            // ✅ AGREGADO: Leer el mensaje de error del servidor
-            if (!response.ok) {
-                return response.text().then(errorMsg => {
-                    throw new Error(errorMsg || 'Error en el servidor: ' + response.status);
-                });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                cargarCarrito();
+            } else {
+                alert(data.message);
             }
-            return response.text();
-        })
-        .then(mensaje => {
-            console.log('✅ Pedido confirmado:', mensaje);
-            alert('✅ ' + mensaje);
-
-            carrito = [];
-            actualizarCarrito();
-
-            document.getElementById('formulario-pedido').classList.add('oculto');
-            document.getElementById('resumen-pedido').classList.remove('oculto');
-            actualizarPasos(3);
-
-            document.getElementById('direccion').value = '';
-            document.getElementById('telefono').value = '';
-            document.getElementById('comentarios').value = '';
         })
         .catch(error => {
-            console.error('❌ Error al confirmar el pedido:', error);
-            alert('❌ ' + error.message); // ✅ Ahora verás el mensaje exacto del backend
+            console.error("❌ Error:", error);
         });
 }
 
-// ========================================
-// FUNCIÓN DE CONFIRMACIÓN DE PEDIDO
-// ========================================
-
-function confirmarPedido() {
-    const direccion = document.getElementById('direccion').value;
-    const telefono = document.getElementById('telefono').value;
-    const metodoPago = document.querySelector('input[name="metodo-pago"]:checked');
-
-    if (!direccion || !telefono) {
-        alert('⚠️ Por favor, completa todos los campos obligatorios.');
+function eliminarProducto(idCarrito) {
+    if (!confirm("¿Eliminar este producto del carrito?")) {
         return;
     }
 
-    if (!metodoPago) {
-        alert('⚠️ Por favor, selecciona un método de pago.');
-        return;
-    }
-
-    // Abrir el modal según el método de pago seleccionado
-    abrirModal(metodoPago.value);
+    fetch(`/carrito/api/eliminar/${idCarrito}`, {
+        method: 'DELETE'
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                cargarCarrito();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error:", error);
+        });
 }
 
-// ========================================
-// EVENT LISTENERS
-// ========================================
+/* ============================================
+   CONFIGURAR EVENTOS
+   ============================================ */
 
-document.addEventListener('DOMContentLoaded', function() {
-    actualizarCarrito();
-    actualizarPasos(1);
+function configurarEventos() {
+    const btnContinuar = document.getElementById("continuar-pedido");
+    const btnConfirmar = document.getElementById("confirmar-pedido");
+    const btnVolver = document.getElementById("volver-carrito");
 
-    // Selección de método de pago
-    document.querySelectorAll('.metodo-pago').forEach(elemento => {
-        elemento.addEventListener('click', function() {
-            const metodo = this.getAttribute('data-metodo');
+    if (btnContinuar) {
+        btnContinuar.addEventListener("click", continuarConPedido);
+    }
+
+    if (btnConfirmar) {
+        btnConfirmar.addEventListener("click", confirmarPedido);
+    }
+
+    if (btnVolver) {
+        btnVolver.addEventListener("click", volverAlCarrito);
+    }
+
+    // Configurar clicks en métodos de pago - CORREGIDO
+    document.querySelectorAll(".metodo-pago").forEach(elemento => {
+        elemento.addEventListener("click", function(e) {
+            // Prevenir que el click se propague si ya viene del input
+            if (e.target.tagName === 'INPUT') {
+                return;
+            }
+
+            const metodo = this.getAttribute("data-metodo");
             seleccionarMetodoPago(metodo);
         });
     });
 
-    // Seleccionar el primer método de pago por defecto
-    const primerMetodo = document.querySelector('.metodo-pago');
-    if (primerMetodo) {
-        seleccionarMetodoPago(primerMetodo.getAttribute('data-metodo'));
-    }
-
-    // Botones de navegación
-    document.getElementById('continuar-pedido').addEventListener('click', mostrarFormularioPedido);
-    document.getElementById('volver-carrito').addEventListener('click', volverAlCarrito);
-    document.getElementById('confirmar-pedido').addEventListener('click', confirmarPedido);
-
-    // Botón de nueva compra
-    document.getElementById('nueva-compra').addEventListener('click', function() {
-        document.getElementById('resumen-pedido').classList.add('oculto');
-        document.getElementById('vista-carrito').classList.remove('oculto');
-        actualizarPasos(1);
-        carrito = [];
-        actualizarCarrito();
-    });
-
-    // Formatear número de tarjeta
-    document.getElementById('numero-tarjeta').addEventListener('input', function(e) {
-        let valor = e.target.value.replace(/\s/g, '');
-        let valorFormateado = valor.match(/.{1,4}/g);
-        e.target.value = valorFormateado ? valorFormateado.join(' ') : '';
-    });
-
-    // Formatear fecha de expiración
-    document.getElementById('fecha-exp').addEventListener('input', function(e) {
-        let valor = e.target.value.replace(/\D/g, '');
-        if (valor.length >= 2) {
-            valor = valor.slice(0, 2) + '/' + valor.slice(2, 4);
-        }
-        e.target.value = valor;
-    });
-
-    // Solo números en CVV
-    document.getElementById('cvv').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/\D/g, '');
-    });
-
-    // Solo números en código Nequi
-    document.getElementById('codigo-nequi').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/\D/g, '');
-    });
-
-    // Cerrar modal al hacer clic fuera
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
-            if (e.target === this) {
-                const modalId = this.id.replace('modal-', '');
-                cerrarModal(modalId);
+    // También escuchar cambios directos en los radio buttons
+    document.querySelectorAll('input[name="metodo-pago"]').forEach(radio => {
+        radio.addEventListener("change", function() {
+            if (this.checked) {
+                seleccionarMetodoPago(this.value);
             }
         });
     });
+}
+
+/* ============================================
+   SELECCIÓN DE MÉTODO DE PAGO - CORREGIDO
+   ============================================ */
+
+function seleccionarMetodoPago(metodo) {
+    // Primero, remover la selección visual de todos
+    document.querySelectorAll(".metodo-pago").forEach(elemento => {
+        elemento.classList.remove("seleccionado");
+    });
+
+    // Desmarcar todos los radios
+    document.querySelectorAll('input[name="metodo-pago"]').forEach(radio => {
+        radio.checked = false;
+    });
+
+    // Seleccionar el método específico
+    const elementoMetodo = document.querySelector(`.metodo-pago[data-metodo="${metodo}"]`);
+    if (elementoMetodo) {
+        // Agregar clase visual
+        elementoMetodo.classList.add("seleccionado");
+
+        // Marcar el radio button
+        const radioButton = elementoMetodo.querySelector('input[type="radio"]');
+        if (radioButton) {
+            radioButton.checked = true;
+
+            // Log para debugging
+            console.log("Método seleccionado:", metodo);
+            console.log("Radio marcado:", radioButton.checked);
+        }
+    }
+}
+
+/* ============================================
+   PASO 2: FORMULARIO DE PEDIDO
+   ============================================ */
+
+function continuarConPedido() {
+    fetch('/pedido/api/validar-stock')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarFormularioPedido();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error:", error);
+            alert("❌ Error al validar stock");
+        });
+}
+
+function mostrarFormularioPedido() {
+    document.getElementById("vista-carrito").classList.add("oculto");
+    document.getElementById("formulario-pedido").classList.remove("oculto");
+    document.getElementById("paso1").classList.remove("activo");
+    document.getElementById("paso2").classList.add("activo");
+}
+
+function volverAlCarrito() {
+    document.getElementById("vista-carrito").classList.remove("oculto");
+    document.getElementById("formulario-pedido").classList.add("oculto");
+    document.getElementById("paso1").classList.add("activo");
+    document.getElementById("paso2").classList.remove("activo");
+}
+
+/* ============================================
+   PASO 3: CONFIRMAR PEDIDO Y MODALES - CORREGIDO
+   ============================================ */
+
+function confirmarPedido() {
+    const telefono = document.getElementById("telefono").value.trim();
+    const direccion = document.getElementById("direccion").value.trim();
+    const metodoPago = document.querySelector('input[name="metodo-pago"]:checked');
+
+    // Validaciones
+    if (!direccion) {
+        alert("❌ La dirección es obligatoria");
+        return;
+    }
+
+    if (!telefono) {
+        alert("❌ El teléfono es obligatorio");
+        return;
+    }
+
+    if (!metodoPago) {
+        alert("❌ Debes seleccionar un método de pago");
+        console.log("No hay método de pago seleccionado");
+        return;
+    }
+
+    // Log para debugging
+    console.log("Método de pago seleccionado:", metodoPago.value);
+
+    // Abrir modal según el método seleccionado
+    const metodo = metodoPago.value.toLowerCase();
+
+    if (metodo === 'nequi') {
+        abrirModal('nequi');
+    } else if (metodo === 'visa') {
+        abrirModal('visa');
+    } else {
+        console.error("Método de pago no reconocido:", metodo);
+        alert("❌ Método de pago no válido");
+    }
+}
+
+function abrirModal(tipo) {
+    const modal = document.getElementById(`modal-${tipo}`);
+
+    if (!modal) {
+        console.error(`Modal no encontrado: modal-${tipo}`);
+        return;
+    }
+
+    // Mostrar el modal con display flex
+    modal.style.display = 'flex';
+
+    // Agregar clase activo para animación (después de un pequeño delay)
+    setTimeout(() => {
+        modal.classList.add('activo');
+    }, 10);
+
+    // Mostrar el total en el modal
+    const totalElement = document.getElementById("total-general");
+    if (totalElement) {
+        const total = totalElement.textContent.replace('Total: ', '');
+
+        if (tipo === 'nequi') {
+            const montoNequi = document.getElementById("monto-nequi");
+            if (montoNequi) {
+                montoNequi.textContent = total;
+            }
+        } else if (tipo === 'visa') {
+            const montoVisa = document.getElementById("monto-visa");
+            if (montoVisa) {
+                montoVisa.textContent = total;
+            }
+        }
+    }
+
+    console.log(`Modal ${tipo} abierto`);
+}
+
+function cerrarModal(tipo) {
+    const modal = document.getElementById(`modal-${tipo}`);
+
+    if (!modal) {
+        return;
+    }
+
+    // Remover clase activo para animación
+    modal.classList.remove('activo');
+
+    // Ocultar el modal después de la animación
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+
+    console.log(`Modal ${tipo} cerrado`);
+}
+
+function procesarPagoNequi() {
+    const telefono = document.getElementById("telefono-nequi").value.trim();
+    const codigo = document.getElementById("codigo-nequi").value.trim();
+
+    if (!telefono || !codigo) {
+        alert("❌ Debes completar todos los campos");
+        return;
+    }
+
+    if (codigo.length !== 4) {
+        alert("❌ El código debe tener 4 dígitos");
+        return;
+    }
+
+    cerrarModal('nequi');
+    enviarPedidoAlServidor();
+}
+
+function procesarPagoVisa() {
+    const numeroTarjeta = document.getElementById("numero-tarjeta").value.trim();
+    const nombreTarjeta = document.getElementById("nombre-tarjeta").value.trim();
+    const fechaExp = document.getElementById("fecha-exp").value.trim();
+    const cvv = document.getElementById("cvv").value.trim();
+
+    if (!numeroTarjeta || !nombreTarjeta || !fechaExp || !cvv) {
+        alert("❌ Debes completar todos los campos");
+        return;
+    }
+
+    if (cvv.length !== 3) {
+        alert("❌ El CVV debe tener 3 dígitos");
+        return;
+    }
+
+    cerrarModal('visa');
+    enviarPedidoAlServidor();
+}
+
+function enviarPedidoAlServidor() {
+    const telefono = document.getElementById("telefono").value.trim();
+    const direccion = document.getElementById("direccion").value.trim();
+    const detalleCliente = document.getElementById("comentarios").value.trim();
+    const metodoPagoElement = document.querySelector('input[name="metodo-pago"]:checked');
+
+    if (!metodoPagoElement) {
+        alert("❌ Error: No se pudo obtener el método de pago");
+        return;
+    }
+
+    const metodoPago = metodoPagoElement.value;
+
+    const pedidoDTO = {
+        telefono: telefono,
+        direccion: direccion,
+        detalleCliente: detalleCliente,
+        metodoPago: metodoPago
+    };
+
+    fetch('/pedido/api/confirmar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pedidoDTO)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarConfirmacion();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error:", error);
+            alert("❌ Error al confirmar el pedido");
+        });
+}
+
+function mostrarConfirmacion() {
+    document.getElementById("formulario-pedido").classList.add("oculto");
+    document.getElementById("resumen-pedido").classList.remove("oculto");
+    document.getElementById("paso2").classList.remove("activo");
+    document.getElementById("paso3").classList.add("activo");
+}
+
+// Cerrar modal al hacer clic fuera
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal-overlay')) {
+        // Determinar qué modal cerrar
+        if (e.target.id === 'modal-nequi') {
+            cerrarModal('nequi');
+        } else if (e.target.id === 'modal-visa') {
+            cerrarModal('visa');
+        }
+    }
 });

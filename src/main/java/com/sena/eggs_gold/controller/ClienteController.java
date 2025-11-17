@@ -1,30 +1,40 @@
 package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.ClienteDTO;
+import com.sena.eggs_gold.dto.ProductoDisponibleDTO;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.EmailService;
+import com.sena.eggs_gold.service.InventarioService;
 import com.sena.eggs_gold.service.UsuarioService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class ClienteController {
 
     private final ClienteService clienteService;
     private final UsuarioService usuarioService;
+    private final InventarioService inventarioService;  // ✅ AGREGADO
+
     @Autowired
     private EmailService emailService;
 
-
-    public ClienteController(ClienteService clienteService, UsuarioService usuarioService, UsuarioRepository usuarioRepository) {
+    public ClienteController(ClienteService clienteService,
+                             UsuarioService usuarioService,
+                             UsuarioRepository usuarioRepository,
+                             InventarioService inventarioService) {  // ✅ AGREGADO
         this.clienteService = clienteService;
         this.usuarioService = usuarioService;
-
+        this.inventarioService = inventarioService;  // ✅ AGREGADO
     }
 
     @GetMapping("/registro_cliente")
@@ -40,7 +50,7 @@ public class ClienteController {
 
         if (result.hasErrors()) {
             model.addAttribute("errores", result.getFieldErrors());
-            return "registros/registro_cliente"; // vuelve al formulario con los errores
+            return "registros/registro_cliente";
         }
 
         if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
@@ -48,9 +58,7 @@ public class ClienteController {
             return "registros/registro_cliente";
         }
 
-
         try {
-            // Enviar correo de bienvenida
             emailService.enviarCorreoBienvenida(
                     clienteDTO.getCorreo(),
                     clienteDTO.getNombre()
@@ -74,6 +82,23 @@ public class ClienteController {
         return "cliente/historial_pedidos";
     }
 
+    @GetMapping("/inicio_cliente")
+    public String mostrarVistaCliente(HttpSession session, Model model) {
+        ClienteDTO cliente = (ClienteDTO) session.getAttribute("cliente");
 
+        if (cliente == null) {
+            return "redirect:/login";
+        }
 
+        model.addAttribute("cliente", cliente);
+        return "cliente/inicio_cliente";
+    }
+
+    // ✅ NUEVO: Endpoint para obtener productos disponibles (API REST)
+    @GetMapping("/cliente/api/productos")
+    @ResponseBody
+    public ResponseEntity<List<ProductoDisponibleDTO>> obtenerProductosDisponibles() {
+        List<ProductoDisponibleDTO> productos = inventarioService.obtenerProductosDisponibles();
+        return ResponseEntity.ok(productos);
+    }
 }

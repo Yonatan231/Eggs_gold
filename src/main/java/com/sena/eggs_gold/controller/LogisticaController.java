@@ -62,4 +62,14 @@ public class LogisticaController {
 
         return "redirect:/administrador";
     }
+
+    @GetMapping("/aprobar_entrada")
+    public String vistaAprobacion() {
+        return "logistica/aprobar_entrada";
+    }
+
+    @GetMapping("/pedidos_pendientes")
+    public String vistaPedidosPendientes() {
+        return "logistica/pedidos_pendientes";
+    }
 }
