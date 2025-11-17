@@ -135,7 +135,7 @@
          ============================================ -->
     <section class="seccion-tabla">
         <div class="encabezado-tabla">
-            <h2><i class="fas fa-clipboard-list"></i> Pedidos para Alistar</h2>
+            <h2>Pedidos para Alistar</h2>
 
             <!-- Barra de búsqueda -->
             <div class="contenedor-busqueda">
@@ -148,53 +148,17 @@
             <table id="tablaPedidos" class="tabla-datos">
                 <thead>
                 <tr>
-                    <th><i class="fas fa-hashtag"></i> ID Pedido</th>
-                    <th><i class="fas fa-box"></i> Tipos de productos</th>
-                    <th><i class="fas fa-sort-numeric-up"></i> Cantidad total</th>
-                    <th><i class="fas fa-calendar-alt"></i> Fecha creación</th>
-                    <th><i class="fas fa-tools"></i> Acciones</th>
+                    <th>ID Pedido</th>
+                    <th>Fecha Creación</th>
+                    <th>Cliente</th>
+                    <th>Total Unidades</th>
+                    <th>Tipos de Productos</th>
+                    <th>Acciones</th>
                 </tr>
                 </thead>
 
                 <tbody id="tablaPedidosBody">
-                <!-- Ejemplo de pedido 1 -->
-                <tr>
-                    <td>101</td>
-                    <td>3</td>
-                    <td>18</td>
-                    <td>2025-11-13</td>
-                    <td>
-                        <button onclick="abrirModal(101)" class="btn-ver">
-                            <i class="fas fa-eye"></i> Ver
-                        </button>
-                    </td>
-                </tr>
 
-                <!-- Ejemplo de pedido 2 -->
-                <tr>
-                    <td>102</td>
-                    <td>2</td>
-                    <td>12</td>
-                    <td>2025-11-13</td>
-                    <td>
-                        <button onclick="abrirModal(102)" class="btn-ver">
-                            <i class="fas fa-eye"></i> Ver
-                        </button>
-                    </td>
-                </tr>
-
-                <!-- Ejemplo de pedido 3 -->
-                <tr>
-                    <td>103</td>
-                    <td>1</td>
-                    <td>24</td>
-                    <td>2025-11-14</td>
-                    <td>
-                        <button onclick="abrirModal(103)" class="btn-ver">
-                            <i class="fas fa-eye"></i> Ver
-                        </button>
-                    </td>
-                </tr>
                 </tbody>
             </table>
 
@@ -216,15 +180,12 @@
             <h2>Pedido #<span id="pedidoId"></span></h2>
 
             <div class="detalle-pedido">
-                <h3><i class="fas fa-boxes"></i> Productos del Pedido:</h3>
+                <h3>Productos del Pedido:</h3>
                 <ul id="listaProductos" class="lista-productos"></ul>
             </div>
 
             <div class="modal-botones">
                 <button class="btn-cancelar" onclick="cerrarModal()">Cerrar</button>
-                <button class="btn-guardar" onclick="marcarListo()">
-                    <i class="fas fa-check"></i> Marcar como Listo
-                </button>
             </div>
         </div>
     </div>

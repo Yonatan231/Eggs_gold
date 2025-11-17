@@ -37,30 +37,6 @@ import org.springframework.ui.Model;
             return "iniciar_sesion/iniciar_sesion"; // Thymeleaf buscará templates/inicio_secion
         }
 
-
-
-        @GetMapping("/logistica_inicio")
-        public String logistica(){
-            return "logistica/logistica_inicio";
-        }
-
-
-        @GetMapping("Registro_conductor")
-        public String registroConductor() {
-            return "registro_conductor";
-        }
-
-        @GetMapping("conductor")
-       public String mostrarConductor() {
-            return "conductor/conductor";
-        }
-
-        @GetMapping("mapa_conductor")
-        public String mostrarmapaConductor() {
-            return "mapa_conductor";
-        }
-
-
     }
 
 

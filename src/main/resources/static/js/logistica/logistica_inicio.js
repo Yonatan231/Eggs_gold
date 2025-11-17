@@ -1,27 +1,8 @@
 /* ============================================
-   PANEL DE LOGÍSTICA - VERSION MODIFICADA
+   PANEL DE LOGÍSTICA - VERSIÓN CON SERVIDOR
    Este archivo controla toda la funcionalidad
-   de la página de logística
+   de la página de logística con conexión real al backend
    ============================================ */
-
-// ============================================
-// DATOS DE EJEMPLO PARA LOS PEDIDOS
-// En un proyecto real, estos vendrían del servidor
-// ============================================
-const pedidos = {
-    101: [
-        { nombre: "Huevo Azul", categoria: "A", cantidad: 10 },
-        { nombre: "Huevo de Campo", categoria: "AA", cantidad: 5 },
-        { nombre: "Huevo Criollo", categoria: "A", cantidad: 3 }
-    ],
-    102: [
-        { nombre: "Huevo Cafe", categoria: "AAA", cantidad: 7 },
-        { nombre: "Huevo Criollo", categoria: "A", cantidad: 5 }
-    ],
-    103: [
-        { nombre: "Huevo Rojo", categoria: "AAA", cantidad: 24 }
-    ]
-};
 
 // ============================================
 // BOTÓN PARA ABRIR/CERRAR EL MENÚ
@@ -31,9 +12,6 @@ const botonMenu = document.querySelector('.toggle-btn');
 // Cuando se hace clic en el botón del menú
 botonMenu.addEventListener('click', function () {
     const menuLateral = document.getElementById('sidebar');
-
-    // Si el menú está abierto, lo cierra. Si está cerrado, lo abre
-    // toggle() significa "cambiar": si tiene la clase la quita, si no la tiene la agrega
     menuLateral.classList.toggle('active');
 });
 
@@ -42,40 +20,113 @@ botonMenu.addEventListener('click', function () {
 // Ejecuta estas funciones automáticamente
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
-    actualizarContadores(); // Actualiza los contadores de las tarjetas
-    configurarBusqueda(); // Configura la búsqueda de pedidos
+    cargarPedidosEnAlistamiento(); // Cargar pedidos que el usuario tomó
+    actualizarContadores(); // Actualizar contadores de tarjetas
+    configurarBusqueda(); // Configurar búsqueda
 });
+
+// ============================================
+// FUNCIÓN: cargarPedidosEnAlistamiento()
+// Obtiene los pedidos EN_ALISTAMIENTO del usuario
+// ============================================
+function cargarPedidosEnAlistamiento() {
+    fetch('/api/logistica/mis-pedidos')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarPedidosEnTabla(data.pedidos);
+            } else {
+                console.error('Error:', data.message);
+                mostrarMensajeVacio();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarMensajeVacio();
+        });
+}
+
+// ============================================
+// FUNCIÓN: mostrarPedidosEnTabla(pedidos)
+// Muestra los pedidos en la tabla principal
+// ============================================
+function mostrarPedidosEnTabla(pedidos) {
+    const tbody = document.getElementById('tablaPedidosBody');
+    const tabla = document.getElementById('tablaPedidos');
+    const mensajeVacio = document.getElementById('mensajeVacio');
+
+    // Limpiar tabla
+    tbody.innerHTML = '';
+
+    // Si no hay pedidos
+    if (pedidos.length === 0) {
+        tabla.style.display = 'none';
+        mensajeVacio.style.display = 'block';
+        return;
+    }
+
+    // Mostrar tabla
+    tabla.style.display = 'table';
+    mensajeVacio.style.display = 'none';
+
+    // Agregar cada pedido
+    pedidos.forEach(pedido => {
+        const fila = document.createElement('tr');
+
+        const fecha = new Date(pedido.fechaCreacion);
+        const fechaFormateada = fecha.toLocaleDateString('es-CO');
+
+        fila.setAttribute('data-estado', 'en_alistamiento');
+
+        // Formatear el precio total
+        const precioTotal = pedido.precioTotal ? `$${pedido.precioTotal.toLocaleString('es-CO')}` : '$0';
+
+        fila.innerHTML = `
+            <td>${pedido.idPedido}</td>
+            <td>${fechaFormateada}</td>
+            <td>${pedido.cliente || 'Cliente'}</td>
+            <td>${pedido.cantidadTotal}</td>
+            <td>${pedido.tiposProductos}</td>
+            <td>
+                <button onclick="abrirModal(${pedido.idPedido})" class="btn-ver">Ver</button>
+                <button onclick="marcarComoListo(this, ${pedido.idPedido})" class="btn-listo">Marcar como Listo</button>
+            </td>
+        `;
+
+        tbody.appendChild(fila);
+    });
+}
+
+// ============================================
+// FUNCIÓN: mostrarMensajeVacio()
+// Muestra mensaje cuando no hay pedidos
+// ============================================
+function mostrarMensajeVacio() {
+    const tabla = document.getElementById('tablaPedidos');
+    const mensajeVacio = document.getElementById('mensajeVacio');
+
+    tabla.style.display = 'none';
+    mensajeVacio.style.display = 'block';
+}
 
 // ============================================
 // FUNCIÓN: actualizarContadores()
 // Actualiza los números en las tarjetas de resumen
 // ============================================
 function actualizarContadores() {
-    // Contar pedidos nuevos (ejemplo: pedidos con estado "Aprobado")
-    // En un proyecto real, esto vendría del servidor
-    const totalPedidosNuevos = 5; // Ejemplo
-    document.getElementById('totalPedidosNuevos').textContent = totalPedidosNuevos;
-
-    // Contar entradas pendientes
-    // En un proyecto real, esto vendría del servidor
-    const totalEntradasPendientes = 3; // Ejemplo
-    document.getElementById('totalEntradasPendientes').textContent = totalEntradasPendientes;
-
-    // Si necesitas obtener datos del servidor, descomenta este código:
-    /*
-    fetch("http://localhost:8080/api/pedido/listar")
+    // Obtener total de pedidos nuevos (PENDIENTES)
+    fetch('/api/logistica/pedidos-pendientes')
         .then(response => response.json())
         .then(data => {
-            if (data.success && data.pedidos) {
-                // Filtrar pedidos nuevos
-                const pedidosNuevos = data.pedidos.filter(pedido => pedido.estado === 'Aprobado');
-                document.getElementById('totalPedidosNuevos').textContent = pedidosNuevos.length;
+            if (data.success) {
+                document.getElementById('totalPedidosNuevos').textContent = data.pedidos.length;
             }
         })
-        .catch(error => {
-            console.error('Error al obtener datos:', error);
-        });
-    */
+        .catch(error => console.error('Error:', error));
+
+    // Obtener total de entradas pendientes (puedes ajustar esto según tu lógica)
+    // Por ahora lo dejamos en 0 o implementar según necesites
+    document.getElementById('totalEntradasPendientes').textContent = '0';
 }
 
 // ============================================
@@ -121,35 +172,39 @@ function configurarBusqueda() {
 
 // ============================================
 // FUNCIÓN: abrirModal(id)
-// Abre el modal con los detalles del pedido
+// Abre el modal con los detalles del pedido desde el servidor
 // ============================================
 function abrirModal(id) {
-    // Mostramos el ID del pedido en el título del modal
+    // Mostrar el ID del pedido en el título del modal
     document.getElementById("pedidoId").textContent = id;
 
-    // Obtenemos la lista de productos del pedido
-    const lista = document.getElementById("listaProductos");
-    lista.innerHTML = ""; // Limpiamos la lista
+    // Obtener detalles del pedido desde el servidor
+    fetch('/api/logistica/detalle-pedido/' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const detalle = data.detalle;
+                const lista = document.getElementById("listaProductos");
+                lista.innerHTML = ''; // Limpiar la lista
 
-    // Verificamos si existe el pedido en nuestros datos
-    if (pedidos[id]) {
-        // Agregamos cada producto a la lista
-        pedidos[id].forEach(producto => {
-            const li = document.createElement("li"); // Creamos un elemento de lista
-            li.textContent = `${producto.nombre} — ${producto.cantidad} unidades`;
-            lista.appendChild(li); // Lo agregamos a la lista
+                // Agregar cada producto a la lista
+                detalle.productos.forEach(producto => {
+                    const li = document.createElement("li");
+                    li.textContent = `${producto.nombre} - Categoría: ${producto.categoria} - ${producto.cantidad} unidades`;
+                    lista.appendChild(li);
+                });
+
+                // Mostrar el modal
+                const modal = document.getElementById("modalDetallePedido");
+                modal.style.display = "flex";
+            } else {
+                alert('Error al cargar detalles: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar los detalles del pedido');
         });
-    } else {
-        // Si no existe el pedido, mostramos un mensaje
-        const li = document.createElement("li");
-        li.textContent = "No se encontraron productos para este pedido";
-        li.style.color = "#999";
-        lista.appendChild(li);
-    }
-
-    // Mostramos el modal
-    const modal = document.getElementById("modalDetallePedido");
-    modal.style.display = "flex";
 }
 
 // ============================================
@@ -162,44 +217,60 @@ function cerrarModal() {
 }
 
 // ============================================
-// FUNCIÓN: marcarListo()
-// Marca un pedido como listo y lo elimina de la tabla
+// FUNCIÓN: marcarComoListo(btn, idPedido)
+// Marca un pedido como listo y cambia el botón a "Asignar Conductor"
 // ============================================
-function marcarListo() {
-    const idPedido = document.getElementById("pedidoId").textContent;
-
-    // Confirmamos la acción
-    if (confirm(`¿Marcar el pedido #${idPedido} como listo?`)) {
-        // Buscamos la fila del pedido en la tabla
-        const tbody = document.getElementById("tablaPedidosBody");
-        const filas = tbody.querySelectorAll("tr");
-
-        filas.forEach(function(fila) {
-            // Obtenemos el ID de la primera celda
-            const idCelda = fila.querySelector("td:first-child").textContent;
-
-            // Si coincide con el ID del pedido, eliminamos la fila
-            if (idCelda === idPedido) {
-                fila.remove();
-            }
-        });
-
-        // Mostramos mensaje de éxito
-        alert(`Pedido #${idPedido} marcado como listo correctamente`);
-
-        // Cerramos el modal
-        cerrarModal();
-
-        // Actualizamos los contadores
-        actualizarContadores();
-
-        // Verificamos si quedan pedidos en la tabla
-        const filasRestantes = tbody.querySelectorAll("tr");
-        if (filasRestantes.length === 0) {
-            document.getElementById("tablaPedidos").style.display = "none";
-            document.getElementById("mensajeVacio").style.display = "block";
-        }
+function marcarComoListo(btn, idPedido) {
+    // Confirmar acción
+    if (!confirm(`¿Marcar el pedido #${idPedido} como listo?`)) {
+        return;
     }
+
+    // Cambiar el botón a "Asignar Conductor"
+    btn.textContent = 'Asignar Conductor';
+    btn.classList.remove('btn-listo');
+    btn.classList.add('btn-asignar');
+    btn.onclick = null; // Quitar la funcionalidad de clic
+
+    // Cambiar el estado de la fila
+    const fila = btn.closest('tr');
+    fila.setAttribute('data-estado', 'listo');
+
+    // Enviar petición al servidor (opcional)
+    fetch('/api/logistica/marcar-listo/' + idPedido, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mensaje de éxito
+                alert(data.message);
+
+                // Actualizar contadores
+                actualizarContadores();
+            } else {
+                alert('Error: ' + data.message);
+                // Revertir el cambio si hay error
+                btn.textContent = 'Marcar como Listo';
+                btn.classList.remove('btn-asignar');
+                btn.classList.add('btn-listo');
+                btn.onclick = function() { marcarComoListo(btn, idPedido); };
+                fila.setAttribute('data-estado', 'en_alistamiento');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al marcar el pedido como listo');
+            // Revertir el cambio si hay error
+            btn.textContent = 'Marcar como Listo';
+            btn.classList.remove('btn-asignar');
+            btn.classList.add('btn-listo');
+            btn.onclick = function() { marcarComoListo(btn, idPedido); };
+            fila.setAttribute('data-estado', 'en_alistamiento');
+        });
 }
 
 // ============================================

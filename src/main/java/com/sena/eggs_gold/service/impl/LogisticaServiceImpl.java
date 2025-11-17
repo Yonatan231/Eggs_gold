@@ -2,25 +2,46 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.LogisticaDTO;
 import com.sena.eggs_gold.model.entity.Logistica;
+import com.sena.eggs_gold.model.entity.Pedido;
+import com.sena.eggs_gold.model.entity.DetallePedido;
+import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.model.entity.Rol;
 import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
+import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.repository.LogisticaRepository;
 import com.sena.eggs_gold.repository.RolRepository;
+import com.sena.eggs_gold.repository.PedidoRepository;
+import com.sena.eggs_gold.repository.DetallePedidoRepository;
+import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.LogisticaService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class LogisticaServiceImpl implements LogisticaService {
 
     private final LogisticaRepository logisticaRepository;
     private final RolRepository rolRepository;
+    private final PedidoRepository pedidoRepository;
+    private final DetallePedidoRepository detallePedidoRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public LogisticaServiceImpl(LogisticaRepository logisticaRepository, RolRepository rolRepository) {
+    public LogisticaServiceImpl(LogisticaRepository logisticaRepository,
+                                RolRepository rolRepository,
+                                PedidoRepository pedidoRepository,
+                                DetallePedidoRepository detallePedidoRepository,
+                                UsuarioRepository usuarioRepository) {
         this.logisticaRepository = logisticaRepository;
         this.rolRepository = rolRepository;
+        this.pedidoRepository = pedidoRepository;
+        this.detallePedidoRepository = detallePedidoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -68,5 +89,121 @@ public class LogisticaServiceImpl implements LogisticaService {
 
         // ✅ Guardar en la base de datos
         logisticaRepository.save(logistica);
+    }
+
+    // =====================================================
+    // NUEVOS MÉTODOS PARA GESTIÓN DE PEDIDOS
+    // =====================================================
+
+    @Override
+    public List<Map<String, Object>> obtenerPedidosPendientes() {
+        // Buscar pedidos con estado PENDIENTE, ordenados por fecha de creación
+        List<Pedido> pedidos = pedidoRepository.findByEstadoOrderByFechaCreacionDesc(EstadoPedido.PENDIENTE);
+
+        // Convertir cada pedido a un Map con la información necesaria
+        return pedidos.stream().map(pedido -> {
+            Map<String, Object> pedidoMap = new HashMap<>();
+            pedidoMap.put("idPedido", pedido.getIdPedidos());
+            pedidoMap.put("cantidadTotal", pedido.getCantidadTotal());
+            pedidoMap.put("fechaCreacion", pedido.getFechaCreacion());
+
+            // Contar tipos de productos diferentes
+            List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
+            pedidoMap.put("tiposProductos", detalles.size());
+
+            return pedidoMap;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void tomarPedido(Integer idPedido, Integer idLogistica) {
+        // Buscar el pedido
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        // Verificar que el pedido esté en estado PENDIENTE
+        if (pedido.getEstado() != EstadoPedido.PENDIENTE) {
+            throw new RuntimeException("El pedido no está pendiente");
+        }
+
+        // Buscar el usuario de logística
+        Usuario logistica = usuarioRepository.findById(idLogistica)
+                .orElseThrow(() -> new RuntimeException("Usuario de logística no encontrado"));
+
+        // Asignar logística al pedido y cambiar estado
+        pedido.setLogistica(logistica);
+        pedido.setEstado(EstadoPedido.EN_ALISTAMIENTO);
+
+        // Guardar cambios
+        pedidoRepository.save(pedido);
+    }
+
+    @Override
+    public List<Map<String, Object>> obtenerPedidosEnAlistamiento(Integer idLogistica) {
+        // Buscar pedidos que estén EN_ALISTAMIENTO y asignados a este usuario
+        List<Pedido> pedidos = pedidoRepository.findAll().stream()
+                .filter(p -> p.getEstado() == EstadoPedido.EN_ALISTAMIENTO
+                        && p.getLogistica() != null
+                        && p.getLogistica().getIdUsuarios().equals(idLogistica))
+                .collect(Collectors.toList());
+
+        // Convertir a Map
+        return pedidos.stream().map(pedido -> {
+            Map<String, Object> pedidoMap = new HashMap<>();
+            pedidoMap.put("idPedido", pedido.getIdPedidos());
+            pedidoMap.put("cantidadTotal", pedido.getCantidadTotal());
+            pedidoMap.put("fechaCreacion", pedido.getFechaCreacion());
+
+            // Contar tipos de productos
+            List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
+            pedidoMap.put("tiposProductos", detalles.size());
+
+            return pedidoMap;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Object> obtenerDetallesPedido(Integer idPedido) {
+        // Buscar el pedido
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        // Buscar los detalles del pedido
+        List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(idPedido);
+
+        // Crear lista de productos con su información
+        List<Map<String, Object>> productos = detalles.stream().map(detalle -> {
+            Map<String, Object> productoMap = new HashMap<>();
+            productoMap.put("nombre", detalle.getProducto().getNombre());
+            productoMap.put("categoria", detalle.getProducto().getCategoria().toString());
+            productoMap.put("cantidad", detalle.getCantidad());
+            return productoMap;
+        }).collect(Collectors.toList());
+
+        // Crear mapa con toda la información
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("idPedido", pedido.getIdPedidos());
+        resultado.put("productos", productos);
+        resultado.put("cantidadTotal", pedido.getCantidadTotal());
+
+        return resultado;
+    }
+
+    @Override
+    public void marcarPedidoListo(Integer idPedido) {
+        // Buscar el pedido
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        // Verificar que esté en alistamiento
+        if (pedido.getEstado() != EstadoPedido.EN_ALISTAMIENTO) {
+            throw new RuntimeException("El pedido no está en alistamiento");
+        }
+
+        // Cambiar estado a LISTO
+        pedido.setEstado(EstadoPedido.LISTO);
+
+        // Guardar cambios
+        pedidoRepository.save(pedido);
     }
 }

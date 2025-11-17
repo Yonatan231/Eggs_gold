@@ -86,7 +86,7 @@ public class LoginController {
             session.setAttribute("rol", "CONDUCTOR");
             session.setAttribute("idConductor", conductor.getIdUsuarios());
             model.addAttribute("usuario", conductor);
-            return "redirect:/conductor";
+            return "redirect:/conductor_inicio";
         }
 
         return "redirect:/login?error"; // Agrega esto para manejar login fallido

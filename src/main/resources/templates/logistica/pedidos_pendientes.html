@@ -11,7 +11,7 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Estilos base -->
-    <link rel="stylesheet" th:href="@{/css/conductor/conductor.css}" />
+    <link rel="stylesheet" th:href="@{/css/conductor/conductor_inicio.css}" />
     <link rel="stylesheet" th:href="@{/css/logistica/pedidos_pendientes.css}" />
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
@@ -69,40 +69,16 @@
             <table id="tablaPedidos">
                 <thead>
                 <tr>
-                    <th><i class="fas fa-hashtag"></i> ID Pedido</th>
-                    <th><i class="fas fa-sort-numeric-up"></i> Total Unidades</th>
-                    <th><i class="fas fa-box"></i> Tipos de Productos</th>
-                    <th><i class="fas fa-calendar-alt"></i> Fecha Creación</th>
-                    <th><i class="fas fa-tools"></i> Acción</th>
+                    <th>ID Pedido</th>
+                    <th>Fecha Creación</th>
+                    <th>Cliente</th>
+                    <th>Total Unidades</th>
+                    <th>Tipos de Productos</th>
+                    <th>Acción</th>
                 </tr>
                 </thead>
                 <tbody id="tablaBody">
-                <!-- Ejemplo de pedido 1 -->
-                <tr>
-                    <td>101</td>
-                    <td>24</td>
-                    <td>2</td>
-                    <td>2025-11-13 10:30</td>
-                    <td><button class="btn-tomar" onclick="tomarPedido(101)"><i class="fas fa-hand-paper"></i> Tomar</button></td>
-                </tr>
-
-                <!-- Ejemplo de pedido 2 -->
-                <tr>
-                    <td>102</td>
-                    <td>36</td>
-                    <td>3</td>
-                    <td>2025-11-13 10:31</td>
-                    <td><button class="btn-tomar" onclick="tomarPedido(102)"><i class="fas fa-hand-paper"></i> Tomar</button></td>
-                </tr>
-
-                <!-- Ejemplo de pedido 3 -->
-                <tr>
-                    <td>103</td>
-                    <td>12</td>
-                    <td>1</td>
-                    <td>2025-11-13 10:35</td>
-                    <td><button class="btn-tomar" onclick="tomarPedido(103)"><i class="fas fa-hand-paper"></i> Tomar</button></td>
-                </tr>
+                <!-- Los pedidos se cargan dinámicamente desde el servidor -->
                 </tbody>
             </table>
 

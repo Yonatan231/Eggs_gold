@@ -90,6 +90,7 @@ public class RoleInterceptor implements HandlerInterceptor {
 
         // vistas para conductos
         if (uri.startsWith("/conductor") ||
+                uri.startsWith("/historial_pedidos_conductor") ||
                 uri.startsWith("/registrar_vehiculo")){
             return "CONDUCTOR".equals(rol);
         }

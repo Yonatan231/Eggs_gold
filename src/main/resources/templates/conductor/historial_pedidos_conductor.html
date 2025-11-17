@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- INFORMACIÓN BÁSICA DE LA PÁGINA -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Historial de pedidos entregados - Eggs Gold">
+    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}">
+
+    <!-- ICONOS DE FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ESTILOS PERSONALIZADOS -->
+    <link rel="stylesheet" th:href="@{css/conductor/conductor_inicio.css}">
+    <link rel="stylesheet" th:href="@{css/inicio/logo.css}">
+    <link rel="stylesheet" th:href="@{css/conductor/historial_pedidos_conductor.css}">
+
+    <title>Historial de Pedidos - Conductor - Eggs Gold</title>
+</head>
+<body>
+
+<!-- ============================================
+     BOTÓN PARA ABRIR EL MENÚ EN MÓVILES
+     ============================================ -->
+<button class="toggle-btn">
+    ☰
+</button>
+
+<!-- ============================================
+     MENÚ LATERAL
+     ============================================ -->
+<nav id="sidebar">
+    <ul>
+        <!-- PERFIL DEL CONDUCTOR -->
+        <li class="perfil-admin">
+            <div class="avatar-contenedor" id="avatar-contenedor">
+                <!-- Iniciales cuando no hay foto -->
+                <span id="avatar-iniciales">CD</span>
+
+                <!-- Foto de perfil -->
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
+
+                <input type="file" id="input-foto" accept="image/*" style="display: none;">
+            </div>
+            <h2>Panel de Conductor</h2>
+        </li>
+
+        <li>
+            <a th:href="@{conductor_inicio}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </li>
+
+        <li>
+            <a href="/logout" id="cerrar_sesion">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- ============================================
+     CONTENIDO PRINCIPAL
+     ============================================ -->
+<main id="main-content">
+
+    <!-- CABECERA -->
+    <header role="banner">
+        <div class="opciones">
+            <!-- Logo y marca alineados horizontalmente -->
+            <div class="marca-contenedor">
+                <div class="logo">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
+                </div>
+
+                <div class="marca-texto">
+                    <h1 class="titulo">Eggs Gold</h1>
+                    <p class="subtitulo">Huevos frescos a tu puerta</p>
+                </div>
+            </div>
+
+            <h1 class="titulo2">Historial de Pedidos Entregados</h1>
+        </div>
+    </header>
+
+    <!-- ============================================
+         CONTENEDOR DE LA TABLA DE PEDIDOS
+         ============================================ -->
+    <div class="tabla-contenedor">
+        <div class="tabla-header">
+            <h2>Historial de Pedidos Entregados</h2>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="busqueda-contenedor">
+            <i class="fas fa-search icono-busqueda"></i>
+            <input
+                    type="text"
+                    id="busqueda"
+                    placeholder="Buscar por cliente o Numero de pedido..."
+                    onkeyup="filtrarPedidos()">
+        </div>
+
+        <!-- Tabla de pedidos -->
+        <div class="tabla-wrapper">
+            <table id="tablaPedidos">
+                <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Fecha Entrega</th>
+                    <th>Cliente</th>
+                    <th>Dirección</th>
+                    <th>Tipos Productos</th>
+                    <th>Cantidad Total</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody id="tablaBody">
+                <!-- Ejemplo de pedido 1 -->
+                <tr>
+                    <td>15</td>
+                    <td>2025-11-10</td>
+                    <td>Juan Pérez</td>
+                    <td>Calle 10 #15-22</td>
+                    <td>2</td>
+                    <td>3 unidades</td>
+                    <td>
+                        <button class="btn-accion btn-ver" onclick="verDetalle(15)"> Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Ejemplo de pedido 2 -->
+                <tr>
+                    <td>16</td>
+                    <td>2025-11-11</td>
+                    <td>Laura Gómez</td>
+                    <td>Av 30 #20-10</td>
+                    <td>1</td>
+                    <td>2 unidades</td>
+                    <td>
+                        <button class="btn-accion btn-ver" onclick="verDetalle(16)"> Ver
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Mensaje cuando no hay pedidos -->
+            <div id="sin-pedidos" class="sin-pedidos" style="display: none;">
+                <i class="fas fa-box-open icono-vacio"></i>
+                <p>No hay pedidos en el historial</p>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ============================================
+     MODAL PARA VER DETALLE DEL PEDIDO
+     ============================================ -->
+<div id="modalDetallePedido" class="modal">
+    <div class="modal-contenido">
+        <!-- Botón para cerrar -->
+        <span class="cerrar" onclick="cerrarModal()">&times;</span>
+
+        <!-- Título del modal -->
+        <h2>Detalle del Pedido #<span id="pedidoId"></span></h2>
+
+        <!-- Información del cliente -->
+        <div class="info-cliente">
+            <h3><i class="fas fa-user"></i> Información del Cliente:</h3>
+            <p><strong>Nombre:</strong> <span id="clienteNombre"></span></p>
+            <p><strong>Dirección:</strong> <span id="clienteDireccion"></span></p>
+            <p><strong>Fecha de entrega:</strong> <span id="fechaEntrega"></span></p>
+        </div>
+
+        <!-- Comentarios -->
+        <div class="comentarios-section">
+            <div class="comentario-item">
+                <h3><i class="fas fa-comment"></i> Comentario del Cliente:</h3>
+                <p id="comentarioCliente" class="comentario-texto"></p>
+            </div>
+
+            <div class="comentario-item">
+                <h3><i class="fas fa-clipboard"></i> Comentario del Conductor:</h3>
+                <p id="comentarioConductor" class="comentario-texto"></p>
+            </div>
+        </div>
+
+        <!-- Lista de productos -->
+        <div class="detalle-productos">
+            <h3><i class="fas fa-shopping-basket"></i> Productos Entregados:</h3>
+            <ul id="listaProductos" class="lista-productos"></ul>
+        </div>
+
+        <!-- Botón para cerrar -->
+        <div class="modal-botones">
+            <button class="btn-modal btn-cerrar" onclick="cerrarModal()">
+                <i class="fas fa-times"></i> Cerrar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script th:src="@{js/conductor/historial_pedidos_conductor.js}"></script>
+
+<script th:src="@{js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/utils/manejo_sesion.js}"></script>
+<script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script> validarRolPagina('CONDUCTOR'); </script>
+
+</body>
+</html>

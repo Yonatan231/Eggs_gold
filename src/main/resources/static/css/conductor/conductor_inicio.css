@@ -7,8 +7,7 @@
     --color-rojo: #e74c3c;
     --color-naranja: #e67e22;
     --color-amarillo: #F7DC6F;
-    --color-azul: #27AE60;
-    --color-morado: #9b59b6;
+    --color-azul: #3498db;
     --color-fondo: #FEFCF4;
     --color-gris: #7f8c8d;
 }
@@ -113,6 +112,7 @@ body {
     font-weight: bold; /* Texto en negrita */
     color: white; /* Color blanco */
     position: relative; /* Permite posicionar el botón de subir foto */
+    cursor: pointer; /* Cambia el cursor a manita */
     transition: all 0.3s ease; /* Animación suave */
 }
 
@@ -147,6 +147,7 @@ body {
     display: flex; /* Para centrar el símbolo + */
     align-items: center; /* Centra verticalmente */
     justify-content: center; /* Centra horizontalmente */
+    cursor: pointer; /* Cambia el cursor a manita */
     font-size: 14px; /* Tamaño del símbolo + */
 }
 
@@ -204,7 +205,7 @@ header {
     gap: 15px; /* Espacio entre logo y texto */
 }
 
-/* Título centrado "Bienvenido, Logística" */
+/* Título centrado "Bienvenido, Conductor" */
 .titulo2 {
     font-size: 24px; /* Tamaño del texto */
     font-weight: 600; /* Grosor medio-alto */
@@ -223,7 +224,7 @@ header {
 }
 
 /* ============================================
-   CONTENEDOR DE TARJETAS DE RESUMEN (MODIFICADO)
+   TARJETAS DE RESUMEN
    ============================================ */
 .contenedor-cuadros {
     display: grid; /* Usa una cuadrícula */
@@ -232,30 +233,29 @@ header {
     margin-bottom: 30px; /* Espacio abajo */
 }
 
-/* Tarjeta individual de resumen */
+/* Tarjeta individual */
 .tarjeta-resumen {
     background: white; /* Fondo blanco */
-    border-radius: 12px; /* Esquinas redondeadas */
-    padding: 25px; /* Espacio interno */
+    border-radius: 10px; /* Esquinas redondeadas */
+    padding: 20px; /* Espacio interno */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     display: flex; /* Organiza icono y contenido en fila */
     align-items: center; /* Centra verticalmente */
-    gap: 20px; /* Espacio entre icono y contenido */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+    gap: 15px; /* Espacio entre icono y contenido */
     transition: all 0.3s ease; /* Animación suave */
-    cursor: pointer; /* Cambia el cursor a manita */
 }
 
 /* Animación cuando paso el mouse sobre la tarjeta */
 .tarjeta-resumen:hover {
-    transform: translateY(-5px); /* Se eleva 5px */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+    transform: translateY(-5px); /* Se eleva 5px hacia arriba */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra más grande */
 }
 
 /* Icono de la tarjeta */
 .tarjeta-icono {
-    width: 60px; /* Ancho del círculo */
-    height: 60px; /* Alto del círculo */
-    border-radius: 50%; /* Forma circular */
+    width: 60px; /* Ancho */
+    height: 60px; /* Alto */
+    border-radius: 10px; /* Esquinas redondeadas */
     display: flex; /* Para centrar el icono */
     align-items: center; /* Centra verticalmente */
     justify-content: center; /* Centra horizontalmente */
@@ -263,181 +263,169 @@ header {
     color: white; /* Color blanco */
 }
 
-/* Tarjeta de Pedidos Nuevos - Color Naranja */
-.pedidos-nuevos .tarjeta-icono {
-    background: linear-gradient(135deg, var(--color-naranja), #d35400); /* Degradado naranja */
+/* Color específico para tarjeta de pedidos asignados */
+.pedidos-asignados .tarjeta-icono {
+    background: linear-gradient(135deg, var(--color-verde), #2ecc71); /* Degradado verde */
 }
 
-/* Tarjeta de Entradas Pendientes - Color Morado */
-.entradas-pendientes .tarjeta-icono {
-    background: linear-gradient(135deg, var(--color-morado), #8e44ad); /* Degradado morado */
+/* Color específico para tarjeta de pedidos pendientes */
+.pedidos-pendientes .tarjeta-icono {
+    background: linear-gradient(135deg, var(--color-naranja), #f39c12); /* Degradado naranja */
 }
 
-/* Contenido de la tarjeta (texto y número) */
+/* Contenido de la tarjeta (texto) */
 .tarjeta-contenido h3 {
-    font-size: 16px; /* Tamaño del título */
-    color: #7f8c8d; /* Color gris */
-    margin-bottom: 8px; /* Espacio abajo */
-    font-weight: 500; /* Grosor medio */
+    font-size: 14px; /* Tamaño del texto */
+    color: var(--color-gris); /* Color gris */
+    margin-bottom: 5px; /* Espacio abajo */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    letter-spacing: 0.5px; /* Espaciado entre letras */
 }
 
-/* Número contador grande */
+/* Contador (número grande) */
 .contador {
-    font-size: 36px; /* Tamaño grande */
+    font-size: 32px; /* Tamaño grande */
     font-weight: bold; /* Texto en negrita */
     color: #2c3e50; /* Color oscuro */
 }
 
 /* ============================================
-   SECCIÓN DE TABLA DE PEDIDOS (NUEVO)
+   SECCIÓN DE TABLA DE PEDIDOS
    ============================================ */
 .seccion-tabla {
     background: white; /* Fondo blanco */
-    border-radius: 12px; /* Esquinas redondeadas */
-    padding: 25px; /* Espacio interno */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+    border-radius: 10px; /* Esquinas redondeadas */
+    padding: 20px; /* Espacio interno */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    margin-bottom: 30px; /* Espacio abajo */
 }
 
-/* Encabezado de la tabla */
 .encabezado-tabla {
-    display: flex; /* Organiza título y búsqueda en fila */
+    display: flex; /* Organiza en fila */
     justify-content: space-between; /* Espacio entre elementos */
     align-items: center; /* Centra verticalmente */
     margin-bottom: 20px; /* Espacio abajo */
-    flex-wrap: wrap; /* Permite que se ajuste en móviles */
-    gap: 15px; /* Espacio entre elementos */
+    flex-wrap: wrap; /* Permite ajuste en móviles */
 }
 
 .encabezado-tabla h2 {
-    font-size: 22px; /* Tamaño del título */
+    font-size: 22px; /* Tamaño del texto */
     color: #2c3e50; /* Color oscuro */
+    display: flex; /* Para alinear icono y texto */
+    align-items: center; /* Centra verticalmente */
+    gap: 10px; /* Espacio entre icono y texto */
 }
 
-/* Contenedor de búsqueda */
 .contenedor-busqueda {
-    display: flex; /* Organiza en fila */
-    gap: 10px; /* Espacio entre elementos */
+    flex: 0 0 300px; /* Ancho fijo de 300px */
 }
 
-/* Input de búsqueda */
 .input-buscar {
+    width: 100%; /* Ocupa todo el ancho */
     padding: 10px 15px; /* Espacio interno */
-    border: 2px solid #e0e0e0; /* Borde gris claro */
-    border-radius: 8px; /* Esquinas redondeadas */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 6px; /* Esquinas redondeadas */
     font-size: 14px; /* Tamaño del texto */
-    width: 280px; /* Ancho fijo */
     transition: all 0.3s ease; /* Animación suave */
 }
 
-/* Animación cuando se enfoca el input */
 .input-buscar:focus {
     outline: none; /* Quita el borde predeterminado */
-    border-color: var(--color-azul); /* Borde azul */
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1); /* Resplandor azul */
+    border-color: var(--color-verde); /* Borde verde */
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); /* Sombra verde sutil */
 }
 
-/* Contenedor con scroll para la tabla */
 .tabla-contenedor-scroll {
-    overflow-x: auto; /* Permite scroll horizontal en móviles */
+    overflow-x: auto; /* Permite scroll horizontal si es necesario */
 }
 
-/* Tabla de datos */
+/* ============================================
+   ESTILOS DE LA TABLA
+   ============================================ */
 .tabla-datos {
     width: 100%; /* Ocupa todo el ancho */
     border-collapse: collapse; /* Une los bordes de las celdas */
-    margin-top: 10px; /* Espacio arriba */
+}
+
+.tabla-datos th,
+.tabla-datos td {
+    padding: 12px; /* Espacio interno */
+    text-align: left; /* Texto alineado a la izquierda */
+    border-bottom: 1px solid #eee; /* Línea divisoria */
 }
 
 /* Encabezado de la tabla */
-.tabla-datos thead {
-    background-color: #f8f9fa; /* Fondo gris muy claro */
-}
-
 .tabla-datos th {
-    padding: 15px 12px; /* Espacio interno */
-    text-align: left; /* Texto alineado a la izquierda */
+    background-color: #f8f9fa; /* Fondo gris muy claro */
+    color: #2c3e50; /* Texto oscuro */
     font-weight: 600; /* Texto en negrita */
-    color: #333; /* Color oscuro */
-    background-color: #27AE60; /* Fondo verde */
-    color: white; /* Texto blanco */
     font-size: 14px; /* Tamaño del texto */
-    border: none; /* Sin bordes */
-}
-
-/* Filas de la tabla */
-.tabla-datos tbody tr {
-    border: none; /* Sin bordes */
-    transition: background-color 0.2s; /* Animación suave */
+    text-transform: uppercase; /* Texto en mayúsculas */
 }
 
 /* Animación cuando paso el mouse sobre una fila */
 .tabla-datos tbody tr:hover {
-    background-color: #f8f9fa; /* Fondo gris claro */
-}
-
-/* Celdas de la tabla */
-.tabla-datos td {
-    padding: 15px 12px; /* Espacio interno */
-    color: #555; /* Color gris oscuro */
-    font-size: 14px; /* Tamaño del texto */
-    text-align: center; /* Texto centrado */
-    border: none; /* Sin bordes */
-}
-
-/* Botón Ver */
-.btn-ver {
-    background-color: #F7DC6F; /* Fondo amarillo */
-    color: white; /* Texto blanco */
-    border: none; /* Sin borde */
-    padding: 8px 16px; /* Espacio interno */
-    border-radius: 4px; /* Esquinas redondeadas */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    transition: all 0.3s ease; /* Animación suave */
-    margin-right: 5px; /* Espacio entre botones */
-}
-
-/* Animación del botón Ver */
-.btn-ver:hover {
-    background-color: #F4D03F; /* Amarillo más oscuro */
-}
-
-/* Botón Marcar como Listo */
-.btn-listo {
-    background-color: #27AE60; /* Fondo verde */
-    color: white; /* Texto blanco */
-    border: none; /* Sin borde */
-    padding: 8px 16px; /* Espacio interno */
-    border-radius: 4px; /* Esquinas redondeadas */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    transition: all 0.3s ease; /* Animación suave */
-}
-
-/* Animación del botón Listo */
-.btn-listo:hover {
-    background-color: #229954; /* Verde más oscuro */
-}
-
-/* Botón Asignar Conductor */
-.btn-asignar {
-    background-color: #5dade2; /* Fondo azul claro */
-    color: white; /* Texto blanco */
-    border: none; /* Sin borde */
-    padding: 8px 16px; /* Espacio interno */
-    border-radius: 4px; /* Esquinas redondeadas */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    transition: all 0.3s ease; /* Animación suave */
-}
-
-/* Animación del botón Asignar */
-.btn-asignar:hover {
-    background-color: #3498db; /* Azul más oscuro */
+    background-color: #f8f9fa; /* Fondo gris muy claro */
 }
 
 /* ============================================
-   MODAL (Ventana emergente)
+   BOTONES DE ACCIÓN EN LAS TABLAS
+   ============================================ */
+.btn-accion-tabla {
+    padding: 8px 12px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 13px; /* Tamaño del texto */
+    margin-right: 5px; /* Espacio a la derecha */
+    margin-bottom: 5px; /* Espacio abajo */
+    transition: all 0.2s ease; /* Animación suave */
+    color: white; /* Texto blanco */
+}
+
+.btn-ruta {
+    background: var(--color-azul); /* Fondo azul */
+}
+
+.btn-ruta:hover {
+    background: #2980b9; /* Azul más oscuro */
+}
+
+.btn-entregado {
+    background: var(--color-verde); /* Fondo verde */
+}
+
+.btn-entregado:hover {
+    background: #2ecc71; /* Verde más claro */
+}
+
+.btn-ver-pedido {
+    background: var(--color-naranja); /* Fondo naranja */
+}
+
+.btn-ver-pedido:hover {
+    background: #d68910; /* Naranja más oscuro */
+}
+
+/* ============================================
+   MENSAJE VACÍO (cuando no hay datos)
+   ============================================ */
+.mensaje-vacio {
+    text-align: center; /* Texto centrado */
+    padding: 40px 20px; /* Espacio interno */
+    color: var(--color-gris); /* Color gris */
+    font-size: 18px; /* Tamaño del texto */
+}
+
+.mensaje-vacio i {
+    font-size: 48px; /* Icono grande */
+    color: #ddd; /* Color gris claro */
+    margin-bottom: 15px; /* Espacio abajo */
+    display: block; /* Ocupa toda la línea */
+}
+
+/* ============================================
+   MODAL PARA VER DETALLE DEL PEDIDO
    ============================================ */
 .modal {
     display: none; /* Oculto por defecto */
@@ -446,7 +434,7 @@ header {
     left: 0; /* Pegado a la izquierda */
     width: 100%; /* Ocupa todo el ancho */
     height: 100%; /* Ocupa todo el alto */
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
     z-index: 1000; /* Aparece encima de todo */
@@ -458,7 +446,7 @@ header {
     border-radius: 12px; /* Esquinas redondeadas */
     padding: 30px; /* Espacio interno */
     width: 90%; /* Ancho del 90% */
-    max-width: 500px; /* Ancho máximo */
+    max-width: 600px; /* Ancho máximo */
     max-height: 90vh; /* Altura máxima */
     overflow-y: auto; /* Permite scroll si el contenido es largo */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
@@ -466,7 +454,7 @@ header {
 }
 
 .modal-contenido h2 {
-    margin-bottom: 20px; /* Espacio abajo */
+    margin-bottom: 25px; /* Espacio abajo */
     color: #2c3e50; /* Color oscuro */
     text-align: center; /* Texto centrado */
     font-size: 24px; /* Tamaño del título */
@@ -481,23 +469,45 @@ header {
     font-weight: bold; /* Texto en negrita */
     cursor: pointer; /* Cambia el cursor a manita */
     color: #999; /* Color gris */
-    transition: color 0.3s ease; /* Animación suave */
 }
 
-/* Animación del botón cerrar */
 .cerrar:hover {
-    color: var(--color-rojo); /* Se vuelve rojo */
+    color: #e74c3c; /* Se vuelve rojo */
 }
 
-/* Detalles del pedido */
-.detalle-pedido {
-    margin: 20px 0; /* Espacio arriba y abajo */
+/* ============================================
+   INFORMACIÓN DEL CLIENTE EN EL MODAL
+   ============================================ */
+.info-cliente {
+    background-color: #f8f9fa; /* Fondo gris claro */
+    padding: 15px; /* Espacio interno */
+    border-radius: 8px; /* Esquinas redondeadas */
+    margin-bottom: 20px; /* Espacio abajo */
 }
 
-.detalle-pedido h3 {
-    font-size: 18px; /* Tamaño del subtítulo */
+.info-cliente h3 {
+    font-size: 16px; /* Tamaño del subtítulo */
     color: #2c3e50; /* Color oscuro */
-    margin-bottom: 15px; /* Espacio abajo */
+    margin-bottom: 12px; /* Espacio abajo */
+}
+
+.info-cliente p {
+    margin: 8px 0; /* Espacio arriba y abajo */
+    font-size: 14px; /* Tamaño del texto */
+    color: #555; /* Color gris oscuro */
+}
+
+/* ============================================
+   DETALLE DE PRODUCTOS EN EL MODAL
+   ============================================ */
+.detalle-productos {
+    margin-bottom: 20px; /* Espacio abajo */
+}
+
+.detalle-productos h3 {
+    font-size: 16px; /* Tamaño del subtítulo */
+    color: #2c3e50; /* Color oscuro */
+    margin-bottom: 12px; /* Espacio abajo */
 }
 
 /* Lista de productos */
@@ -511,12 +521,14 @@ header {
     background-color: #f8f9fa; /* Fondo gris claro */
     margin-bottom: 8px; /* Espacio abajo */
     border-radius: 6px; /* Esquinas redondeadas */
-    border-left: 4px solid var(--color-verde); /* Línea verde a la izquierda */
-    font-size: 15px; /* Tamaño del texto */
+    border-left: 4px solid #F1C40F; /* Línea amarilla a la izquierda */
+    font-size: 14px; /* Tamaño del texto */
     color: #333; /* Color oscuro */
 }
 
-/* Contenedor de botones del modal */
+/* ============================================
+   BOTONES DEL MODAL
+   ============================================ */
 .modal-botones {
     display: flex; /* Organiza los botones en fila */
     justify-content: flex-end; /* Alineados a la derecha */
@@ -524,66 +536,28 @@ header {
     margin-top: 25px; /* Espacio arriba */
 }
 
-/* Botón CANCELAR del modal */
+/* Botones del modal */
+.btn-modal {
+    padding: 10px 20px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 6px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+}
+
+/* Botón Cancelar del modal */
 .btn-cancelar {
     background: #95a5a6; /* Fondo gris */
     color: white; /* Texto blanco */
-    border: none; /* Sin borde */
-    border-radius: 6px; /* Esquinas redondeadas */
-    padding: 10px 20px; /* Espacio interno */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    transition: all 0.3s ease; /* Animación suave */
 }
 
-/* Animación del botón CANCELAR */
 .btn-cancelar:hover {
     background: #7f8c8d; /* Gris más oscuro */
 }
 
-/* Botón GUARDAR del modal */
-.btn-guardar {
-    background: var(--color-verde); /* Fondo verde */
-    color: white; /* Texto blanco */
-    border: none; /* Sin borde */
-    border-radius: 6px; /* Esquinas redondeadas */
-    padding: 10px 20px; /* Espacio interno */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    display: inline-flex; /* Para alinear el icono */
-    align-items: center; /* Centra verticalmente */
-    gap: 6px; /* Espacio entre icono y texto */
-    transition: all 0.3s ease; /* Animación suave */
-}
-
-/* Animación del botón GUARDAR */
-.btn-guardar:hover {
-    background: #2ecc71; /* Verde más claro */
-}
-
-/* ============================================
-   MENSAJE VACÍO (cuando no hay datos)
-   ============================================ */
-.mensaje-vacio {
-    text-align: center; /* Texto centrado */
-    padding: 60px 20px; /* Espacio interno */
-    color: var(--color-gris); /* Color gris */
-}
-
-.mensaje-vacio i {
-    font-size: 64px; /* Tamaño grande del icono */
-    color: #ddd; /* Color gris claro */
-    margin-bottom: 15px; /* Espacio abajo */
-}
-
-.mensaje-vacio p {
-    font-size: 18px; /* Tamaño del texto */
-    margin: 0; /* Sin márgenes */
-}
-
 /* ============================================
    RESPONSIVE PARA MÓVILES
-   Estos estilos se aplican solo en pantallas pequeñas
    ============================================ */
 @media (max-width: 768px) {
     /* Muestra el botón hamburguesa en móviles */
@@ -614,8 +588,6 @@ header {
 
     .titulo2 {
         font-size: 18px; /* Texto más pequeño */
-        position: static; /* Vuelve a flujo normal */
-        transform: none; /* Quita la transformación */
     }
 
     /* Tarjetas en una sola columna en móviles */
@@ -623,325 +595,159 @@ header {
         grid-template-columns: 1fr; /* Una sola columna */
     }
 
-    /* Encabezado de tabla en columna */
-    .encabezado-tabla {
-        flex-direction: column; /* Organiza en columna */
-        align-items: flex-start; /* Alinea a la izquierda */
-    }
-
-    /* Input de búsqueda ocupa todo el ancho */
-    .input-buscar {
-        width: 100%; /* Ocupa todo el ancho */
-    }
-
     /* Tabla con scroll horizontal en móviles */
     .tabla-datos {
         min-width: 600px; /* Ancho mínimo para hacer scroll */
     }
 
-    /* Modal más pequeño en móviles */
     .modal-contenido {
-        width: 95%; /* Ocupa el 95% del ancho */
+        width: 95%; /* Más ancho en móviles */
         padding: 20px; /* Menos espacio interno */
     }
 
-    /* Botones del modal en columna */
     .modal-botones {
-        flex-direction: column; /* Organiza en columna */
+        flex-direction: column; /* Botones en columna */
     }
 
-    .modal-botones button {
+    .btn-modal {
         width: 100%; /* Botones ocupan todo el ancho */
     }
 }
 
-/* Móviles pequeños (menos de 480px) */
-@media (max-width: 480px) {
-    .titulo2 {
-        font-size: 16px; /* Texto aún más pequeño */
-    }
-
-    /* Tarjetas en columna con texto centrado */
-    .tarjeta-resumen {
-        flex-direction: column; /* Organiza en columna */
-        text-align: center; /* Texto centrado */
-    }
-
-    .contador {
-        font-size: 28px; /* Número más pequeño */
-    }
-
-    /* Menos espacio interno en secciones */
-    .seccion-tabla {
-        padding: 15px;
-    }
-
-    /* Celdas más pequeñas en la tabla */
-    .tabla-datos th,
-    .tabla-datos td {
-        padding: 10px 8px; /* Menos espacio interno */
-        font-size: 13px; /* Texto más pequeño */
-    }
-}
-
 /* ============================================
-   MODAL DE REPORTAR NOVEDAD
-   Estilos específicos para el formulario de novedades
+   MODAL DE NOVEDAD
    ============================================ */
+#novedadModal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Se queda fijo en la pantalla */
+    top: 0; /* Pegado arriba */
+    left: 0; /* Pegado a la izquierda */
+    width: 100%; /* Ocupa todo el ancho */
+    height: 100%; /* Ocupa todo el alto */
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1000; /* Aparece encima de todo */
+}
+
 .modal-content {
-    background: white;
-    border-radius: 12px;
-    padding: 0;
-    width: 90%;
-    max-width: 550px;
-    max-height: 90vh;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    animation: slideDown 0.3s ease-out;
+    background: white; /* Fondo blanco */
+    border-radius: 12px; /* Esquinas redondeadas */
+    padding: 0; /* Sin espacio interno (se agrega en las secciones) */
+    width: 90%; /* Ancho del 90% */
+    max-width: 600px; /* Ancho máximo */
+    max-height: 90vh; /* Altura máxima */
+    overflow-y: auto; /* Permite scroll si el contenido es largo */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
 }
 
-/* Animación de aparición del modal */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Encabezado del modal de novedad */
 .modal-header {
-    background: linear-gradient(135deg, var(--color-naranja), #d35400);
-    color: white;
-    padding: 25px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: var(--color-verde); /* Fondo verde */
+    color: white; /* Texto blanco */
+    padding: 20px 25px; /* Espacio interno */
+    border-radius: 12px 12px 0 0; /* Esquinas redondeadas solo arriba */
+    display: flex; /* Organiza en fila */
+    justify-content: space-between; /* Espacio entre elementos */
+    align-items: center; /* Centra verticalmente */
 }
 
 .modal-header h2 {
-    margin: 0;
-    font-size: 24px;
-    color: white;
-    text-align: left;
+    margin: 0; /* Sin márgenes */
+    font-size: 22px; /* Tamaño del texto */
 }
 
-/* Botón cerrar del modal de novedad */
 .close-modal {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    padding: 0;
-    line-height: 1;
+    background: transparent; /* Sin fondo */
+    border: none; /* Sin borde */
+    color: white; /* Texto blanco */
+    font-size: 28px; /* Tamaño grande */
+    cursor: pointer; /* Cambia el cursor a manita */
+    padding: 0; /* Sin espacio interno */
+    line-height: 1; /* Altura de línea */
 }
 
 .close-modal:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: rotate(90deg);
+    color: #ddd; /* Gris claro al pasar el mouse */
 }
 
-/* Formulario de novedad */
+/* Formulario dentro del modal */
 #novedadForm {
-    padding: 30px;
-    overflow-y: auto;
-    max-height: calc(90vh - 100px);
+    padding: 25px; /* Espacio interno */
 }
 
-/* Grupo de formulario */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Espacio abajo */
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #2c3e50;
-    font-size: 14px;
+    display: block; /* Ocupa toda la línea */
+    margin-bottom: 8px; /* Espacio abajo */
+    color: #2c3e50; /* Color oscuro */
+    font-weight: 600; /* Texto en negrita */
+    font-size: 14px; /* Tamaño del texto */
 }
 
-/* Inputs y selectores del formulario */
 .form-control {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: Arial, sans-serif;
-    transition: all 0.3s ease;
-    background-color: #fafafa;
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 10px 12px; /* Espacio interno */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 6px; /* Esquinas redondeadas */
+    font-size: 14px; /* Tamaño del texto */
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
 .form-control:focus {
-    outline: none;
-    border-color: var(--color-naranja);
-    background-color: white;
-    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+    outline: none; /* Quita el borde predeterminado */
+    border-color: var(--color-verde); /* Borde verde */
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); /* Sombra verde sutil */
 }
 
-/* Select (desplegable) */
-select.form-control {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    padding-right: 40px;
-}
-
-/* Textarea */
+/* Textarea (campo de texto largo) */
 textarea.form-control {
-    min-height: 100px;
-    resize: vertical;
-    font-family: Arial, sans-serif;
+    min-height: 100px; /* Altura mínima */
+    resize: vertical; /* Solo se puede redimensionar verticalmente */
 }
 
-/* Input de archivo */
-input[type="file"].form-control {
-    padding: 10px;
-    cursor: pointer;
-    background-color: white;
+/* Select (selector desplegable) */
+select.form-control {
+    cursor: pointer; /* Cambia el cursor a manita */
 }
 
-input[type="file"].form-control::-webkit-file-upload-button {
-    background: var(--color-naranja);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-input[type="file"].form-control::-webkit-file-upload-button:hover {
-    background: #d35400;
-}
-
-/* Botones del formulario de novedad */
+/* Botones del formulario */
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 2px solid #f0f0f0;
+    display: flex; /* Organiza en fila */
+    justify-content: flex-end; /* Alineados a la derecha */
+    gap: 10px; /* Espacio entre botones */
+    margin-top: 25px; /* Espacio arriba */
 }
 
 .btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    padding: 10px 20px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 6px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
 .btn-secondary {
-    background: #95a5a6;
-    color: white;
+    background: #95a5a6; /* Fondo gris */
+    color: white; /* Texto blanco */
 }
 
 .btn-secondary:hover {
-    background: #7f8c8d;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(149, 165, 166, 0.3);
+    background: #7f8c8d; /* Gris más oscuro */
 }
 
 .btn-primary {
-    background: var(--color-naranja);
-    color: white;
+    background: var(--color-verde); /* Fondo verde */
+    color: white; /* Texto blanco */
 }
 
 .btn-primary:hover {
-    background: #d35400;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
-}
-
-/* Estilos para validación */
-.form-control:invalid {
-    border-color: #e0e0e0;
-}
-
-.form-control:valid {
-    border-color: #e0e0e0;
-}
-
-/* Placeholder */
-.form-control::placeholder {
-    color: #999;
-    font-style: italic;
-}
-
-/* ============================================
-   RESPONSIVE PARA MODAL DE NOVEDAD
-   ============================================ */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        max-width: none;
-    }
-
-    .modal-header {
-        padding: 20px;
-    }
-
-    .modal-header h2 {
-        font-size: 20px;
-    }
-
-    #novedadForm {
-        padding: 20px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .modal-header h2 {
-        font-size: 18px;
-    }
-
-    .form-group label {
-        font-size: 13px;
-    }
-
-    .form-control {
-        font-size: 13px;
-        padding: 10px 12px;
-    }
-
-    .btn {
-        font-size: 13px;
-        padding: 10px 20px;
-    }
+    background: #2ecc71; /* Verde más claro */
 }
 
 /* ============================================

@@ -9,10 +9,9 @@ const sampleOrders = [
         total: "$150.00",
         shippingAddress: "Av. Principal 123, Ciudad",
         items: [
-            { name: "Laptop Gaming", quantity: 1, price: "$120.00" },
-            { name: "Mouse Inalámbrico", quantity: 1, price: "$30.00" }
+            { name: "Huevo Verde", category: "AA", quantity: 10, price: "$12000" },
+            { name: "Huevo de Campo", quantity: 50, category: "A", price: "$30000" }
         ],
-        estimatedDelivery: "2024-01-18",
         actualDelivery: "2024-01-17"
     },
     {
@@ -24,70 +23,12 @@ const sampleOrders = [
         total: "$75.50",
         shippingAddress: "Av. Principal 123, Ciudad",
         items: [
-            { name: "Auriculares Bluetooth", quantity: 1, price: "$45.00" },
-            { name: "Funda para Laptop", quantity: 1, price: "$25.00" },
-            { name: "Cable USB-C", quantity: 2, price: "$5.50" }
+            { name: "Huevo Blanco", quantity: 100, category: "AA", price: "$45000" },
+            { name: "Huevo Cafe", quantity: 40, category: "AA", price: "$25000" },
+            { name: "Huevo Blanco", quantity: 20, category: "AAA", price: "$12000" }
         ],
-        estimatedDelivery: "2024-01-25",
         actualDelivery: null
     },
-    {
-        id: "ORD-2024-003",
-        date: "2024-01-25",
-        status: "pendiente",
-        customer: "Juan Pérez",
-        email: "juan@email.com",
-        total: "$200.00",
-        shippingAddress: "Av. Principal 123, Ciudad",
-        items: [
-            { name: "Tablet 10 pulgadas", quantity: 1, price: "$200.00" }
-        ],
-        estimatedDelivery: "2024-02-01",
-        actualDelivery: null
-    },
-    {
-        id: "ORD-2024-004",
-        date: "2024-01-10",
-        status: "entregado",
-        customer: "María García",
-        email: "maria@email.com",
-        total: "$89.99",
-        shippingAddress: "Calle Secundaria 456, Pueblo",
-        items: [
-            { name: "Smartwatch", quantity: 1, price: "$89.99" }
-        ],
-        estimatedDelivery: "2024-01-15",
-        actualDelivery: "2024-01-14"
-    },
-    {
-        id: "ORD-2024-005",
-        date: "2024-02-01",
-        status: "camino",
-        customer: "Carlos Rodríguez",
-        email: "carlos@email.com",
-        total: "$320.75",
-        shippingAddress: "Plaza Central 789, Villa",
-        items: [
-            { name: "Monitor 24\"", quantity: 1, price: "$250.00" },
-            { name: "Teclado Mecánico", quantity: 1, price: "$70.75" }
-        ],
-        estimatedDelivery: "2024-02-05",
-        actualDelivery: null
-    },
-    {
-        id: "ORD-2024-006",
-        date: "2024-02-03",
-        status: "entregado",
-        customer: "Ana López",
-        email: "ana@email.com",
-        total: "$45.99",
-        shippingAddress: "Calle Norte 321, Colonia",
-        items: [
-            { name: "Mouse Pad XL", quantity: 2, price: "$22.99" }
-        ],
-        estimatedDelivery: "2024-02-06",
-        actualDelivery: "2024-02-05"
-    }
 ];
 
 // Elementos del DOM

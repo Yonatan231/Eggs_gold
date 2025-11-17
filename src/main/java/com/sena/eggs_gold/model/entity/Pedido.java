@@ -25,10 +25,10 @@ public class Pedido {
     private String direccion;  // Dónde se va a entregar el pedido
 
     @Column(name = "DETALLE_CLIENTE", columnDefinition = "TEXT")
-    private String detalleCliente;  // Información extra del cliente (ej: "Casa azul, timbre rojo")
+    private String detalleCliente;
 
     @Column(name = "OBSERVACION_CONDUCTOR", columnDefinition = "TEXT")
-    private String observacionConductor;  // Lo que escriba el conductor (ej: "Entregado en portería")
+    private String observacionConductor;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false)

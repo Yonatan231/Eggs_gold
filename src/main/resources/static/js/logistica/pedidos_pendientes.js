@@ -1,60 +1,141 @@
-// Archivo: pedidos_pendientes.js
-// Script básico para gestionar pedidos pendientes
+// ============================================
+// SCRIPT PARA PEDIDOS PENDIENTES
+// Gestiona la visualización y toma de pedidos
+// Versión básica para principiantes
+// ============================================
 
-// Función que se ejecuta cuando la página carga
+// ============================================
+// CUANDO LA PÁGINA CARGA
+// Ejecuta estas funciones automáticamente
+// ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    actualizarContador();
+    cargarPedidosPendientes(); // Cargar pedidos del servidor
 });
 
-// Función para actualizar el contador de pedidos pendientes
-function actualizarContador() {
-    // Cuenta las filas de la tabla (sin contar el thead)
-    const filas = document.querySelectorAll('#tablaBody tr');
-    const totalPedidos = filas.length;
-
-    // Actualiza el número en el contador
-    document.getElementById('contador').textContent = totalPedidos;
-
-    // Si no hay pedidos, muestra el mensaje
-    if (totalPedidos === 0) {
-        document.getElementById('tablaPedidos').style.display = 'none';
-        document.getElementById('sin-pedidos').style.display = 'block';
-    } else {
-        document.getElementById('tablaPedidos').style.display = 'table';
-        document.getElementById('sin-pedidos').style.display = 'none';
-    }
+// ============================================
+// FUNCIÓN: cargarPedidosPendientes()
+// Obtiene los pedidos PENDIENTES del servidor
+// ============================================
+function cargarPedidosPendientes() {
+    // Hacer petición al servidor
+    fetch('/api/logistica/pedidos-pendientes')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Si hay pedidos, mostrarlos en la tabla
+                mostrarPedidos(data.pedidos);
+            } else {
+                // Si hay error, mostrarlo
+                mostrarMensaje('Error al cargar pedidos: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarMensaje('Error de conexión con el servidor', 'error');
+        });
 }
 
-// Función para tomar un pedido
-function tomarPedido(idPedido) {
-    // Confirmar acción
-    if (confirm('¿Deseas tomar el pedido #' + idPedido + '?')) {
-        // Encuentra la fila del pedido
-        const filas = document.querySelectorAll('#tablaBody tr');
-        let filaEliminar = null;
+// ============================================
+// FUNCIÓN: mostrarPedidos(pedidos)
+// Muestra los pedidos en la tabla
+// ============================================
+function mostrarPedidos(pedidos) {
+    const tbody = document.getElementById('tablaBody');
+    const tablaPedidos = document.getElementById('tablaPedidos');
+    const sinPedidos = document.getElementById('sin-pedidos');
+    const contador = document.getElementById('contador');
 
-        filas.forEach(function(fila) {
-            const idCelda = fila.querySelector('td:first-child').textContent;
-            if (idCelda === idPedido.toString()) {
-                filaEliminar = fila;
-            }
+    // Limpiar la tabla
+    tbody.innerHTML = '';
+
+    // Si no hay pedidos
+    if (pedidos.length === 0) {
+        tablaPedidos.style.display = 'none';
+        sinPedidos.style.display = 'block';
+        contador.textContent = '0';
+        return;
+    }
+
+    // Mostrar la tabla
+    tablaPedidos.style.display = 'table';
+    sinPedidos.style.display = 'none';
+    contador.textContent = pedidos.length;
+
+    // Agregar cada pedido a la tabla
+    pedidos.forEach(pedido => {
+        const fila = document.createElement('tr');
+
+        // Formatear la fecha
+        const fecha = new Date(pedido.fechaCreacion);
+        const fechaFormateada = fecha.toLocaleString('es-CO', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
         });
 
-        if (filaEliminar) {
-            // Añade animación de salida
-            filaEliminar.classList.add('row-removing');
+        // Formatear el precio total
+        const precioTotal = pedido.precioTotal ? `$${pedido.precioTotal.toLocaleString('es-CO')}` : '$0';
 
-            // Espera a que termine la animación antes de eliminar
-            setTimeout(function() {
-                filaEliminar.remove();
-                actualizarContador();
-                mostrarMensaje('Pedido #' + idPedido + ' tomado correctamente', 'success');
-            }, 500);
-        }
-    }
+        fila.innerHTML = `
+            <td>${pedido.idPedido}</td>
+            <td>${fechaFormateada}</td>
+            <td>${pedido.cliente || 'Cliente'}</td>
+            <td>${pedido.cantidadTotal}</td>
+            <td>${pedido.tiposProductos}</td>
+            <td>
+                <button class="btn-tomar" onclick="tomarPedido(${pedido.idPedido})">
+                    Tomar
+                </button>
+            </td>
+        `;
+
+        tbody.appendChild(fila);
+    });
 }
 
-// Función para mostrar mensajes al usuario
+// ============================================
+// FUNCIÓN: tomarPedido(idPedido)
+// Toma un pedido y lo asigna al usuario
+// ============================================
+function tomarPedido(idPedido) {
+    // Confirmar acción
+    if (!confirm('¿Deseas tomar el pedido #' + idPedido + '?')) {
+        return;
+    }
+
+    // Hacer petición al servidor
+    fetch('/api/logistica/tomar-pedido/' + idPedido, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mensaje de éxito
+                mostrarMensaje(data.message, 'success');
+
+                // Recargar pedidos
+                setTimeout(() => {
+                    cargarPedidosPendientes();
+                }, 500);
+            } else {
+                mostrarMensaje(data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarMensaje('Error al tomar el pedido', 'error');
+        });
+}
+
+// ============================================
+// FUNCIÓN: mostrarMensaje(texto, tipo)
+// Muestra mensajes al usuario
+// ============================================
 function mostrarMensaje(texto, tipo) {
     let mensaje;
 
@@ -64,45 +145,16 @@ function mostrarMensaje(texto, tipo) {
         mensaje = document.getElementById('mensaje-error');
     }
 
-    // Muestra el mensaje
+    // Mostrar el mensaje
     mensaje.textContent = texto;
     mensaje.style.display = 'block';
 
-    // Oculta el mensaje después de 3 segundos
+    // Ocultar el mensaje después de 3 segundos
     setTimeout(function() {
         mensaje.style.display = 'none';
     }, 3000);
 }
 
-// NOTA: En un proyecto real, aquí cargarías los pedidos desde el servidor
-// Ejemplo de cómo cargar pedidos dinámicamente:
-/*
-function cargarPedidos() {
-    fetch('/api/pedidos/pendientes')
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.getElementById('tablaBody');
-            tbody.innerHTML = '';
-
-            data.forEach(pedido => {
-                const fila = document.createElement('tr');
-                fila.innerHTML = `
-                    <td>${pedido.id}</td>
-                    <td>${pedido.totalUnidades}</td>
-                    <td>${pedido.tiposProductos}</td>
-                    <td>${pedido.fechaCreacion}</td>
-                    <td><button class="btn-tomar" onclick="tomarPedido(${pedido.id})">
-                        <i class="fas fa-hand-paper"></i> Tomar
-                    </button></td>
-                `;
-                tbody.appendChild(fila);
-            });
-
-            actualizarContador();
-        })
-        .catch(error => {
-            console.error('Error al cargar pedidos:', error);
-            mostrarMensaje('Error al cargar los pedidos', 'error');
-        });
-}
-*/
+// ============================================
+// FIN DEL SCRIPT
+// ============================================

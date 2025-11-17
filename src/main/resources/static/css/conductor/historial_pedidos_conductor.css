@@ -1,0 +1,455 @@
+/* ============================================
+   ESTILOS PARA HISTORIAL DE PEDIDOS ENTREGADOS
+   Versión simplificada para principiantes
+   ============================================ */
+
+/* ============================================
+   CONTENEDOR PRINCIPAL DE LA TABLA
+   ============================================ */
+.tabla-contenedor {
+    max-width: 1400px; /* Ancho máximo */
+    margin: 40px auto; /* Centrado con espacio arriba y abajo */
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 12px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra suave */
+    overflow: hidden; /* Oculta lo que sobresale */
+}
+
+/* ============================================
+   ENCABEZADO DE LA TABLA
+   ============================================ */
+.tabla-header {
+    padding: 25px 30px; /* Espacio interno */
+    background: #27AE60;
+    color: white; /* Texto blanco */
+    display: flex; /* Organiza en fila */
+    justify-content: space-between; /* Espacio entre elementos */
+    align-items: center; /* Centra verticalmente */
+    flex-wrap: wrap; /* Permite ajuste en móviles */
+    gap: 15px; /* Espacio entre elementos */
+}
+
+.tabla-header h2 {
+    margin: 0; /* Sin márgenes */
+    font-size: 22px; /* Tamaño del texto */
+    font-weight: 700; /* Texto en negrita */
+}
+
+/* Contador de pedidos */
+.contador-pedidos {
+    background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco semi-transparente */
+    padding: 8px 16px; /* Espacio interno */
+    border-radius: 20px; /* Esquinas muy redondeadas */
+    font-size: 14px; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+}
+
+.contador-pedidos span {
+    background-color: #fff; /* Fondo blanco */
+    color: #27AE60;
+    padding: 2px 10px; /* Espacio interno */
+    border-radius: 12px; /* Esquinas redondeadas */
+    margin-right: 5px; /* Espacio a la derecha */
+    font-weight: 700; /* Texto en negrita */
+}
+
+/* ============================================
+   BARRA DE BÚSQUEDA
+   ============================================ */
+.busqueda-contenedor {
+    padding: 20px 30px; /* Espacio interno */
+    border-bottom: 1px solid #eee; /* Línea divisoria */
+    position: relative; /* Para posicionar el icono */
+}
+
+.icono-busqueda {
+    position: absolute; /* Posición absoluta */
+    left: 45px; /* Separación desde la izquierda */
+    top: 50%; /* Centrado vertical */
+    transform: translateY(-50%); /* Ajuste fino del centrado */
+    color: #999; /* Color gris */
+    font-size: 16px; /* Tamaño del icono */
+}
+
+#busqueda {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 12px 12px 12px 40px; /* Espacio interno (más a la izquierda para el icono) */
+    border: 2px solid #e0e0e0; /* Borde gris claro */
+    border-radius: 8px; /* Esquinas redondeadas */
+    font-size: 14px; /* Tamaño del texto */
+    transition: border-color 0.3s; /* Animación suave */
+}
+
+#busqueda:focus {
+    outline: none; /* Quita el borde predeterminado */
+    border-color: #27AE60;
+}
+
+/* ============================================
+   CONTENEDOR DE LA TABLA CON SCROLL
+   ============================================ */
+.tabla-wrapper {
+    overflow-x: auto; /* Permite scroll horizontal si es necesario */
+    padding: 30px; /* Espacio interno */
+}
+
+/* ============================================
+   ESTILOS DE LA TABLA
+   ============================================ */
+table {
+    width: 100%; /* Ocupa todo el ancho */
+    border-collapse: collapse; /* Une los bordes de las celdas */
+}
+
+/* Encabezado de la tabla */
+thead {
+    background-color: #f8f9fa; /* Fondo gris muy claro */
+}
+
+th {
+    padding: 15px 12px; /* Espacio interno */
+    text-align: left; /* Texto alineado a la izquierda */
+    font-weight: 600; /* Texto en negrita */
+    color: #333; /* Color oscuro */
+    border-bottom: 2px solid #27AE60;
+    font-size: 14px; /* Tamaño del texto */
+    white-space: nowrap; /* El texto no se divide en varias líneas */
+}
+
+/* Filas del cuerpo de la tabla */
+tbody tr {
+    border-bottom: 1px solid #eee; /* Línea divisoria sutil */
+    transition: background-color 0.2s; /* Animación suave */
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa; /* Fondo gris claro al pasar el mouse */
+}
+
+/* Celdas de la tabla */
+td {
+    padding: 15px 12px; /* Espacio interno */
+    color: #555; /* Color gris oscuro */
+    font-size: 14px; /* Tamaño del texto */
+    text-align: center; /* Texto centrado */
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN
+   ============================================ */
+.btn-accion {
+    padding: 8px 16px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 6px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 13px; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+    margin: 2px; /* Pequeño margen entre botones */
+    white-space: nowrap; /* El texto no se divide */
+    transition: all 0.3s; /* Animación suave */
+}
+
+/* Botón Ver */
+.btn-ver {
+    background-color: #27AE60;
+    color: white; /* Texto blanco */
+}
+
+.btn-ver:hover {
+    background-color: #27AE60;
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
+.btn-ver i {
+    margin-right: 5px; /* Espacio entre icono y texto */
+}
+
+/* ============================================
+   MENSAJE CUANDO NO HAY PEDIDOS
+   ============================================ */
+.sin-pedidos {
+    text-align: center; /* Texto centrado */
+    padding: 60px 20px; /* Espacio interno */
+    color: #999; /* Color gris */
+}
+
+.sin-pedidos .icono-vacio {
+    font-size: 48px; /* Icono grande */
+    color: #ddd; /* Color gris claro */
+    margin-bottom: 15px; /* Espacio abajo */
+}
+
+.sin-pedidos p {
+    font-size: 18px; /* Tamaño del texto */
+    margin: 0; /* Sin márgenes */
+}
+
+/* ============================================
+   MODAL (Ventana emergente)
+   ============================================ */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Se queda fijo en la pantalla */
+    top: 0; /* Pegado arriba */
+    left: 0; /* Pegado a la izquierda */
+    width: 100%; /* Ocupa todo el ancho */
+    height: 100%; /* Ocupa todo el alto */
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1000; /* Aparece encima de todo */
+}
+
+/* Contenido del modal */
+.modal-contenido {
+    background: white; /* Fondo blanco */
+    border-radius: 12px; /* Esquinas redondeadas */
+    padding: 30px; /* Espacio interno */
+    width: 90%; /* Ancho del 90% */
+    max-width: 700px; /* Ancho máximo */
+    max-height: 90vh; /* Altura máxima */
+    overflow-y: auto; /* Permite scroll si el contenido es largo */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
+    position: relative; /* Para posicionar el botón cerrar */
+}
+
+.modal-contenido h2 {
+    margin-bottom: 25px; /* Espacio abajo */
+    color: #2c3e50; /* Color oscuro */
+    text-align: center; /* Texto centrado */
+    font-size: 24px; /* Tamaño del título */
+    border-bottom: 2px solid #27AE60;
+    padding-bottom: 15px; /* Espacio interno abajo */
+}
+
+/* Botón para cerrar (X) */
+.cerrar {
+    position: absolute; /* Se posiciona en la esquina */
+    top: 15px; /* Separación desde arriba */
+    right: 20px; /* Separación desde la derecha */
+    font-size: 28px; /* Tamaño grande */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cambia el cursor a manita */
+    color: #999; /* Color gris */
+    transition: color 0.3s; /* Animación suave */
+}
+
+.cerrar:hover {
+    color: #e74c3c; /* Se vuelve rojo */
+}
+
+/* ============================================
+   INFORMACIÓN DEL CLIENTE EN EL MODAL
+   ============================================ */
+.info-cliente {
+    background-color: #f8f9fa; /* Fondo gris claro */
+    padding: 20px; /* Espacio interno */
+    border-radius: 8px; /* Esquinas redondeadas */
+    margin-bottom: 20px; /* Espacio abajo */
+    border-left: 4px solid #3498db; /* Línea azul a la izquierda */
+}
+
+.info-cliente h3 {
+    font-size: 16px; /* Tamaño del subtítulo */
+    color: #2c3e50; /* Color oscuro */
+    margin-bottom: 15px; /* Espacio abajo */
+    display: flex; /* Para alinear icono y texto */
+    align-items: center; /* Centra verticalmente */
+}
+
+.info-cliente h3 i {
+    margin-right: 8px; /* Espacio entre icono y texto */
+    color: #3498db; /* Color azul */
+}
+
+.info-cliente p {
+    margin: 10px 0; /* Espacio arriba y abajo */
+    font-size: 14px; /* Tamaño del texto */
+    color: #555; /* Color gris oscuro */
+}
+
+/* ============================================
+   SECCIÓN DE COMENTARIOS
+   ============================================ */
+.comentarios-section {
+    margin-bottom: 20px; /* Espacio abajo */
+}
+
+.comentario-item {
+    background-color: #fffbea; /* Fondo amarillo claro */
+    padding: 15px; /* Espacio interno */
+    border-radius: 8px; /* Esquinas redondeadas */
+    margin-bottom: 15px; /* Espacio abajo */
+    border-left: 4px solid #f39c12; /* Línea naranja a la izquierda */
+}
+
+.comentario-item h3 {
+    font-size: 14px; /* Tamaño del subtítulo */
+    color: #2c3e50; /* Color oscuro */
+    margin-bottom: 10px; /* Espacio abajo */
+    display: flex; /* Para alinear icono y texto */
+    align-items: center; /* Centra verticalmente */
+}
+
+.comentario-item h3 i {
+    margin-right: 8px; /* Espacio entre icono y texto */
+    color: #f39c12; /* Color naranja */
+}
+
+.comentario-texto {
+    margin: 0; /* Sin márgenes */
+    font-size: 14px; /* Tamaño del texto */
+    color: #555; /* Color gris oscuro */
+    font-style: italic; /* Texto en cursiva */
+}
+
+/* ============================================
+   DETALLE DE PRODUCTOS EN EL MODAL
+   ============================================ */
+.detalle-productos {
+    margin-bottom: 20px; /* Espacio abajo */
+}
+
+.detalle-productos h3 {
+    font-size: 16px; /* Tamaño del subtítulo */
+    color: #2c3e50; /* Color oscuro */
+    margin-bottom: 15px; /* Espacio abajo */
+    display: flex; /* Para alinear icono y texto */
+    align-items: center; /* Centra verticalmente */
+}
+
+.detalle-productos h3 i {
+    margin-right: 8px; /* Espacio entre icono y texto */
+    color: #27ae60; /* Color verde */
+}
+
+/* Lista de productos */
+.lista-productos {
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 0; /* Sin espacio interno */
+}
+
+.lista-productos li {
+    padding: 15px; /* Espacio interno */
+    background-color: #f8f9fa; /* Fondo gris claro */
+    margin-bottom: 10px; /* Espacio abajo */
+    border-radius: 6px; /* Esquinas redondeadas */
+    border-left: 4px solid #27ae60; /* Línea verde a la izquierda */
+    font-size: 14px; /* Tamaño del texto */
+    color: #333; /* Color oscuro */
+    display: flex; /* Para organizar el contenido */
+    align-items: center; /* Centra verticalmente */
+}
+
+.lista-productos li::before {
+    content: "🥚"; /* Emoji de huevo */
+    margin-right: 10px; /* Espacio a la derecha */
+    font-size: 18px; /* Tamaño del emoji */
+}
+
+/* ============================================
+   BOTONES DEL MODAL
+   ============================================ */
+.modal-botones {
+    display: flex; /* Organiza los botones en fila */
+    justify-content: center; /* Centrados */
+    gap: 10px; /* Espacio entre botones */
+    margin-top: 25px; /* Espacio arriba */
+}
+
+/* Botones del modal */
+.btn-modal {
+    padding: 12px 25px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 6px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambia el cursor a manita */
+    font-size: 14px; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+    transition: all 0.3s; /* Animación suave */
+}
+
+/* Botón Cerrar del modal */
+.btn-cerrar {
+    background: #95a5a6; /* Fondo gris */
+    color: white; /* Texto blanco */
+}
+
+.btn-cerrar:hover {
+    background: #7f8c8d; /* Gris más oscuro */
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
+.btn-cerrar i {
+    margin-right: 5px; /* Espacio entre icono y texto */
+}
+
+/* ============================================
+   RESPONSIVE PARA MÓVILES
+   ============================================ */
+@media (max-width: 1024px) {
+    .tabla-contenedor {
+        margin: 20px; /* Menos margen en tablets */
+    }
+
+    .tabla-wrapper {
+        padding: 20px; /* Menos espacio interno */
+    }
+
+    table {
+        font-size: 13px; /* Texto más pequeño */
+    }
+
+    th, td {
+        padding: 10px 8px; /* Menos espacio interno */
+    }
+}
+
+@media (max-width: 768px) {
+    .tabla-header {
+        flex-direction: column; /* Organiza en columna */
+        align-items: flex-start; /* Alinea a la izquierda */
+    }
+
+    .busqueda-contenedor {
+        padding: 15px 20px; /* Menos espacio interno */
+    }
+
+    .icono-busqueda {
+        left: 35px; /* Ajuste de posición */
+    }
+
+    .tabla-wrapper {
+        padding: 15px; /* Menos espacio interno */
+    }
+
+    .modal-contenido {
+        width: 95%; /* Más ancho en móviles */
+        padding: 20px; /* Menos espacio interno */
+    }
+
+    .modal-botones {
+        flex-direction: column; /* Botones en columna */
+    }
+
+    .btn-modal {
+        width: 100%; /* Botones ocupan todo el ancho */
+        justify-content: center; /* Centra el contenido */
+    }
+
+    table {
+        font-size: 12px; /* Texto más pequeño */
+    }
+
+    th, td {
+        padding: 8px 6px; /* Menos espacio interno */
+    }
+
+    .btn-accion {
+        padding: 6px 10px; /* Botones más pequeños */
+        font-size: 12px; /* Texto más pequeño */
+    }
+}
+
+/* ============================================
+   FIN DE LOS ESTILOS
+   ============================================ */

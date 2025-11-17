@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- ESTILOS PERSONALIZADOS -->
-    <link rel="stylesheet" th:href="@{css/conductor/conductor.css}">
+    <link rel="stylesheet" th:href="@{css/conductor/conductor_inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
     <title>Panel de Conductor - Eggs Gold</title>
@@ -47,14 +47,14 @@
         </li>
 
         <li>
-            <a href="/registro_vehiculo">
+            <a th:href="@{/pedidos_asignados}">
                 <i class="fas fa-truck"></i> Ver Asignados
             </a>
         </li>
 
         <li>
-            <a href="/registro_vehiculo">
-                <i class="fas fa-truck"></i> Ver Historial
+            <a th:href="@{/historial_pedidos_conductor}">
+                <i class="fas fa-history"></i> Ver Historial
             </a>
         </li>
 
@@ -65,8 +65,8 @@
         </li>
 
         <li>
-            <a href="/registro_vehiculo">
-                <i class="fas fa-truck"></i> Registrar Vehículo
+            <a th:href="@{/registro_vehiculo}">
+                <i class="fas fa-car"></i> Registrar Vehículo
             </a>
         </li>
 
@@ -129,8 +129,126 @@
     </section>
 
     <!-- ============================================
+         SECCIÓN DE PEDIDOS DEL DÍA
+         ============================================ -->
+    <section class="seccion-tabla">
+        <div class="encabezado-tabla">
+            <h2><i class="fas fa-clipboard-list"></i> Pedidos del Día</h2>
+
+            <!-- Barra de búsqueda -->
+            <div class="contenedor-busqueda">
+                <input type="text" id="buscarPedido" placeholder="Buscar por cliente o dirección..." class="input-buscar">
+            </div>
+        </div>
+
+        <!-- Tabla de pedidos -->
+        <div class="tabla-contenedor-scroll">
+            <table id="tablaPedidosDia" class="tabla-datos">
+                <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Cliente</th>
+                    <th>Dirección</th>
+                    <th>Contacto</th>
+                    <th>Comentario</th>
+                    <th>Tipo Productos</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+
+                <tbody id="tablaPedidosDiaBody">
+                <!-- Ejemplo de pedido 1 -->
+                <tr>
+                    <td>21</td>
+                    <td>Carlos Ruiz</td>
+                    <td>Calle 30 # 8-22</td>
+                    <td>123 454 6789</td>
+                    <td>Dejar en la puerta</td>
+                    <td>2</td>
+                    <td>5 unidades</td>
+                    <td>
+                        <button class="btn-accion-tabla btn-ruta" onclick="verRuta(21)">
+                            Ver Ruta
+                        </button>
+                        <button class="btn-accion-tabla btn-entregado" onclick="marcarEntregado(21)">
+                            Entregar
+                        </button>
+                        <button class="btn-accion-tabla btn-ver-pedido" onclick="verDetalle(21)">
+                            Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Ejemplo de pedido 2 -->
+                <tr>
+                    <td>22</td>
+                    <td>María Ruiz</td>
+                    <td>Calle 30 # 8-52</td>
+                    <td>453 454 6789</td>
+                    <td>Ninguno</td>
+                    <td>9</td>
+                    <td>50 unidades</td>
+                    <td>
+                        <button class="btn-accion-tabla btn-ruta" onclick="verRuta(22)">
+                            Ver Ruta
+                        </button>
+                        <button class="btn-accion-tabla btn-entregado" onclick="marcarEntregado(22)">
+                            Entregar
+                        </button>
+                        <button class="btn-accion-tabla btn-ver-pedido" onclick="verDetalle(22)">
+                            Ver
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Mensaje cuando no hay pedidos -->
+            <div id="mensajeVacio" class="mensaje-vacio" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <p>No hay pedidos para hoy</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         MODAL PARA VER DETALLE DEL PEDIDO
+         ============================================ -->
+    <div id="modalDetallePedido" class="modal">
+        <div class="modal-contenido">
+            <!-- Botón para cerrar -->
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+
+            <!-- Título del modal -->
+            <h2>Detalle del Pedido #<span id="pedidoId"></span></h2>
+
+            <!-- Información del cliente -->
+            <div class="info-cliente">
+                <h3>Información del Cliente:</h3>
+                <p><strong>Nombre:</strong> <span id="clienteNombre"></span></p>
+                <p><strong>Dirección:</strong> <span id="clienteDireccion"></span></p>
+                <p><strong>Teléfono:</strong> <span id="clienteTelefono"></span></p>
+                <p><strong>Comentario:</strong> <span id="clienteComentario"></span></p>
+            </div>
+
+            <!-- Lista de productos -->
+            <div class="detalle-productos">
+                <h3>Productos del Pedido:</h3>
+                <ul id="listaProductos" class="lista-productos"></ul>
+            </div>
+
+            <!-- Botones del modal -->
+            <div class="modal-botones">
+                <button class="btn-modal btn-cancelar" onclick="cerrarModal()">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
          MODAL PARA REPORTAR NOVEDAD
-         Este es un cuadro que aparece encima de todo cuando se hace clic en "Reportar Novedad"
          ============================================ -->
     <div class="modal" id="novedadModal">
         <div class="modal-content">
@@ -190,7 +308,7 @@
 
 </main>
 
-<script th:src="@{js/conductor/conductor.js}"></script>
+<script th:src="@{js/conductor/conductor_inicio.js}"></script>
 <script th:src="@{js/utils/foto_panel.js}"></script>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>

@@ -67,10 +67,20 @@ public class ConductorController {
         return "redirect:/administrador";
     }
 
-    @GetMapping("/entregados")
-    @ResponseBody
-    public List<ConductorDTO> listarConductoresConPedidosEntregados() {
-        return conductorService.obtenerConductoresConPedidosEntregados();
+    @GetMapping("/conductor_inicio")
+    public String conductorInicio(){
+        return "conductor/conductor_inicio";
     }
+
+    @GetMapping("/pedidos_asignados")
+    public String mostarPedidosAsignados(){
+        return "conductor/pedidos_asignados";
+    }
+
+    @GetMapping("/historial_pedidos_conductor")
+    public String mostarHistorialPedidosConductor(){
+        return "conductor/historial_pedidos_conductor";
+    }
+
 }
 
