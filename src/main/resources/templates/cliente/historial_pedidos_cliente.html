@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
-    <link rel="stylesheet" th:href="@{css/cliente/historial_pedidos.css}">
+    <link rel="stylesheet" th:href="@{css/cliente/historial_pedidos_cliente.css}">
 </head>
 <body>
 <header>
@@ -112,9 +112,32 @@
     </div>
 </div>
 
+<!-- ============================================
+     MODAL PARA VER FACTURA (NUEVO)
+     ============================================ -->
+<div class="modal" id="facturaModal">
+    <div class="modal-content modal-factura">
+        <div class="modal-header">
+            <h2><i class="fas fa-file-invoice"></i> Factura</h2>
+            <button class="close-modal" id="closeFacturaModal">&times;</button>
+        </div>
+
+        <div id="facturaContent" class="factura-content">
+            <!-- Contenido de la factura se carga dinámicamente -->
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="closeFacturaBtn">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="downloadFacturaBtn">
+                <i class="fas fa-download"></i> Descargar PDF
+            </button>
+        </div>
+    </div>
+</div>
+
 <footer>
     <div class="footer-content">
-        <p class="footer-quote">Cada gran negacio empieza con un buen producto.</p>
+        <p class="footer-quote">Cada gran negocio empieza con un buen producto.</p>
         <div class="footer-tags">
             <span class="tag">Innovación</span>
             <span class="tag">Calidad</span>
@@ -126,7 +149,7 @@
     </div>
 </footer>
 
-<script th:src="@{js/cliente/historial_pedidos.js}"></script>
+<script th:src="@{js/cliente/historial_pedidos_cliente.js}"></script>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
