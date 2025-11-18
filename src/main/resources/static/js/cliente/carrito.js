@@ -1,11 +1,15 @@
 /* ============================================
-   CARGAR CARRITO
+   INICIALIZACIÓN
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarCarrito();
     configurarEventos();
 });
+
+/* ============================================
+   CARGAR CARRITO
+   ============================================ */
 
 function cargarCarrito() {
     fetch('/carrito/api/obtener')
@@ -19,7 +23,7 @@ function cargarCarrito() {
             }
         })
         .catch(error => {
-            console.error("❌ Error al cargar carrito:", error);
+            console.error("Error al cargar carrito:", error);
         });
 }
 
@@ -29,7 +33,7 @@ function mostrarProductosCarrito(productos) {
     if (!productos || productos.length === 0) {
         lista.innerHTML = `
             <div style="text-align: center; padding: 40px;">
-                <p style="font-size: 1.2rem; color: #666;"> Tu carrito está vacío</p>
+                <p style="font-size: 1.2rem; color: #666;">Tu carrito está vacío</p>
                 <a href="/inicio_cliente" style="color: #F7DC6F; text-decoration: none; font-weight: bold;">
                     ← Continuar comprando
                 </a>
@@ -56,7 +60,7 @@ function mostrarProductosCarrito(productos) {
             <div class="subtotal-producto">
                 $${parseInt(producto.subtotal).toLocaleString("es-CO")}
             </div>
-            <button class="btn-eliminar" onclick="eliminarProducto(${producto.id})">🗑️</button>
+            <button class="btn-eliminar" onclick="eliminarProducto(${producto.id})">Eliminar</button>
         `;
         lista.appendChild(item);
     });
@@ -69,6 +73,10 @@ function actualizarTotal(total) {
     }
 }
 
+/* ============================================
+   MODIFICAR CARRITO
+   ============================================ */
+
 function cambiarCantidad(idCarrito, nuevaCantidad) {
     if (nuevaCantidad <= 0) {
         eliminarProducto(idCarrito);
@@ -77,9 +85,7 @@ function cambiarCantidad(idCarrito, nuevaCantidad) {
 
     fetch(`/carrito/api/actualizar/${idCarrito}`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cantidad: nuevaCantidad })
     })
         .then(response => response.json())
@@ -90,19 +96,13 @@ function cambiarCantidad(idCarrito, nuevaCantidad) {
                 alert(data.message);
             }
         })
-        .catch(error => {
-            console.error("❌ Error:", error);
-        });
+        .catch(error => console.error("Error:", error));
 }
 
 function eliminarProducto(idCarrito) {
-    if (!confirm("¿Eliminar este producto del carrito?")) {
-        return;
-    }
+    if (!confirm("¿Eliminar este producto del carrito?")) return;
 
-    fetch(`/carrito/api/eliminar/${idCarrito}`, {
-        method: 'DELETE'
-    })
+    fetch(`/carrito/api/eliminar/${idCarrito}`, { method: 'DELETE' })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -111,9 +111,7 @@ function eliminarProducto(idCarrito) {
                 alert(data.message);
             }
         })
-        .catch(error => {
-            console.error("❌ Error:", error);
-        });
+        .catch(error => console.error("Error:", error));
 }
 
 /* ============================================
@@ -121,80 +119,33 @@ function eliminarProducto(idCarrito) {
    ============================================ */
 
 function configurarEventos() {
-    const btnContinuar = document.getElementById("continuar-pedido");
-    const btnConfirmar = document.getElementById("confirmar-pedido");
-    const btnVolver = document.getElementById("volver-carrito");
+    // Botones de navegación
+    document.getElementById("continuar-pedido")?.addEventListener("click", continuarConPedido);
+    document.getElementById("confirmar-pedido")?.addEventListener("click", confirmarPedido);
+    document.getElementById("volver-carrito")?.addEventListener("click", volverAlCarrito);
 
-    if (btnContinuar) {
-        btnContinuar.addEventListener("click", continuarConPedido);
-    }
-
-    if (btnConfirmar) {
-        btnConfirmar.addEventListener("click", confirmarPedido);
-    }
-
-    if (btnVolver) {
-        btnVolver.addEventListener("click", volverAlCarrito);
-    }
-
-    // Configurar clicks en métodos de pago - CORREGIDO
+    // Métodos de pago - usar event delegation
     document.querySelectorAll(".metodo-pago").forEach(elemento => {
-        elemento.addEventListener("click", function(e) {
-            // Prevenir que el click se propague si ya viene del input
-            if (e.target.tagName === 'INPUT') {
-                return;
-            }
-
-            const metodo = this.getAttribute("data-metodo");
-            seleccionarMetodoPago(metodo);
-        });
-    });
-
-    // También escuchar cambios directos en los radio buttons
-    document.querySelectorAll('input[name="metodo-pago"]').forEach(radio => {
-        radio.addEventListener("change", function() {
-            if (this.checked) {
-                seleccionarMetodoPago(this.value);
+        elemento.addEventListener("click", function() {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
             }
         });
     });
-}
 
-/* ============================================
-   SELECCIÓN DE MÉTODO DE PAGO - CORREGIDO
-   ============================================ */
-
-function seleccionarMetodoPago(metodo) {
-    // Primero, remover la selección visual de todos
-    document.querySelectorAll(".metodo-pago").forEach(elemento => {
-        elemento.classList.remove("seleccionado");
-    });
-
-    // Desmarcar todos los radios
-    document.querySelectorAll('input[name="metodo-pago"]').forEach(radio => {
-        radio.checked = false;
-    });
-
-    // Seleccionar el método específico
-    const elementoMetodo = document.querySelector(`.metodo-pago[data-metodo="${metodo}"]`);
-    if (elementoMetodo) {
-        // Agregar clase visual
-        elementoMetodo.classList.add("seleccionado");
-
-        // Marcar el radio button
-        const radioButton = elementoMetodo.querySelector('input[type="radio"]');
-        if (radioButton) {
-            radioButton.checked = true;
-
-            // Log para debugging
-            console.log("Método seleccionado:", metodo);
-            console.log("Radio marcado:", radioButton.checked);
+    // Cerrar modal al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+            const modalId = e.target.id;
+            if (modalId === 'modal-nequi') cerrarModal('nequi');
+            if (modalId === 'modal-visa') cerrarModal('visa');
         }
-    }
+    });
 }
 
 /* ============================================
-   PASO 2: FORMULARIO DE PEDIDO
+   NAVEGACIÓN ENTRE PASOS
    ============================================ */
 
 function continuarConPedido() {
@@ -208,8 +159,8 @@ function continuarConPedido() {
             }
         })
         .catch(error => {
-            console.error("❌ Error:", error);
-            alert("❌ Error al validar stock");
+            console.error("Error:", error);
+            alert("Error al validar stock");
         });
 }
 
@@ -228,7 +179,7 @@ function volverAlCarrito() {
 }
 
 /* ============================================
-   PASO 3: CONFIRMAR PEDIDO Y MODALES - CORREGIDO
+   CONFIRMAR PEDIDO
    ============================================ */
 
 function confirmarPedido() {
@@ -238,103 +189,75 @@ function confirmarPedido() {
 
     // Validaciones
     if (!direccion) {
-        alert("❌ La dirección es obligatoria");
+        alert("La dirección es obligatoria");
         return;
     }
 
     if (!telefono) {
-        alert("❌ El teléfono es obligatorio");
+        alert("El teléfono es obligatorio");
         return;
     }
 
     if (!metodoPago) {
-        alert("❌ Debes seleccionar un método de pago");
-        console.log("No hay método de pago seleccionado");
+        alert("Debes seleccionar un método de pago");
         return;
     }
 
-    // Log para debugging
-    console.log("Método de pago seleccionado:", metodoPago.value);
-
-    // Abrir modal según el método seleccionado
+    // Abrir modal según el método
     const metodo = metodoPago.value.toLowerCase();
-
-    if (metodo === 'nequi') {
-        abrirModal('nequi');
-    } else if (metodo === 'visa') {
-        abrirModal('visa');
+    if (metodo === 'nequi' || metodo === 'visa') {
+        abrirModal(metodo);
     } else {
-        console.error("Método de pago no reconocido:", metodo);
-        alert("❌ Método de pago no válido");
+        alert("Método de pago no válido");
     }
 }
 
+/* ============================================
+   GESTIÓN DE MODALES
+   ============================================ */
+
 function abrirModal(tipo) {
     const modal = document.getElementById(`modal-${tipo}`);
+    if (!modal) return;
 
-    if (!modal) {
-        console.error(`Modal no encontrado: modal-${tipo}`);
-        return;
-    }
-
-    // Mostrar el modal con display flex
+    // Mostrar modal
     modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('activo'), 10);
 
-    // Agregar clase activo para animación (después de un pequeño delay)
-    setTimeout(() => {
-        modal.classList.add('activo');
-    }, 10);
-
-    // Mostrar el total en el modal
+    // Mostrar total
     const totalElement = document.getElementById("total-general");
     if (totalElement) {
         const total = totalElement.textContent.replace('Total: ', '');
-
-        if (tipo === 'nequi') {
-            const montoNequi = document.getElementById("monto-nequi");
-            if (montoNequi) {
-                montoNequi.textContent = total;
-            }
-        } else if (tipo === 'visa') {
-            const montoVisa = document.getElementById("monto-visa");
-            if (montoVisa) {
-                montoVisa.textContent = total;
-            }
+        const montoElement = document.getElementById(`monto-${tipo}`);
+        if (montoElement) {
+            montoElement.textContent = total;
         }
     }
-
-    console.log(`Modal ${tipo} abierto`);
 }
 
 function cerrarModal(tipo) {
     const modal = document.getElementById(`modal-${tipo}`);
+    if (!modal) return;
 
-    if (!modal) {
-        return;
-    }
-
-    // Remover clase activo para animación
     modal.classList.remove('activo');
-
-    // Ocultar el modal después de la animación
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 300);
-
-    console.log(`Modal ${tipo} cerrado`);
+    setTimeout(() => modal.style.display = 'none', 300);
 }
+
+/* ============================================
+   PROCESAR PAGOS
+   ============================================ */
 
 function procesarPagoNequi() {
     const telefono = document.getElementById("telefono-nequi").value.trim();
     const codigo = document.getElementById("codigo-nequi").value.trim();
 
     if (!telefono || !codigo) {
-        alert("❌ Debes completar todos los campos");
+        alert("Debes completar todos los campos");
         return;
     }
 
     if (codigo.length !== 4) {
-        alert("❌ El código debe tener 4 dígitos");
+        alert("El código debe tener 4 dígitos");
         return;
     }
 
@@ -349,18 +272,22 @@ function procesarPagoVisa() {
     const cvv = document.getElementById("cvv").value.trim();
 
     if (!numeroTarjeta || !nombreTarjeta || !fechaExp || !cvv) {
-        alert("❌ Debes completar todos los campos");
+        alert("Debes completar todos los campos");
         return;
     }
 
     if (cvv.length !== 3) {
-        alert("❌ El CVV debe tener 3 dígitos");
+        alert("El CVV debe tener 3 dígitos");
         return;
     }
 
     cerrarModal('visa');
     enviarPedidoAlServidor();
 }
+
+/* ============================================
+   ENVIAR PEDIDO AL SERVIDOR
+   ============================================ */
 
 function enviarPedidoAlServidor() {
     const telefono = document.getElementById("telefono").value.trim();
@@ -369,24 +296,20 @@ function enviarPedidoAlServidor() {
     const metodoPagoElement = document.querySelector('input[name="metodo-pago"]:checked');
 
     if (!metodoPagoElement) {
-        alert("❌ Error: No se pudo obtener el método de pago");
+        alert("Error: No se pudo obtener el método de pago");
         return;
     }
-
-    const metodoPago = metodoPagoElement.value;
 
     const pedidoDTO = {
         telefono: telefono,
         direccion: direccion,
         detalleCliente: detalleCliente,
-        metodoPago: metodoPago
+        metodoPago: metodoPagoElement.value
     };
 
     fetch('/pedido/api/confirmar', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pedidoDTO)
     })
         .then(response => response.json())
@@ -398,8 +321,8 @@ function enviarPedidoAlServidor() {
             }
         })
         .catch(error => {
-            console.error("❌ Error:", error);
-            alert("❌ Error al confirmar el pedido");
+            console.error("Error:", error);
+            alert("Error al confirmar el pedido");
         });
 }
 
@@ -409,15 +332,3 @@ function mostrarConfirmacion() {
     document.getElementById("paso2").classList.remove("activo");
     document.getElementById("paso3").classList.add("activo");
 }
-
-// Cerrar modal al hacer clic fuera
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-overlay')) {
-        // Determinar qué modal cerrar
-        if (e.target.id === 'modal-nequi') {
-            cerrarModal('nequi');
-        } else if (e.target.id === 'modal-visa') {
-            cerrarModal('visa');
-        }
-    }
-});

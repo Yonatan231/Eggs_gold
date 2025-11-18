@@ -3,7 +3,7 @@
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("🔍 Iniciando carga de productos...");
+    console.log(" Iniciando carga de productos...");
     cargarProductos();
     cargarContadorCarrito(); // ✅ Cargar contador al inicio
 });
@@ -146,7 +146,7 @@ function abrirModalCantidad(producto) {
             </div>
             <div class="modal-footer">
                 <button class="btn-agregar-carrito" onclick="agregarAlCarrito(${producto.idProducto}, ${producto.cantidad})">
-                    🛒 Agregar al carrito
+                     Agregar al carrito
                 </button>
             </div>
         </div>
