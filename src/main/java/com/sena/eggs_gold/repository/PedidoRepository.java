@@ -27,4 +27,5 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
     // ✅ NUEVO: Buscar pedidos entregados por conductor
     List<Pedido> findByConductorIdUsuariosAndEstadoOrderByFechaEntregaDesc(Integer idConductor, EstadoPedido estado);
+
 }

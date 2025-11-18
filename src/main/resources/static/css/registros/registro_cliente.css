@@ -77,7 +77,7 @@ input {
 }
 
 input:focus {
-    border-color: var(--color-texto);
+    border-color: var(--color-verde);
     background-color: #f4f4f4;
 }
 

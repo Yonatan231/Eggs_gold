@@ -5,18 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AdminController {
+public class AdministradorController {
 
     private final AdminService adminService;
 
-    public AdminController(AdminService adminService) {
+    public AdministradorController(AdminService adminService) {
         this.adminService = adminService;
     }
 
     // Endpoint para el panel de administrador
-    @GetMapping("/admin")
+    @GetMapping("/administrador_inicio")
     public String mostrarPanelAdmin() {
-        return "administrador/admistrador"; // admin.html en src/main/resources/templates
+        return "administrador/administrador_inicio"; // admin.html en src/main/resources/templates
     }
 
     @GetMapping("/novedades")

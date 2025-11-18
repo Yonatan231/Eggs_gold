@@ -44,8 +44,6 @@ public class Pedido {
     @Column(name = "FECHA_ENTREGA")
     private LocalDateTime fechaEntrega;  // Cuándo se entregó el pedido
 
-    // ===== CANTIDAD TOTAL =====
-
     @Column(name = "CANTIDAD_TOTAL")
     private Integer cantidadTotal;  // Cuántos productos en total tiene el pedido
     
@@ -62,10 +60,6 @@ public class Pedido {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CONDUCTOR")
     private Usuario conductor;
-
-    // Los productos que tiene este pedido
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<Venta> ventas;
 
     @PrePersist
     protected void antesDeGuardar() {

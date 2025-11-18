@@ -66,7 +66,7 @@ public class LoginController {
             session.setAttribute("usuario_id", admin.getIdUsuarios());
             session.setAttribute("rol", "ADMIN");
             model.addAttribute("usuario", admin);
-            return "redirect:/administrador";
+            return "redirect:/administrador_inicio";
         }
 
         // Logistica
