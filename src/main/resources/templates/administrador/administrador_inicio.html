@@ -170,6 +170,150 @@
         </div>
     </div>
 
+    <!-- SECCIÓN DE USUARIOS -->
+    <section class="seccion-tabla" aria-labelledby="titulo-usuarios">
+        <div class="encabezado-seccion">
+            <h2 id="titulo-usuarios">Gestión de Usuarios</h2>
+            <div class="acciones-seccion">
+                <a href="/admin/reportes/reporte-usuarios" download="Reporte_Usuarios.pdf" class="btn-pdf">
+                    <i class="fas fa-file-pdf"></i> Ver reporte PDF
+                </a>
+            </div>
+        </div>
+
+        <!-- Controles: Búsqueda y Filtros -->
+        <div class="controles-usuarios">
+            <form class="form-busqueda" id="form-busqueda-usuarios">
+                <input type="text" name="buscar" id="buscar-usuario" placeholder="Buscar por nombre, documento..." aria-label="Buscar usuarios">
+                <button type="submit" aria-label="Buscar">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </form>
+
+            <div class="filtros-usuario">
+                <div class="filtro-item">
+                    <label for="filtro-rol">Filtrar por rol:</label>
+                    <select id="filtro-rol" aria-label="Filtrar usuarios por rol">
+                        <option value="TODOS">Todos</option>
+                        <!-- Se llenará dinámicamente -->
+                    </select>
+                </div>
+
+                <div class="filtro-item">
+                    <label for="filtro-estado-usuario">Filtrar por estado:</label>
+                    <select id="filtro-estado-usuario" aria-label="Filtrar usuarios por estado">
+                        <option value="TODOS">Todos</option>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="INACTIVO">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de usuarios -->
+        <div class="contenedor-tabla">
+            <table class="tabla-datos" id="tabla-usuarios" aria-describedby="titulo-usuarios">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Los usuarios se cargarán aquí dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+
+            <div id="mensaje-sin-usuarios" class="mensaje-vacio" style="display: none;">
+                <p>No hay usuarios para mostrar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE EDICIÓN DE USUARIO -->
+    <div id="modal-usuario" class="modal-overlay" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-usuario">
+        <div class="modal-contenido modal-edicion">
+            <div class="modal-header">
+                <h3 id="titulo-modal-usuario">Editar Usuario</h3>
+                <button class="btn-cerrar-modal" onclick="cerrarModalUsuario()" aria-label="Cerrar modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="form-editar-usuario" class="modal-body">
+                <input type="hidden" id="edit-id-usuario">
+
+                <div class="form-group">
+                    <label for="edit-nombre">Nombre:</label>
+                    <input type="text" id="edit-nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-apellido">Apellido:</label>
+                    <input type="text" id="edit-apellido" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-tipo-documento">Tipo de Documento:</label>
+                    <select id="edit-tipo-documento" required>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CED">Cédula de Extranjería</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-num-documento">Número de Documento:</label>
+                    <input type="text" id="edit-num-documento" readonly>
+                    <small>El número de documento no se puede modificar</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-direccion">Dirección:</label>
+                    <input type="text" id="edit-direccion" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-telefono">Teléfono:</label>
+                    <input type="tel" id="edit-telefono" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-correo">Correo:</label>
+                    <input type="email" id="edit-correo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-rol">Rol:</label>
+                    <select id="edit-rol" required>
+                        <!-- Se llenará dinámicamente -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-estado">Estado:</label>
+                    <select id="edit-estado" required>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="INACTIVO">Inactivo</option>
+                    </select>
+                </div>
+
+                <div class="form-group readonly-info">
+                    <label>Fecha de Registro:</label>
+                    <p id="edit-fecha-registro"></p>
+                </div>
+
+                <div class="modal-botones">
+                    <button type="submit" class="btn-guardar">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </main>
 

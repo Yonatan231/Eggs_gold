@@ -336,3 +336,344 @@ document.addEventListener('keydown', function(e) {
         cerrarModalPedido();
     }
 });
+// ============================================
+// VARIABLES GLOBALES - USUARIOS
+// ============================================
+let todosUsuarios = [];
+let usuariosFiltrados = [];
+let rolesDisponibles = [];
+
+// ============================================
+// CARGAR USUARIOS AL INICIAR
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    cargarUsuarios();
+    cargarRoles();
+    inicializarEventosUsuarios();
+});
+
+// ============================================
+// INICIALIZAR EVENT LISTENERS - USUARIOS
+// ============================================
+function inicializarEventosUsuarios() {
+    // Filtro por rol
+    const filtroRol = document.getElementById('filtro-rol');
+    if (filtroRol) {
+        filtroRol.addEventListener('change', filtrarUsuarios);
+    }
+
+    // Filtro por estado
+    const filtroEstadoUsuario = document.getElementById('filtro-estado-usuario');
+    if (filtroEstadoUsuario) {
+        filtroEstadoUsuario.addEventListener('change', filtrarUsuarios);
+    }
+
+    // Búsqueda de usuarios
+    const formBusquedaUsuarios = document.getElementById('form-busqueda-usuarios');
+    if (formBusquedaUsuarios) {
+        formBusquedaUsuarios.addEventListener('submit', function(e) {
+            e.preventDefault();
+            buscarUsuarios();
+        });
+    }
+
+    // Form de edición de usuario
+    const formEditarUsuario = document.getElementById('form-editar-usuario');
+    if (formEditarUsuario) {
+        formEditarUsuario.addEventListener('submit', function(e) {
+            e.preventDefault();
+            guardarCambiosUsuario();
+        });
+    }
+}
+
+// ============================================
+// CARGAR USUARIOS DESDE EL BACKEND
+// ============================================
+async function cargarUsuarios() {
+    try {
+        const response = await fetch('/api/admin/usuarios');
+
+        if (!response.ok) {
+            throw new Error('Error al cargar los usuarios');
+        }
+
+        todosUsuarios = await response.json();
+        usuariosFiltrados = [...todosUsuarios];
+
+        mostrarUsuarios(usuariosFiltrados);
+        actualizarContadorUsuarios();
+
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarMensaje('Error al cargar los usuarios. Por favor, recarga la página.', 'error');
+    }
+}
+
+// ============================================
+// CARGAR ROLES DISPONIBLES
+// ============================================
+async function cargarRoles() {
+    try {
+        const response = await fetch('/api/admin/roles');
+
+        if (!response.ok) {
+            throw new Error('Error al cargar los roles');
+        }
+
+        rolesDisponibles = await response.json();
+        llenarSelectRoles();
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// ============================================
+// LLENAR SELECT DE ROLES
+// ============================================
+function llenarSelectRoles() {
+    const filtroRol = document.getElementById('filtro-rol');
+    const editRol = document.getElementById('edit-rol');
+
+    rolesDisponibles.forEach(rol => {
+        // Agregar al filtro
+        if (filtroRol) {
+            const option = document.createElement('option');
+            option.value = rol.idRoles;
+            option.textContent = rol.nombreRol;
+            filtroRol.appendChild(option);
+        }
+
+        // Agregar al select de edición
+        if (editRol) {
+            const option = document.createElement('option');
+            option.value = rol.idRoles;
+            option.textContent = rol.nombreRol;
+            editRol.appendChild(option);
+        }
+    });
+}
+
+// ============================================
+// MOSTRAR USUARIOS EN LA TABLA
+// ============================================
+function mostrarUsuarios(usuarios) {
+    const tbody = document.querySelector('#tabla-usuarios tbody');
+    const mensajeSinUsuarios = document.getElementById('mensaje-sin-usuarios');
+
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (usuarios.length === 0) {
+        if (mensajeSinUsuarios) {
+            mensajeSinUsuarios.style.display = 'block';
+        }
+        return;
+    }
+
+    if (mensajeSinUsuarios) {
+        mensajeSinUsuarios.style.display = 'none';
+    }
+
+    usuarios.forEach(usuario => {
+        const fila = crearFilaUsuario(usuario);
+        tbody.appendChild(fila);
+    });
+}
+
+// ============================================
+// CREAR FILA DE USUARIO
+// ============================================
+function crearFilaUsuario(usuario) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-id', usuario.idUsuario);
+
+    tr.innerHTML = `
+        <td>${usuario.idUsuario}</td>
+        <td>${usuario.nombre} ${usuario.apellido}</td>
+        <td>${usuario.numDocumento}</td>
+        <td>${usuario.telefono}</td>
+        <td>
+            <span class="badge-rol">${usuario.nombreRol}</span>
+        </td>
+        <td>
+            <span class="estado-usuario ${usuario.estado}">${usuario.estado}</span>
+        </td>
+        <td>
+            <button class="btn-accion btn-editar" onclick="abrirModalEditarUsuario(${usuario.idUsuario})">
+                <i class="fas fa-edit"></i> Editar
+            </button>
+        </td>
+    `;
+
+    return tr;
+}
+
+// ============================================
+// ABRIR MODAL PARA EDITAR USUARIO
+// ============================================
+async function abrirModalEditarUsuario(idUsuario) {
+    try {
+        const response = await fetch(`/api/admin/usuarios/${idUsuario}`);
+
+        if (!response.ok) {
+            throw new Error('Error al cargar el usuario');
+        }
+
+        const usuario = await response.json();
+        llenarFormularioEdicion(usuario);
+
+        const modal = document.getElementById('modal-usuario');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.classList.add('modal-abierto');
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarMensaje('Error al cargar los datos del usuario.', 'error');
+    }
+}
+
+// ============================================
+// LLENAR FORMULARIO DE EDICIÓN
+// ============================================
+function llenarFormularioEdicion(usuario) {
+    document.getElementById('edit-id-usuario').value = usuario.idUsuario;
+    document.getElementById('edit-nombre').value = usuario.nombre;
+    document.getElementById('edit-apellido').value = usuario.apellido;
+    document.getElementById('edit-tipo-documento').value = usuario.tipoDocumento;
+    document.getElementById('edit-num-documento').value = usuario.numDocumento;
+    document.getElementById('edit-direccion').value = usuario.direccion;
+    document.getElementById('edit-telefono').value = usuario.telefono;
+    document.getElementById('edit-correo').value = usuario.correo;
+    document.getElementById('edit-rol').value = usuario.idRol;
+    document.getElementById('edit-estado').value = usuario.estado;
+    document.getElementById('edit-fecha-registro').textContent = formatearFecha(usuario.fechaRegistro);
+}
+
+// ============================================
+// GUARDAR CAMBIOS DEL USUARIO
+// ============================================
+async function guardarCambiosUsuario() {
+    const idUsuario = document.getElementById('edit-id-usuario').value;
+
+    const usuarioDTO = {
+        idUsuario: parseInt(idUsuario),
+        nombre: document.getElementById('edit-nombre').value,
+        apellido: document.getElementById('edit-apellido').value,
+        tipoDocumento: document.getElementById('edit-tipo-documento').value,
+        numDocumento: document.getElementById('edit-num-documento').value,
+        direccion: document.getElementById('edit-direccion').value,
+        telefono: document.getElementById('edit-telefono').value,
+        correo: document.getElementById('edit-correo').value,
+        idRol: parseInt(document.getElementById('edit-rol').value),
+        estado: document.getElementById('edit-estado').value
+    };
+
+    try {
+        const response = await fetch(`/api/admin/usuarios/${idUsuario}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuarioDTO)
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al actualizar el usuario');
+        }
+
+        mostrarMensaje('Usuario actualizado correctamente', 'success');
+        cerrarModalUsuario();
+        cargarUsuarios();
+
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarMensaje('Error al guardar los cambios. Intenta nuevamente.', 'error');
+    }
+}
+
+// ============================================
+// CERRAR MODAL DE USUARIO
+// ============================================
+function cerrarModalUsuario() {
+    const modal = document.getElementById('modal-usuario');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.classList.remove('modal-abierto');
+    }
+}
+
+// ============================================
+// FILTRAR USUARIOS
+// ============================================
+function filtrarUsuarios() {
+    const filtroRol = document.getElementById('filtro-rol').value;
+    const filtroEstado = document.getElementById('filtro-estado-usuario').value;
+
+    let usuariosFiltradosTemp = [...todosUsuarios];
+
+    // Filtrar por rol
+    if (filtroRol !== 'TODOS') {
+        usuariosFiltradosTemp = usuariosFiltradosTemp.filter(
+            usuario => usuario.idRol === parseInt(filtroRol)
+        );
+    }
+
+    // Filtrar por estado
+    if (filtroEstado !== 'TODOS') {
+        usuariosFiltradosTemp = usuariosFiltradosTemp.filter(
+            usuario => usuario.estado === filtroEstado
+        );
+    }
+
+    usuariosFiltrados = usuariosFiltradosTemp;
+    mostrarUsuarios(usuariosFiltrados);
+}
+
+// ============================================
+// BUSCAR USUARIOS
+// ============================================
+function buscarUsuarios() {
+    const termino = document.getElementById('buscar-usuario').value.toLowerCase().trim();
+
+    if (!termino) {
+        mostrarUsuarios(usuariosFiltrados);
+        return;
+    }
+
+    const resultados = usuariosFiltrados.filter(usuario => {
+        const nombre = `${usuario.nombre} ${usuario.apellido}`.toLowerCase();
+        const documento = usuario.numDocumento.toLowerCase();
+        const telefono = usuario.telefono.toLowerCase();
+
+        return nombre.includes(termino) ||
+            documento.includes(termino) ||
+            telefono.includes(termino);
+    });
+
+    mostrarUsuarios(resultados);
+}
+
+// ============================================
+// ACTUALIZAR CONTADOR DE USUARIOS
+// ============================================
+function actualizarContadorUsuarios() {
+    const contador = document.getElementById('totalUsuarios');
+    if (contador) {
+        contador.textContent = todosUsuarios.length;
+    }
+}
+
+// ============================================
+// CERRAR MODAL AL HACER CLIC FUERA - USUARIOS
+// ============================================
+document.addEventListener('click', function(e) {
+    const modalUsuario = document.getElementById('modal-usuario');
+    if (e.target === modalUsuario) {
+        cerrarModalUsuario();
+    }
+});

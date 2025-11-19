@@ -7,9 +7,6 @@ import lombok.AllArgsConstructor;
 import jakarta.persistence.*;
 import java.util.List;
 
-/**
- * Entidad JPA para la tabla roles
- */
 @Entity
 @Table(name = "roles")
 @Data
