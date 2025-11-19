@@ -58,6 +58,11 @@ public class ProductoServiceImpl implements ProductoService {
         productoRepository.save(producto);
     }
 
+    /**
+     * Guarda una imagen de producto en la carpeta externa
+     * @param archivo - Archivo MultipartFile de la imagen
+     * @return String - Nombre único del archivo guardado
+     */
     private String guardarImagenProducto(MultipartFile archivo) throws IOException {
         Path directorioProductos = Paths.get(uploadBasePath + "productos");
 
@@ -105,6 +110,32 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setCategoria(datosProducto.getCategoria());
         producto.setDescripcion(datosProducto.getDescripcion());
         producto.setEstado(datosProducto.getEstado());
+
+        return productoRepository.save(producto);
+    }
+
+    // ============================================
+    // NUEVO MÉTODO: Actualizar producto con imagen opcional
+    // ============================================
+    @Override
+    public Producto actualizarProductoConImagen(Integer id, Producto datosProducto, MultipartFile imagenFile) throws IOException {
+        // Buscar el producto existente
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con id " + id));
+
+        // Actualizar campos básicos
+        producto.setNombre(datosProducto.getNombre());
+        producto.setPrecio(datosProducto.getPrecio());
+        producto.setCategoria(datosProducto.getCategoria());
+        producto.setDescripcion(datosProducto.getDescripcion());
+        producto.setEstado(datosProducto.getEstado());
+
+        // Si se envió una nueva imagen, guardarla y actualizar
+        if (imagenFile != null && !imagenFile.isEmpty()) {
+            String nombreArchivo = guardarImagenProducto(imagenFile);
+            producto.setImagen(nombreArchivo);
+        }
+        // Si no se envió imagen, mantener la imagen actual (no hacer nada)
 
         return productoRepository.save(producto);
     }

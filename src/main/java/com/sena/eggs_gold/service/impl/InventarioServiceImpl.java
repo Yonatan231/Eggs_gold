@@ -42,7 +42,7 @@ public class InventarioServiceImpl implements InventarioService {
         List<Inventario> inventarios = inventarioRepository.findAll();
 
         return inventarios.stream()
-                .filter(inventario -> inventario.getCantidadDisponible() > 0) // Solo mostrar inventarios con cantidad disponible
+                // Mostrar TODOS los inventarios sin importar la cantidad disponible
                 .map(inventario -> {
                     InventarioDetalleDTO dto = new InventarioDetalleDTO();
                     dto.setIdInventario(inventario.getIdInventario());

@@ -16,6 +16,9 @@ public interface ProductoService {
     List<ProductoDTO> listaProductos();
     Producto actualizarProducto(Integer id, Producto datosProducto);
 
+
+    // Nuevo método para actualizar producto con imagen opcional
+    Producto actualizarProductoConImagen(Integer id, Producto datosProducto, MultipartFile imagenFile) throws IOException;
     boolean marcarComoDescontinuado(Integer idProducto);
 
     List<ProductoBusquedaDTO> buscarProductos(String buscar);
