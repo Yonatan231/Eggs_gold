@@ -229,10 +229,9 @@
                     <label for="tipoNovedad">Tipo de Novedad</label>
                     <select id="tipoNovedad" class="form-control" required>
                         <option value="">Seleccione un tipo</option>
-                        <option value="incompleto">Pedido Incompleto</option>
-                        <option value="retraso">Retraso Inesperado</option>
-                        <option value="cliente-ausente">Cliente no se Encontraba</option>
-                        <option value="otro">Otro</option>
+                        <option value="RETRASO_INESPERADO">Retraso Inesperado</option>
+                        <option value="CLIENTE_NO_ESTABA">Cliente no se Encontraba</option>
+                        <option value="OTRO">Otro</option>
                     </select>
                 </div>
 
@@ -242,16 +241,10 @@
                     <textarea id="descripcion" class="form-control" placeholder="Describa la novedad en detalle..." required></textarea>
                 </div>
 
-                <!-- Campo 4: Fecha del incidente -->
-                <div class="form-group">
-                    <label for="fecha">Fecha</label>
-                    <input type="date" id="fecha" class="form-control" required>
-                </div>
-
-                <!-- Campo 5: Evidencia (foto o archivo opcional) -->
+                <!-- Campo 4: Evidencia (foto o archivo opcional) -->
                 <div class="form-group">
                     <label for="evidencia">Evidencia (opcional)</label>
-                    <input type="file" id="evidencia" class="form-control">
+                    <input type="file" id="evidencia" class="form-control" accept="image/*">
                 </div>
 
                 <!-- Botones de acción -->
@@ -298,6 +291,7 @@
 
 </main>
 
+<script th:src="@{/js/utils/reportar_novedad.js}"></script>
 <script th:src="@{/js/conductor/conductor_inicio.js}"></script>
 <script th:src="@{/js/utils/foto_panel.js}"></script>
 

@@ -42,39 +42,74 @@
 </header>
 
 <div class="container">
-    <table>
+    <!-- Filtro por estado -->
+    <div class="filter-container">
+        <label for="filtroEstado">Filtrar por estado:</label>
+        <select id="filtroEstado" class="filter-select">
+            <option value="TODOS">Todos</option>
+            <option value="PENDIENTE">Pendientes</option>
+            <option value="RESUELTO">Resueltos</option>
+        </select>
+    </div>
+
+    <table id="tablaNovedades">
         <thead>
         <tr>
             <th>ID</th>
+            <th>Pedido</th>
             <th>Tipo</th>
             <th>Descripción</th>
-            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Fecha Creación</th>
             <th>Usuario</th>
             <th>Rol</th>
+            <th>Imagen</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <!-- Ejemplo con Thymeleaf -->
-        <tr th:each="novedad : ${listaNovedades}">
-            <td th:text="${novedad.id}"></td>
-            <td th:text="${novedad.tipo}"></td>
+        <!-- Thymeleaf loop -->
+        <tr th:each="novedad : ${novedades}" th:attr="data-estado=${novedad.estado}">
+            <td th:text="${novedad.idNovedad}"></td>
+            <td th:text="${novedad.pedido.idPedidos}"></td>
+            <td th:text="${novedad.tipoNovedad}"></td>
             <td th:text="${novedad.descripcion}"></td>
-            <td th:text="${#temporals.format(novedad.fecha, 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:text="${novedad.usuario.nombre}"></td>
-            <td th:text="${novedad.usuario.rol}"></td>
             <td>
-                <form th:action="@{/admin/novedades/eliminar/{id}(id=${novedad.id})}" method="post">
-                    <button type="submit" class="btn">Eliminar</button>
-                </form>
+                <span class="estado-badge"
+                      th:classappend="${novedad.estado.name() == 'RESUELTO' ? 'estado-resuelto' : 'estado-pendiente'}"
+                      th:text="${novedad.estado}">
+                </span>
+            </td>
+            <td th:text="${#temporals.format(novedad.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${novedad.usuario.nombre + ' ' + novedad.usuario.apellido}"></td>
+            <td th:text="${novedad.usuario.rol.nombreRol}"></td>
+            <td>
+                <button th:if="${novedad.imagen != null}"
+                        class="btn-ver-imagen"
+                        th:attr="data-imagen=${'/uploads/novedades/' + novedad.imagen}">
+                    <i class="fas fa-image"></i> Ver
+                </button>
+                <span th:unless="${novedad.imagen != null}" class="sin-imagen">Sin imagen</span>
+            </td>
+            <td>
+                <select class="cambiar-estado" th:attr="data-id=${novedad.idNovedad}">
+                    <option value="PENDIENTE" th:selected="${novedad.estado.name() == 'PENDIENTE'}">Pendiente</option>
+                    <option value="RESUELTO" th:selected="${novedad.estado.name() == 'RESUELTO'}">Resuelto</option>
+                </select>
             </td>
         </tr>
         <!-- Mensaje si no hay novedades -->
-        <tr th:if="${#lists.isEmpty(listaNovedades)}">
-            <td colspan="7" class="empty-message">No hay novedades registradas</td>
+        <tr th:if="${#lists.isEmpty(novedades)}" class="empty-row">
+            <td colspan="10" class="empty-message">No hay novedades registradas</td>
         </tr>
         </tbody>
     </table>
+</div>
+
+<!-- Lightbox para ver imagen -->
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
 </div>
 
 <footer>
@@ -93,6 +128,7 @@
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script th:src="@{/js/administrador/novedades.js}"></script>
 <script> validarRolPagina('ADMIN'); </script>
 
 </body>

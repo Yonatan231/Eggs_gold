@@ -88,7 +88,7 @@ header {
 
 /* Contenido principal */
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 30px auto;
     padding: 0 20px;
     flex-grow: 1;
@@ -215,4 +215,148 @@ footer {
     .footer-quote {
         font-size: 1.2rem;
     }
+}
+
+/* Filtro por estado */
+.filter-container {
+    background: white;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-container label {
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: white;
+    transition: border-color 0.3s ease;
+}
+
+.filter-select:hover {
+    border-color: #27AE60;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #27AE60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+/* Estados con color */
+.estado-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.estado-pendiente {
+    background-color: #fee;
+    color: #c0392b;
+}
+
+.estado-resuelto {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Select para cambiar estado */
+.cambiar-estado {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.cambiar-estado:hover {
+    border-color: #27AE60;
+}
+
+.cambiar-estado:focus {
+    outline: none;
+    border-color: #27AE60;
+}
+
+/* Botón ver imagen */
+.btn-ver-imagen {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-ver-imagen:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+.sin-imagen {
+    color: #999;
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+/* Lightbox */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    animation: zoom 0.3s;
+}
+
+@keyframes zoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus {
+    color: #bbb;
 }

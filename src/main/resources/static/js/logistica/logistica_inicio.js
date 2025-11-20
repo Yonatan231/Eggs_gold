@@ -432,49 +432,73 @@ window.addEventListener('click', function(e) {
 // ============================================
 
 // Obtenemos los elementos del DOM
+// ============================================
+// MODAL DE NOVEDAD - Usando funciones compartidas
+// ============================================
 const btnNovedad = document.getElementById('btnNovedad');
 const novedadModal = document.getElementById('novedadModal');
 const closeModal = document.getElementById('closeModal');
 const cancelNovedad = document.getElementById('cancelNovedad');
 const novedadForm = document.getElementById('novedadForm');
 
-// Cuando se hace clic en el botón "Reportar Novedad"
+// Abrir modal
 if (btnNovedad) {
     btnNovedad.addEventListener('click', function(e) {
-        e.preventDefault(); // Evitamos que el enlace navegue
-        novedadModal.style.display = 'flex'; // Mostramos el modal
-
-        // Establecemos la fecha actual por defecto en el campo de fecha
-        const fechaInput = document.getElementById('fecha');
-        if (fechaInput) {
-            fechaInput.valueAsDate = new Date();
-        }
+        e.preventDefault();
+        novedadModal.style.display = 'flex';
     });
 }
 
-// Cuando se hace clic en el botón de cerrar (X)
+// Cerrar modal con X
 if (closeModal) {
     closeModal.addEventListener('click', function() {
-        novedadModal.style.display = 'none'; // Ocultamos el modal
+        novedadModal.style.display = 'none';
+        novedadForm.reset();
     });
 }
 
-// Cuando se hace clic en el botón "Cancelar"
+// Cerrar modal con botón Cancelar
 if (cancelNovedad) {
     cancelNovedad.addEventListener('click', function() {
-        novedadModal.style.display = 'none'; // Ocultamos el modal
+        novedadModal.style.display = 'none';
+        novedadForm.reset();
     });
 }
 
-// Envío del formulario de novedad
+// Envío del formulario usando funciones compartidas
 if (novedadForm) {
     novedadForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Evitamos que se recargue la página
+        e.preventDefault();
 
-        // Aquí iría la lógica para enviar el formulario al servidor
-        // Por ahora solo mostramos un mensaje de confirmación
-        alert('Novedad reportada correctamente. Nos contactaremos pronto.');
-        novedadModal.style.display = 'none'; // Cerramos el modal
-        novedadForm.reset(); // Limpiamos el formulario
+        const idPedido = document.getElementById('orderNumber').value.trim();
+        const tipoNovedad = document.getElementById('tipoNovedad').value;
+        const descripcion = document.getElementById('descripcion').value.trim();
+        const imagenFile = document.getElementById('evidencia').files[0];
+
+        // Validar campos usando función compartida
+        const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
+        if (!validacion.valido) {
+            alert(validacion.mensaje);
+            return;
+        }
+
+        // Obtener ID de usuario
+        const idUsuario = obtenerIdUsuario();
+        if (!idUsuario) {
+            alert('Error: No se pudo obtener la información de usuario. Recargue la página.');
+            return;
+        }
+
+        // Reportar novedad usando función compartida
+        reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
+            .then(resultado => {
+                if (resultado.success) {
+                    alert(resultado.message);
+                    novedadModal.style.display = 'none';
+                    novedadForm.reset();
+                } else {
+                    alert('Error: ' + resultado.message);
+                }
+            });
     });
 }

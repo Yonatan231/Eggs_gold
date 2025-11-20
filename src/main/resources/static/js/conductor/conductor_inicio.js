@@ -269,39 +269,70 @@ window.addEventListener('click', function(e) {
 });
 
 // ============================================
-// CONFIGURAR MODAL DE NOVEDAD
+// CONFIGURAR MODAL DE NOVEDAD - Usando funciones compartidas
 // ============================================
 function configurarModalNovedad() {
+    const novedadForm = document.getElementById('novedadForm');
+
+    if (novedadForm) {
+        novedadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const idPedido = document.getElementById('orderNumber').value.trim();
+            const tipoNovedad = document.getElementById('tipoNovedad').value;
+            const descripcion = document.getElementById('descripcion').value.trim();
+            const imagenFile = document.getElementById('evidencia').files[0];
+
+            // Validar campos usando función compartida
+            const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
+            if (!validacion.valido) {
+                alert(validacion.mensaje);
+                return;
+            }
+
+            // Obtener ID de usuario
+            const idUsuario = obtenerIdUsuario();
+            if (!idUsuario) {
+                alert('Error: No se pudo obtener la información de usuario. Recargue la página.');
+                return;
+            }
+
+            // Reportar novedad usando función compartida
+            reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
+                .then(resultado => {
+                    if (resultado.success) {
+                        alert(resultado.message);
+                        document.getElementById('novedadModal').style.display = 'none';
+                        novedadForm.reset();
+                    } else {
+                        alert('Error: ' + resultado.message);
+                    }
+                });
+        });
+    }
+
+    // Configurar botones del modal
     const btnNovedad = document.getElementById('btnNovedad');
     const novedadModal = document.getElementById('novedadModal');
     const closeModal = document.getElementById('closeModal');
     const cancelNovedad = document.getElementById('cancelNovedad');
-    const novedadForm = document.getElementById('novedadForm');
 
     if (btnNovedad) {
         btnNovedad.addEventListener('click', function(e) {
             e.preventDefault();
             novedadModal.style.display = 'flex';
-            document.getElementById('fecha').valueAsDate = new Date();
         });
     }
 
     if (closeModal) {
         closeModal.addEventListener('click', function() {
             novedadModal.style.display = 'none';
+            novedadForm.reset();
         });
     }
 
     if (cancelNovedad) {
         cancelNovedad.addEventListener('click', function() {
-            novedadModal.style.display = 'none';
-        });
-    }
-
-    if (novedadForm) {
-        novedadForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Novedad reportada correctamente. Nos contactaremos pronto.');
             novedadModal.style.display = 'none';
             novedadForm.reset();
         });

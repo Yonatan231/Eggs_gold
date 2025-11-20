@@ -48,6 +48,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:C:/eggs_gold_uploads/productos/")
                 .setCachePeriod(0);  // Sin caché para productos
 
+        // carpeta para las imágenes de novedades
+        registry.addResourceHandler("/uploads/novedades/**")
+                .addResourceLocations("file:C:/eggs_gold_uploads/novedades/")
+                .setCachePeriod(0);  // Sin caché para novedades
+
         // configuracion para mantener las imagenes por defecto (logo, inicio...
         registry.addResourceHandler("/imagenes/**")
                 .addResourceLocations("classpath:/static/imagenes/")

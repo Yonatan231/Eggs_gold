@@ -331,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btnNovedad) {
         btnNovedad.addEventListener('click', () => {
             novedadModal.style.display = 'flex';
-            document.getElementById('fecha').valueAsDate = new Date();
         });
     }
 
@@ -364,13 +363,41 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadFacturaBtn.addEventListener('click', descargarFacturaPDF);
     }
 
-    // Formulario de novedad
+    // Formulario de novedad - Usando función compartida
     if (novedadForm) {
         novedadForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Novedad reportada correctamente. Nos contactaremos pronto.');
-            novedadModal.style.display = 'none';
-            novedadForm.reset();
+
+            const idPedido = document.getElementById('orderNumber').value.trim();
+            const tipoNovedad = document.getElementById('tipoNovedad').value;
+            const descripcion = document.getElementById('descripcion').value.trim();
+            const imagenFile = document.getElementById('evidencia').files[0];
+
+            // Validar campos usando función compartida
+            const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
+            if (!validacion.valido) {
+                alert(validacion.mensaje);
+                return;
+            }
+
+            // Obtener ID de usuario
+            const idUsuario = obtenerIdUsuario();
+            if (!idUsuario) {
+                alert('Error: No se pudo obtener la información de usuario. Recargue la página.');
+                return;
+            }
+
+            // Reportar novedad usando función compartida
+            reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
+                .then(resultado => {
+                    if (resultado.success) {
+                        alert(resultado.message);
+                        novedadModal.style.display = 'none';
+                        novedadForm.reset();
+                    } else {
+                        alert('Error: ' + resultado.message);
+                    }
+                });
         });
     }
 

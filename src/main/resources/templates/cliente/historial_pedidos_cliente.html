@@ -80,16 +80,16 @@
         <form id="novedadForm">
             <div class="form-group">
                 <label for="orderNumber">Número de Pedido</label>
-                <input type="text" id="orderNumber" class="form-control" required>
+                <input type="number" id="orderNumber" class="form-control" required>
             </div>
 
             <div class="form-group">
                 <label for="tipoNovedad">Tipo de Novedad</label>
                 <select id="tipoNovedad" class="form-control" required>
                     <option value="">Seleccione un tipo</option>
-                    <option value="incompleto">Pedido Incompleto</option>
-                    <option value="mal-estado">Pedido en Mal Estado</option>
-                    <option value="otro">Otro</option>
+                    <option value="PEDIDO_INCOMPLETO">Pedido Incompleto</option>
+                    <option value="PEDIDO_EN_MAL_ESTADO">Pedido en Mal Estado</option>
+                    <option value="OTRO">Otro</option>
                 </select>
             </div>
 
@@ -99,13 +99,8 @@
             </div>
 
             <div class="form-group">
-                <label for="fecha">Fecha</label>
-                <input type="date" id="fecha" class="form-control" required>
-            </div>
-
-            <div class="form-group">
                 <label for="evidencia">Evidencia (opcional)</label>
-                <input type="file" id="evidencia" class="form-control">
+                <input type="file" id="evidencia" class="form-control" accept="image/*">
             </div>
 
             <div class="form-actions">
@@ -157,6 +152,7 @@
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script th:src="@{/js/utils/reportar_novedad.js}"></script>
 <script> validarRolPagina('CLIENTE'); </script>
 
 </body>

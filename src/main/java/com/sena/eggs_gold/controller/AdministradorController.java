@@ -19,11 +19,6 @@ public class AdministradorController {
         return "administrador/administrador_inicio"; // admin.html en src/main/resources/templates
     }
 
-    @GetMapping("/novedades")
-    public String mostrarNovedades() {
-        return "administrador/novedades";
-    }
-
     @GetMapping("/entrada_stock")
     public String mostrarLlegadaStock() {
         return "administrador/entrada_stock"; // admin.html en src/main/resources/templates
