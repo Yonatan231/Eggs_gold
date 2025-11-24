@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -132,4 +133,48 @@ public class EntradaStockController {
             return ResponseEntity.badRequest().body(response);
         }
     }
+
+    @PostMapping("/api/cargar-csv")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> cargarEntradasCSV(
+            @RequestParam("archivoCSV") MultipartFile archivoCSV) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Validar que se envió un archivo
+            if (archivoCSV.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "❌ Debes seleccionar un archivo CSV");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Validar extensión del archivo
+            String nombreArchivo = archivoCSV.getOriginalFilename();
+            if (nombreArchivo == null || !nombreArchivo.toLowerCase().endsWith(".csv")) {
+                response.put("success", false);
+                response.put("message", "❌ El archivo debe ser .csv");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Procesar el CSV
+            Map<String, Object> resultado = entradaStockService.guardarEntradasDesdeCSV(archivoCSV);
+
+            response.put("success", true);
+            response.put("exitosos", resultado.get("exitosos"));
+            response.put("fallidos", resultado.get("fallidos"));
+            response.put("errores", resultado.get("errores"));
+            response.put("message", "✅ Carga completada: " +
+                    resultado.get("exitosos") + " entradas registradas, " +
+                    resultado.get("fallidos") + " fallidas");
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "❌ Error al procesar el archivo: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
 }

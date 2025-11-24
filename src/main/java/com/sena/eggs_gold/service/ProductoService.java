@@ -1,3 +1,4 @@
+// ===== ProductoService.java =====
 package com.sena.eggs_gold.service;
 
 import com.sena.eggs_gold.dto.ProductoBusquedaDTO;
@@ -8,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductoService {
 
@@ -16,14 +18,11 @@ public interface ProductoService {
     List<ProductoDTO> listaProductos();
     Producto actualizarProducto(Integer id, Producto datosProducto);
 
-
     // Nuevo método para actualizar producto con imagen opcional
     Producto actualizarProductoConImagen(Integer id, Producto datosProducto, MultipartFile imagenFile) throws IOException;
     boolean marcarComoDescontinuado(Integer idProducto);
 
     List<ProductoBusquedaDTO> buscarProductos(String buscar);
 
-
-
-
+    Map<String, Object> guardarProductosDesdeCSV(MultipartFile archivoCSV) throws IOException;
 }

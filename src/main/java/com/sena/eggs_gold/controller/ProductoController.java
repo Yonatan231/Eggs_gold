@@ -97,4 +97,47 @@ public class ProductoController {
                     .body("❌ No se pudo actualizar el estado del producto.");
         }
     }
+
+    @PostMapping("/api/productos/cargar-csv")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> cargarProductosCSV(
+            @RequestParam("archivoCSV") MultipartFile archivoCSV) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Validar que se envió un archivo
+            if (archivoCSV.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "❌ Debes seleccionar un archivo CSV");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Validar extensión del archivo
+            String nombreArchivo = archivoCSV.getOriginalFilename();
+            if (nombreArchivo == null || !nombreArchivo.toLowerCase().endsWith(".csv")) {
+                response.put("success", false);
+                response.put("message", "❌ El archivo debe ser .csv");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Procesar el CSV
+            Map<String, Object> resultado = productoService.guardarProductosDesdeCSV(archivoCSV);
+
+            response.put("success", true);
+            response.put("exitosos", resultado.get("exitosos"));
+            response.put("fallidos", resultado.get("fallidos"));
+            response.put("errores", resultado.get("errores"));
+            response.put("message", "✅ Carga completada: " +
+                    resultado.get("exitosos") + " productos insertados, " +
+                    resultado.get("fallidos") + " fallidos");
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "❌ Error al procesar el archivo: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

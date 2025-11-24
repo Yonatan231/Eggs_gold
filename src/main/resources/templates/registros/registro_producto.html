@@ -59,10 +59,17 @@
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
     <!-- Formulario -->
+    <!-- Formulario -->
     <form th:action="@{/registrar_producto}" th:object="${producto}" method="post"
           enctype="multipart/form-data" class="formulario-contenedor">
 
-        <h2>Formulario de creación</h2>
+        <!-- ✅ ENCABEZADO CON BOTÓN CSV -->
+        <div class="header-formulario">
+            <h2>Formulario de creación</h2>
+            <button type="button" class="btn-csv" id="btn-csv">
+                <i class="fas fa-file-csv"></i> Cargar CSV
+            </button>
+        </div>
 
         <label for="nombre">Nombre del producto:</label>
         <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Huevo de campo" required>
@@ -93,27 +100,23 @@
     </form>
 </main>
 
-<script>
-    // vista previa de imagen
-    const inputFile = document.getElementById('imagenFile');
-    const preview = document.getElementById('preview');
+<input type="file" id="input-csv" accept=".csv" style="display: none;">
 
-    inputFile.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            preview.style.display = 'none';
-        }
-    });
-</script>
+<!-- ✅ Modal para mostrar resultados -->
+<div id="modal-resultado" class="modal-resultado" style="display: none;">
+    <div class="modal-contenido">
+        <h3 id="modal-titulo">Resultado de la carga</h3>
+        <p id="modal-mensaje"></p>
+        <div id="modal-errores" style="display: none;">
+            <h4>Errores encontrados:</h4>
+            <ul id="lista-errores"></ul>
+        </div>
+        <button onclick="cerrarModal()" class="btn-cerrar-modal">Cerrar</button>
+    </div>
+</div>
 
 <script th:src="@{/js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/administrador/registrar_producto.js}"></script>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>

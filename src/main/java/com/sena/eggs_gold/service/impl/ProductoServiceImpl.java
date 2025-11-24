@@ -172,4 +172,108 @@ public class ProductoServiceImpl implements ProductoService {
 
         return resultado;
     }
+
+    @Override
+    public Map<String, Object> guardarProductosDesdeCSV(MultipartFile archivoCSV) throws IOException {
+        Map<String, Object> resultado = new java.util.HashMap<>();
+        int exitosos = 0;
+        int fallidos = 0;
+        List<String> errores = new ArrayList<>();
+
+        // Leer el archivo CSV
+        String contenido = new String(archivoCSV.getBytes());
+        String[] lineas = contenido.split("\n");
+
+        // Procesar cada línea (saltamos la primera que son los encabezados)
+        for (int i = 1; i < lineas.length; i++) {
+            String linea = lineas[i].trim();
+
+            // Saltar líneas vacías
+            if (linea.isEmpty()) {
+                continue;
+            }
+
+            try {
+                // Dividir la línea por comas
+                String[] datos = linea.split(",");
+
+                // Validar que tenga los 4 campos necesarios
+                if (datos.length < 4) {
+                    fallidos++;
+                    errores.add("Línea " + (i + 1) + ": Faltan datos (debe tener: nombre,precio,categoria,descripcion)");
+                    continue;
+                }
+
+                // Extraer datos
+                String nombre = datos[0].trim();
+                String precioStr = datos[1].trim();
+                String categoriaStr = datos[2].trim().toUpperCase();
+                String descripcion = datos[3].trim();
+
+                // Validar nombre
+                if (nombre.isEmpty()) {
+                    fallidos++;
+                    errores.add("Línea " + (i + 1) + ": El nombre no puede estar vacío");
+                    continue;
+                }
+
+                // Validar y convertir precio
+                Float precio;
+                try {
+                    precio = Float.parseFloat(precioStr);
+                    if (precio <= 0) {
+                        fallidos++;
+                        errores.add("Línea " + (i + 1) + ": El precio debe ser mayor a 0");
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    fallidos++;
+                    errores.add("Línea " + (i + 1) + ": Precio inválido '" + precioStr + "'");
+                    continue;
+                }
+
+                // Validar categoría
+                com.sena.eggs_gold.model.enums.Categoria categoria;
+                try {
+                    categoria = com.sena.eggs_gold.model.enums.Categoria.valueOf(categoriaStr);
+                } catch (IllegalArgumentException e) {
+                    fallidos++;
+                    errores.add("Línea " + (i + 1) + ": Categoría inválida '" + categoriaStr + "' (debe ser: A, AA o AAA)");
+                    continue;
+                }
+
+                // Validar descripción
+                if (descripcion.isEmpty()) {
+                    fallidos++;
+                    errores.add("Línea " + (i + 1) + ": La descripción no puede estar vacía");
+                    continue;
+                }
+
+                // Crear el producto
+                Producto producto = new Producto();
+                producto.setNombre(nombre);
+                producto.setPrecio(precio);
+                producto.setCategoria(categoria);
+                producto.setDescripcion(descripcion);
+                producto.setEstado(EstadoProducto.DISPONIBLE);
+                producto.setImagen("default.jpg"); // Imagen por defecto
+
+                // Guardar en la base de datos
+                productoRepository.save(producto);
+                exitosos++;
+
+            } catch (Exception e) {
+                fallidos++;
+                errores.add("Línea " + (i + 1) + ": Error inesperado - " + e.getMessage());
+            }
+        }
+
+        // Preparar respuesta
+        resultado.put("exitosos", exitosos);
+        resultado.put("fallidos", fallidos);
+        resultado.put("errores", errores);
+
+        return resultado;
+    }
+
 }

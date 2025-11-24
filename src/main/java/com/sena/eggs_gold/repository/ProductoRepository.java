@@ -1,3 +1,4 @@
+// ===== ProductoRepository.java =====
 package com.sena.eggs_gold.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,11 +9,12 @@ import com.sena.eggs_gold.model.entity.Producto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-    // ✅ CORREGIDO: Query sin CANTIDAD
+    // Query de búsqueda de productos
     @Query(value = """
         SELECT 
             p.ID_PRODUCTOS AS id,
@@ -31,4 +33,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
               )
     """, nativeQuery = true)
     List<Map<String, Object>> buscarProductos(@Param("buscar") String buscar);
+
+    // ✅ NUEVO: Buscar producto por nombre (ignora mayúsculas/minúsculas)
+    Optional<Producto> findByNombreIgnoreCase(String nombre);
 }

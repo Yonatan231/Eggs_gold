@@ -57,12 +57,18 @@
 
     <!-- Formulario -->
     <form id="entradaForm" class="formulario-contenedor">
-        <h2>Formulario de entrada de inventario</h2>
+        <div class="header-formulario">
+            <h2>Formulario de entrada de inventario</h2>
+            <button type="button" class="btn-csv" id="btn-csv">
+                <i class="fas fa-file-csv"></i> Cargar CSV
+            </button>
+        </div>
+
+        <label for="buscar-producto">Buscar producto:</label>
+        <input type="text" id="buscar-producto" placeholder="Escribe para buscar..." autocomplete="off">
 
         <label for="producto">Producto:</label>
-        <select id="producto" name="producto" required>
-            <option value="">-- Seleccionar producto --</option>
-            <!-- Las opciones se cargarán dinámicamente -->
+        <select id="producto" name="producto" required size="3">
         </select>
 
         <label for="cantidad">Cantidad (unidades):</label>
@@ -77,6 +83,20 @@
             <i class="fas fa-check-circle"></i> Registrar Entrada
         </button>
     </form>
+
+    <input type="file" id="input-csv" accept=".csv" style="display: none;">
+
+    <div id="modal-resultado" class="modal-resultado" style="display: none;">
+        <div class="modal-contenido">
+            <h3 id="modal-titulo">Resultado de la carga</h3>
+            <p id="modal-mensaje"></p>
+            <div id="modal-errores" style="display: none;">
+                <h4>Errores encontrados:</h4>
+                <ul id="lista-errores"></ul>
+            </div>
+            <button onclick="cerrarModal()" class="btn-cerrar-modal">Cerrar</button>
+        </div>
+    </div>
 </main>
 
 <script th:src="@{/js/administrador/entrada_stock.js}"></script>
