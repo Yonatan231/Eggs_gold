@@ -2,9 +2,9 @@ package com.sena.eggs_gold.model.enums;
 
 public enum Rol {
     ADMIN(1),
-    CLIENTE(4),
     LOGISTICA(2),
-    CONDUCTOR(3);
+    CONDUCTOR(3),
+    CLIENTE(4);
 
     private final int codigo;
 

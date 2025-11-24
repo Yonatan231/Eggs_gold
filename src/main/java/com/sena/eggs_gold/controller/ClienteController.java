@@ -7,7 +7,7 @@ import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.EmailService;
 import com.sena.eggs_gold.service.InventarioService;
 import com.sena.eggs_gold.service.UsuarioService;
-import com.sena.eggs_gold.service.FacturaPDFService;
+import com.sena.eggs_gold.service.impl.FacturaPDFService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

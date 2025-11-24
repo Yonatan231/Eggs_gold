@@ -26,7 +26,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
             "GROUP BY u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono")
     List<ClientePedidosDTO> findClientesConPedidos();
 
-    // ✅ CORREGIDO: Usar JPQL en lugar de SQL nativo y usar ID_CONDUCTOR en lugar de USUARIOS_ID
     @Query("""
         SELECT new com.sena.eggs_gold.dto.ConductorDTO(
             u.idUsuarios, 
@@ -94,10 +93,26 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
             "AND CONCAT(u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono) LIKE %:buscar%")
     List<Usuario> buscarLogisticaPorEstado(String buscar, EstadoUsuario estado);
 
-    // ✅ Trae todos los roles registrados
     @Query("SELECT r FROM com.sena.eggs_gold.model.entity.Rol r")
     List<Rol> findAllRoles();
 
     @Query("SELECT u.correo FROM Usuario u WHERE u.rol.idRoles IN :rolIds AND u.correo IS NOT NULL")
     List<String> findEmailsByRolIds(List<Integer> rolIds);
+
+    // ========== CONSULTAS PARA ESTADÍSTICAS ==========
+
+    // Contar usuarios por rol
+    @Query("SELECT u.rol.nombreRol, COUNT(u) FROM Usuario u GROUP BY u.rol.nombreRol")
+    List<Object[]> countUsuariosPorRol();
+
+    // Contar usuarios por estado
+    @Query("SELECT u.estado, COUNT(u) FROM Usuario u GROUP BY u.estado")
+    List<Object[]> countUsuariosPorEstado();
+
+    // Crecimiento de usuarios por mes (formato: YYYY-MM)
+    @Query("SELECT FUNCTION('DATE_FORMAT', u.fechaRegistro, '%Y-%m') as mes, COUNT(u) " +
+            "FROM Usuario u " +
+            "GROUP BY FUNCTION('DATE_FORMAT', u.fechaRegistro, '%Y-%m') " +
+            "ORDER BY mes")
+    List<Object[]> countUsuariosPorMes();
 }

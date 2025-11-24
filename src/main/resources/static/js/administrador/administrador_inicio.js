@@ -1,6 +1,3 @@
-// ============================================
-// INICIALIZACIÓN Y VARIABLES GLOBALES
-// ============================================
 let todosPedidos = []; // Almacena todos los pedidos cargados
 let pedidosFiltrados = []; // Pedidos después de aplicar filtros
 
