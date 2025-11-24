@@ -1,3 +1,6 @@
+// ===== carrito.js =====
+// Reemplazar TODO el contenido del archivo
+
 /* ============================================
    INICIALIZACIÓN
    ============================================ */
@@ -286,7 +289,7 @@ function procesarPagoVisa() {
 }
 
 /* ============================================
-   ENVIAR PEDIDO AL SERVIDOR
+   ENVIAR PEDIDO AL SERVIDOR CON OVERLAY
    ============================================ */
 
 function enviarPedidoAlServidor() {
@@ -307,6 +310,16 @@ function enviarPedidoAlServidor() {
         metodoPago: metodoPagoElement.value
     };
 
+    // ✅ MOSTRAR OVERLAY DE CARGA
+    mostrarOverlayCarga();
+
+    // ✅ DESHABILITAR BOTÓN DE CONFIRMAR
+    const btnConfirmar = document.getElementById("confirmar-pedido");
+    if (btnConfirmar) {
+        btnConfirmar.disabled = true;
+        btnConfirmar.textContent = "Procesando...";
+    }
+
     fetch('/pedido/api/confirmar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -314,15 +327,32 @@ function enviarPedidoAlServidor() {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                mostrarConfirmacion();
-            } else {
-                alert(data.message);
-            }
+            // ✅ DELAY MÍNIMO DE 2 SEGUNDOS
+            setTimeout(() => {
+                ocultarOverlayCarga();
+
+                if (data.success) {
+                    mostrarConfirmacion();
+                } else {
+                    alert(data.message);
+                    if (btnConfirmar) {
+                        btnConfirmar.disabled = false;
+                        btnConfirmar.textContent = "Confirmar pedido";
+                    }
+                }
+            }, 2000);
         })
         .catch(error => {
+            ocultarOverlayCarga();
+
             console.error("Error:", error);
             alert("Error al confirmar el pedido");
+
+            // ✅ RESTAURAR BOTÓN EN CASO DE ERROR
+            if (btnConfirmar) {
+                btnConfirmar.disabled = false;
+                btnConfirmar.textContent = "Confirmar pedido";
+            }
         });
 }
 
@@ -331,4 +361,40 @@ function mostrarConfirmacion() {
     document.getElementById("resumen-pedido").classList.remove("oculto");
     document.getElementById("paso2").classList.remove("activo");
     document.getElementById("paso3").classList.add("activo");
+}
+
+/* ============================================
+   OVERLAY DE CARGA
+   ============================================ */
+
+function mostrarOverlayCarga() {
+    // Crear overlay si no existe
+    let overlay = document.getElementById('overlay-carga');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'overlay-carga';
+        overlay.className = 'overlay-carga';
+        overlay.innerHTML = `
+            <div class="spinner-contenedor">
+                <div class="spinner"></div>
+                <p>Procesando pago...</p>
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    Por favor espera, no cierres esta ventana
+                </p>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+
+    // Mostrar con animación
+    setTimeout(() => overlay.classList.add('activo'), 10);
+}
+
+function ocultarOverlayCarga() {
+    const overlay = document.getElementById('overlay-carga');
+    if (overlay) {
+        overlay.classList.remove('activo');
+        setTimeout(() => overlay.remove(), 300);
+    }
 }
