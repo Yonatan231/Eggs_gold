@@ -60,7 +60,7 @@ public class ConductorController {
             return "registro_conductor";
         }
 
-        return "redirect:/administrador";
+        return "redirect:/administrador_inicio";
     }
 
     @GetMapping("/conductor_inicio")
@@ -77,10 +77,6 @@ public class ConductorController {
     public String mostarHistorialPedidosConductor(){
         return "conductor/historial_pedidos_conductor";
     }
-
-    // ============================================
-    // ✅ NUEVOS ENDPOINTS REST
-    // ============================================
 
     // Obtener pedidos asignados al conductor
     @GetMapping("/api/conductor/pedidos-asignados")
@@ -174,7 +170,7 @@ public class ConductorController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> entregarPedido(
             @PathVariable Integer idPedido,
-            @RequestBody Map<String, String> datos, // ✅ CAMBIAR
+            @RequestBody Map<String, String> datos,
             HttpSession session) {
 
         Map<String, Object> response = new HashMap<>();

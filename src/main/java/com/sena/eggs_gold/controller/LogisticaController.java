@@ -68,7 +68,7 @@ public class LogisticaController {
             return "registros/registro_logistica";
         }
 
-        return "redirect:/administrador";
+        return "redirect:/administrador_inicio";
     }
 
     @GetMapping("/logistica_inicio")

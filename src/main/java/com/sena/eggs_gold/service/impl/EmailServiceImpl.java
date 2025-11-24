@@ -2,6 +2,7 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.model.entity.DetallePedido;
 import com.sena.eggs_gold.model.entity.Factura;
+import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.repository.DetallePedidoRepository;
 import com.sena.eggs_gold.service.EmailService;
 import jakarta.mail.MessagingException;
@@ -9,6 +10,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -25,6 +27,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
+    // ✅ Método base - NO asíncrono (lo usan los demás métodos)
     @Override
     public void enviarCorreo(String destinatario, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -41,6 +44,7 @@ public class EmailServiceImpl implements EmailService {
         System.out.println("✅ Correo enviado a: " + destinatario);
     }
 
+    // ✅ Método base - NO asíncrono
     @Override
     public void enviarCorreosMasivos(List<String> destinatarios, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -52,6 +56,8 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    // ✅ ASÍNCRONO - Se ejecuta en segundo plano
+    @Async
     @Override
     public void enviarCorreoBienvenida(String para, String nombreUsuario) {
         String asunto = "¡Bienvenido a Eggs Gold!";
@@ -68,6 +74,8 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    // ✅ ASÍNCRONO - Se ejecuta en segundo plano
+    @Async
     @Override
     public void enviarCorreoCambioEstado(String para, String nombreUsuario, String nuevoEstado) {
         String asunto = "Actualización del estado de tu cuenta";
@@ -85,7 +93,8 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ✅ NUEVO: Enviar factura por correo
+    // ✅ ASÍNCRONO - Se ejecuta en segundo plano (el más importante para tu caso)
+    @Async
     @Override
     public void enviarFacturaPorCorreo(Factura factura) {
         String destinatario = factura.getPedido().getCliente().getCorreo();
@@ -195,4 +204,100 @@ public class EmailServiceImpl implements EmailService {
             System.err.println("Error al enviar factura por correo: " + e.getMessage());
         }
     }
+
+    // ===== EmailServiceImpl.java (agregar al final, antes del cierre de clase) =====
+
+    // ✅ ASÍNCRONO - Correo de confirmación de entrega
+    @Async
+    @Override
+    public void enviarCorreoEntregaPedido(Pedido pedido) {
+        String destinatario = pedido.getCliente().getCorreo();
+        String nombreCliente = pedido.getCliente().getNombre() + " " +
+                pedido.getCliente().getApellido();
+
+        String nombreConductor = pedido.getConductor().getNombre() + " " +
+                pedido.getConductor().getApellido();
+
+        String asunto = "✅ Pedido #" + pedido.getIdPedidos() + " Entregado - Eggs Gold";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String fechaEntrega = pedido.getFechaEntrega().format(formatter);
+
+        // Construir sección de observaciones (opcional)
+        String seccionObservaciones = "";
+        if (pedido.getObservacionConductor() != null &&
+                !pedido.getObservacionConductor().trim().isEmpty()) {
+            seccionObservaciones = String.format("""
+                    <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin-top: 20px;">
+                        <p><strong>📝 Observaciones del conductor:</strong></p>
+                        <p style="margin: 5px 0;">%s</p>
+                    </div>
+                    """, pedido.getObservacionConductor());
+        }
+
+        String cuerpoHtml = String.format("""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, sans-serif; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background-color: #28a745; padding: 20px; text-align: center; color: white; }
+                        .content { padding: 20px; background-color: #f9f9f9; }
+                        .info-box { background-color: white; padding: 15px; border-left: 4px solid #28a745; margin: 15px 0; }
+                        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>🥚 Eggs Gold</h1>
+                            <h2>✅ ¡Pedido Entregado!</h2>
+                        </div>
+                        
+                        <div class="content">
+                            <h2>¡Hola %s!</h2>
+                            <p>Tu pedido ha sido entregado exitosamente.</p>
+                            
+                            <div class="info-box">
+                                <p><strong>📦 Número de pedido:</strong> #%d</p>
+                                <p><strong>📅 Fecha de entrega:</strong> %s</p>
+                                <p><strong>📍 Dirección:</strong> %s</p>
+                                <p><strong>🚗 Conductor:</strong> %s</p>
+                            </div>
+                            
+                            %s
+                            
+                            <p style="margin-top: 30px;">Esperamos que disfrutes de tus productos. ¡Gracias por confiar en nosotros!</p>
+                            
+                            <p style="margin-top: 20px; font-size: 14px; color: #666;">
+                                Si tienes algún problema con tu pedido, por favor contáctanos lo antes posible.
+                            </p>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>Este es un correo automático, por favor no responder.</p>
+                            <p>© 2024 Eggs Gold - Todos los derechos reservados</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """,
+                nombreCliente,
+                pedido.getIdPedidos(),
+                fechaEntrega,
+                pedido.getDireccion(),
+                nombreConductor,
+                seccionObservaciones
+        );
+
+        try {
+            enviarCorreo(destinatario, asunto, cuerpoHtml);
+        } catch (Exception e) {
+            System.err.println("Error al enviar correo de entrega: " + e.getMessage());
+        }
+    }
+
+
 }

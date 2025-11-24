@@ -1,3 +1,4 @@
+// ===== ConductorServiceImpl.java =====
 package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.ConductorDTO;
@@ -14,6 +15,7 @@ import com.sena.eggs_gold.repository.DetallePedidoRepository;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ConductorService;
+import com.sena.eggs_gold.service.EmailService; // ✅ IMPORTAR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,10 @@ public class ConductorServiceImpl implements ConductorService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    // ✅ INYECTAR EmailService
+    @Autowired
+    private EmailService emailService;
 
     private final ConductorRepository conductorRepository;
     private final RolRepository rolRepository;
@@ -96,7 +102,6 @@ public class ConductorServiceImpl implements ConductorService {
         return usuarioRepository.findConductoresConPedidosEntregados();
     }
 
-    // ✅ NUEVO: Obtener pedidos asignados
     @Override
     public List<Map<String, Object>> obtenerPedidosAsignados(Integer idConductor) {
         List<Pedido> pedidos = pedidoRepository
@@ -105,7 +110,6 @@ public class ConductorServiceImpl implements ConductorService {
         return pedidos.stream().map(this::convertirPedidoAMap).collect(Collectors.toList());
     }
 
-    // ✅ NUEVO: Obtener pedidos en camino
     @Override
     public List<Map<String, Object>> obtenerPedidosEnCamino(Integer idConductor) {
         List<Pedido> pedidos = pedidoRepository
@@ -114,7 +118,6 @@ public class ConductorServiceImpl implements ConductorService {
         return pedidos.stream().map(this::convertirPedidoAMap).collect(Collectors.toList());
     }
 
-    // ✅ NUEVO: Aceptar pedido
     @Override
     @Transactional
     public void aceptarPedido(Integer idPedido, Integer idConductor) {
@@ -137,8 +140,9 @@ public class ConductorServiceImpl implements ConductorService {
         pedidoRepository.save(pedido);
     }
 
-    // ✅ NUEVO: Marcar como entregado
-    // ✅ MODIFICAR: Marcar como entregado CON COMENTARIO
+    // ===== ConductorServiceImpl.java =====
+// Solo modifico el método marcarPedidoEntregado()
+
     @Override
     @Transactional
     public void marcarPedidoEntregado(Integer idPedido, Integer idConductor, String observacion) {
@@ -160,15 +164,25 @@ public class ConductorServiceImpl implements ConductorService {
         pedido.setEstado(EstadoPedido.ENTREGADO);
         pedido.setFechaEntrega(LocalDateTime.now());
 
-        // ✅ AGREGAR OBSERVACIÓN DEL CONDUCTOR
         if (observacion != null && !observacion.trim().isEmpty()) {
             pedido.setObservacionConductor(observacion);
         }
 
         pedidoRepository.save(pedido);
+
+        // ✅ FORZAR CARGA DE RELACIONES (antes del método asíncrono)
+        // Esto carga los datos mientras la sesión de Hibernate está abierta
+        pedido.getCliente().getCorreo();
+        pedido.getCliente().getNombre();
+        pedido.getCliente().getApellido();
+        pedido.getConductor().getNombre();
+        pedido.getConductor().getApellido();
+
+        // ✅ AHORA SÍ: Enviar correo de confirmación de entrega (asíncrono)
+        // El objeto pedido ya tiene todos los datos cargados
+        emailService.enviarCorreoEntregaPedido(pedido);
     }
 
-    // ✅ NUEVO: Obtener historial
     @Override
     public List<Map<String, Object>> obtenerHistorialPedidos(Integer idConductor) {
         List<Pedido> pedidos = pedidoRepository
@@ -181,7 +195,7 @@ public class ConductorServiceImpl implements ConductorService {
         }).collect(Collectors.toList());
     }
 
-    // ✅ MÉTODO AUXILIAR: Convertir pedido a Map
+    // Método auxiliar: Convertir pedido a Map
     private Map<String, Object> convertirPedidoAMap(Pedido pedido) {
         Map<String, Object> map = new HashMap<>();
         map.put("idPedido", pedido.getIdPedidos());
@@ -204,8 +218,4 @@ public class ConductorServiceImpl implements ConductorService {
 
         return map;
     }
-
-
-
-
 }
