@@ -5,9 +5,89 @@ let pedidosFiltrados = []; // Pedidos después de aplicar filtros
 // CARGAR DATOS AL INICIAR LA PÁGINA
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
+    cargarDashboard(); // Cargar tarjetas de resumen
     cargarPedidos();
+    cargarUsuarios();
     inicializarEventos();
+    inicializarActualizacionAutomatica(); // Actualizar cada minuto
 });
+
+// ============================================
+// FUNCIONES PARA EL DASHBOARD (TARJETAS DE RESUMEN)
+// ============================================
+
+/**
+ * Carga los datos del dashboard: usuarios registrados, ventas del día y novedades pendientes
+ */
+async function cargarDashboard() {
+    try {
+        const response = await fetch('/api/admin/dashboard/resumen');
+
+        if (!response.ok) {
+            throw new Error('Error al cargar dashboard');
+        }
+
+        const datos = await response.json();
+
+        // Actualizar contador de usuarios
+        const contadorUsuarios = document.getElementById('totalUsuarios');
+        if (contadorUsuarios) {
+            contadorUsuarios.textContent = datos.totalUsuarios;
+        }
+
+        // Actualizar ventas del día
+        const contadorVentas = document.getElementById('totalVentas');
+        if (contadorVentas) {
+            const ventasFormateadas = formatearPesos(datos.ventasHoy);
+            contadorVentas.textContent = ventasFormateadas;
+        }
+
+        // Actualizar contador de novedades (campanita)
+        const contadorNovedades = document.getElementById('notificacion-contador');
+        if (contadorNovedades) {
+            if (datos.novedadesPendientes > 0) {
+                contadorNovedades.textContent = datos.novedadesPendientes;
+                contadorNovedades.style.display = 'flex';
+            } else {
+                contadorNovedades.style.display = 'none';
+            }
+        }
+
+    } catch (error) {
+        console.error('Error al cargar dashboard:', error);
+    }
+}
+
+/**
+ * Formatea un número como pesos colombianos
+ */
+function formatearPesos(valor) {
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0
+    }).format(valor);
+}
+
+/**
+ * Inicializa la actualización automática del dashboard
+ * Se actualiza cada minuto y se reinicia a las 12:00 AM
+ */
+function inicializarActualizacionAutomatica() {
+    // Actualizar cada 60 segundos
+    setInterval(() => {
+        cargarDashboard();
+    }, 60000);
+
+    // Verificar si es medianoche cada segundo
+    setInterval(() => {
+        const ahora = new Date();
+        if (ahora.getHours() === 0 && ahora.getMinutes() === 0 && ahora.getSeconds() === 0) {
+            console.log('¡Nuevo día! Reiniciando dashboard...');
+            cargarDashboard();
+        }
+    }, 1000);
+}
 
 // ============================================
 // INICIALIZAR EVENT LISTENERS

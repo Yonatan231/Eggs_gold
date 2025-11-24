@@ -25,4 +25,7 @@ public interface NovedadRepository extends JpaRepository<Novedad, Integer> {
 
     // Buscar novedades por pedido
     List<Novedad> findByPedidoIdPedidosOrderByFechaCreacionDesc(Integer idPedido);
+
+    // Contar novedades pendientes (para el contador de la campanita)
+    long countByEstado(EstadoNovedad estado);
 }

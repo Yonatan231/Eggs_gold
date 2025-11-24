@@ -20,10 +20,57 @@ botonMenu.addEventListener('click', function () {
 // Ejecuta estas funciones automáticamente
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
+    cargarDashboard(); // Cargar tarjetas de resumen
     cargarPedidosEnAlistamiento(); // Cargar pedidos que el usuario tomó
     actualizarContadores(); // Actualizar contadores de tarjetas
     configurarBusqueda(); // Configurar búsqueda
+    inicializarActualizacionAutomatica(); // Actualizar cada minuto
 });
+
+// ============================================
+// FUNCIONES PARA EL DASHBOARD (TARJETAS DE RESUMEN)
+// ============================================
+
+/**
+ * Carga los datos del dashboard: pedidos nuevos y entradas pendientes
+ */
+async function cargarDashboard() {
+    try {
+        const response = await fetch('/api/logistica/dashboard/resumen');
+
+        if (!response.ok) {
+            throw new Error('Error al cargar dashboard');
+        }
+
+        const datos = await response.json();
+
+        // Actualizar contador de pedidos nuevos
+        const contadorPedidosNuevos = document.getElementById('totalPedidosNuevos');
+        if (contadorPedidosNuevos) {
+            contadorPedidosNuevos.textContent = datos.pedidosNuevos;
+        }
+
+        // Actualizar contador de entradas pendientes
+        const contadorEntradasPendientes = document.getElementById('totalEntradasPendientes');
+        if (contadorEntradasPendientes) {
+            contadorEntradasPendientes.textContent = datos.entradasPendientes;
+        }
+
+    } catch (error) {
+        console.error('Error al cargar dashboard:', error);
+    }
+}
+
+/**
+ * Inicializa la actualización automática del dashboard
+ * Se actualiza cada minuto
+ */
+function inicializarActualizacionAutomatica() {
+    // Actualizar cada 60 segundos
+    setInterval(() => {
+        cargarDashboard();
+    }, 60000);
+}
 
 // ============================================
 // FUNCIÓN: cargarPedidosEnAlistamiento()

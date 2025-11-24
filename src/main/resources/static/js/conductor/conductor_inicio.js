@@ -21,10 +21,57 @@ if (botonMenu) {
 // CUANDO LA PÁGINA CARGA
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
+    cargarDashboard(); // Cargar tarjetas de resumen
     cargarPedidosEnCamino();
     configurarBusqueda();
     configurarModalNovedad();
+    inicializarActualizacionAutomatica(); // Actualizar cada minuto
 });
+
+// ============================================
+// FUNCIONES PARA EL DASHBOARD (TARJETAS DE RESUMEN)
+// ============================================
+
+/**
+ * Carga los datos del dashboard: pedidos asignados y pendientes
+ */
+async function cargarDashboard() {
+    try {
+        const response = await fetch('/api/conductor/dashboard/resumen');
+
+        if (!response.ok) {
+            throw new Error('Error al cargar dashboard');
+        }
+
+        const datos = await response.json();
+
+        // Actualizar contador de pedidos asignados
+        const contadorAsignados = document.getElementById('totalAsignados');
+        if (contadorAsignados) {
+            contadorAsignados.textContent = datos.pedidosAsignados;
+        }
+
+        // Actualizar contador de pedidos pendientes
+        const contadorPendientes = document.getElementById('totalPendientes');
+        if (contadorPendientes) {
+            contadorPendientes.textContent = datos.pedidosPendientes;
+        }
+
+    } catch (error) {
+        console.error('Error al cargar dashboard:', error);
+    }
+}
+
+/**
+ * Inicializa la actualización automática del dashboard
+ * Se actualiza cada minuto
+ */
+function inicializarActualizacionAutomatica() {
+    // Actualizar cada 60 segundos
+    setInterval(() => {
+        cargarDashboard();
+    }, 60000);
+}
 
 // ============================================
 // FUNCIÓN: cargarPedidosEnCamino()
@@ -36,7 +83,6 @@ function cargarPedidosEnCamino() {
         .then(data => {
             if (data.success) {
                 mostrarPedidosEnTabla(data.pedidos);
-                actualizarContadores(data.pedidos.length);
             } else {
                 console.error('Error:', data.message);
                 mostrarMensajeVacio();
@@ -100,7 +146,6 @@ function mostrarPedidosEnTabla(pedidos) {
 function mostrarMensajeVacio() {
     document.getElementById('tablaPedidosDia').style.display = 'none';
     document.getElementById('mensajeVacio').style.display = 'block';
-    actualizarContadores(0);
 }
 
 // ============================================
@@ -153,15 +198,6 @@ function confirmarEntrega() {
 function cerrarModalEntrega() {
     document.getElementById('modalEntregarPedido').style.display = 'none';
     pedidoAEntregar = null;
-}
-
-// ============================================
-// FUNCIÓN: actualizarContadores(total)
-// Actualiza los números de las tarjetas
-// ============================================
-function actualizarContadores(total) {
-    document.getElementById('totalAsignados').textContent = total;
-    document.getElementById('totalPendientes').textContent = total;
 }
 
 // ============================================

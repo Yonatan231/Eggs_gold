@@ -5,16 +5,21 @@ import com.sena.eggs_gold.dto.UsuarioAdminDTO;
 import com.sena.eggs_gold.model.entity.DetallePedido;
 import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.model.entity.Usuario;
+import com.sena.eggs_gold.model.enums.EstadoNovedad;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.model.enums.Rol;
 import com.sena.eggs_gold.repository.DetallePedidoRepository;
+import com.sena.eggs_gold.repository.NovedadRepository;
 import com.sena.eggs_gold.repository.PedidoRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,13 +33,16 @@ public class AdministradorRestController {
     private final PedidoRepository pedidoRepository;
     private final DetallePedidoRepository detallePedidoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final NovedadRepository novedadRepository;
 
     public AdministradorRestController(PedidoRepository pedidoRepository,
                                        DetallePedidoRepository detallePedidoRepository,
-                                       UsuarioRepository usuarioRepository) {
+                                       UsuarioRepository usuarioRepository,
+                                       NovedadRepository novedadRepository) {
         this.pedidoRepository = pedidoRepository;
         this.detallePedidoRepository = detallePedidoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.novedadRepository = novedadRepository;
     }
 
     // ============================================
@@ -250,5 +258,47 @@ public class AdministradorRestController {
         dto.setIdRol(usuario.getRol().getIdRoles());
         dto.setNombreRol(usuario.getRol().getNombreRol());
         return dto;
+    }
+
+    // ============================================
+    // ENDPOINTS PARA DASHBOARD (TARJETAS DE RESUMEN)
+    // ============================================
+
+    /**
+     * Obtiene datos para las tarjetas de resumen del dashboard
+     * - Total de usuarios registrados
+     * - Ventas del día (suma de todos los pedidos de hoy)
+     * - Contador de novedades pendientes
+     */
+    @GetMapping("/dashboard/resumen")
+    public ResponseEntity<Map<String, Object>> obtenerResumenDashboard() {
+        Map<String, Object> resumen = new HashMap<>();
+
+        // 1. Total de usuarios registrados
+        long totalUsuarios = usuarioRepository.count();
+        resumen.put("totalUsuarios", totalUsuarios);
+
+        // 2. Ventas del día (todos los pedidos creados hoy)
+        LocalDateTime inicioHoy = LocalDate.now().atStartOfDay();
+        LocalDateTime finHoy = LocalDate.now().atTime(LocalTime.MAX);
+
+        List<Pedido> pedidosHoy = pedidoRepository.findAll().stream()
+                .filter(p -> p.getFechaCreacion() != null &&
+                        p.getFechaCreacion().isAfter(inicioHoy) &&
+                        p.getFechaCreacion().isBefore(finHoy))
+                .collect(Collectors.toList());
+
+        BigDecimal ventasHoy = pedidosHoy.stream()
+                .map(pedido -> calcularTotalPedido(pedido.getIdPedidos()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        resumen.put("ventasHoy", ventasHoy);
+        resumen.put("cantidadPedidosHoy", pedidosHoy.size());
+
+        // 3. Contador de novedades pendientes
+        long novedadesPendientes = novedadRepository.countByEstado(EstadoNovedad.PENDIENTE);
+        resumen.put("novedadesPendientes", novedadesPendientes);
+
+        return ResponseEntity.ok(resumen);
     }
 }
