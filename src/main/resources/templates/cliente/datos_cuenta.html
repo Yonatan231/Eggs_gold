@@ -72,8 +72,9 @@
                     <label for="tipoDocumento">Tipo de Documento *</label>
                     <select id="tipoDocumento" name="tipoDocumento" required>
                         <option value="">Seleccione un tipo</option>
-                        <option value="DNI">CC</option>
-                        <option value="Cédula">CED</option>
+                        <option value="CC">CC</option>
+                        <option value="CE">CE</option>
+                        <option value="TI">TI</option>
                     </select>
                 </div>
                 <!-- Grupo de campo: Número de documento (solo lectura) -->
@@ -84,25 +85,24 @@
                 </div>
             </div>
 
-            <!-- Fila para teléfono y correo electrónico -->
+            <!-- Fila para teléfono y edad -->
             <div class="form-row">
                 <!-- Grupo de campo: Teléfono -->
                 <div class="form-group">
                     <label for="telefono">Teléfono</label>
                     <input type="tel" id="telefono" name="telefono">
                 </div>
-                <!-- Grupo de campo: Correo electrónico -->
+                <!-- Grupo de campo: Edad -->
                 <div class="form-group">
-                    <label for="correo">Correo Electrónico *</label>
-                    <input type="email" id="correo" name="correo" required>
+                    <label for="edad">Edad *</label>
+                    <input type="number" id="edad" name="edad" min="18" max="100" required>
                 </div>
             </div>
 
-            <!-- Grupo de campo: Contraseña con botón para mostrar/ocultar -->
-            <div class="form-group password-toggle">
-                <label for="contrasena">Contraseña *</label>
-                <input type="password" id="contrasena" name="contrasena" required>
-                <button type="button" class="toggle-password">Mostrar</button>
+            <!-- Grupo de campo: Correo electrónico -->
+            <div class="form-group">
+                <label for="correo">Correo Electrónico *</label>
+                <input type="email" id="correo" name="correo" required>
             </div>
 
             <!-- Grupo de campo: Fecha de creación (solo lectura) -->

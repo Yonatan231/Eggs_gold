@@ -66,6 +66,8 @@ public class Usuario {
     @Column(name = "token_expiracion")
     private LocalDateTime tokenExpiracion;
 
+    @Column(name = "EDAD", nullable = false)
+    private Integer edad;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)

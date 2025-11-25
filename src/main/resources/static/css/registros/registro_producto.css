@@ -64,24 +64,20 @@ textarea {
 }
 
 .btn-guardar {
-    margin-top: 25px;
-    background-color: #F7DC6F;
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-size: 17px;
-    cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.3s;
+    margin-top: 25px; /* Espacio arriba */
+    background-color: #F7DC6F; /* Fondo amarillo */
+    color: #fff; /* Texto blanco */
+    border: none; /* Sin borde */
+    padding: 14px; /* Espacio interno */
+    border-radius: 8px; /* Esquinas redondeadas */
+    font-size: 17px; /* Tamaño del texto */
+    cursor: pointer; /* Cursor de manita */
+    font-weight: 600; /* Texto en negrita */
+    transition: background-color 0.3s; /* Animación suave */
 }
 
 .btn-guardar:hover {
-    background-color: #27AE60;
+    background-color: #27AE60; /* Verde al pasar el mouse */
 }
 
 .preview-imagen {

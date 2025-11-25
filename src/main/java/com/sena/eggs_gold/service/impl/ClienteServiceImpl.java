@@ -46,6 +46,7 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setTelefono(dto.getTelefono());
         cliente.setCorreo(dto.getCorreo());
         cliente.setPassword(dto.getPassword());
+        cliente.setEdad(dto.getEdad()); // ✅ Mapear edad
         cliente.setEstado(EstadoUsuario.ACTIVO);
         cliente.setTipoDocumento(TipoDocumento.CC);
         cliente.setFechaRegistro(LocalDate.now());

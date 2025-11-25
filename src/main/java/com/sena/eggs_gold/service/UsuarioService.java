@@ -15,6 +15,8 @@ public interface UsuarioService {
 
     boolean documentoYaExistente(String numDocumento);
 
+    boolean correoYaExistente(String correo); // ✅ Nuevo método para validar correo único
+
     List<ClientePedidosDTO> obtenerClientesConPedidos();
 
     List<ConductorDTO> obtenerConductoresConPedidosEntregados();

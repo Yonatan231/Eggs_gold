@@ -226,13 +226,20 @@ function abrirModalEdicion(idProducto) {
 function guardarCambios(event) {
     event.preventDefault(); // Prevenir envío normal del formulario
 
+    // Validar que el precio sea mayor a 0
+    const precio = parseFloat(document.getElementById("prod-precio").value);
+    if (precio <= 0) {
+        alert("❌ El precio debe ser mayor a 0");
+        return; // Detener el envío
+    }
+
     // Crear FormData para enviar archivos
     const formData = new FormData();
 
     // Añadir campos del producto
     formData.append("idProducto", document.getElementById("prod-id").value);
     formData.append("nombre", document.getElementById("prod-nombre").value);
-    formData.append("precio", document.getElementById("prod-precio").value);
+    formData.append("precio", precio);
     formData.append("categoria", document.getElementById("prod-categoria").value);
     formData.append("descripcion", document.getElementById("prod-descripcion").value);
     formData.append("estado", document.getElementById("prod-estado").value);

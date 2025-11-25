@@ -5,6 +5,7 @@ import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.service.LogisticaService;
 import com.sena.eggs_gold.service.EmailService;
 import com.sena.eggs_gold.service.PedidoService;
+import com.sena.eggs_gold.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class LogisticaController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     // Mostrar formulario de registro de logística
     @GetMapping("/registrar_logistica")
@@ -52,6 +56,20 @@ public class LogisticaController {
             return "redirect:/acceso_denegado";
         }
 
+        // ✅ Validar que el número de documento no esté registrado
+        if (usuarioService.documentoYaExistente(logisticaDTO.getNumDocumento())) {
+            model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
+            model.addAttribute("logistica", logisticaDTO); // Mantener los datos del formulario
+            return "registros/registro_logistica";
+        }
+
+        // ✅ Validar que el correo no esté registrado
+        if (usuarioService.correoYaExistente(logisticaDTO.getCorreo())) {
+            model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
+            model.addAttribute("logistica", logisticaDTO); // Mantener los datos del formulario
+            return "registros/registro_logistica";
+        }
+
         try {
             // Guardar en la base de datos
             logisticaService.registrarLogistica(logisticaDTO);
@@ -62,13 +80,16 @@ public class LogisticaController {
                     logisticaDTO.getNombre()
             );
 
-            model.addAttribute("mensaje", "Logística registrada con éxito y correo enviado.");
+            // ✅ Mensaje de éxito y limpiar formulario
+            model.addAttribute("mensaje", "Logística registrada exitosamente y correo enviado");
+            model.addAttribute("logistica", new LogisticaDTO()); // Formulario limpio
+            return "registros/registro_logistica";
+
         } catch (Exception e) {
             model.addAttribute("error", "Error al registrar logística: " + e.getMessage());
+            model.addAttribute("logistica", logisticaDTO); // Mantener los datos del formulario
             return "registros/registro_logistica";
         }
-
-        return "redirect:/administrador_inicio";
     }
 
     @GetMapping("/logistica_inicio")
@@ -219,7 +240,7 @@ public class LogisticaController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            List<Usuario> conductores = pedidoService.obtenerConductoresDisponibles(); // ✅ CAMBIAR logisticaService por pedidoService
+            List<Usuario> conductores = pedidoService.obtenerConductoresDisponibles();
 
             List<Map<String, String>> conductoresDTO = conductores.stream()
                     .map(c -> {
@@ -261,7 +282,7 @@ public class LogisticaController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            pedidoService.asignarConductor(idPedido, idConductor); // ✅ CAMBIAR logisticaService por pedidoService
+            pedidoService.asignarConductor(idPedido, idConductor);
 
             response.put("success", true);
             response.put("message", "Conductor asignado exitosamente");

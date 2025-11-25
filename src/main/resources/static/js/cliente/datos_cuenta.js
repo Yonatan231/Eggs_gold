@@ -1,73 +1,88 @@
-// Datos de ejemplo del usuario (simulando datos de base de datos)
-const userData = {
-    nombre: 'María',
-    apellido: 'González',
-    direccion: 'Calle Falsa 123, Ciudad, País',
-    tipoDocumento: 'DNI',
-    numeroDocumento: '12345678A',
-    telefono: '+34 612 345 678',
-    correo: 'maria.gonzalez@ejemplo.com',
-    contrasena: 'miContraseñaSegura123',
-    fechaCreacion: '15/03/2023'
-};
-
 // Elementos del DOM - obtenemos referencias a los elementos HTML
-const form = document.getElementById('userDataForm');           // Formulario completo
-const btnEdit = document.getElementById('btnEdit');             // Botón Editar Datos
-const btnSave = document.getElementById('btnSave');             // Botón Guardar Cambios
-const btnCancel = document.getElementById('btnCancel');         // Botón Cancelar
-const alertMessage = document.getElementById('alertMessage');   // Contenedor de alertas
-const togglePasswordBtn = document.querySelector('.toggle-password'); // Botón mostrar/ocultar contraseña
-const passwordInput = document.getElementById('contrasena');    // Campo de contraseña
+const form = document.getElementById('userDataForm');
+const btnEdit = document.getElementById('btnEdit');
+const btnSave = document.getElementById('btnSave');
+const btnCancel = document.getElementById('btnCancel');
+const alertMessage = document.getElementById('alertMessage');
 
 // Obtener todos los campos editables (excluyendo los deshabilitados)
 const editableInputs = Array.from(form.querySelectorAll('input:not([disabled]), select'));
 
+// Variable para guardar los datos originales
+let datosOriginales = {};
+
 /**
- * Carga los datos del usuario en el formulario
- * Esta función llena todos los campos del formulario con los datos del usuario
+ * Carga los datos del usuario desde el backend
  */
-function loadUserData() {
-    // Asignamos los valores del objeto userData a cada campo del formulario
-    document.getElementById('nombre').value = userData.nombre;
-    document.getElementById('apellido').value = userData.apellido;
-    document.getElementById('direccion').value = userData.direccion;
-    document.getElementById('tipoDocumento').value = userData.tipoDocumento;
-    document.getElementById('numeroDocumento').value = userData.numeroDocumento;
-    document.getElementById('telefono').value = userData.telefono;
-    document.getElementById('correo').value = userData.correo;
-    document.getElementById('contrasena').value = userData.contrasena;
-    document.getElementById('fechaCreacion').value = userData.fechaCreacion;
+async function loadUserData() {
+    try {
+        const response = await fetch('/api/cliente/datos', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            const datos = result.datos;
+
+            // Guardar datos originales para poder cancelar cambios
+            datosOriginales = { ...datos };
+
+            // Llenar el formulario con los datos del usuario
+            document.getElementById('nombre').value = datos.nombre || '';
+            document.getElementById('apellido').value = datos.apellido || '';
+            document.getElementById('direccion').value = datos.direccion || '';
+            document.getElementById('tipoDocumento').value = datos.tipoDocumento || 'CC';
+            document.getElementById('numeroDocumento').value = datos.numeroDocumento || '';
+            document.getElementById('telefono').value = datos.telefono || '';
+            document.getElementById('edad').value = datos.edad || '';
+            document.getElementById('correo').value = datos.correo || '';
+            document.getElementById('fechaCreacion').value = formatearFecha(datos.fechaCreacion);
+        } else {
+            showAlert('Error al cargar los datos: ' + result.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showAlert('Error al cargar los datos del usuario', 'error');
+    }
+}
+
+/**
+ * Formatea una fecha de formato ISO a formato legible
+ */
+function formatearFecha(fechaISO) {
+    if (!fechaISO) return '';
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const anio = fecha.getFullYear();
+    return `${dia}/${mes}/${anio}`;
 }
 
 /**
  * Habilita o deshabilita el modo de edición del formulario
- * @param {boolean} enable - true para habilitar edición, false para deshabilitar
  */
 function toggleEditMode(enable) {
-    // Recorremos todos los campos editables y cambiamos su estado disabled
     editableInputs.forEach(input => {
         input.disabled = !enable;
     });
 
-    // Mostramos u ocultamos botones según el modo de edición
-    btnEdit.style.display = enable ? 'none' : 'block';      // Ocultar Editar en modo edición
-    btnSave.style.display = enable ? 'block' : 'none';      // Mostrar Guardar en modo edición
-    btnCancel.style.display = enable ? 'block' : 'none';    // Mostrar Cancelar en modo edición
+    btnEdit.style.display = enable ? 'none' : 'block';
+    btnSave.style.display = enable ? 'block' : 'none';
+    btnCancel.style.display = enable ? 'block' : 'none';
 }
 
 /**
  * Muestra un mensaje de alerta al usuario
- * @param {string} message - El mensaje a mostrar
- * @param {string} type - El tipo de alerta ('success' o 'error')
  */
 function showAlert(message, type) {
-    // Configuramos el contenido y clases del elemento de alerta
     alertMessage.textContent = message;
     alertMessage.className = `alert alert-${type}`;
     alertMessage.style.display = 'block';
 
-    // Ocultamos la alerta después de 5 segundos automáticamente
     setTimeout(() => {
         alertMessage.style.display = 'none';
     }, 5000);
@@ -75,98 +90,126 @@ function showAlert(message, type) {
 
 /**
  * Valida el formulario antes de enviarlo
- * @returns {boolean} - true si el formulario es válido, false si no
  */
 function validateForm() {
-    // Obtenemos y limpiamos los valores de los campos obligatorios
     const nombre = document.getElementById('nombre').value.trim();
     const apellido = document.getElementById('apellido').value.trim();
     const correo = document.getElementById('correo').value.trim();
-    const contrasena = document.getElementById('contrasena').value;
+    const telefono = document.getElementById('telefono').value.trim();
+    const edad = document.getElementById('edad').value;
 
-    // Validar campos obligatorios - verificamos que no estén vacíos
-    if (!nombre || !apellido || !correo || !contrasena) {
+    // Validar campos obligatorios
+    if (!nombre || !apellido || !correo || !edad) {
         showAlert('Por favor, complete todos los campos obligatorios.', 'error');
         return false;
     }
 
-    // Validar formato de email usando expresión regular
+    // Validar nombre (solo letras y espacios)
+    const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    if (!nombreRegex.test(nombre)) {
+        showAlert('El nombre solo puede contener letras y espacios.', 'error');
+        return false;
+    }
+
+    if (!nombreRegex.test(apellido)) {
+        showAlert('El apellido solo puede contener letras y espacios.', 'error');
+        return false;
+    }
+
+    // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(correo)) {
         showAlert('Por favor, ingrese un correo electrónico válido.', 'error');
         return false;
     }
 
-    // Validar longitud mínima de contraseña
-    if (contrasena.length < 8) {
-        showAlert('La contraseña debe tener al menos 8 caracteres.', 'error');
+    // Validar teléfono (solo números, 7-10 dígitos)
+    const telefonoRegex = /^[0-9]{7,10}$/;
+    if (telefono && !telefonoRegex.test(telefono)) {
+        showAlert('El teléfono debe tener entre 7 y 10 dígitos.', 'error');
         return false;
     }
 
-    // Si todas las validaciones pasan, retornamos true
-    return true;
-}
-
-/**
- * Alterna la visibilidad de la contraseña entre texto plano y asteriscos
- */
-function togglePasswordVisibility() {
-    // Cambiamos el tipo de input entre password y text
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        togglePasswordBtn.textContent = 'Ocultar';
-    } else {
-        passwordInput.type = 'password';
-        togglePasswordBtn.textContent = 'Mostrar';
+    // Validar edad
+    const edadNum = parseInt(edad);
+    if (isNaN(edadNum) || edadNum < 18 || edadNum > 100) {
+        showAlert('La edad debe estar entre 18 y 100 años.', 'error');
+        return false;
     }
+
+    return true;
 }
 
 // ========== EVENT LISTENERS ==========
 
-// Evento para el botón Editar Datos - habilita el modo edición
+// Evento para el botón Editar Datos
 btnEdit.addEventListener('click', () => {
     toggleEditMode(true);
-    showAlert('Ahora puede editar sus datos. Recuerde que el número de documento y fecha de creación no se pueden modificar.', 'success');
+    showAlert('Ahora puede editar sus datos. El número de documento y fecha de creación no se pueden modificar.', 'success');
 });
 
-// Evento para el botón Cancelar - deshace cambios y deshabilita edición
+// Evento para el botón Cancelar
 btnCancel.addEventListener('click', () => {
-    loadUserData();                     // Recarga los datos originales
-    toggleEditMode(false);              // Desactiva modo edición
+    // Restaurar datos originales
+    document.getElementById('nombre').value = datosOriginales.nombre || '';
+    document.getElementById('apellido').value = datosOriginales.apellido || '';
+    document.getElementById('direccion').value = datosOriginales.direccion || '';
+    document.getElementById('tipoDocumento').value = datosOriginales.tipoDocumento || 'CC';
+    document.getElementById('telefono').value = datosOriginales.telefono || '';
+    document.getElementById('edad').value = datosOriginales.edad || '';
+    document.getElementById('correo').value = datosOriginales.correo || '';
+
+    toggleEditMode(false);
     showAlert('Cambios cancelados. No se guardaron las modificaciones.', 'success');
 });
 
-// Evento para el envío del formulario - valida y guarda datos
-form.addEventListener('submit', (e) => {
-    e.preventDefault();  // Prevenimos el envío tradicional del formulario
+// Evento para el envío del formulario
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    // Validamos el formulario antes de proceder
     if (validateForm()) {
-        // En una aplicación real, aquí enviaríamos los datos al servidor
-        // Por ahora, actualizamos el objeto userData localmente
+        // Preparar datos para enviar
+        const datosActualizados = {
+            nombre: document.getElementById('nombre').value.trim(),
+            apellido: document.getElementById('apellido').value.trim(),
+            direccion: document.getElementById('direccion').value.trim(),
+            telefono: document.getElementById('telefono').value.trim(),
+            edad: parseInt(document.getElementById('edad').value),
+            correo: document.getElementById('correo').value.trim()
+        };
 
-        // Actualizamos cada propiedad del objeto userData con los valores del formulario
-        userData.nombre = document.getElementById('nombre').value;
-        userData.apellido = document.getElementById('apellido').value;
-        userData.direccion = document.getElementById('direccion').value;
-        userData.tipoDocumento = document.getElementById('tipoDocumento').value;
-        userData.telefono = document.getElementById('telefono').value;
-        userData.correo = document.getElementById('correo').value;
-        userData.contrasena = document.getElementById('contrasena').value;
+        try {
+            // Enviar datos al backend
+            const response = await fetch('/api/cliente/actualizar', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosActualizados)
+            });
 
-        // Desactivamos el modo edición y mostramos confirmación
-        toggleEditMode(false);
-        showAlert('Datos actualizados correctamente.', 'success');
+            const result = await response.json();
+
+            if (result.success) {
+                // Actualizar datos originales con los nuevos valores
+                datosOriginales = { ...datosActualizados };
+
+                toggleEditMode(false);
+                showAlert('Datos actualizados correctamente.', 'success');
+            } else {
+                showAlert(result.message || 'Error al actualizar los datos', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('Error al conectar con el servidor', 'error');
+        }
     }
 });
 
-// Evento para el botón de mostrar/ocultar contraseña
-togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
-
 // ========== INICIALIZACIÓN ==========
 
-// Cuando el DOM está completamente cargado, inicializamos la página
+// Cuando el DOM está completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
-    loadUserData();     // Cargamos los datos del usuario en el formulario
-    toggleEditMode(false); // Iniciamos con el formulario en modo lectura
+    loadUserData();        // Cargar datos del backend
+    toggleEditMode(false); // Iniciar en modo lectura
 });

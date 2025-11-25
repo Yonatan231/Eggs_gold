@@ -177,26 +177,27 @@ tbody tr:hover {
 
 /* ============================================
    BOTÓN DE EDITAR
+   Estilos para el botón de editar en la tabla
    ============================================ */
 button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    text-decoration: none;
+    padding: 8px 15px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cursor de manita */
+    font-size: 0.85rem; /* Tamaño del texto */
+    font-weight: 500; /* Texto medio-negrita */
+    transition: all 0.3s ease; /* Animación suave */
+    text-decoration: none; /* Sin subrayado */
 }
 
 .btn-editar {
-    background: #F7DC6F;
-    color: #333;
+    background: #F7DC6F; /* Fondo amarillo */
+    color: #333; /* Texto oscuro */
 }
 
 .btn-editar:hover {
-    background: #F4D03F;
-    color: #333;
+    background: #F4D03F; /* Amarillo más oscuro */
+    color: #333; /* Texto oscuro */
 }
 
 /* ============================================
@@ -235,163 +236,170 @@ button {
 
 /* ============================================
    MODAL
+   Estilos del modal de edición de producto
    ============================================ */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
+    position: fixed; /* Se queda fijo en la pantalla */
+    top: 0; /* Pegado arriba */
+    left: 0; /* Pegado a la izquierda */
+    width: 100%; /* Ocupa todo el ancho */
+    height: 100%; /* Ocupa todo el alto */
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+    display: flex; /* Para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 2000; /* Aparece encima de todo */
 }
 
 .modal-contenido {
-    background: white;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    background: white; /* Fondo blanco */
+    border-radius: 10px; /* Esquinas redondeadas */
+    max-width: 700px; /* Ancho máximo igual al modal de usuario */
+    width: 90%; /* Ancho responsive */
+    max-height: 90vh; /* Altura máxima */
+    overflow: hidden; /* Oculta contenido que sobresale */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); /* Sombra */
 }
 
 .modal-header {
-    background: #27AE60;
-    color: white;
-    padding: 20px 30px;
-    border-radius: 12px 12px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: #27AE60; /* Fondo verde */
+    color: white; /* Texto blanco */
+    padding: 20px 30px; /* Espacio interno */
+    display: flex; /* Organiza en fila */
+    justify-content: space-between; /* Espacio entre elementos */
+    align-items: center; /* Centra verticalmente */
+    border-radius: 0; /* Sin esquinas redondeadas - se redondean por el contenedor */
 }
 
 .modal-header h3 {
-    margin: 0;
-    font-size: 1.3rem;
+    margin: 0; /* Sin márgenes */
+    color: white; /* Color blanco */
+    text-align: left; /* Alineado a la izquierda */
+    font-size: 1.4rem; /* Tamaño del texto */
 }
 
 .btn-cerrar-modal {
-    background: transparent;
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
+    background: #27AE60; /* Fondo verde */
+    border: none; /* Sin borde */
+    color: white; /* Texto blanco */
+    width: 35px; /* Ancho del botón */
+    height: 35px; /* Alto del botón */
+    border-radius: 50%; /* Forma circular */
+    cursor: pointer; /* Cursor de manita */
+    display: flex; /* Para centrar el icono */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    font-size: 1.2rem; /* Tamaño del icono */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
 .btn-cerrar-modal:hover {
-    transform: scale(1.2);
+    background: #1e8449; /* Verde más oscuro al pasar el mouse */
 }
 
 .modal-body {
-    padding: 30px;
+    padding: 30px; /* Espacio interno */
+    max-height: 70vh; /* Altura máxima */
+    overflow-y: auto; /* Scroll vertical si es necesario */
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Espacio entre grupos */
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #333;
-    font-size: 0.95rem;
+    display: block; /* Ocupa toda la línea */
+    margin-bottom: 8px; /* Espacio abajo */
+    font-weight: 600; /* Texto en negrita */
+    color: #2c3e50; /* Color oscuro */
+    font-size: 0.95rem; /* Tamaño del texto */
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 12px; /* Espacio interno */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-size: 0.95rem; /* Tamaño del texto */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    outline: none;
-    border-color: #27AE60;
+    outline: none; /* Quita el borde predeterminado */
+    border-color: #27AE60; /* Borde verde al enfocar */
 }
 
 .form-group input[readonly] {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
+    background-color: #f5f5f5; /* Fondo gris claro */
+    cursor: not-allowed; /* Cursor de no permitido */
 }
 
 .form-group textarea {
-    resize: vertical;
-    min-height: 100px;
+    resize: vertical; /* Solo se puede redimensionar verticalmente */
+    min-height: 100px; /* Altura mínima */
+}
+
+/* Información de solo lectura */
+.readonly-info {
+    background-color: #f8f9fa; /* Fondo gris muy claro */
+    padding: 15px; /* Espacio interno */
+    border-radius: 5px; /* Esquinas redondeadas */
+    border-left: 3px solid #27AE60; /* Línea verde a la izquierda */
+}
+
+.readonly-info label {
+    color: #7f8c8d; /* Color gris */
+    font-size: 0.85rem; /* Tamaño más pequeño */
+    margin-bottom: 5px; /* Menos espacio abajo */
+}
+
+.readonly-info p {
+    margin: 0; /* Sin márgenes */
+    color: #2c3e50; /* Color oscuro */
+    font-weight: 500; /* Texto medio-negrita */
 }
 
 .modal-botones {
-    display: flex;
-    gap: 15px;
-    justify-content: flex-end;
-    margin-top: 25px;
+    display: flex; /* Organiza en fila */
+    gap: 15px; /* Espacio entre botones */
+    justify-content: flex-end; /* Alineados a la derecha */
+    margin-top: 25px; /* Espacio arriba */
 }
 
 .btn-guardar {
-    background: #27AE60;
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
+    background: #27AE60; /* Fondo verde */
+    color: white; /* Texto blanco */
+    padding: 12px 25px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cursor de manita */
+    font-size: 0.95rem; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
 .btn-guardar:hover {
-    background: #1e8449;
+    background: #1e8449; /* Verde más oscuro */
 }
 
 .btn-cerrar {
-    background: #95a5a6;
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
+    background: #95a5a6; /* Fondo gris */
+    color: white; /* Texto blanco */
+    padding: 12px 25px; /* Espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cursor de manita */
+    font-size: 0.95rem; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+    transition: all 0.3s ease; /* Animación suave */
 }
 
 .btn-cerrar:hover {
-    background: #7f8c8d;
+    background: #7f8c8d; /* Gris más oscuro */
 }
 
 /* ============================================
@@ -470,24 +478,22 @@ button {
 }
 
 .btn-cambiar-imagen {
-    background: #F7DC6F;
-    color: #333;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    border: none;
+    background: #F7DC6F; /* Fondo amarillo */
+    color: #333; /* Texto oscuro */
+    padding: 10px 20px; /* Espacio interno */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cursor de manita */
+    font-size: 0.9rem; /* Tamaño del texto */
+    font-weight: 600; /* Texto en negrita */
+    display: inline-flex; /* Organiza en fila */
+    align-items: center; /* Centra verticalmente */
+    gap: 8px; /* Espacio entre elementos */
+    transition: all 0.3s ease; /* Animación suave */
+    border: none; /* Sin borde */
 }
 
 .btn-cambiar-imagen:hover {
-    background: #F4D03F;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background: #F4D03F; /* Amarillo más oscuro */
 }
 
 .nombre-archivo {

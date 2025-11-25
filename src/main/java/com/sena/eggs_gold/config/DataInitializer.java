@@ -31,7 +31,7 @@ public class DataInitializer {
                     admin.setTelefono("0000000000");
                     admin.setEstado(EstadoUsuario.ACTIVO);
                     admin.setCorreo("admin@tuapp.com");
-                    admin.setPassword("1234"); // 🔒 Deberías encriptar la contraseña
+                    admin.setPassword("1234");
                     admin.setFechaRegistro(LocalDate.now());
 
                     usuarioRepository.save(admin);

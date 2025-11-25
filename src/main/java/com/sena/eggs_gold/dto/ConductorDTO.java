@@ -21,6 +21,7 @@ public class ConductorDTO {
     private String password;
     private LocalDate fechaRegistro;
     private Long pedidosEntregados; // Para estadísticas
+    private Integer edad; // ✅ Campo edad agregado
 
     // ✅ NUEVO: Campo para tipo de documento
     private TipoDocumento tipoDocumento;

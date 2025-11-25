@@ -49,10 +49,6 @@
 </header>
 
 <main>
-    <!-- Mensajes de éxito y error -->
-    <div class="mensaje-exito" style="display:none;">¡Registro exitoso!</div>
-    <div class="mensaje-error" style="display:none;">Error en el registro</div>
-
     <!-- Contenedor principal del formulario -->
     <div class="form-wrapper">
         <h2 class="titulo-registro">REGISTRO</h2>
@@ -61,6 +57,24 @@
 
         <!-- Tarjeta del formulario -->
         <div class="form-card">
+            <!-- ✅ MENSAJES DEL SERVIDOR - AHORA SE MUESTRAN CORRECTAMENTE -->
+            <!-- Mensaje de error del servidor (documento o correo duplicado) -->
+            <div th:if="${error}" class="mensaje-error" style="display:block; margin-bottom: 15px; padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
+                <p th:text="${error}" style="margin: 0;"></p>
+            </div>
+
+            <!-- Mensaje de éxito -->
+            <div th:if="${mensaje}" class="mensaje-exito" style="display:block; margin-bottom: 15px; padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+                <p th:text="${mensaje}" style="margin: 0;"></p>
+            </div>
+
+            <!-- Errores de validación de campos (si existen) -->
+            <div th:if="${errores}" class="mensaje-error" style="display:block; margin-bottom: 15px; padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
+                <ul style="margin: 5px 0; padding-left: 20px;">
+                    <li th:each="error : ${errores}" th:text="${error.field + ': ' + error.defaultMessage}"></li>
+                </ul>
+            </div>
+
             <form th:action="@{/registro_cliente}" th:object="${clienteDTO}" method="POST">
                 <!-- Nombre -->
                 <div class="form-group">
@@ -78,6 +92,12 @@
                 <div class="form-group">
                     <label for="direccion">Dirección:</label>
                     <input type="text" id="direccion" name="direccionUsuario" required>
+                </div>
+
+                <!-- Edad -->
+                <div class="form-group">
+                    <label for="edad">Edad:</label>
+                    <input type="number" id="edad" name="edad" min="18" max="100" required>
                 </div>
 
                 <!-- Número de Documento -->
@@ -106,14 +126,6 @@
 
                 <!-- Botón de enviar -->
                 <button type="submit" class="boton-registrarse">Registrarse</button>
-
-                <!-- Errores de validación -->
-                <div class="mensaje-error" style="display:none;">
-                    <ul>
-                        <li>Ejemplo de error 1</li>
-                        <li>Ejemplo de error 2</li>
-                    </ul>
-                </div>
 
                 <!-- Enlace a login -->
                 <div class="enlace-login">
@@ -163,5 +175,24 @@
 
 <!-- Script JavaScript para el menú móvil -->
 <script th:src="@{/js/inicio/inicio.js}"></script>
+<script th:src="@{/js/utils/validacion_registro_usuario.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configuración de IDs para el formulario de cliente
+        const configCliente = {
+            nombreId: 'nombre',
+            apellidoId: 'apellido',
+            numDocumentoId: 'numDocumento',
+            direccionId: 'direccion',
+            edadId: 'edad',
+            telefonoId: 'telefono',
+            correoId: 'correo',
+            passwordId: 'password'
+        };
+        inicializarValidacion('form', configCliente);
+    });
+</script>
+
 </body>
 </html>

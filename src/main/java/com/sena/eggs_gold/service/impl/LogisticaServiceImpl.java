@@ -72,6 +72,7 @@ public class LogisticaServiceImpl implements LogisticaService {
         logistica.setTelefono(dto.getTelefono());
         logistica.setCorreo(dto.getCorreo());
         logistica.setPassword(dto.getPassword());
+        logistica.setEdad(dto.getEdad()); // ✅ Mapear edad
 
         // ✅ CAMPO OBLIGATORIO: Asignar ESTADO como ACTIVO
         logistica.setEstado(EstadoUsuario.ACTIVO);

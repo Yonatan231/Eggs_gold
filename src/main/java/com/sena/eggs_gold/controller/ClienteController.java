@@ -2,6 +2,7 @@ package com.sena.eggs_gold.controller;
 
 import com.sena.eggs_gold.dto.ClienteDTO;
 import com.sena.eggs_gold.dto.ProductoDisponibleDTO;
+import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ClienteService;
 import com.sena.eggs_gold.service.EmailService;
@@ -30,6 +31,7 @@ public class ClienteController {
     private final ClienteService clienteService;
     private final UsuarioService usuarioService;
     private final InventarioService inventarioService;
+    private final UsuarioRepository usuarioRepository;
 
     @Autowired
     private EmailService emailService;
@@ -43,6 +45,7 @@ public class ClienteController {
                              InventarioService inventarioService) {
         this.clienteService = clienteService;
         this.usuarioService = usuarioService;
+        this.usuarioRepository = usuarioRepository;
         this.inventarioService = inventarioService;
     }
 
@@ -62,8 +65,15 @@ public class ClienteController {
             return "registros/registro_cliente";
         }
 
+        // ✅ Validar que el número de documento no esté registrado
         if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
             model.addAttribute("error", "El número de documento ya está registrado");
+            return "registros/registro_cliente";
+        }
+
+        // ✅ Validar que el correo no esté registrado
+        if (usuarioService.correoYaExistente(clienteDTO.getCorreo())) {
+            model.addAttribute("error", "El correo electrónico ya está registrado");
             return "registros/registro_cliente";
         }
 
@@ -111,7 +121,108 @@ public class ClienteController {
     }
 
     // ============================================
-    // ✅ NUEVOS ENDPOINTS PARA HISTORIAL
+    // ✅ ENDPOINTS PARA GESTIÓN DE PERFIL
+    // ============================================
+
+    // Obtener datos del cliente actual
+    @GetMapping("/api/cliente/datos")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerDatosCliente(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Integer idCliente = (Integer) session.getAttribute("usuario_id");
+
+            if (idCliente == null) {
+                response.put("success", false);
+                response.put("message", "Sesión no válida");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            Usuario usuario = usuarioRepository.findById(idCliente)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("nombre", usuario.getNombre());
+            datos.put("apellido", usuario.getApellido());
+            datos.put("direccion", usuario.getDireccionUsuario());
+            datos.put("tipoDocumento", usuario.getTipoDocumento().toString());
+            datos.put("numeroDocumento", usuario.getNumDocumento());
+            datos.put("telefono", usuario.getTelefono());
+            datos.put("correo", usuario.getCorreo());
+            datos.put("password", usuario.getPassword());
+            datos.put("edad", usuario.getEdad());
+            datos.put("fechaCreacion", usuario.getFechaRegistro().toString());
+
+            response.put("success", true);
+            response.put("datos", datos);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    // Actualizar datos del cliente
+    @PutMapping("/api/cliente/actualizar")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> actualizarDatosCliente(
+            @RequestBody Map<String, Object> datos,
+            HttpSession session) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Integer idCliente = (Integer) session.getAttribute("usuario_id");
+
+            if (idCliente == null) {
+                response.put("success", false);
+                response.put("message", "Sesión no válida");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            Usuario usuario = usuarioRepository.findById(idCliente)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            // Validar si el correo cambió y ya existe en otro usuario
+            String nuevoCorreo = (String) datos.get("correo");
+            if (!usuario.getCorreo().equals(nuevoCorreo)) {
+                if (usuarioService.correoYaExistente(nuevoCorreo)) {
+                    response.put("success", false);
+                    response.put("message", "El correo electrónico ya está registrado");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                }
+            }
+
+            // Actualizar datos
+            usuario.setNombre((String) datos.get("nombre"));
+            usuario.setApellido((String) datos.get("apellido"));
+            usuario.setDireccionUsuario((String) datos.get("direccion"));
+            usuario.setTelefono((String) datos.get("telefono"));
+            usuario.setCorreo(nuevoCorreo);
+
+            // Actualizar edad
+            if (datos.get("edad") != null) {
+                usuario.setEdad((Integer) datos.get("edad"));
+            }
+
+            usuarioRepository.save(usuario);
+
+            response.put("success", true);
+            response.put("message", "Datos actualizados correctamente");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al actualizar: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    // ============================================
+    // ✅ ENDPOINTS PARA HISTORIAL DE PEDIDOS
     // ============================================
 
     // Obtener todos los pedidos del cliente

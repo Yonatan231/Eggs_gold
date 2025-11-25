@@ -44,6 +44,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public boolean correoYaExistente(String correo) {
+        return usuarioRepository.existsByCorreo(correo);
+    }
+
+    @Override
     public List<ClientePedidosDTO> obtenerClientesConPedidos() {
         return usuarioRepository.findClientesConPedidos();
     }

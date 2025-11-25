@@ -4,6 +4,7 @@ import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.service.ConductorService;
 import com.sena.eggs_gold.service.EmailService;
 import com.sena.eggs_gold.service.LogisticaService;
+import com.sena.eggs_gold.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,10 @@ public class ConductorController {
     @Autowired
     private LogisticaService logisticaService;
 
-    // Mostrar formulario de registro de conductor (solo logística)
+    @Autowired
+    private UsuarioService usuarioService;
+
+    // Mostrar formulario de registro de conductor
     @GetMapping("/registrar_conductor")
     public String mostrarFormulario(Model model, HttpSession session) {
         String rol = (String) session.getAttribute("rol");
@@ -48,19 +52,37 @@ public class ConductorController {
             return "redirect:/acceso_denegado";
         }
 
+        // ✅ Validar que el número de documento no esté registrado
+        if (usuarioService.documentoYaExistente(conductorDTO.getNumDocumento())) {
+            model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
+            model.addAttribute("conductor", conductorDTO); // Mantener los datos del formulario
+            return "registros/registro_conductor";
+        }
+
+        // ✅ Validar que el correo no esté registrado
+        if (usuarioService.correoYaExistente(conductorDTO.getCorreo())) {
+            model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
+            model.addAttribute("conductor", conductorDTO); // Mantener los datos del formulario
+            return "registros/registro_conductor";
+        }
+
         try {
             conductorService.registrarConductor(conductorDTO);
             emailService.enviarCorreoBienvenida(
                     conductorDTO.getCorreo(),
                     conductorDTO.getNombre()
             );
-            model.addAttribute("mensaje", "Conductor registrado con éxito y correo enviado.");
-        } catch (Exception e) {
-            model.addAttribute("error", "El conductor se registró, pero hubo un problema: " + e.getMessage());
-            return "registro_conductor";
-        }
 
-        return "redirect:/administrador_inicio";
+            // ✅ Mensaje de éxito y limpiar formulario
+            model.addAttribute("mensaje", "Conductor registrado exitosamente y correo enviado");
+            model.addAttribute("conductor", new ConductorDTO()); // Formulario limpio
+            return "registros/registro_conductor";
+
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al registrar conductor: " + e.getMessage());
+            model.addAttribute("conductor", conductorDTO); // Mantener los datos del formulario
+            return "registros/registro_conductor";
+        }
     }
 
     @GetMapping("/conductor_inicio")

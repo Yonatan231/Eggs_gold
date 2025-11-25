@@ -62,6 +62,7 @@ public class ConductorServiceImpl implements ConductorService {
         conductor.setTelefono(dto.getTelefono());
         conductor.setCorreo(dto.getCorreo());
         conductor.setPassword(dto.getPassword());
+        conductor.setEdad(dto.getEdad()); // ✅ Mapear edad
         conductor.setFechaRegistro(LocalDate.now());
         conductor.setEstado(EstadoUsuario.ACTIVO);
 

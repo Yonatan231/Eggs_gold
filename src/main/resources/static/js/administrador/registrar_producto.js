@@ -121,3 +121,53 @@ inputFile.addEventListener('change', (e) => {
         preview.style.display = 'none';
     }
 });
+
+// ============================================
+// VALIDACIÓN DEL FORMULARIO
+// ============================================
+document.querySelector('.formulario-contenedor').addEventListener('submit', function(e) {
+    // Obtener valores
+    const nombre = document.getElementById('nombre').value.trim();
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const precio = parseFloat(document.getElementById('precio').value);
+    const categoria = document.getElementById('categoria_producto').value;
+    const imagenFile = document.getElementById('imagenFile').files[0];
+
+    // Validar nombre
+    if (!nombre) {
+        alert('El nombre del producto es obligatorio');
+        e.preventDefault();
+        return false;
+    }
+
+    // Validar descripción
+    if (!descripcion) {
+        alert('La descripción es obligatoria');
+        e.preventDefault();
+        return false;
+    }
+
+    // Validar precio
+    if (isNaN(precio) || precio <= 0) {
+        alert('El precio debe ser mayor a 0');
+        e.preventDefault();
+        return false;
+    }
+
+    // Validar categoría
+    if (!categoria) {
+        alert('Debes seleccionar una categoría');
+        e.preventDefault();
+        return false;
+    }
+
+    // Validar imagen
+    if (!imagenFile) {
+        alert('Debes seleccionar una imagen del producto');
+        e.preventDefault();
+        return false;
+    }
+
+    // Si todo está correcto, permitir envío
+    return true;
+});

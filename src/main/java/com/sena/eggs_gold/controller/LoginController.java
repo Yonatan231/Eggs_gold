@@ -41,9 +41,15 @@ public class LoginController {
 
     // Página de login
     @GetMapping("/login")
-    public String mostrarLogin(Model model) {
+    public String mostrarLogin(Model model, @RequestParam(required = false) String error) {
         model.addAttribute("loginDTO", new LoginDTO());
-        return "iniciar_sesion/iniciar_sesion"; // tu template HTML
+
+        // ✅ Si viene el parámetro error, agregar mensaje al modelo
+        if (error != null) {
+            model.addAttribute("error", "Documento o contraseña incorrectos");
+        }
+
+        return "iniciar_sesion/iniciar_sesion";
     }
 
     // Procesar login
@@ -52,7 +58,7 @@ public class LoginController {
 
         // Cliente
         ClienteDTO cliente = clienteService.login(loginDTO.getDocumento(), loginDTO.getPassword());
-        if (cliente != null ) {
+        if (cliente != null) {
             session.setAttribute("usuario_id", cliente.getIdUsuarios());
             session.setAttribute("rol", "CLIENTE");
             session.setAttribute("cliente", cliente);
@@ -60,7 +66,7 @@ public class LoginController {
             return "redirect:/inicio_cliente";
         }
 
-        // Admin - necesitas tener esta variable declarada
+        // Admin
         AdminDTO admin = adminService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (admin != null) {
             session.setAttribute("usuario_id", admin.getIdUsuarios());
@@ -69,7 +75,7 @@ public class LoginController {
             return "redirect:/administrador_inicio";
         }
 
-        // Logistica
+        // Logística
         LogisticaDTO Logistica = logisticaService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (Logistica != null) {
             session.setAttribute("usuario_id", Logistica.getIdUsuarios());
@@ -77,7 +83,6 @@ public class LoginController {
             model.addAttribute("usuario", Logistica);
             return "redirect:/logistica_inicio";
         }
-
 
         // Conductor
         ConductorDTO conductor = conductorService.login(loginDTO.getDocumento(), loginDTO.getPassword());
@@ -89,18 +94,14 @@ public class LoginController {
             return "redirect:/conductor_inicio";
         }
 
-        return "redirect:/login?error"; // Agrega esto para manejar login fallido
-
+        // ✅ Si ningún login fue exitoso, redirigir con parámetro de error
+        return "redirect:/login?error";
     }
-
-
 
     @GetMapping("/administrador")
     public String mostrarAdmin(Model model, HttpSession session) {
-        // Opcional: agregar datos al modelo si quieres
-        return "administrador/administrador"; // esto apunta a resources/templates/administrador
+        return "administrador/administrador";
     }
-
 
     // Ver datos de sesión
     @GetMapping("/session")
@@ -117,13 +118,4 @@ public class LoginController {
         session.invalidate();
         return "redirect:/login";
     }
-
-
 }
-
-
-
-
-
-
-

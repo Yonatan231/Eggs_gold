@@ -19,6 +19,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 
     boolean existsByNumDocumento(String numDocumento);
 
+    boolean existsByCorreo(String correo); // ✅ Nuevo método para validar correo único
+
     @Query("SELECT new com.sena.eggs_gold.dto.ClientePedidosDTO( " +
             "u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono, COUNT(p)) " +
             "FROM Usuario u LEFT JOIN Pedido p ON p.cliente.idUsuarios = u.idUsuarios " +
