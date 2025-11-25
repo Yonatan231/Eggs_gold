@@ -17,7 +17,6 @@ public interface UsuarioService {
 
     List<ClientePedidosDTO> obtenerClientesConPedidos();
 
-    // ✅ CORREGIDO: Cambiado de ConductorPedidosDTO a ConductorDTO
     List<ConductorDTO> obtenerConductoresConPedidosEntregados();
 
     List<LogisticaDTO> obtenerLogistica();
@@ -35,4 +34,11 @@ public interface UsuarioService {
     List<Usuario> buscarLogisticaPorEstado(String buscar, EstadoUsuario estado);
 
     String guardarFotoPerfil(Integer usuarioId, MultipartFile foto) throws IOException;
+
+    // Metodos para recuperacion de contrasena
+    void solicitarRecuperacionContrasena(String correo);
+
+    boolean validarToken(String token);
+
+    void actualizarContrasena(String token, String nuevaContrasena);
 }

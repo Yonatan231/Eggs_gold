@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -58,6 +59,13 @@ public class Usuario {
 
     @Column(name = "FOTO_PANEL", columnDefinition = "TEXT")
     private String fotoPanel;
+
+    @Column(name = "token_recuperacion", length = 255)
+    private String tokenRecuperacion;
+
+    @Column(name = "token_expiracion")
+    private LocalDateTime tokenExpiracion;
+
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)

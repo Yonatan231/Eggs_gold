@@ -9,12 +9,20 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VehiculoDTO {
+public class VehiculoResponseDTO {
+
+    // Datos del vehículo
+    private Integer idVehiculos;
     private String placa;
     private String color;
     private String modelo;
     private String marca;
     private Float capacidadCarga;
     private Float kilometraje;
+    private String estado;
     private LocalDate fechaRegistro;
+
+    private Integer idConductor;
+    private String nombreConductor;
+    private String apellidoConductor;
 }

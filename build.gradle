@@ -25,9 +25,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-mail'       // libreria para enviar correos
+    implementation 'org.springframework.boot:spring-boot-starter-mail'      // libreria para enviar correos
     implementation 'com.itextpdf:itextpdf:5.5.13.3'                         // libreria para el pdf de la factura
     implementation 'org.jfree:jfreechart:1.5.4'                             // libreria para graficas en PDF
+    implementation 'org.mindrot:jbcrypt:0.4'                                // libreria para encriptar token de restablecimiento de password
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

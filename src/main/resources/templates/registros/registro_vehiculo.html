@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Registrar Vehículo - Eggs Gold</title>
+    <title>Gestión de Vehículos - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Estilos base (asumiendo que existen) -->
+    <!-- Estilos -->
     <link rel="stylesheet" th:href="@{/css/administrador/administrador_inicio.css}">
-    <link rel="stylesheet" th:href="@{/css/registros/registro_vehiculo.css}">
+    <link rel="stylesheet" th:href="@{/css/conductor/vehiculo.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
 </head>
@@ -21,18 +21,16 @@
     <ul>
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
-                <span id="avatar-iniciales">AD</span>
+                <span id="avatar-iniciales">CD</span>
                 <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
-
                 <input type="file" id="input-foto" accept="image/*" style="display: none;" />
             </div>
-            <h2>Panel de Administración</h2>
+            <h2>Panel de Conductor</h2>
         </li>
         <li><a th:href="@{/conductor_inicio}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
         <li><a id="cerrar_sesion" th:href="@{/logout}" class="nav-link">
             <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
         </a></li>
-
     </ul>
 </nav>
 
@@ -52,55 +50,184 @@
                 </div>
             </div>
             <!-- Título de la página con icono -->
-            <h1 class="titulo2"><i class="fas fa-car"></i> Registro de Vehículo</h1>
+            <h1 class="titulo2"><i class="fas fa-car"></i> Gestión de Vehículos</h1>
         </div>
     </header>
 
-    <!-- Mensajes de éxito o error (si existen) -->
-    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
-    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <!-- Tabla de vehículos -->
+    <div class="tabla-contenedor">
+        <!-- Header verde con título, botón y filtro -->
+        <div class="tabla-header">
+            <h2><i class="fas fa-truck"></i> Mis Vehículos Registrados</h2>
 
-    <!-- Formulario de registro del vehículo -->
-    <form th:action="@{/registro_vehiculo}" th:object="${vehiculo}" method="post"
-          class="formulario-contenedor">
+            <div class="header-controles">
+                <button class="btn-crear" onclick="abrirModalCrear()">
+                    <i class="fas fa-plus"></i> Registrar Vehículo
+                </button>
 
-        <h2>Formulario de registro</h2>
+                <div class="filtro-estado-vehiculo">
+                    <label for="filtro-estado-vehiculo">Filtrar:</label>
+                    <select id="filtro-estado-vehiculo" onchange="filtrarVehiculos()">
+                        <option value="TODOS">Todos</option>
+                        <option value="ACTIVO">Activos</option>
+                        <option value="INACTIVO">Inactivos</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-        <!-- Campo para la placa del vehículo -->
-        <label for="placa">Placa:</label>
-        <input type="text" id="placa" th:field="*{placa}" placeholder="Ej: ABC123" required>
+        <!-- Tabla con wrapper -->
+        <div class="tabla-wrapper">
+            <table id="tablaVehiculos">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Placa</th>
+                    <th>Kilometraje</th>
+                    <th>Estado</th>
+                    <th>Fecha Registro</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Los datos se cargan dinámicamente desde el servidor -->
+                <tr>
+                    <td colspan="6" style="text-align:center;">Cargando vehículos...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Campo para el color del vehículo -->
-        <label for="color">Color:</label>
-        <input type="text" id="color" th:field="*{color}" placeholder="Ej: Rojo" required>
+        <!-- MODAL CREAR -->
+        <div id="modalCrear" class="modal-overlay">
+            <div class="modal-contenido">
+                <div class="modal-header">
+                    <h3><i class="fas fa-plus-circle"></i> Registrar Nuevo Vehículo</h3>
+                    <button class="btn-cerrar-modal" onclick="cerrarModal('modalCrear')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
 
-        <!-- Campo para el modelo del vehículo -->
-        <label for="modelo">Modelo:</label>
-        <input type="text" id="modelo" th:field="*{modelo}" placeholder="Ej: 2020" required>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="crear_placa">Placa: *</label>
+                        <input type="text" id="crear_placa" placeholder="Ej: ABC123" maxlength="6">
+                        <small>Formato: 3 letras + 3 números (ABC123)</small>
+                    </div>
 
-        <!-- Campo para la marca del vehículo -->
-        <label for="marca">Marca:</label>
-        <input type="text" id="marca" th:field="*{marca}" placeholder="Ej: Toyota" required>
+                    <div class="form-group">
+                        <label for="crear_color">Color: *</label>
+                        <input type="text" id="crear_color" placeholder="Ej: Rojo">
+                    </div>
 
-        <!-- Campo para la capacidad de carga -->
-        <label for="capacidadCarga">Capacidad de carga (kg):</label>
-        <input type="number" step="0.01" id="capacidadCarga" th:field="*{capacidadCarga}" placeholder="Ej: 1000" required>
+                    <div class="form-group">
+                        <label for="crear_modelo">Modelo (Año): *</label>
+                        <input type="text" id="crear_modelo" placeholder="Ej: 2020" maxlength="4">
+                    </div>
 
-        <!-- Campo para el kilometraje -->
-        <label for="kilometraje">Kilometraje:</label>
-        <input type="number" step="0.01" id="kilometraje" th:field="*{kilometraje}" placeholder="Ej: 50000" required>
+                    <div class="form-group">
+                        <label for="crear_marca">Marca: *</label>
+                        <input type="text" id="crear_marca" placeholder="Ej: Toyota">
+                    </div>
 
-        <!-- Botón para enviar el formulario -->
-        <button type="submit" class="btn-guardar">
-            <i class="fas fa-save"></i> Registrar Vehículo
-        </button>
-    </form>
+                    <div class="form-group">
+                        <label for="crear_capacidad">Capacidad de Carga (kg): *</label>
+                        <input type="number" id="crear_capacidad" placeholder="Ej: 1000" step="0.01" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="crear_km">Kilometraje Actual: *</label>
+                        <input type="number" id="crear_km" placeholder="Ej: 50000" step="0.01" min="0">
+                    </div>
+
+                    <p style="color: #e67e22; font-size: 0.9rem; margin-top: 15px;">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Nota:</strong> Solo puedes tener un vehículo activo a la vez.
+                        Si ya tienes uno activo, este se registrará como inactivo.
+                    </p>
+
+                    <div class="modal-botones">
+                        <button class="btn-guardar" onclick="crearVehiculo()">
+                            <i class="fas fa-save"></i> Registrar Vehículo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL ACTUALIZAR -->
+        <div id="modalActualizar" class="modal-overlay">
+            <div class="modal-contenido">
+                <div class="modal-header">
+                    <h3><i class="fas fa-edit"></i> Actualizar Vehículo</h3>
+                    <button class="btn-cerrar-modal" onclick="cerrarModal('modalActualizar')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="upd_id">ID:</label>
+                        <input type="text" id="upd_id" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upd_placa">Placa: *</label>
+                        <input type="text" id="upd_placa" placeholder="Placa" maxlength="6">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upd_color">Color: *</label>
+                        <input type="text" id="upd_color" placeholder="Color">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upd_modelo">Modelo (Año): *</label>
+                        <input type="text" id="upd_modelo" placeholder="Modelo" maxlength="4">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upd_marca">Marca: *</label>
+                        <input type="text" id="upd_marca" placeholder="Marca">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upd_capacidad">Capacidad de Carga (kg): *</label>
+                        <input type="number" id="upd_capacidad" placeholder="Capacidad de carga" step="0.01" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upd_km">Kilometraje: *</label>
+                        <input type="number" id="upd_km" placeholder="Kilometraje" step="0.01" min="0">
+                        <small style="color: #e67e22;">El kilometraje no puede ser menor al actual</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upd_estado">Estado: *</label>
+                        <select id="upd_estado">
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                        <small style="color: #e67e22;">
+                            Si activas este vehículo, los demás se desactivarán automáticamente
+                        </small>
+                    </div>
+
+                    <div class="modal-botones">
+                        <button class="btn-guardar" onclick="actualizarVehiculo()">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <script th:src="@{/js/utils/foto_panel.js}"></script>
-
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
+<script th:src="@{/js/conductor/vehiculo.js}"></script>
 <script> validarRolPagina('CONDUCTOR'); </script>
 
 </body>

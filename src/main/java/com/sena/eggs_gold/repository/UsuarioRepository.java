@@ -99,7 +99,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
     @Query("SELECT u.correo FROM Usuario u WHERE u.rol.idRoles IN :rolIds AND u.correo IS NOT NULL")
     List<String> findEmailsByRolIds(List<Integer> rolIds);
 
-    // ========== CONSULTAS PARA ESTADÍSTICAS ==========
+    // ========== CONSULTAS PARA ESTADISTICAS ==========
 
     // Contar usuarios por rol
     @Query("SELECT u.rol.nombreRol, COUNT(u) FROM Usuario u GROUP BY u.rol.nombreRol")
@@ -115,4 +115,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
             "GROUP BY FUNCTION('DATE_FORMAT', u.fechaRegistro, '%Y-%m') " +
             "ORDER BY mes")
     List<Object[]> countUsuariosPorMes();
+
+    // ========== METODOS PARA RECUPERACION DE CONTRASENA ==========
+
+    // Buscar usuario por correo electronico
+    Optional<Usuario> findByCorreo(String correo);
+
+    // Buscar usuario por token de recuperacion
+    Optional<Usuario> findByTokenRecuperacion(String token);
 }

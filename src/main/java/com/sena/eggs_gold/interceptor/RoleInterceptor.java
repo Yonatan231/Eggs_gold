@@ -49,6 +49,10 @@ public class RoleInterceptor implements HandlerInterceptor {
                 uri.equals("/contacto") ||
                 uri.equals("/registro") ||
                 uri.equals("/registro_cliente") ||
+                uri.equals("/solicitar-recuperacion") ||      // ← NUEVO
+                uri.equals("/reset-password") ||               // ← NUEVO
+                uri.equals("/actualizar-password") ||          // ← NUEVO
+                uri.startsWith("/iniciar_sesion/") ||         // ← NUEVO
                 uri.startsWith("/css/") ||
                 uri.startsWith("/js/") ||
                 uri.startsWith("/imagenes/") ||
@@ -88,10 +92,11 @@ public class RoleInterceptor implements HandlerInterceptor {
             return "LOGISTICA".equals(rol) || "ADMIN".equals(rol);
         }
 
-        // vistas para conductos
+        // vistas para conductores (ACTUALIZADO)
         if (uri.startsWith("/conductor") ||
                 uri.startsWith("/historial_pedidos_conductor") ||
-                uri.startsWith("/registrar_vehiculo")){
+                uri.startsWith("/registro_vehiculo") ||
+                uri.startsWith("/api/vehiculos")) { // ← API de vehículos
             return "CONDUCTOR".equals(rol);
         }
 
@@ -112,7 +117,6 @@ public class RoleInterceptor implements HandlerInterceptor {
         }
 
         // Por defecto, permitir acceso
-        // (puedes cambiar a false si prefieres denegar por defecto)
         return true;
     }
 }

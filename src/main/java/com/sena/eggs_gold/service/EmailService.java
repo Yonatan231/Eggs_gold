@@ -20,6 +20,8 @@ public interface EmailService {
 
     void enviarFacturaPorCorreo(Factura factura);
 
-    // ✅ NUEVO: Correo de confirmación de entrega
     void enviarCorreoEntregaPedido(Pedido pedido);
+
+    // Metodo para enviar correo de recuperacion de contrasena
+    void enviarCorreoRecuperacion(String correo, String token);
 }

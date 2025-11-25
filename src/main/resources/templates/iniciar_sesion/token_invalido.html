@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enlace Invalido - Eggs Gold</title>
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .header {
+            background: #e74c3c;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .error-icon {
+            font-size: 80px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .content h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #27AE60;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #219653;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            padding: 20px;
+            background-color: #f8f9fa;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Eggs Gold</h1>
+    </div>
+
+    <div class="content">
+        <div class="error-icon">×</div>
+        <h2>Enlace Invalido o Expirado</h2>
+        <p>
+            El enlace de recuperacion que intentas usar ha expirado o es invalido.
+            Los enlaces de recuperacion solo son validos por 1 hora.
+        </p>
+        <p>
+            Por favor, solicita un nuevo enlace de recuperacion desde la pagina de inicio de sesion.
+        </p>
+        <a th:href="@{/login}" class="btn">Volver al Login</a>
+    </div>
+
+    <div class="footer">
+        2024 Eggs Gold - Todos los derechos reservados
+    </div>
+</div>
+</body>
+</html>

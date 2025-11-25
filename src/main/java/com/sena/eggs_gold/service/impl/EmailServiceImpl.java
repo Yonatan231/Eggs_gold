@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
-    // ✅ Método base - NO asíncrono (lo usan los demás métodos)
+    // Metodo base - NO asincrono (lo usan los demas metodos)
     @Override
     public void enviarCorreo(String destinatario, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -41,10 +41,10 @@ public class EmailServiceImpl implements EmailService {
         helper.setFrom("distribuidoraeggsgold@gmail.com", "Eggs Gold");
 
         mailSender.send(message);
-        System.out.println("✅ Correo enviado a: " + destinatario);
+        System.out.println("Correo enviado a: " + destinatario);
     }
 
-    // ✅ Método base - NO asíncrono
+    // Metodo base - NO asincrono
     @Override
     public void enviarCorreosMasivos(List<String> destinatarios, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -56,13 +56,13 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ✅ ASÍNCRONO - Se ejecuta en segundo plano
+    // ASINCRONO - Se ejecuta en segundo plano
     @Async
     @Override
     public void enviarCorreoBienvenida(String para, String nombreUsuario) {
-        String asunto = "¡Bienvenido a Eggs Gold!";
+        String asunto = "Bienvenido a Eggs Gold";
         String cuerpo = """
-                <h2>¡Bienvenido, %s!</h2>
+                <h2>Bienvenido, %s</h2>
                 <p>Gracias por unirte a <b>Eggs Gold</b>.</p>
                 <p>Tu cuenta ha sido creada exitosamente. Ya puedes empezar a usar la plataforma.</p>
                 <p>Atentamente,<br><b>Equipo Eggs Gold</b></p>
@@ -74,11 +74,11 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ✅ ASÍNCRONO - Se ejecuta en segundo plano
+    // ASINCRONO - Se ejecuta en segundo plano
     @Async
     @Override
     public void enviarCorreoCambioEstado(String para, String nombreUsuario, String nuevoEstado) {
-        String asunto = "Actualización del estado de tu cuenta";
+        String asunto = "Actualizacion del estado de tu cuenta";
         String cuerpo = """
                 <p>Hola <b>%s</b>,</p>
                 <p>Tu cuenta ha cambiado de estado a: <b>%s</b></p>
@@ -93,7 +93,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ✅ ASÍNCRONO - Se ejecuta en segundo plano (el más importante para tu caso)
+    // ASINCRONO - Se ejecuta en segundo plano (el mas importante para tu caso)
     @Async
     @Override
     public void enviarFacturaPorCorreo(Factura factura) {
@@ -149,16 +149,16 @@ public class EmailServiceImpl implements EmailService {
                 <body>
                     <div class="container">
                         <div class="header">
-                            <h1>🥚 Eggs Gold</h1>
+                            <h1>Eggs Gold</h1>
                             <p>Factura de Compra</p>
                         </div>
                         
                         <div class="content">
-                            <h2>¡Gracias por tu compra, %s!</h2>
-                            <p><strong>Factura N°:</strong> %d</p>
+                            <h2>Gracias por tu compra, %s</h2>
+                            <p><strong>Factura N:</strong> %d</p>
                             <p><strong>Fecha:</strong> %s</p>
-                            <p><strong>Método de pago:</strong> %s</p>
-                            <p><strong>Dirección de entrega:</strong> %s</p>
+                            <p><strong>Metodo de pago:</strong> %s</p>
+                            <p><strong>Direccion de entrega:</strong> %s</p>
                             
                             <table>
                                 <thead>
@@ -178,12 +178,12 @@ public class EmailServiceImpl implements EmailService {
                                 <p>TOTAL: $%,.2f</p>
                             </div>
                             
-                            <p style="margin-top: 30px;">Tu pedido está siendo procesado y pronto lo recibirás.</p>
+                            <p style="margin-top: 30px;">Tu pedido esta siendo procesado y pronto lo recibiras.</p>
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automático, por favor no responder.</p>
-                            <p>© 2024 Eggs Gold - Todos los derechos reservados</p>
+                            <p>Este es un correo automatico, por favor no responder.</p>
+                            <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
                 </body>
@@ -205,9 +205,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ===== EmailServiceImpl.java (agregar al final, antes del cierre de clase) =====
-
-    // ✅ ASÍNCRONO - Correo de confirmación de entrega
+    // ASINCRONO - Correo de confirmacion de entrega
     @Async
     @Override
     public void enviarCorreoEntregaPedido(Pedido pedido) {
@@ -218,18 +216,18 @@ public class EmailServiceImpl implements EmailService {
         String nombreConductor = pedido.getConductor().getNombre() + " " +
                 pedido.getConductor().getApellido();
 
-        String asunto = "✅ Pedido #" + pedido.getIdPedidos() + " Entregado - Eggs Gold";
+        String asunto = "Pedido #" + pedido.getIdPedidos() + " Entregado - Eggs Gold";
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String fechaEntrega = pedido.getFechaEntrega().format(formatter);
 
-        // Construir sección de observaciones (opcional)
+        // Construir seccion de observaciones (opcional)
         String seccionObservaciones = "";
         if (pedido.getObservacionConductor() != null &&
                 !pedido.getObservacionConductor().trim().isEmpty()) {
             seccionObservaciones = String.format("""
                     <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin-top: 20px;">
-                        <p><strong>📝 Observaciones del conductor:</strong></p>
+                        <p><strong>Observaciones del conductor:</strong></p>
                         <p style="margin: 5px 0;">%s</p>
                     </div>
                     """, pedido.getObservacionConductor());
@@ -252,33 +250,33 @@ public class EmailServiceImpl implements EmailService {
                 <body>
                     <div class="container">
                         <div class="header">
-                            <h1>🥚 Eggs Gold</h1>
-                            <h2>✅ ¡Pedido Entregado!</h2>
+                            <h1>Eggs Gold</h1>
+                            <h2>Pedido Entregado</h2>
                         </div>
                         
                         <div class="content">
-                            <h2>¡Hola %s!</h2>
+                            <h2>Hola %s</h2>
                             <p>Tu pedido ha sido entregado exitosamente.</p>
                             
                             <div class="info-box">
-                                <p><strong>📦 Número de pedido:</strong> #%d</p>
-                                <p><strong>📅 Fecha de entrega:</strong> %s</p>
-                                <p><strong>📍 Dirección:</strong> %s</p>
-                                <p><strong>🚗 Conductor:</strong> %s</p>
+                                <p><strong>Numero de pedido:</strong> #%d</p>
+                                <p><strong>Fecha de entrega:</strong> %s</p>
+                                <p><strong>Direccion:</strong> %s</p>
+                                <p><strong>Conductor:</strong> %s</p>
                             </div>
                             
                             %s
                             
-                            <p style="margin-top: 30px;">Esperamos que disfrutes de tus productos. ¡Gracias por confiar en nosotros!</p>
+                            <p style="margin-top: 30px;">Esperamos que disfrutes de tus productos. Gracias por confiar en nosotros</p>
                             
                             <p style="margin-top: 20px; font-size: 14px; color: #666;">
-                                Si tienes algún problema con tu pedido, por favor contáctanos lo antes posible.
+                                Si tienes algun problema con tu pedido, por favor contactanos lo antes posible.
                             </p>
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automático, por favor no responder.</p>
-                            <p>© 2024 Eggs Gold - Todos los derechos reservados</p>
+                            <p>Este es un correo automatico, por favor no responder.</p>
+                            <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
                 </body>
@@ -299,5 +297,72 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void enviarCorreoRecuperacion(String correo, String token) {
+        String asunto = "Recuperacion de contrasena - Eggs Gold";
 
+        String enlaceRecuperacion = "http://localhost:8080/reset-password?token=" + token;
+
+        String cuerpoHtml = String.format("""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, sans-serif; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background-color: #F7DC6F; padding: 20px; text-align: center; }
+                        .content { padding: 20px; background-color: #f9f9f9; }
+                        .button { 
+                            display: inline-block; 
+                            padding: 15px 30px; 
+                            background-color: #27AE60; 
+                            color: white; 
+                            text-decoration: none; 
+                            border-radius: 5px; 
+                            margin: 20px 0;
+                        }
+                        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>Eggs Gold</h1>
+                            <p>Recuperacion de Contrasena</p>
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Has solicitado recuperar tu contrasena</h2>
+                            <p>Haz clic en el siguiente boton para restablecer tu contrasena:</p>
+                            
+                            <div style="text-align: center;">
+                                <a href="%s" class="button">Restablecer Contrasena</a>
+                            </div>
+                            
+                            <p style="margin-top: 20px; font-size: 14px; color: #666;">
+                                Si no solicitaste este cambio, ignora este correo. El enlace expira en 1 hora.
+                            </p>
+                            
+                            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+                                Si el boton no funciona, copia y pega este enlace en tu navegador:<br>
+                                <span style="color: #27AE60;">%s</span>
+                            </p>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>Este es un correo automatico, por favor no responder.</p>
+                            <p>2024 Eggs Gold - Todos los derechos reservados</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """, enlaceRecuperacion, enlaceRecuperacion);
+
+        try {
+            enviarCorreo(correo, asunto, cuerpoHtml);
+        } catch (Exception e) {
+            System.err.println("Error al enviar correo de recuperacion: " + e.getMessage());
+        }
+    }
 }
