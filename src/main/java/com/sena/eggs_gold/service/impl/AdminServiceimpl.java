@@ -56,15 +56,8 @@ public class AdminServiceimpl implements AdminService {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Guardar el estado anterior para comparar
-        EstadoUsuario estadoAnterior = usuario.getEstado();
-
-        // Cambiar el estado del usuario
-        usuario.setEstado(nuevoEstado);
-        usuarioRepository.save(usuario);
-
-        // Si cambió de ACTIVO a INACTIVO, enviar correo de suspensión
-        if (estadoAnterior == EstadoUsuario.ACTIVO && nuevoEstado == EstadoUsuario.INACTIVO) {
+        // Solo enviar correo si el estado es INACTIVO
+        if (nuevoEstado == EstadoUsuario.INACTIVO) {
             String nombreCompleto = usuario.getNombre() + " " + usuario.getApellido();
             emailService.enviarCorreoSuspension(usuario.getCorreo(), nombreCompleto);
         }

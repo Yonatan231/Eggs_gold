@@ -22,7 +22,9 @@ public interface EmailService {
 
     void enviarCorreoEntregaPedido(Pedido pedido);
 
+    // Metodo para enviar correo de recuperacion de contrasena
     void enviarCorreoRecuperacion(String correo, String token);
 
+    // Método para enviar correo de suspensión de cuenta
     void enviarCorreoSuspension(String correo, String nombreUsuario);
 }

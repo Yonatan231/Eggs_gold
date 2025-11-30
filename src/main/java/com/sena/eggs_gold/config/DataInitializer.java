@@ -29,6 +29,7 @@ public class DataInitializer {
                 admin.setTipoDocumento(TipoDocumento.CC);
                 admin.setNumDocumento("123456789");
                 admin.setTelefono("0000000000");
+                admin.setEdad(30);
                 admin.setEstado(EstadoUsuario.ACTIVO);
                 admin.setCorreo("admin@tuapp.com");
                 admin.setPassword("1234");

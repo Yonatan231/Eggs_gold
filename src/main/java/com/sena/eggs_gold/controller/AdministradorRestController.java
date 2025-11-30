@@ -151,10 +151,12 @@ public class AdministradorRestController {
             usuario.setRol(nuevoRol);
         }
 
+        // Guardar cambios en la base de datos
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
 
         // Si el estado cambió de ACTIVO a INACTIVO, enviar correo de suspensión
         if (estadoAnterior == EstadoUsuario.ACTIVO && usuarioDTO.getEstado() == EstadoUsuario.INACTIVO) {
+            // Llamar al servicio para enviar el correo (no para guardar)
             adminService.cambiarEstadoUsuario(id, EstadoUsuario.INACTIVO);
         }
 
