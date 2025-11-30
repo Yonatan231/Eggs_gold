@@ -7,27 +7,28 @@
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
     <link rel="stylesheet" th:href="@{css/inicio/logo.css}">
     <link rel="stylesheet" th:href="@{css/cliente/carrito.css}">
+    <link rel="stylesheet" th:href="@{css/inicio/pie_pagina.css}">
 </head>
 
 <body>
 
+<!-- ===== HEADER SIMPLE FIXED ===== -->
 <header class="header">
     <div class="header-top">
-        <div class="marca">
-            <div class="logo">
-                <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
-            </div>
-            <div>
-                <h1 class="titulo">Eggs Gold</h1>
-                <p class="subtitulo">Huevos frescos a tu puerta</p>
-            </div>
+        <!-- LOGO (solo imagen) -->
+        <div class="logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
+
+        <!-- TÍTULO CENTRAL (visible en todas las pantallas) -->
         <div class="header-title">
             <h1>Carrito</h1>
         </div>
-        <div class="header-actions">
-            <a th:href="@{/inicio_cliente}" class="salir">Salir</a>
-        </div>
+
+        <!-- BOTÓN SALIR (icono de regresar) -->
+        <a th:href="@{/inicio_cliente}" class="btn-salir" title="Regresar">
+            <span>←</span>
+        </a>
     </div>
 </header>
 
@@ -62,17 +63,30 @@
 
         <div class="campo-formulario">
             <label for="direccion">Dirección de entrega:</label>
-            <input type="text" id="direccion" required placeholder="Ingresa tu dirección completa">
+            <input
+                    type="text"
+                    id="direccion"
+                    required
+                    minlength="6"
+                    placeholder="Ingresa tu dirección completa (mín. 6 caracteres)">
         </div>
 
         <div class="campo-formulario">
             <label for="telefono">Teléfono de contacto:</label>
-            <input type="tel" id="telefono" required placeholder="Ej: +57 320 973 1652">
+            <input
+                    type="tel"
+                    id="telefono"
+                    required
+                    pattern="[0-9]{6,12}"
+                    placeholder="Solo números (6-12 dígitos)">
         </div>
 
         <div class="campo-formulario">
             <label for="comentarios">Comentarios adicionales (opcional):</label>
-            <textarea id="comentarios" rows="3" placeholder="Instrucciones especiales para la entrega..."></textarea>
+            <textarea
+                    id="comentarios"
+                    rows="3"
+                    placeholder="Instrucciones especiales para la entrega..."></textarea>
         </div>
 
         <div class="campo-formulario">
@@ -81,7 +95,9 @@
                 <label class="metodo-pago">
                     <input type="radio" name="metodo-pago" value="nequi">
                     <div class="contenido-metodo">
-                        <div class="icono-pago">📱</div>
+                        <div class="icono-pago">
+                            <img th:src="@{/imagenes/carrito/NEQUI.png}" alt="Nequi" class="icono-img">
+                        </div>
                         <div class="nombre-pago">Nequi</div>
                         <div class="descripcion-pago">Pago inmediato por transferencia bancaria</div>
                     </div>
@@ -90,7 +106,9 @@
                 <label class="metodo-pago">
                     <input type="radio" name="metodo-pago" value="visa">
                     <div class="contenido-metodo">
-                        <div class="icono-pago">💳</div>
+                        <div class="icono-pago">
+                            <img th:src="@{/imagenes/carrito/VISA.svg}" alt="Visa" class="icono-img">
+                        </div>
                         <div class="nombre-pago">Tarjeta VISA</div>
                         <div class="descripcion-pago">Pago seguro con tarjeta de crédito</div>
                     </div>
@@ -105,7 +123,9 @@
     <!-- PASO 3: CONFIRMACIÓN -->
     <div id="resumen-pedido" class="oculto">
         <div class="resumen-pedido">
-            <div class="icono">🎉</div>
+            <div class="icono-pago">
+                <img th:src="@{/imagenes/carrito/party-popper.svg}" alt="Confirmado" class="icono-img">
+            </div>
             <h1>¡Pedido Confirmado!</h1>
             <p>Tu pedido ha sido procesado correctamente.</p>
             <p>Recibirás una confirmación por correo electrónico pronto.</p>
@@ -119,7 +139,7 @@
 <div id="modal-nequi" class="modal-overlay">
     <div class="modal">
         <div class="modal-header">
-            <h2>📱 Pago con Nequi</h2>
+            <h2>Pago con Nequi</h2>
             <button class="modal-close" onclick="cerrarModal('nequi')">×</button>
         </div>
         <div class="modal-body">
@@ -131,12 +151,26 @@
 
             <div class="campo-modal">
                 <label for="telefono-nequi">Tu número de teléfono Nequi:</label>
-                <input type="tel" id="telefono-nequi" placeholder="+57 300 000 0000" required>
+                <input
+                        type="tel"
+                        id="telefono-nequi"
+                        placeholder="3001234567"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        required>
+                <small style="color: #7f8c8d; font-size: 0.85em;">10 dígitos sin espacios</small>
             </div>
 
             <div class="campo-modal">
-                <label for="codigo-nequi">Código de confirmación (últimos 4 dígitos):</label>
-                <input type="text" id="codigo-nequi" placeholder="1234" maxlength="4" required>
+                <label for="codigo-nequi">Código de confirmación (Últimos 4 dígitos):</label>
+                <input
+                        type="text"
+                        id="codigo-nequi"
+                        placeholder="1234"
+                        pattern="[0-9]{4}"
+                        maxlength="4"
+                        required>
+                <small style="color: #7f8c8d; font-size: 0.85em;">4 dígitos del comprobante</small>
             </div>
 
             <button class="boton-modal" onclick="procesarPagoNequi()">Confirmar pago</button>
@@ -149,29 +183,54 @@
 <div id="modal-visa" class="modal-overlay">
     <div class="modal">
         <div class="modal-header">
-            <h2>💳 Pago con VISA</h2>
+            <h2>Pago con VISA</h2>
             <button class="modal-close" onclick="cerrarModal('visa')">×</button>
         </div>
         <div class="modal-body">
             <div class="campo-modal">
                 <label for="numero-tarjeta">Número de tarjeta:</label>
-                <input type="text" id="numero-tarjeta" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                <input
+                        type="text"
+                        id="numero-tarjeta"
+                        placeholder="1234 5678 9012 3456"
+                        maxlength="19"
+                        required>
+                <small style="color: #7f8c8d; font-size: 0.85em;">16 dígitos</small>
             </div>
 
             <div class="campo-modal">
                 <label for="nombre-tarjeta">Nombre en la tarjeta:</label>
-                <input type="text" id="nombre-tarjeta" placeholder="JUAN PEREZ" required>
+                <input
+                        type="text"
+                        id="nombre-tarjeta"
+                        placeholder="JUAN PEREZ"
+                        pattern="[A-Za-z\s]{3,}"
+                        required>
+                <small style="color: #7f8c8d; font-size: 0.85em;">Como aparece en tu tarjeta</small>
             </div>
 
             <div class="grid-dos-columnas">
                 <div class="campo-modal">
                     <label for="fecha-exp">Fecha de expiración:</label>
-                    <input type="text" id="fecha-exp" placeholder="MM/AA" maxlength="5" required>
+                    <input
+                            type="text"
+                            id="fecha-exp"
+                            placeholder="MM/YY"
+                            maxlength="5"
+                            required>
+                    <small style="color: #7f8c8d; font-size: 0.85em;">Formato: MM/YY</small>
                 </div>
 
                 <div class="campo-modal">
                     <label for="cvv">CVV:</label>
-                    <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                    <input
+                            type="text"
+                            id="cvv"
+                            placeholder="123"
+                            pattern="[0-9]{3}"
+                            maxlength="3"
+                            required>
+                    <small style="color: #7f8c8d; font-size: 0.85em;">3 dígitos atrás</small>
                 </div>
             </div>
 
@@ -185,10 +244,45 @@
     </div>
 </div>
 
+<!-- ========== PIE DE PÁGINA (FOOTER) ========== -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
+        </div>
+
+        <div class="footer-section">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la Empresa</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>SÍGUENOS</h2>
+            <div class="social-icons">
+                <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
+                </a>
+                <a href="https://www.youtube.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
-<script th:src="@{/js/cliente/carrito.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
-<script>validarRolPagina('CLIENTE');</script>
+<script th:src="@{/js/cliente/carrito.js}"></script>
 
 </body>
 </html>

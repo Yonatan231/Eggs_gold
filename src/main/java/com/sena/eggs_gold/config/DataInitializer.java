@@ -17,29 +17,29 @@ public class DataInitializer {
     @Bean
     CommandLineRunner initAdmin(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
         return args -> {
-                if (usuarioRepository.findByNombre("Admin").isEmpty()) {
-                    Rol rolAdmin = rolRepository.findByNombreRol("Administrador")
-                            .orElseThrow(() -> new RuntimeException("No existe rol Administrador en la tabla rol"));
+            if (usuarioRepository.findByNombre("Admin").isEmpty()) {
+                Rol rolAdmin = rolRepository.findByNombreRol("Administrador")
+                        .orElseThrow(() -> new RuntimeException("No existe rol Administrador en la tabla rol"));
 
-                    Admin admin = new Admin();
-                    admin.setRol(rolAdmin);
-                    admin.setNombre("Admin");
-                    admin.setApellido("Principal");
-                    admin.setDireccionUsuario("Oficina central");
-                    admin.setTipoDocumento(TipoDocumento.CC);
-                    admin.setNumDocumento("123456789");
-                    admin.setTelefono("0000000000");
-                    admin.setEstado(EstadoUsuario.ACTIVO);
-                    admin.setCorreo("admin@tuapp.com");
-                    admin.setPassword("1234");
-                    admin.setFechaRegistro(LocalDate.now());
+                Admin admin = new Admin();
+                admin.setRol(rolAdmin);
+                admin.setNombre("Admin");
+                admin.setApellido("Principal");
+                admin.setDireccionUsuario("Oficina central");
+                admin.setTipoDocumento(TipoDocumento.CC);
+                admin.setNumDocumento("123456789");
+                admin.setTelefono("0000000000");
+                admin.setEstado(EstadoUsuario.ACTIVO);
+                admin.setCorreo("admin@tuapp.com");
+                admin.setPassword("1234");
+                admin.setFechaRegistro(LocalDate.now());
 
-                    usuarioRepository.save(admin);
+                usuarioRepository.save(admin);
 
-                    System.out.println(">>> Usuario administrador creado por defecto");
+                System.out.println(">>> Usuario administrador creado por defecto");
 
 
-                }
-            };
+            }
+        };
     }
 }

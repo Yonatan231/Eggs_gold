@@ -62,6 +62,11 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteDTO login(String numDocumento, String password){
         return clienteRepository.findByNumDocumentoAndPassword(numDocumento, password)
                 .map(cliente->{
+                    // Verificar que el usuario esté ACTIVO
+                    if (cliente.getEstado() != EstadoUsuario.ACTIVO) {
+                        return null; // No permitir login si está inactivo
+                    }
+
                     ClienteDTO dto = new ClienteDTO();
                     dto.setIdUsuarios(cliente.getIdUsuarios());
                     dto.setNombre(cliente.getNombre());

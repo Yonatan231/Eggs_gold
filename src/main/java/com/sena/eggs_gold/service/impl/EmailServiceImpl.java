@@ -364,5 +364,76 @@ public class EmailServiceImpl implements EmailService {
         } catch (Exception e) {
             System.err.println("Error al enviar correo de recuperacion: " + e.getMessage());
         }
+
+
+    }
+
+    // ASINCRONO - Correo de suspensión de cuenta
+    @Async
+    @Override
+    public void enviarCorreoSuspension(String correo, String nombreUsuario) {
+        String asunto = "Cuenta Suspendida - Eggs Gold";
+
+        String cuerpoHtml = String.format("""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, sans-serif; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background-color: #dc3545; padding: 20px; text-align: center; color: white; }
+                        .content { padding: 20px; background-color: #f9f9f9; }
+                        .warning-box { 
+                            background-color: #fff3cd; 
+                            border-left: 4px solid #ffc107; 
+                            padding: 15px; 
+                            margin: 20px 0; 
+                        }
+                        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>Eggs Gold</h1>
+                            <h2>Notificación de Cuenta</h2>
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Hola %s</h2>
+                            <p>Te informamos que tu cuenta ha sido <strong>suspendida</strong> por el administrador.</p>
+                            
+                            <div class="warning-box">
+                                <p><strong>⚠️ Importante:</strong></p>
+                                <p>No podrás acceder al sistema hasta que tu cuenta sea reactivada.</p>
+                            </div>
+                            
+                            <p style="margin-top: 20px;">
+                                Si consideras que esto es un error o deseas más información, 
+                                por favor contacta con el administrador del sistema.
+                            </p>
+                            
+                            <p style="margin-top: 30px;">
+                                Atentamente,<br>
+                                <strong>Equipo Eggs Gold</strong>
+                            </p>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>Este es un correo automático, por favor no responder.</p>
+                            <p>© 2024 Eggs Gold - Todos los derechos reservados</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """, nombreUsuario);
+
+        try {
+            enviarCorreo(correo, asunto, cuerpoHtml);
+            System.out.println("Correo de suspensión enviado a: " + correo);
+        } catch (Exception e) {
+            System.err.println("Error al enviar correo de suspensión: " + e.getMessage());
+        }
     }
 }

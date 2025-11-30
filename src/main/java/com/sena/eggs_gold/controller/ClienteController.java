@@ -67,13 +67,13 @@ public class ClienteController {
 
         // ✅ Validar que el número de documento no esté registrado
         if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
-            model.addAttribute("error", "El número de documento ya está registrado");
+            model.addAttribute("error", "El número de documento o correo electrónico ya está registrado");
             return "registros/registro_cliente";
         }
 
         // ✅ Validar que el correo no esté registrado
         if (usuarioService.correoYaExistente(clienteDTO.getCorreo())) {
-            model.addAttribute("error", "El correo electrónico ya está registrado");
+            model.addAttribute("error", "El número de documento o correo electrónico ya está registrado");
             return "registros/registro_cliente";
         }
 

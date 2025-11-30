@@ -1,9 +1,12 @@
 /* ===== PIE DE PÁGINA (FOOTER) ===== */
 footer {
     background-color: var(--color-fondo);
-    padding: 40px 60px;
+    padding: 40px 0;
     border-top: 1px solid #ccc;
     font-family: Arial, sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
 }
 
 /* Contenedor principal del footer con diseño flex */
@@ -11,8 +14,11 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    flex-wrap: wrap;
     gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* ===== LOGO DEL FOOTER ===== */
@@ -52,7 +58,7 @@ footer {
 /* ===== ICONOS DE REDES SOCIALES ===== */
 .social-icons {
     display: flex;
-    flex-direction: row; /* Cambiado de column a row */
+    flex-direction: row;
     gap: 10px;
 }
 
@@ -91,98 +97,94 @@ footer {
    ========================================== */
 
 /* ===== TABLETS (768px o menos) ===== */
+/* ===== TABLETS (768px o menos) ===== */
 @media (max-width: 768px) {
-    /* Reducir padding del footer en tablets */
     footer {
-        padding: 30px 40px;
+        padding: 30px 0;
     }
 
-    /* Reducir gap entre secciones */
     .footer-container {
-        gap: 30px;
-        /* Centrar contenido en tablets */
-        justify-content: center;
+        flex-direction: row;  /* Horizontal en tablets */
+        justify-content: space-around;
+        gap: 20px;
+        padding: 0 15px;
     }
 
-    /* Logo más pequeño */
     .footer-logo img {
-        width: 75px;
+        width: 60px;  /* Reducido para tablets */
     }
 
-    /* Títulos más pequeños */
-    .footer-section h2 {
-        font-size: 15px;
-    }
-
-    /* Enlaces más pequeños */
-    .footer-section a {
-        font-size: 13px;
-    }
-
-    /* Los iconos de redes sociales se mantienen en fila */
-    .social-icons {
-        gap: 8px;
-        flex-direction: row; /* Aseguramos que se mantenga en fila en tablets */
-    }
-}
-
-/* ===== MÓVILES (480px o menos) ===== */
-@media (max-width: 480px) {
-    /* Padding reducido en móviles */
-    footer {
-        padding: 25px 20px;
-    }
-
-    /* Cambiar a diseño de columna centrado */
-    .footer-container {
-        flex-direction: column;
+    .footer-section {
+        flex: 1;
         align-items: center;
         text-align: center;
-        gap: 25px;
     }
 
-    /* Logo centrado y más pequeño */
-    .footer-logo img {
-        width: 70px;
-    }
-
-    /* Centrar las secciones */
-    .footer-section {
-        align-items: center;
-        gap: 6px;
-    }
-
-    /* Títulos más pequeños */
     .footer-section h2 {
         font-size: 14px;
-        margin-bottom: 8px;
     }
 
-    /* Enlaces más pequeños */
     .footer-section a {
         font-size: 12px;
     }
 
-    /* Iconos de redes sociales en horizontal en móviles */
+    .social-icons {
+        gap: 8px;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+/* ===== MÓVILES (480px o menos) ===== */
+@media (max-width: 480px) {
+    footer {
+        padding: 25px 0;
+    }
+
+    .footer-container {
+        flex-direction: row;  /* Cambiado de column a row */
+        justify-content: space-around;  /* Distribuye el espacio */
+        align-items: flex-start;
+        text-align: center;
+        gap: 15px;
+        padding: 0 10px;
+    }
+
+    .footer-logo img {
+        width: 50px;  /* Reducido para que quepa horizontalmente */
+    }
+
+    .footer-section {
+        align-items: center;
+        gap: 6px;
+        flex: 1;  /* Cada sección ocupa el mismo espacio */
+    }
+
+    .footer-section h2 {
+        font-size: 12px;  /* Reducido ligeramente */
+        margin-bottom: 6px;
+    }
+
+    .footer-section a {
+        font-size: 11px;
+    }
+
     .social-icons {
         flex-direction: row;
         justify-content: center;
-        gap: 15px;
+        gap: 8px;
     }
 
-    /* Iconos más pequeños en móvil */
     .social-icons img {
-        width: 26px !important;
-        height: 26px !important;
+        width: 22px !important;
+        height: 22px !important;
     }
 
-    /* Ajustar el footer-bottom */
     .footer-bottom {
         margin-top: 20px;
         padding-top: 12px;
     }
 
     .footer-bottom a {
-        font-size: 12px;
+        font-size: 11px;
     }
 }

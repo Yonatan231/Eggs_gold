@@ -47,17 +47,24 @@ public class LogisticaServiceImpl implements LogisticaService {
     @Override
     public LogisticaDTO login(String numDocumento, String password) {
         return logisticaRepository.findByNumDocumentoAndPassword(numDocumento, password)
-                .map(logistica -> new LogisticaDTO(
-                        logistica.getIdUsuarios(),
-                        logistica.getNombre(),
-                        logistica.getApellido(),
-                        logistica.getDireccionUsuario(),
-                        logistica.getNumDocumento(),
-                        logistica.getTelefono(),
-                        logistica.getCorreo(),
-                        logistica.getPassword(),
-                        "LOGISTICA"
-                ))
+                .map(logistica -> {
+                    // Verificar que el usuario esté ACTIVO
+                    if (logistica.getEstado() != EstadoUsuario.ACTIVO) {
+                        return null; // No permitir login si está inactivo
+                    }
+
+                    return new LogisticaDTO(
+                            logistica.getIdUsuarios(),
+                            logistica.getNombre(),
+                            logistica.getApellido(),
+                            logistica.getDireccionUsuario(),
+                            logistica.getNumDocumento(),
+                            logistica.getTelefono(),
+                            logistica.getCorreo(),
+                            logistica.getPassword(),
+                            "LOGISTICA"
+                    );
+                })
                 .orElse(null);
     }
 

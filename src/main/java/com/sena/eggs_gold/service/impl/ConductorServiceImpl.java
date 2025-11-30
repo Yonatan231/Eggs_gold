@@ -83,6 +83,11 @@ public class ConductorServiceImpl implements ConductorService {
     public ConductorDTO login(String numDocumento, String password) {
         return conductorRepository.findByNumDocumentoAndPassword(numDocumento, password)
                 .map(conductor -> {
+                    // Verificar que el usuario esté ACTIVO
+                    if (conductor.getEstado() != EstadoUsuario.ACTIVO) {
+                        return null; // No permitir login si está inactivo
+                    }
+
                     ConductorDTO dto = new ConductorDTO();
                     dto.setIdUsuarios(conductor.getIdUsuarios());
                     dto.setNombre(conductor.getNombre());

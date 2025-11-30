@@ -13,6 +13,7 @@ import com.sena.eggs_gold.repository.DetallePedidoRepository;
 import com.sena.eggs_gold.repository.NovedadRepository;
 import com.sena.eggs_gold.repository.PedidoRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
+import com.sena.eggs_gold.service.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,15 +35,18 @@ public class AdministradorRestController {
     private final DetallePedidoRepository detallePedidoRepository;
     private final UsuarioRepository usuarioRepository;
     private final NovedadRepository novedadRepository;
+    private final AdminService adminService;
 
     public AdministradorRestController(PedidoRepository pedidoRepository,
                                        DetallePedidoRepository detallePedidoRepository,
                                        UsuarioRepository usuarioRepository,
-                                       NovedadRepository novedadRepository) {
+                                       NovedadRepository novedadRepository,
+                                       AdminService adminService) {
         this.pedidoRepository = pedidoRepository;
         this.detallePedidoRepository = detallePedidoRepository;
         this.usuarioRepository = usuarioRepository;
         this.novedadRepository = novedadRepository;
+        this.adminService = adminService;
     }
 
     // ============================================
@@ -128,6 +132,9 @@ public class AdministradorRestController {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+        // Guardar estado anterior para detectar cambios
+        EstadoUsuario estadoAnterior = usuario.getEstado();
+
         // Actualizar solo los campos permitidos (no ID, fecha registro, ni documento)
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setApellido(usuarioDTO.getApellido());
@@ -145,6 +152,12 @@ public class AdministradorRestController {
         }
 
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
+
+        // Si el estado cambió de ACTIVO a INACTIVO, enviar correo de suspensión
+        if (estadoAnterior == EstadoUsuario.ACTIVO && usuarioDTO.getEstado() == EstadoUsuario.INACTIVO) {
+            adminService.cambiarEstadoUsuario(id, EstadoUsuario.INACTIVO);
+        }
+
         return ResponseEntity.ok(convertirAUsuarioAdminDTO(usuarioActualizado));
     }
 
@@ -163,9 +176,9 @@ public class AdministradorRestController {
         return ResponseEntity.ok(roles);
     }
 
-    // ============================================
-    // MÉTODOS AUXILIARES - PEDIDOS
-    // ============================================
+// ============================================
+// MÉTODOS AUXILIARES - PEDIDOS
+// ============================================
 
     private PedidoAdminDTO convertirAPedidoAdminDTO(Pedido pedido) {
         PedidoAdminDTO dto = new PedidoAdminDTO();
@@ -238,9 +251,9 @@ public class AdministradorRestController {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    // ============================================
-    // MÉTODOS AUXILIARES - USUARIOS
-    // ============================================
+// ============================================
+// MÉTODOS AUXILIARES - USUARIOS
+// ============================================
 
     private UsuarioAdminDTO convertirAUsuarioAdminDTO(Usuario usuario) {
         UsuarioAdminDTO dto = new UsuarioAdminDTO();
@@ -260,9 +273,9 @@ public class AdministradorRestController {
         return dto;
     }
 
-    // ============================================
-    // ENDPOINTS PARA DASHBOARD (TARJETAS DE RESUMEN)
-    // ============================================
+// ============================================
+// ENDPOINTS PARA DASHBOARD (TARJETAS DE RESUMEN)
+// ============================================
 
     /**
      * Obtiene datos para las tarjetas de resumen del dashboard
