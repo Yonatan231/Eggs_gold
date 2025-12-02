@@ -6,7 +6,8 @@ const btnCancel = document.getElementById('btnCancel');
 const alertMessage = document.getElementById('alertMessage');
 
 // Obtener todos los campos editables (excluyendo los deshabilitados)
-const editableInputs = Array.from(form.querySelectorAll('input:not([disabled]), select'));
+// Ahora excluye: numeroDocumento, tipoDocumento, fechaCreacion
+const editableInputs = Array.from(form.querySelectorAll('input:not([disabled]), select:not([disabled])'));
 
 // Variable para guardar los datos originales
 let datosOriginales = {};
@@ -35,7 +36,7 @@ async function loadUserData() {
             document.getElementById('nombre').value = datos.nombre || '';
             document.getElementById('apellido').value = datos.apellido || '';
             document.getElementById('direccion').value = datos.direccion || '';
-            document.getElementById('tipoDocumento').value = datos.tipoDocumento || 'CC';
+            document.getElementById('tipoDocumento').value = datos.tipoDocumento || '';
             document.getElementById('numeroDocumento').value = datos.numeroDocumento || '';
             document.getElementById('telefono').value = datos.telefono || '';
             document.getElementById('edad').value = datos.edad || '';
@@ -145,16 +146,15 @@ function validateForm() {
 // Evento para el botón Editar Datos
 btnEdit.addEventListener('click', () => {
     toggleEditMode(true);
-    showAlert('Ahora puede editar sus datos. El número de documento y fecha de creación no se pueden modificar.', 'success');
+    showAlert('Ahora puede editar sus datos. El tipo y número de documento y fecha de creación no se pueden modificar.', 'success');
 });
 
 // Evento para el botón Cancelar
 btnCancel.addEventListener('click', () => {
-    // Restaurar datos originales
+    // Restaurar datos originales (sin incluir tipoDocumento que está disabled)
     document.getElementById('nombre').value = datosOriginales.nombre || '';
     document.getElementById('apellido').value = datosOriginales.apellido || '';
     document.getElementById('direccion').value = datosOriginales.direccion || '';
-    document.getElementById('tipoDocumento').value = datosOriginales.tipoDocumento || 'CC';
     document.getElementById('telefono').value = datosOriginales.telefono || '';
     document.getElementById('edad').value = datosOriginales.edad || '';
     document.getElementById('correo').value = datosOriginales.correo || '';
@@ -168,7 +168,7 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-        // Preparar datos para enviar
+        // Preparar datos para enviar (sin incluir tipoDocumento)
         const datosActualizados = {
             nombre: document.getElementById('nombre').value.trim(),
             apellido: document.getElementById('apellido').value.trim(),

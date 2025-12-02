@@ -33,7 +33,7 @@ public class RoleInterceptor implements HandlerInterceptor {
         // Validar acceso según rol y URL
         if (!tienePermiso(uri, rol)) {
             System.out.println("❌ Acceso denegado - Usuario con rol: " + rol + " intentó acceder a: " + uri);
-            response.sendRedirect("/error_403");
+            response.sendRedirect("/error/403");
             return false;
         }
 

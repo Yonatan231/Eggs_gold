@@ -1,314 +1,378 @@
-/* Variables CSS para colores y estilos reutilizables */
+/* ===== VARIABLES GLOBALES ===== */
 :root {
-    --primary-color: #F7DC6F;    /* Color primario amarillo */
-    --success-color: #27ae60;    /* Color para éxito/confirmación */
-    --danger-color: #e74c3c;     /* Color para errores/peligro */
-    --light-color: #ecf0f1;      /* Color claro para fondos */
-    --dark-color: #2c3e50;       /* Color oscuro para texto */
-    --gray-color: #95a5a6;       /* Color gris para elementos secundarios */
+    --primary-color: #F7DC6F;
+    --success-color: #27ae60;
+    --danger-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --gray-color: #95a5a6;
 }
 
-/* Reset de márgenes y padding para todos los elementos */
+/* ===== RESET BÁSICO ===== */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;      /* Incluye padding y border en el tamaño total */
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Estilos generales del cuerpo de la página */
+/* ===== BODY ===== */
 body {
-    background-color: #f5f7fa;   /* Fondo gris claro */
-    color: #333;                 /* Color de texto principal */
-    line-height: 1.6;           /* Altura de línea para mejor legibilidad */
-    padding: 20px;              /* Espaciado interno */
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
 }
 
-/* Contenedor principal que centra el contenido */
+/* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
-    max-width: 800px;           /* Ancho máximo del contenido */
-    margin: 0 auto;             /* Centrado horizontal */
-    background-color: white;    /* Fondo blanco */
-    border-radius: 10px;        /* Esquinas redondeadas */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    overflow: hidden;           /* Oculta contenido que sobresalga */
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-/* Encabezado con fondo amarillo */
+/* ===== HEADER ===== */
 header {
-    background: #F7DC6F;        /* Color de fondo amarillo */
-    color: white;               /* Color de texto blanco */
-    padding: 20px 30px;         /* Espaciado interno */
-    display: flex;              /* Usa flexbox para layout */
-    align-items: center;        /* Centra verticalmente */
-    justify-content: space-between; /* Distribuye espacio entre elementos */
+    background: #F7DC6F;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; /* Necesario para posicionar el botón */
 }
 
-/* Contenedor del contenido del encabezado */
 .header-content {
-    display: flex;              /* Layout flex para logo y texto */
-    align-items: center;        /* Centrado vertical */
-    width: 100%;               /* Ocupa todo el ancho disponible */
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
-/* Contenedor del logo y nombre de la empresa */
+/* ===== LOGO ===== */
 .logo-titulo {
-    display: flex;              /* Layout flex */
-    flex-direction: column;     /* Elementos en columna (imagen arriba, texto abajo) */
-    align-items: center;        /* Centrado horizontal */
-    margin-right: 20px;        /* Espacio a la derecha */
-    flex-shrink: 0;            /* No se reduce de tamaño */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+    flex-shrink: 0;
 }
 
-/* Estilo de la imagen del logo */
 .logo-titulo img {
-    border-radius: 50%;         /* Hace la imagen circular */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
-    border: 3px solid #333333;  /* Borde oscuro */
-    margin-bottom: 5px;        /* Espacio debajo de la imagen */
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 3px solid #333333;
+    margin-bottom: 5px;
 }
 
-/* Estilo del texto del nombre de la empresa */
 .texto {
-    font-size: 1.2rem;         /* Tamaño de fuente */
-    font-weight: bold;          /* Texto en negrita */
-    color: #333333;            /* Color de texto oscuro */
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Sombra de texto blanca */
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333333;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
 }
 
-/* Contenedor del texto del encabezado */
+/* ===== TEXTO DEL HEADER ===== */
 .header-text {
-    flex-grow: 1;              /* Ocupa el espacio restante */
-    text-align: center;         /* Texto centrado */
-    position: relative;         /* Para posicionar el botón volver */
+    flex-grow: 1;
+    text-align: center;
+    /* SIN position: relative - el botón se posiciona relativo al header */
 }
 
-/* Título principal del encabezado */
 .header-text h1 {
-    font-size: 2.2rem;         /* Tamaño de fuente grande */
-    margin-bottom: 5px;        /* Espacio debajo */
-    color: #333;               /* Color de texto oscuro */
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+    color: #333;
 }
 
-/* Párrafo descriptivo del encabezado */
 .header-text p {
-    font-size: 1.1rem;         /* Tamaño de fuente */
-    opacity: 0.9;              /* Ligera transparencia */
-    color: #333;               /* Color de texto oscuro */
+    font-size: 1.1rem;
+    opacity: 0.9;
+    color: #333;
 }
 
-/* Botón Volver en la parte superior derecha */
+/* ===== BOTÓN VOLVER ===== */
+/* Se posiciona relativo al header, no al header-text */
 .btn-volver {
-    position: absolute;         /* Posicionamiento absoluto dentro del header-text */
-    top: 0;                    /* Alineado en la parte superior */
-    right: 0;                  /* Alineado en la parte derecha */
-    background-color: var(--success-color); /* Color verde */
-    color: white;               /* Texto blanco */
-    border: none;              /* Sin borde */
-    border-radius: 6px;        /* Esquinas redondeadas */
-    padding: 8px 15px;         /* Espaciado interno */
-    font-size: 14px;           /* Tamaño de fuente */
-    font-weight: 600;          /* Texto seminegrita */
-    cursor: pointer;           /* Cursor de mano */
-    transition: all 0.3s ease; /* Transición suave para efectos */
-    text-decoration: none;     /* Sin subrayado */
-    display: inline-block;     /* Para que se comporte como botón */
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 8px; /* Cuadrado con bordes redondeados */
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    outline: none;
 }
 
-/* Efecto hover para botón volver */
+.btn-volver:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-volver svg {
+    stroke: white;
+}
+
 .btn-volver:hover {
-    background-color: #219653;  /* Verde más oscuro al pasar mouse */
-    transform: translateY(-2px); /* Efecto de elevación */
+    background-color: #219653;
 }
 
-/* Sección del perfil de usuario */
+/* ===== PERFIL DE USUARIO ===== */
 .user-profile {
-    padding: 30px;             /* Espaciado interno */
+    padding: 30px;
 }
 
-/* Grupo de campos del formulario */
+/* ===== FORMULARIO ===== */
 .form-group {
-    margin-bottom: 20px;       /* Espacio entre grupos de campos */
+    margin-bottom: 20px;
 }
 
-/* Fila para agrupar campos horizontalmente */
 .form-row {
-    display: flex;              /* Layout flex para campos en fila */
-    gap: 15px;                 /* Espacio entre campos */
-    margin-bottom: 20px;       /* Espacio debajo de la fila */
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-/* Grupo de campo dentro de una fila */
 .form-row .form-group {
-    flex: 1;                   /* Ocupa espacio disponible equitativamente */
-    margin-bottom: 0;          /* Sin margen inferior dentro de fila */
+    flex: 1;
+    margin-bottom: 0;
 }
 
-/* Estilo de las etiquetas de los campos */
 label {
-    display: block;             /* Ocupa toda la línea */
-    margin-bottom: 8px;        /* Espacio debajo de la etiqueta */
-    font-weight: 600;          /* Texto seminegrita */
-    color: var(--dark-color);  /* Color usando variable CSS */
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-color);
 }
 
-/* Estilo de campos de entrada y select */
 input, select {
-    width: 100%;               /* Ancho completo */
-    padding: 12px 15px;        /* Espaciado interno */
-    border: 2px solid #e1e5e9; /* Borde gris claro */
-    border-radius: 6px;        /* Esquinas redondeadas */
-    font-size: 16px;           /* Tamaño de fuente */
-    transition: all 0.3s ease; /* Transición suave para efectos */
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
 }
 
-/* Estilo cuando el campo está enfocado */
 input:focus, select:focus {
-    outline: none;             /* Sin contorno por defecto */
-    border-color: #27AE60;     /* Borde verde al enfocar */
+    outline: none;
+    border-color: #27AE60;
 }
 
-/* Estilo para campos deshabilitados */
 input:disabled {
-    background-color: #f8f9fa; /* Fondo gris muy claro */
-    color: var(--gray-color);  /* Texto gris */
-    cursor: not-allowed;       /* Cursor de no permitido */
+    background-color: #f8f9fa;
+    color: var(--gray-color);
+    cursor: not-allowed;
 }
 
-/* Nota para campos de solo lectura */
 .readonly-note {
-    font-size: 0.85rem;        /* Tamaño de fuente pequeño */
-    color: var(--gray-color);  /* Color gris */
-    margin-top: 5px;           /* Espacio arriba */
-    font-style: italic;        /* Texto en cursiva */
+    font-size: 0.85rem;
+    color: var(--gray-color);
+    margin-top: 5px;
+    font-style: italic;
 }
 
-/* Contenedor de botones de acción */
+/* ===== BOTONES DEL FORMULARIO ===== */
 .form-actions {
-    display: flex;              /* Layout flex para botones */
-    justify-content: flex-end;  /* Botones alineados a la derecha */
-    gap: 15px;                 /* Espacio entre botones */
-    margin-top: 30px;          /* Espacio arriba */
-    padding-top: 20px;         /* Espaciado interno arriba */
-    border-top: 1px solid #e1e5e9; /* Línea separadora */
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e5e9;
 }
 
-/* Estilo base para botones */
 .btn {
-    padding: 12px 25px;        /* Espaciado interno */
-    border: none;              /* Sin borde */
-    border-radius: 6px;        /* Esquinas redondeadas */
-    font-size: 16px;           /* Tamaño de fuente */
-    font-weight: 600;          /* Texto seminegrita */
-    cursor: pointer;           /* Cursor de mano */
-    transition: all 0.3s ease; /* Transición suave para efectos */
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-/* Botón primario (amarillo) */
 .btn-primary {
-    background-color: var(--primary-color); /* Color de fondo amarillo */
-    color: white;               /* Texto blanco */
+    background-color: var(--primary-color);
+    color: white;
 }
 
-/* Efecto hover para botón primario */
 .btn-primary:hover {
-    background-color: #27AE60;  /* Cambia a verde al pasar mouse */
-    transform: translateY(-2px); /* Efecto de elevación */
+    background-color: #27AE60;
+    transform: translateY(-2px);
 }
 
-/* Botón secundario (gris) */
 .btn-secondary {
-    background-color: var(--gray-color); /* Color de fondo gris */
-    color: white;               /* Texto blanco */
+    background-color: var(--gray-color);
+    color: white;
 }
 
-/* Efecto hover para botón secundario */
 .btn-secondary:hover {
-    background-color: #7f8c8d;  /* Color gris más oscuro al pasar mouse */
+    background-color: #7f8c8d;
 }
 
-/* Botón de éxito (verde) */
 .btn-success {
-    background-color: var(--success-color); /* Color de fondo verde */
-    color: white;               /* Texto blanco */
+    background-color: var(--success-color);
+    color: white;
 }
 
-/* Efecto hover para botón de éxito */
 .btn-success:hover {
-    background-color: #219653;  /* Verde más oscuro al pasar mouse */
+    background-color: #219653;
 }
 
-/* Contenedor de mensajes de alerta */
+/* ===== ALERTAS ===== */
 .alert {
-    padding: 15px;              /* Espaciado interno */
-    border-radius: 6px;         /* Esquinas redondeadas */
-    margin-bottom: 20px;        /* Espacio debajo */
-    display: none;              /* Oculto por defecto */
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: none;
 }
 
-/* Alerta de éxito (verde) */
 .alert-success {
-    background-color: #d4f8e8;  /* Fondo verde muy claro */
-    color: #0d5c3a;            /* Texto verde oscuro */
-    border: 1px solid #a3e6c5; /* Borde verde claro */
+    background-color: #d4f8e8;
+    color: #0d5c3a;
+    border: 1px solid #a3e6c5;
 }
 
-/* Alerta de error (rojo) */
 .alert-error {
-    background-color: #fde8e6;  /* Fondo rojo muy claro */
-    color: #7c2d23;            /* Texto rojo oscuro */
-    border: 1px solid #f9b4ab; /* Borde rojo claro */
+    background-color: #fde8e6;
+    color: #7c2d23;
+    border: 1px solid #f9b4ab;
 }
 
-/* Contenedor para campo de contraseña con botón de mostrar/ocultar */
+/* ===== CAMPO DE CONTRASEÑA ===== */
 .password-toggle {
-    position: relative;         /* Posicionamiento relativo para el botón hijo */
+    position: relative;
 }
 
-/* Botón para mostrar/ocultar contraseña */
 .toggle-password {
-    position: absolute;         /* Posicionamiento absoluto dentro del contenedor */
-    right: 15px;               /* A 15px del borde derecho */
-    top: 50%;                  /* Centrado vertical */
-    transform: translateY(-50%); /* Ajuste fino para centrado perfecto */
-    background: none;          /* Sin fondo */
-    border: none;              /* Sin borde */
-    color: var(--gray-color);  /* Color gris */
-    cursor: pointer;           /* Cursor de mano */
-    font-size: 14px;           /* Tamaño de fuente pequeño */
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--gray-color);
+    cursor: pointer;
+    font-size: 14px;
 }
 
-/* Media queries para diseño responsive */
+/* ==========================================
+   RESPONSIVE - TABLETS Y MÓVILES
+   ========================================== */
+
+/* ===== TABLETS (768px o menos) ===== */
 @media (max-width: 768px) {
-    /* En móviles, las filas se convierten en columnas */
     .form-row {
-        flex-direction: column; /* Elementos en columna */
-        gap: 0;                /* Sin espacio entre elementos */
+        flex-direction: column;
+        gap: 0;
     }
 
-    /* En móviles, los botones de acción en columna */
     .form-actions {
-        flex-direction: column; /* Botones en columna */
+        flex-direction: column;
     }
 
-    /* En móviles, el encabezado en columna */
+    /* Header reorganizado */
+    header {
+        padding: 15px 20px;
+    }
+
     .header-content {
-        flex-direction: column; /* Logo y texto en columna */
-        text-align: center;     /* Texto centrado */
+        flex-direction: column;
+        text-align: center;
     }
 
-    /* En móviles, ajuste del logo */
-    .logo-titulo {
-        margin-right: 0;       /* Sin margen derecho */
-        margin-bottom: 15px;   /* Espacio debajo del logo */
+    /* Logo en esquina superior izquierda */
+    .marca {
+        position: absolute !important;
+        top: 10px;
+        left: 10px;
+        margin: 0 !important;
     }
 
-    /* En móviles, ajuste del botón volver */
+    .marca .logo {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .marca .logo img {
+        width: 100% !important;
+        height: 100% !important;
+        border-width: 2px;
+    }
+
+    /* Botón volver alineado con el logo */
     .btn-volver {
-        position: relative;     /* Cambia a posición relativa */
-        top: auto;             /* Restablece posición */
-        right: auto;           /* Restablece posición */
-        margin-top: 10px;      /* Espacio arriba */
-        align-self: center;    /* Centrado en móviles */
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        padding: 8px;
+    }
+
+    .btn-volver svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Texto centrado con espacio para logo y botón */
+    .header-text {
+        margin-top: 40px;
+        padding: 0 50px;
+    }
+
+    .header-text h1 {
+        font-size: 1.5rem;
+    }
+
+    .header-text p {
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== MÓVILES (480px o menos) ===== */
+@media (max-width: 480px) {
+    .header-text h1 {
+        font-size: 1.3rem;
+    }
+
+    .header-text p {
+        font-size: 0.85rem;
+    }
+
+    /* Logo más pequeño */
+    .marca {
+        top: 8px !important;
+        left: 8px !important;
+    }
+
+    .marca .logo {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    /* Botón volver alineado con el logo */
+    .btn-volver {
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        padding: 6px;
+    }
+
+    .btn-volver svg {
+        width: 16px;
+        height: 16px;
     }
 }

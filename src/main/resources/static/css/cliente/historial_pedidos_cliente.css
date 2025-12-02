@@ -2,7 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
@@ -12,83 +16,127 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 80px;
+    overflow-x: hidden;
+    width: 100%;
 }
 
-/* Header Styles */
-header {
+/* ========================================
+   HEADER FIXED RESPONSIVE
+   ======================================== */
+
+.header {
     background-color: #F7DC6F;
     color: #333333;
     padding: 12px 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px; /* AUMENTAR/DISMINUIR: Espacio entre logo, título y botones (SOLO DESKTOP) */
 }
 
+/* Logo empujado a la izquierda (SOLO DESKTOP) */
+.logo {
+    margin-right: auto; /* ELIMINAR: Logo pegado al título */
+}
+
+/* Título central */
 .header-title {
-    flex-grow: 1;
+    flex: 0 1 auto; /* CAMBIAR A "flex: 1": Título ocupa más espacio */
     text-align: center;
-    margin: 0 15px;
+    min-width: 0;
 }
 
 .header-title h1 {
-    font-size: 1.8rem;
+    margin: 0;
+    font-size: 24px;
     color: #333333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+/* Navegación empujada a la derecha (SOLO DESKTOP) */
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 12px; /* AUMENTAR/DISMINUIR: Espacio entre los botones */
+    margin-left: auto; /* ELIMINAR: Botones pegados al título */
+}
+
+.nav-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .btn-novedad {
     background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: background-color 0.3s ease;
 }
 
 .btn-novedad:hover {
     background-color: #c0392b;
 }
 
-.btn-link {
+.btn-regresar {
     background-color: #27ae60;
-    color: white;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    border: none;
-    cursor: pointer;
 }
 
-.btn-link:hover {
+.btn-regresar:hover {
     background-color: #1e8449;
 }
 
-/* Main Content */
+/* Botón hamburguesa - oculto por defecto */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    gap: 5px;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: #333333;
+    border-radius: 2px;
+}
+
+/* ========================================
+   MAIN CONTENT
+   ======================================== */
+
 .container {
+    width: calc(100% - 40px);
     max-width: 2100px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 15px;
     flex-grow: 1;
+    box-sizing: border-box;
 }
 
 .tabs {
@@ -98,6 +146,7 @@ header {
     border-radius: 10px;
     padding: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
 }
 
 .tab {
@@ -109,6 +158,7 @@ header {
     transition: all 0.3s;
     font-weight: 600;
     color: #333333;
+    min-width: 120px;
 }
 
 .tab.active {
@@ -116,7 +166,7 @@ header {
     color: #ffff;
 }
 
-/* ✅ SECCIONES OCULTAS POR DEFECTO */
+/* Secciones ocultas por defecto */
 .orders-section {
     display: none;
 }
@@ -125,10 +175,10 @@ header {
     display: block;
 }
 
-/* ✅ GRID DE 2 COLUMNAS FIJO */
+/* Grid de pedidos */
 .orders-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 15px;
     margin-bottom: 1.5rem;
 }
@@ -140,6 +190,9 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-left: 4px solid #F7DC6F;
     transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .order-card:hover {
@@ -212,6 +265,7 @@ header {
 
 .order-items {
     margin-top: 0.8rem;
+    flex-grow: 1;
 }
 
 .items-title {
@@ -245,157 +299,180 @@ header {
     grid-column: 1 / -1;
 }
 
-/* ============================================
-   MODAL DE NOVEDAD
-   Estilos para el modal de reportar novedad
-   ============================================ */
+.btn-ver-factura {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-ver-factura:hover {
+    background-color: #2980b9;
+}
+
+/* ========================================
+   MODALES
+   ======================================== */
+
 .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed; /* Se queda fijo en la pantalla */
-    top: 0; /* Pegado arriba */
-    left: 0; /* Pegado a la izquierda */
-    width: 100%; /* Ocupa todo el ancho */
-    height: 100%; /* Ocupa todo el alto */
-    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    z-index: 1000; /* Aparece encima de todo */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
-    background: white; /* Fondo blanco */
-    border-radius: 12px; /* Esquinas redondeadas */
-    padding: 0; /* Sin espacio interno (se agrega en las secciones) */
-    width: 90%; /* Ancho del 90% */
-    max-width: 600px; /* Ancho máximo */
-    max-height: 90vh; /* Altura máxima */
-    overflow-y: auto; /* Permite scroll si el contenido es largo */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .modal-header {
-    background: #27AE60; /* Fondo verde */
-    color: white; /* Texto blanco */
-    padding: 20px 25px; /* Espacio interno */
-    border-radius: 12px 12px 0 0; /* Esquinas redondeadas solo arriba */
-    display: flex; /* Organiza en fila */
-    justify-content: space-between; /* Espacio entre elementos */
-    align-items: center; /* Centra verticalmente */
+    background: #27AE60;
+    color: white;
+    padding: 20px 25px;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modal-header h2 {
-    margin: 0; /* Sin márgenes */
-    font-size: 22px; /* Tamaño del texto */
-    color: white; /* Color blanco */
+    margin: 0;
+    font-size: 22px;
+    color: white;
 }
 
 .close-modal {
-    background: transparent; /* Sin fondo */
-    border: none; /* Sin borde */
-    color: white; /* Texto blanco */
-    font-size: 28px; /* Tamaño grande */
-    cursor: pointer; /* Cambia el cursor a manita */
-    padding: 0; /* Sin espacio interno */
-    line-height: 1; /* Altura de línea */
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
 }
 
 .close-modal:hover {
-    color: #ddd; /* Gris claro al pasar el mouse */
+    color: #ddd;
 }
 
-/* Formulario dentro del modal */
 #novedadForm {
-    padding: 25px; /* Espacio interno */
+    padding: 25px;
 }
 
 .form-group {
-    margin-bottom: 20px; /* Espacio abajo */
+    margin-bottom: 20px;
 }
 
 .form-group label {
-    display: block; /* Ocupa toda la línea */
-    margin-bottom: 8px; /* Espacio abajo */
-    color: #2c3e50; /* Color oscuro */
-    font-weight: 600; /* Texto en negrita */
-    font-size: 14px; /* Tamaño del texto */
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 14px;
 }
 
 .form-control {
-    width: 100%; /* Ocupa todo el ancho */
-    padding: 10px 12px; /* Espacio interno */
-    border: 1px solid #ddd; /* Borde gris claro */
-    border-radius: 6px; /* Esquinas redondeadas */
-    font-size: 14px; /* Tamaño del texto */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Tipo de letra */
-    transition: all 0.3s ease; /* Animación suave */
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    outline: none; /* Quita el borde predeterminado */
-    border-color: #27AE60; /* Borde verde */
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); /* Sombra verde sutil */
+    outline: none;
+    border-color: #27AE60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
 }
 
-/* Textarea (campo de texto largo) */
 textarea.form-control {
-    min-height: 100px; /* Altura mínima */
-    resize: vertical; /* Solo se puede redimensionar verticalmente */
+    min-height: 100px;
+    resize: vertical;
 }
 
-/* Select (selector desplegable) */
 select.form-control {
-    cursor: pointer; /* Cambia el cursor a manita */
+    cursor: pointer;
 }
 
-/* Botones del formulario */
 .form-actions {
-    display: flex; /* Organiza en fila */
-    justify-content: flex-end; /* Alineados a la derecha */
-    gap: 10px; /* Espacio entre botones */
-    margin-top: 25px; /* Espacio arriba */
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+    padding: 0 15px 15px; /* Padding para los botones de factura */
 }
 
 .btn {
-    padding: 10px 20px; /* Espacio interno */
-    border: none; /* Sin borde */
-    border-radius: 6px; /* Esquinas redondeadas */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    font-weight: 600; /* Texto en negrita */
-    transition: all 0.3s ease; /* Animación suave */
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Botón secundario (Cancelar) */
 .btn-secondary {
-    background: #95a5a6; /* Fondo gris */
-    color: white; /* Texto blanco */
+    background: #95a5a6;
+    color: white;
 }
 
 .btn-secondary:hover {
-    background: #7f8c8d; /* Gris más oscuro */
+    background: #7f8c8d;
+    transform: translateY(-1px);
 }
 
-/* Botón primario (Enviar) */
 .btn-primary {
-    background: #27AE60; /* Fondo verde */
-    color: white; /* Texto blanco */
+    background: #27AE60;
+    color: white;
 }
 
 .btn-primary:hover {
-    background: #2ecc71; /* Verde más claro */
+    background: #2ecc71;
+    transform: translateY(-1px);
 }
 
-/* Estilos para el modal de factura */
+/* Modal de factura */
 .modal-factura {
-    max-width: 800px;
+    max-width: 600px; /* Mismo tamaño que modal de novedad */
+    max-height: 77vh; /* Altura controlada con scroll */
 }
 
 .factura-content {
     background-color: #fff;
-    padding: 30px;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin: 20px 0;
+    margin: 15px;
 }
 
 .factura-header {
@@ -470,139 +547,219 @@ select.form-control {
     border-top: 2px solid #F7DC6F;
 }
 
-.btn-ver-factura {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: background-color 0.3s ease;
-}
+/* ========================================
+   MEDIA QUERIES - RESPONSIVE
+   ======================================== */
 
-.btn-ver-factura:hover {
-    background-color: #2980b9;
-}
-
-/* Footer Styles */
-footer {
-    background: #F7DC6F;
-    color: #333333;
-    padding: 30px 15px;
-    text-align: center;
-    margin-top: auto;
-}
-
-.footer-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.footer-quote {
-    font-size: 1.4rem;
-    font-weight: 300;
-    font-style: italic;
-    margin-bottom: 15px;
-    line-height: 1.4;
-}
-
-.footer-tags {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.tag {
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: #27AE60;
-}
-
-.footer-copyright {
-    border-top: 1px solid #333333;
-    padding-top: 15px;
-    font-size: 0.9rem;
-    color: #333333;
-}
-
-/* Media Queries */
+/* Tablets y móviles (768px o menos) */
 @media (max-width: 768px) {
+
+    body {
+        padding-top: 70px;
+    }
+
+    .header {
+        padding: 10px 12px;
+    }
+
     .header-top {
-        flex-direction: column;
-        gap: 12px;
+        gap: 10px; /* Gap más pequeño en móvil */
     }
 
+    /* Resetear márgenes del logo en móvil */
+    .logo {
+        margin-right: 0;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+    }
+
+    /* Título más pequeño */
     .header-title {
-        margin: 0;
-        order: -1;
+        flex: 1; /* En móvil el título ocupa espacio disponible */
     }
 
-    /* ✅ 1 COLUMNA EN MÓVILES */
-    .orders-grid {
-        grid-template-columns: 1fr !important;
+    .header-title h1 {
+        font-size: 18px;
     }
 
-    .order-header {
+    /* Mostrar botón hamburguesa */
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Menú desplegable en móvil */
+    .header-actions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #F7DC6F;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        margin-left: 0; /* Resetear margin-left en móvil */
+    }
+
+    /* Menú abierto */
+    .header-actions.active {
+        max-height: 200px;
+    }
+
+    /* Items en móvil ocupan todo el ancho */
+    .nav-item {
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        justify-content: flex-start;
+        background-color: transparent;
+        color: #333333;
+    }
+
+    .nav-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Hover en móvil */
+    .nav-item:hover {
+        background-color: #27AE60;
+        color: white;
+    }
+
+    /* Mantener colores de fondo en los botones del menú móvil */
+    .btn-novedad {
+        background-color: transparent;
+        color: #333333;
+    }
+
+    .btn-novedad:hover {
+        background-color: #27AE60;
+        color: white;
+    }
+
+    .btn-regresar {
+        background-color: transparent;
+        color: #333333;
+    }
+
+    .btn-regresar:hover {
+        background-color: #27AE60;
+        color: white;
+    }
+
+    /* Container ajustado */
+    .container {
+        width: calc(100% - 30px);
+        margin: 15px auto;
+        padding: 10px;
+    }
+
+    /* Tabs responsive */
+    .tabs {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .tab {
+        min-width: auto;
+    }
+
+    /* Grid de 1 columna en móviles */
+    .orders-grid {
+        grid-template-columns: 1fr;
     }
 
     .order-details {
         grid-template-columns: 1fr;
     }
 
-    .footer-tags {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .modal-content {
-        padding: 1.2rem;
-        width: 98%;
-    }
-
+    /* Factura responsive */
     .factura-info {
         grid-template-columns: 1fr;
     }
 
+    .factura-content {
+        padding: 12px;
+        margin: 8px;
+    }
+
     .factura-table {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .factura-table th,
     .factura-table td {
-        padding: 8px;
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+
+    .factura-total {
+        font-size: 1.2rem;
     }
 }
 
+/* Móviles pequeños (480px o menos) */
 @media (max-width: 480px) {
-    .header-actions {
-        flex-direction: column;
-        width: 100%;
+
+    body {
+        padding-top: 65px;
     }
 
-    .btn-novedad, .btn-link {
-        width: 100%;
-        justify-content: center;
+    .header {
+        padding: 8px 10px;
     }
 
-    .tabs {
-        flex-direction: column;
+    .header-top {
+        gap: 8px;
+    }
+
+    .logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .header-title h1 {
+        font-size: 16px;
+    }
+
+    .menu-toggle span {
+        width: 22px;
+        height: 2.5px;
     }
 
     .container {
+        width: calc(100% - 20px);
+        margin: 10px auto;
+        padding: 8px;
+    }
+
+    .tabs {
+        padding: 3px;
+    }
+
+    .tab {
         padding: 10px;
+        font-size: 14px;
+    }
+
+    .order-card {
+        padding: 1rem;
     }
 
     .modal-content {
-        padding: 1rem;
-        width: 99%;
+        width: 95%;
+        padding: 0;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
     }
 }

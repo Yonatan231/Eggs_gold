@@ -1,5 +1,4 @@
 /* ===== VARIABLES GLOBALES ===== */
-/* Estas variables se usan en todo el sitio para mantener consistencia en los colores */
 :root {
     --color-principal: #F4D03F;
     --color-secundario: #1C2833;
@@ -11,7 +10,6 @@
 }
 
 /* ===== RESETEO BÁSICO ===== */
-/* Elimina márgenes y padding por defecto, y aplica box-sizing para facilitar el diseño */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -22,13 +20,11 @@
 body {
     background: var(--blanco);
     color: var(--color-texto);
-    /* Padding superior para que el contenido no quede debajo del header fijo */
     padding-top: 80px;
 }
 
 /* ===== CONTENIDO PRINCIPAL ===== */
 main {
-    /* Padding responsive: más grande en pantallas grandes, más pequeño en móviles */
     padding: 20px;
     display: grid;
     gap: 40px;
@@ -46,7 +42,6 @@ main {
     width: 100%;
 }
 
-/* La imagen principal se adapta al ancho del contenedor */
 .imagen-principal {
     width: 100%;
     height: auto;
@@ -60,11 +55,11 @@ main {
     border: none;
     cursor: pointer;
     font-weight: bold;
-    /* Transición suave para efectos hover */
     transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+    text-align: center;
 }
 
-/* Efecto hover para todos los botones */
 .boton:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -88,14 +83,12 @@ main {
 }
 
 /* ===== SECCIÓN DE PRODUCTOS ===== */
-/* Grid de 3 columnas en pantallas grandes */
 .productos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
-/* Tarjetas de producto */
 .tarjeta {
     background: var(--blanco);
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -104,17 +97,14 @@ main {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* Transición suave al hacer hover */
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* Efecto hover en las tarjetas */
 .tarjeta:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Imágenes de las tarjetas */
 .tarjeta img {
     width: 100%;
     height: 200px;
@@ -122,14 +112,13 @@ main {
     border-radius: 8px;
 }
 
-/* Precio del producto */
 .precio {
     font-size: 20px;
     font-weight: bold;
     color: var(--color-verde);
 }
 
-/* ===== OTRAS SECCIONES (Sobre nosotros, Opiniones, Galería) ===== */
+/* ===== OTRAS SECCIONES ===== */
 .sobre-nosotros,
 .opiniones,
 .galeria {
@@ -138,7 +127,6 @@ main {
     padding: 30px;
 }
 
-/* Títulos de sección */
 .sobre-nosotros h2,
 .opiniones h2,
 .galeria h2,
@@ -148,7 +136,6 @@ main {
     color: var(--color-secundario);
 }
 
-/* Párrafos en "Sobre nosotros" */
 .sobre-nosotros p {
     margin-bottom: 15px;
     line-height: 1.6;
@@ -166,7 +153,6 @@ main {
 }
 
 /* ===== GALERÍA ===== */
-/* Grid flexible que se adapta al espacio disponible */
 .galeria-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -178,104 +164,106 @@ main {
     height: 200px;
     object-fit: cover;
     border-radius: 10px;
-    /* Transición suave al hacer hover */
     transition: transform 0.3s;
 }
 
-/* Efecto hover en imágenes de galería */
 .galeria img:hover {
     transform: scale(1.05);
 }
 
 /* ==========================================
-   MEDIA QUERIES PARA RESPONSIVE
+   RESPONSIVE
    ========================================== */
 
-/* ===== TABLETS (768px o menos) ===== */
+/* Tablets (768px o menos) */
 @media (max-width: 768px) {
-    /* Reducir el padding superior del body */
     body {
         padding-top: 70px;
     }
 
-    /* Reducir el padding del main */
     main {
         padding: 15px;
         gap: 30px;
     }
 
-    /* Cambiar productos a 2 columnas en tablets */
+    /* Productos en 2 columnas */
     .productos {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
 
-    /* Reducir padding de las secciones */
+    .tarjeta img {
+        height: 180px;
+    }
+
+    /* Títulos más pequeños */
+    .titulo-seccion,
+    .sobre-nosotros h2,
+    .opiniones h2,
+    .galeria h2 {
+        font-size: 24px;
+    }
+
+    /* Secciones con menos padding */
     .sobre-nosotros,
     .opiniones,
     .galeria {
         padding: 20px;
     }
 
-    /* Reducir tamaño de títulos */
-    .sobre-nosotros h2,
-    .opiniones h2,
-    .galeria h2,
-    .titulo-seccion {
-        font-size: 24px;
-    }
-
-    /* Ajustar altura de imágenes de tarjetas */
-    .tarjeta img {
-        height: 180px;
-    }
-
-    /* Galería en 2 columnas */
+    /* Galería responsive */
     .galeria-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 15px;
+    }
+
+    .galeria img {
+        height: 150px;
     }
 }
 
-/* ===== MÓVILES (480px o menos) ===== */
+/* Móviles (480px o menos) */
 @media (max-width: 480px) {
-    /* Ajustar padding superior para menú móvil */
     body {
         padding-top: 60px;
     }
 
-    /* Reducir padding del main */
     main {
         padding: 10px;
         gap: 25px;
     }
 
-    /* Cambiar productos a 1 columna en móviles */
+    /* Productos en 1 columna */
     .productos {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
-    /* Reducir padding de las secciones */
-    .sobre-nosotros,
-    .opiniones,
-    .galeria {
-        padding: 15px;
+    .tarjeta {
+        padding: 12px;
     }
 
-    /* Títulos más pequeños en móvil */
+    .tarjeta img {
+        height: 200px;
+    }
+
+    /* Títulos más pequeños */
+    .titulo-seccion,
     .sobre-nosotros h2,
     .opiniones h2,
-    .galeria h2,
-    .titulo-seccion {
+    .galeria h2 {
         font-size: 20px;
         margin-bottom: 15px;
     }
 
-    /* Ajustar tamaño de fuente de párrafos */
+    .sobre-nosotros h1 {
+        font-size: 24px;
+    }
+
+    /* Texto más pequeño */
     .sobre-nosotros p {
         font-size: 14px;
-        line-height: 1.5;
+        text-align: left;
     }
 
     /* Precio más pequeño */
@@ -289,12 +277,21 @@ main {
         font-size: 14px;
     }
 
-    /* Ajustar altura de imágenes */
-    .tarjeta img {
-        height: 220px;
+    /* Secciones con menos padding */
+    .sobre-nosotros,
+    .opiniones,
+    .galeria {
+        padding: 15px;
     }
 
-    /* Galería en 1 columna en móviles muy pequeños */
+    /* Opiniones más compactas */
+    .opiniones blockquote {
+        padding: 12px;
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    /* Galería en 1 columna */
     .galeria-grid {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -302,11 +299,5 @@ main {
 
     .galeria img {
         height: 180px;
-    }
-
-    /* Opiniones con menos padding */
-    .opiniones blockquote {
-        padding: 12px;
-        font-size: 14px;
     }
 }

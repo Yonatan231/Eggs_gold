@@ -1,103 +1,80 @@
 /* ===== ENCABEZADO (HEADER) ===== */
-/* El header es la barra superior que contiene el logo y el menú */
 header {
-    /* Posición fija: el header siempre está visible, incluso al hacer scroll */
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-
-    /* Color de fondo del header (definido en las variables CSS) */
     background: var(--color-fondo);
-
-    /* Flexbox para organizar los elementos horizontalmente */
     display: flex;
-    justify-content: space-between; /* Separa el logo del menú */
-    align-items: center; /* Centra verticalmente */
-
-    /* Espaciado interno del header */
+    justify-content: space-between;
+    align-items: center;
     padding: 16px 24px;
-
-    /* Sombra sutil debajo del header */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    /* z-index alto: asegura que el header esté sobre otros elementos */
     z-index: 1000;
 }
 
-/* ===== CLASE PARA ENLACES ACTIVOS DURANTE EL SCROLL ===== */
-/* Esta clase se aplica automáticamente al enlace de la sección visible */
+/* Enlace activo durante scroll */
 .activo-scroll {
     background-color: var(--color-verde);
     color: #fff;
-    /* Pequeño desplazamiento hacia arriba para dar efecto */
     transform: translateY(-1px);
 }
 
-/* ===== BOTÓN HAMBURGUESA PARA MÓVILES ===== */
-/* Este botón (las 3 rayitas) solo aparece en pantallas pequeñas */
+/* Botón hamburguesa para móviles */
 .menu-toggle {
-    display: none; /* Oculto por defecto en pantallas grandes */
-    flex-direction: column; /* Las 3 líneas se apilan verticalmente */
-    background: none; /* Sin fondo */
-    border: none; /* Sin borde */
-    cursor: pointer; /* Manita al pasar el mouse */
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
     padding: 5px;
-    z-index: 1001; /* Por encima del header */
+    z-index: 1001;
 }
 
-/* Las tres líneas del botón hamburguesa */
 .menu-toggle span {
-    width: 25px; /* Ancho de cada línea */
-    height: 3px; /* Grosor de cada línea */
-    background-color: var(--color-secundario); /* Color de las líneas */
-    margin: 3px 0; /* Espacio entre líneas */
-    transition: 0.3s; /* Animación suave al transformarse */
-    border-radius: 3px; /* Bordes redondeados */
+    width: 25px;
+    height: 3px;
+    background-color: var(--color-secundario);
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 3px;
 }
 
-/* ===== NAVEGACIÓN (MENÚ) ===== */
+/* Navegación */
 nav {
-    display: flex; /* Elementos del menú en fila */
-    align-items: center; /* Centra verticalmente */
-    gap: 10px; /* Espacio entre los enlaces */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Estilo general de los enlaces del menú (Inicio, Productos, etc.) */
 nav a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none; /* Sin subrayado */
-    color: var(--color-secundario); /* Color del texto */
-    padding: 8px 12px; /* Espaciado interno */
-    border-radius: 6px; /* Bordes redondeados */
-    font-weight: bold; /* Texto en negrita */
-
-    /* Transiciones suaves para los efectos hover */
+    text-decoration: none;
+    color: var(--color-secundario);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
     transition: background 0.3s, color 0.3s, transform 0.2s;
 }
 
-/* Quitar el contorno azul al hacer clic en los enlaces */
 nav a:focus {
     outline: none;
     box-shadow: none;
 }
 
-/* Efecto hover: cuando pasas el mouse sobre un enlace */
 nav a:hover {
-    background-color: var(--color-verde); /* Fondo verde */
-    color: #fff; /* Texto blanco */
-    transform: translateY(-1px); /* Sube ligeramente */
+    background-color: var(--color-verde);
+    color: #fff;
+    transform: translateY(-1px);
 }
 
-/* Enlace activo: se mantiene con fondo verde */
 nav a.activo {
     background-color: var(--color-verde);
     color: #fff;
 }
 
-/* ===== CARRITO DE COMPRAS ===== */
+/* Carrito de compras */
 .carrito {
     display: inline-flex;
     align-items: center;
@@ -107,12 +84,10 @@ nav a.activo {
     transition: background 0.3s, transform 0.3s;
 }
 
-/* Fondo verde al pasar el mouse sobre el carrito */
 .carrito:hover {
     background-color: var(--color-verde);
 }
 
-/* Imagen del ícono del carrito */
 .carrito img {
     width: 28px;
     height: 28px;
@@ -120,79 +95,59 @@ nav a.activo {
     transition: transform 0.3s ease;
 }
 
-/* Agranda el ícono del carrito al hacer hover */
 .carrito:hover img {
-    transform: scale(1.15); /* Aumenta el tamaño 15% */
+    transform: scale(1.15);
 }
 
-/* ==========================================
-   MEDIA QUERIES PARA RESPONSIVE
-   Hacen que el sitio se vea bien en móviles y tablets
-   ========================================== */
+/* ===== RESPONSIVE ===== */
 
-/* ===== TABLETS Y PANTALLAS MEDIANAS (768px o menos) ===== */
+/* Tablets y móviles (768px o menos) */
 @media (max-width: 768px) {
-    /* Reducir el espaciado interno del header en tablets */
     header {
-        padding: 12px 16px;
+        padding: 10px 16px; /* REDUCIR padding: Menos espacio entre header y main */
     }
 
-    /* Mostrar el botón hamburguesa en tablets y móviles */
     .menu-toggle {
         display: flex;
     }
 
-    /* Navegación en modo móvil */
+    /* Menú móvil desplegable */
     nav {
-        /* Posición absoluta: se superpone al contenido */
         position: absolute;
-        top: 100%; /* Justo debajo del header */
+        top: 100%;
         left: 0;
         right: 0;
         background: var(--color-fondo);
-
-        /* Cambiar a columna vertical (enlaces uno debajo del otro) */
         flex-direction: column;
         gap: 0;
-
-        /* Ocultar el menú por defecto */
         max-height: 0;
         overflow: hidden;
-
-        /* Transición suave al abrir/cerrar el menú */
         transition: max-height 0.3s ease-in-out;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* Cuando el menú está activo (se añade con JavaScript) */
     nav.active {
-        max-height: 500px; /* Altura suficiente para mostrar todos los enlaces */
+        max-height: 500px;
     }
 
-    /* Enlaces de navegación en móvil */
     nav a {
-        width: 100%; /* Ocupan todo el ancho */
+        width: 100%;
         padding: 15px 20px;
-        border-radius: 0; /* Sin bordes redondeados en móvil */
-
-        /* Borde inferior para separar los enlaces visualmente */
+        border-radius: 0;
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        justify-content: flex-start; /* Alinea el texto a la izquierda */
+        justify-content: flex-start;
     }
 
-    /* Quitar el borde del último enlace */
     nav a:last-child {
         border-bottom: none;
     }
 
-    /* El carrito también ocupa todo el ancho en móvil */
     .carrito {
         width: 100%;
         justify-content: flex-start;
         padding: 15px 20px;
     }
 
-    /* Logo y texto más pequeños en tablets */
     .logo {
         width: 40px;
         height: 40px;
@@ -207,14 +162,12 @@ nav a.activo {
     }
 }
 
-/* ===== MÓVILES PEQUEÑOS (480px o menos) ===== */
+/* Móviles pequeños (480px o menos) */
 @media (max-width: 480px) {
-    /* Padding mínimo en móviles pequeños */
     header {
-        padding: 10px 12px;
+        padding: 8px 12px; /* REDUCIR padding: Menos espacio entre header y main */
     }
 
-    /* Logo y texto aún más pequeños */
     .logo {
         width: 36px;
         height: 36px;
@@ -228,45 +181,37 @@ nav a.activo {
         font-size: 10px;
     }
 
-    /* Reducir el espacio de la marca (logo + texto) */
     .marca {
         gap: 8px;
     }
 
-    /* Ajustar padding de los enlaces en móvil pequeño */
     nav a,
     .carrito {
         padding: 12px 16px;
         font-size: 14px;
     }
 
-    /* Imagen del carrito más pequeña */
     .carrito img {
         width: 24px;
         height: 24px;
     }
 
-    /* Ajustar tamaño del botón hamburguesa */
     .menu-toggle span {
         width: 22px;
         height: 2.5px;
     }
 }
 
-/* ===== ANIMACIÓN DEL BOTÓN HAMBURGUESA AL ACTIVARSE ===== */
-/* Cuando el menú está activo, el botón se transforma en una "X" */
+/* Animación del botón hamburguesa */
 @media (max-width: 768px) {
-    /* Primera línea: rota y se mueve hacia abajo */
     nav.active ~ .menu-toggle span:nth-child(1) {
         transform: rotate(-45deg) translate(-5px, 6px);
     }
 
-    /* Segunda línea: se vuelve invisible */
     nav.active ~ .menu-toggle span:nth-child(2) {
         opacity: 0;
     }
 
-    /* Tercera línea: rota y se mueve hacia arriba */
     nav.active ~ .menu-toggle span:nth-child(3) {
         transform: rotate(45deg) translate(-5px, -6px);
     }

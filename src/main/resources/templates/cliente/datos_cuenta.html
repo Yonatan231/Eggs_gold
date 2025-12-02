@@ -21,10 +21,6 @@
                 <div class="logo">
                     <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
                 </div>
-                <div>
-                    <h1 class="titulo">Eggs Gold</h1>
-                    <p class="subtitulo">Huevos frescos a tu puerta</p>
-                </div>
             </div>
             <!-- Texto principal del encabezado -->
             <div class="header-text">
@@ -32,8 +28,14 @@
                 <h1>Mis Datos Personales</h1>
                 <!-- Descripción del formulario -->
                 <p>Gestiona tu información personal y de contacto</p>
-                <!-- Botón Volver en la parte superior derecha -->
-                <a th:href="@{/inicio_cliente}" class="btn-volver">Volver</a>
+
+                <!-- Botón Volver con ícono -->
+                <a th:href="@{/inicio_cliente}" class="btn-volver">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+
             </div>
         </div>
     </header>
@@ -67,15 +69,15 @@
 
             <!-- Fila para tipo y número de documento -->
             <div class="form-row">
-                <!-- Grupo de campo: Tipo de documento -->
+                <!-- Grupo de campo: Tipo de documento (solo lectura) -->
                 <div class="form-group">
                     <label for="tipoDocumento">Tipo de Documento *</label>
-                    <select id="tipoDocumento" name="tipoDocumento" required>
+                    <select id="tipoDocumento" name="tipoDocumento" required disabled>
                         <option value="">Seleccione un tipo</option>
                         <option value="CC">CC</option>
-                        <option value="CE">CE</option>
-                        <option value="TI">TI</option>
+                        <option value="CED">CED</option>
                     </select>
+                    <div class="readonly-note">Este campo no se puede modificar</div>
                 </div>
                 <!-- Grupo de campo: Número de documento (solo lectura) -->
                 <div class="form-group">
@@ -124,42 +126,6 @@
         </form>
     </div>
 </div>
-
-<footer>
-    <div class="footer-container">
-        <div class="footer-logo">
-            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
-        </div>
-
-        <div class="footer-section">
-            <h2>CONTÁCTANOS</h2>
-            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
-            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
-        </div>
-
-        <div class="footer-section">
-            <h2>INFO SITIO</h2>
-            <a href="#">Política de la Empresa</a>
-            <a href="#">Política de Privacidad</a>
-            <a href="#">Socios</a>
-        </div>
-
-        <div class="footer-section">
-            <h2>SÍGUENOS</h2>
-            <div class="social-icons">
-                <a href="https://es-la.facebook.com/index.php/" target="_blank">
-                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
-                </a>
-                <a href="https://www.instagram.com/" target="_blank">
-                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
-                </a>
-                <a href="https://www.youtube.com/" target="_blank">
-                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
-                </a>
-            </div>
-        </div>
-    </div>
-</footer>
 
 <!-- Enlace al archivo JavaScript externo -->
 <script th:src="@{js/cliente/datos_cuenta.js}"></script>

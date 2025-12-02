@@ -10,47 +10,48 @@
 
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
     <link rel="stylesheet" th:href="@{css/cliente/historial_pedidos_cliente.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
 </head>
 <body>
-<header>
+
+<!-- ===== HEADER FIXED RESPONSIVE ===== -->
+<header class="header">
     <div class="header-top">
-        <!-- Logo y nombre de la empresa -->
-        <div class="marca">
-            <div class="logo">
-                <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
-            </div>
-            <div>
-                <h1 class="titulo">Eggs Gold</h1>
-                <p class="subtitulo">Huevos frescos a tu puerta</p>
-            </div>
+        <!-- LOGO (solo imagen) -->
+        <div class="logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
 
-        <!-- Título principal centrado -->
+        <!-- TÍTULO CENTRAL -->
         <div class="header-title">
             <h1>Consulta tus Pedidos</h1>
         </div>
 
-        <!-- Acciones del header -->
-        <div class="header-actions">
-            <!-- Botón para reportar novedad -->
-            <button class="btn-novedad" id="btnNovedad">
-                Reportar Novedad
+        <!-- BOTÓN HAMBURGUESA (solo móvil) -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- NAVEGACIÓN (desktop) / MENÚ DESPLEGABLE (móvil) -->
+        <nav class="header-actions" id="navMenu">
+            <button class="nav-item btn-novedad" id="btnNovedad">
+                <span>Reportar Novedad</span>
             </button>
-            <form th:action="@{inicio_cliente}">
-                <button type="submit" class="btn-link">
-                    Regresar
-                </button>
-            </form>
-        </div>
+            <a th:href="@{/inicio_cliente}" class="nav-item btn-regresar">
+                <span>Regresar</span>
+            </a>
+        </nav>
     </div>
 </header>
 
 <div class="container">
     <div class="tabs">
-        <div class="tab active" data-tab="all">Todos los Pedidos</div>
+        <div class="tab active" data-tab="all">Todos</div>
         <div class="tab" data-tab="entregado">Entregados</div>
         <div class="tab" data-tab="entrega">En Camino</div>
-        <div class="tab" data-tab="alistamiento">En Alistamiento</div>
+        <div class="tab" data-tab="alistamiento">Alistamiento</div>
     </div>
 
     <section class="orders-section active" id="all-orders">
@@ -70,7 +71,7 @@
     </section>
 </div>
 
-<!-- Modal para reportar novedad -->
+<!-- MODAL PARA REPORTAR NOVEDAD -->
 <div class="modal" id="novedadModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -79,7 +80,7 @@
         </div>
         <form id="novedadForm">
             <div class="form-group">
-                <label for="orderNumber">Número de Pedido</label>
+                <label for="orderNumber">Código de Pedido</label>
                 <input type="number" id="orderNumber" class="form-control" required>
             </div>
 
@@ -111,9 +112,7 @@
     </div>
 </div>
 
-<!-- ============================================
-     MODAL PARA VER FACTURA
-     ============================================ -->
+<!-- MODAL PARA VER FACTURA -->
 <div class="modal" id="facturaModal">
     <div class="modal-content modal-factura">
         <div class="modal-header">
@@ -134,25 +133,47 @@
     </div>
 </div>
 
+<!-- ========== PIE DE PÁGINA (FOOTER) ========== -->
 <footer>
-    <div class="footer-content">
-        <p class="footer-quote">Cada gran negocio empieza con un buen producto.</p>
-        <div class="footer-tags">
-            <span class="tag">Innovación</span>
-            <span class="tag">Calidad</span>
-            <span class="tag">Confianza</span>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo" width="90">
         </div>
-        <div class="footer-copyright">
-            © 2025 Sistema de Gestión de Productos - EGGS GOLD
+
+        <div class="footer-section">
+            <h2>CONTÁCTANOS</h2>
+            <a href="https://web.whatsapp.com/" target="_blank">3126204260</a>
+            <a href="https://web.whatsapp.com/" target="_blank">3216942598</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>INFO SITIO</h2>
+            <a href="#">Política de la Empresa</a>
+        </div>
+
+        <div class="footer-section">
+            <h2>SÍGUENOS</h2>
+            <div class="social-icons">
+                <a href="https://es-la.facebook.com/index.php/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/facebook.jpg}" alt="Facebook" width="28">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/instagram.jpg}" alt="Instagram" width="32">
+                </a>
+                <a href="https://www.youtube.com/" target="_blank">
+                    <img th:src="@{/imagenes/inicio/youtube.jpg}" alt="YouTube" width="32">
+                </a>
+            </div>
         </div>
     </div>
 </footer>
 
+<!-- SCRIPTS -->
 <script th:src="@{js/cliente/historial_pedidos_cliente.js}"></script>
-
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script th:src="@{/js/utils/reportar_novedad.js}"></script>
+<script th:src="@{/js/utils/menu_haburguesa.js}"></script>
 <script> validarRolPagina('CLIENTE'); </script>
 
 </body>

@@ -232,31 +232,11 @@ header {
     display: block;
 }
 
-/* ========== ENLACES DE LOGIN/REGISTRO ========== */
-.login-registro-links {
-    display: flex;
-    gap: 10px;
-}
-
-.login-registro-links .nav-link {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 6px 12px;
-    background-color: #F4D03F;
-    border-radius: 20px;
-    transition: background-color 0.3s;
-}
-
-.login-registro-links .nav-link:hover {
-    background-color: #F7DC6F;
-}
-
 /* ========== CONTENIDO PRINCIPAL ========== */
 main {
     padding: 30px 20px;
     min-height: 60vh; /* Altura mínima */
-    margin-top: 12px; /* Espacio para el header fijo */
+    margin-top: 65px; /* Espacio para el header fijo */
 }
 
 /* ========== SECCIÓN DE PRODUCTOS ========== */
@@ -642,4 +622,121 @@ main {
 
 .btn-agregar-carrito:active {
     transform: translateY(0);
+}
+
+/* ==========================================
+   MEDIA QUERIES PARA RESPONSIVE
+   ========================================== */
+/* ===== TABLETS (768px o menos) ===== */
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px; /* AJUSTAR: Espacio según altura del header en tablet */
+    }
+
+    .header-contenedor {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+
+    /* Ocultar logo grande original en tablet */
+    .marca {
+        display: none;
+    }
+
+    .busqueda-usuario {
+        flex-direction: column;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    /* Reorganizar: carrito y perfil arriba */
+    .carrito-perfil {
+        order: -1; /* Mueve arriba */
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Logo dentro de la barra verde a la izquierda */
+    .carrito-perfil::before {
+        content: '';
+        width: 40px;
+        height: 40px;
+        background-image: url('/imagenes/inicio/logo.jpg');
+        background-size: cover;
+        border-radius: 30%;
+        border: 2px solid #333;
+    }
+
+    /* Barra de búsqueda abajo */
+    .barra-busqueda {
+        width: 100%;
+        margin-right: 0;
+        order: 1;
+    }
+
+    main {
+        margin-top: 100px;
+    }
+
+    .productos {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+}
+
+/* ===== MÓVILES (480px o menos) ===== */
+@media (max-width: 480px) {
+    body {
+        padding-top: 50px; /* AJUSTAR: Espacio según altura del header en móvil */
+    }
+
+    .header-contenedor {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+
+    /* Ocultar logo grande original en móvil */
+    .marca {
+        display: none;
+    }
+
+    .busqueda-usuario {
+        flex-direction: column;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    /* Reorganizar: carrito y perfil arriba */
+    .carrito-perfil {
+        order: -1; /* Mueve arriba */
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Logo dentro de la barra verde a la izquierda */
+    .carrito-perfil::before {
+        content: '';
+        width: 35px;
+        height: 35px;
+        background-image: url('/imagenes/inicio/logo.jpg');
+        background-size: cover;
+        border-radius: 30%;
+        border: 2px solid #333;
+    }
+
+    /* Barra de búsqueda abajo */
+    .barra-busqueda {
+        width: 100%;
+        margin-right: 0;
+        order: 1;
+    }
+
+    main {
+        margin-top: 100px;
+    }
+
 }

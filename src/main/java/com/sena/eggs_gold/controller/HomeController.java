@@ -19,11 +19,6 @@ import org.springframework.ui.Model;
             return "inicio/inicio";
         }
 
-        @GetMapping("/promociones")
-        public String promociones() {
-            return "promociones"; // busca promociones.html en templates
-        }
-
         @GetMapping("/contacto")
         public String contacto1(){
             return "inicio/contacto";
