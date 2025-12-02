@@ -1,4 +1,3 @@
-// ===== ConductorServiceImpl.java =====
 package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.ConductorDTO;
@@ -15,7 +14,8 @@ import com.sena.eggs_gold.repository.DetallePedidoRepository;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.ConductorService;
-import com.sena.eggs_gold.service.EmailService; // ✅ IMPORTAR
+import com.sena.eggs_gold.service.EmailService;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,6 @@ public class ConductorServiceImpl implements ConductorService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // ✅ INYECTAR EmailService
     @Autowired
     private EmailService emailService;
 
@@ -61,8 +60,13 @@ public class ConductorServiceImpl implements ConductorService {
         conductor.setNumDocumento(dto.getNumDocumento());
         conductor.setTelefono(dto.getTelefono());
         conductor.setCorreo(dto.getCorreo());
-        conductor.setPassword(dto.getPassword());
-        conductor.setEdad(dto.getEdad()); // ✅ Mapear edad
+
+        // hashear la contrasena antes de guardarla
+        // bcrypt.gensalt() genera una sal aleatoria para mayor seguridad
+        String passwordHasheada = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
+        conductor.setPassword(passwordHasheada);
+
+        conductor.setEdad(dto.getEdad());
         conductor.setFechaRegistro(LocalDate.now());
         conductor.setEstado(EstadoUsuario.ACTIVO);
 
@@ -81,13 +85,23 @@ public class ConductorServiceImpl implements ConductorService {
 
     @Override
     public ConductorDTO login(String numDocumento, String password) {
-        return conductorRepository.findByNumDocumentoAndPassword(numDocumento, password)
+        // paso 1: buscar conductor solo por numero de documento
+        return conductorRepository.findByNumDocumento(numDocumento)
                 .map(conductor -> {
-                    // Verificar que el usuario esté ACTIVO
+                    // paso 2: verificar que el usuario este activo
                     if (conductor.getEstado() != EstadoUsuario.ACTIVO) {
-                        return null; // No permitir login si está inactivo
+                        return null;
                     }
 
+                    // paso 3: validar la contrasena usando bcrypt
+                    // bcrypt.checkpw compara la contrasena en texto plano con la hasheada
+                    boolean passwordCorrecta = BCrypt.checkpw(password, conductor.getPassword());
+
+                    if (!passwordCorrecta) {
+                        return null;
+                    }
+
+                    // paso 4: si todo esta bien, crear y retornar el dto
                     ConductorDTO dto = new ConductorDTO();
                     dto.setIdUsuarios(conductor.getIdUsuarios());
                     dto.setNombre(conductor.getNombre());
@@ -130,24 +144,21 @@ public class ConductorServiceImpl implements ConductorService {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // Validar que el pedido esté asignado a este conductor
+        // validar que el pedido este asignado a este conductor
         if (pedido.getConductor() == null ||
                 !pedido.getConductor().getIdUsuarios().equals(idConductor)) {
-            throw new RuntimeException("Este pedido no está asignado a ti");
+            throw new RuntimeException("Este pedido no esta asignado a ti");
         }
 
-        // Validar estado
+        // validar estado
         if (pedido.getEstado() != EstadoPedido.ASIGNADO) {
             throw new RuntimeException("El pedido debe estar en estado ASIGNADO");
         }
 
-        // Cambiar estado a EN_CAMINO
+        // cambiar estado a en camino
         pedido.setEstado(EstadoPedido.EN_CAMINO);
         pedidoRepository.save(pedido);
     }
-
-    // ===== ConductorServiceImpl.java =====
-// Solo modifico el método marcarPedidoEntregado()
 
     @Override
     @Transactional
@@ -155,18 +166,18 @@ public class ConductorServiceImpl implements ConductorService {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // Validar que el pedido esté asignado a este conductor
+        // validar que el pedido este asignado a este conductor
         if (pedido.getConductor() == null ||
                 !pedido.getConductor().getIdUsuarios().equals(idConductor)) {
-            throw new RuntimeException("Este pedido no está asignado a ti");
+            throw new RuntimeException("Este pedido no esta asignado a ti");
         }
 
-        // Validar estado
+        // validar estado
         if (pedido.getEstado() != EstadoPedido.EN_CAMINO) {
             throw new RuntimeException("El pedido debe estar EN_CAMINO");
         }
 
-        // Cambiar estado a ENTREGADO y registrar fecha
+        // cambiar estado a entregado y registrar fecha
         pedido.setEstado(EstadoPedido.ENTREGADO);
         pedido.setFechaEntrega(LocalDateTime.now());
 
@@ -176,16 +187,16 @@ public class ConductorServiceImpl implements ConductorService {
 
         pedidoRepository.save(pedido);
 
-        // ✅ FORZAR CARGA DE RELACIONES (antes del método asíncrono)
-        // Esto carga los datos mientras la sesión de Hibernate está abierta
+        // forzar carga de relaciones antes del metodo asincrono
+        // esto carga los datos mientras la sesion de hibernate esta abierta
         pedido.getCliente().getCorreo();
         pedido.getCliente().getNombre();
         pedido.getCliente().getApellido();
         pedido.getConductor().getNombre();
         pedido.getConductor().getApellido();
 
-        // ✅ AHORA SÍ: Enviar correo de confirmación de entrega (asíncrono)
-        // El objeto pedido ya tiene todos los datos cargados
+        // enviar correo de confirmacion de entrega asincrono
+        // el objeto pedido ya tiene todos los datos cargados
         emailService.enviarCorreoEntregaPedido(pedido);
     }
 
@@ -201,7 +212,7 @@ public class ConductorServiceImpl implements ConductorService {
         }).collect(Collectors.toList());
     }
 
-    // Método auxiliar: Convertir pedido a Map
+    // metodo auxiliar convertir pedido a map
     private Map<String, Object> convertirPedidoAMap(Pedido pedido) {
         Map<String, Object> map = new HashMap<>();
         map.put("idPedido", pedido.getIdPedidos());
@@ -212,13 +223,13 @@ public class ConductorServiceImpl implements ConductorService {
         map.put("estado", pedido.getEstado().toString());
         map.put("observacionConductor", pedido.getObservacionConductor());
 
-        // Datos del cliente
+        // datos del cliente
         if (pedido.getCliente() != null) {
             map.put("clienteNombre", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
             map.put("clienteTelefono", pedido.getCliente().getTelefono());
         }
 
-        // Contar tipos de productos
+        // contar tipos de productos
         List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
         map.put("tiposProductos", detalles.size());
 

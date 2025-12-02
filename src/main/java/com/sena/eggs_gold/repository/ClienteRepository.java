@@ -7,8 +7,9 @@ import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 
-    Optional<Cliente> findByNumDocumentoAndPassword(String numDocumento, String password);
+    // buscar cliente solo por numero de documento
+    // ya no buscamos por password porque ahora esta hasheada
     Optional<Cliente> findByNumDocumento(String numDocumento);
-    boolean existsByNumDocumento(String numDocumento);
 
+    boolean existsByNumDocumento(String numDocumento);
 }

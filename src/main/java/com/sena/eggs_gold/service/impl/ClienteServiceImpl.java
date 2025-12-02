@@ -6,6 +6,7 @@ import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
 import com.sena.eggs_gold.repository.*;
 import com.sena.eggs_gold.service.ClienteService;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,8 +46,13 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setNumDocumento(dto.getNumDocumento());
         cliente.setTelefono(dto.getTelefono());
         cliente.setCorreo(dto.getCorreo());
-        cliente.setPassword(dto.getPassword());
-        cliente.setEdad(dto.getEdad()); // ✅ Mapear edad
+
+        // hashear la contrasena antes de guardarla
+        // bcrypt.gensalt() genera una sal aleatoria para mayor seguridad
+        String passwordHasheada = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
+        cliente.setPassword(passwordHasheada);
+
+        cliente.setEdad(dto.getEdad());
         cliente.setEstado(EstadoUsuario.ACTIVO);
         cliente.setTipoDocumento(TipoDocumento.CC);
         cliente.setFechaRegistro(LocalDate.now());
@@ -60,13 +66,23 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDTO login(String numDocumento, String password){
-        return clienteRepository.findByNumDocumentoAndPassword(numDocumento, password)
+        // paso 1: buscar el cliente solo por numero de documento
+        return clienteRepository.findByNumDocumento(numDocumento)
                 .map(cliente->{
-                    // Verificar que el usuario esté ACTIVO
+                    // paso 2: verificar que el usuario este activo
                     if (cliente.getEstado() != EstadoUsuario.ACTIVO) {
-                        return null; // No permitir login si está inactivo
+                        return null;
                     }
 
+                    // paso 3: validar la contrasena usando bcrypt
+                    // bcrypt.checkpw compara la contrasena en texto plano con la hasheada
+                    boolean passwordCorrecta = BCrypt.checkpw(password, cliente.getPassword());
+
+                    if (!passwordCorrecta) {
+                        return null;
+                    }
+
+                    // paso 4: si todo esta bien, crear y retornar el dto
                     ClienteDTO dto = new ClienteDTO();
                     dto.setIdUsuarios(cliente.getIdUsuarios());
                     dto.setNombre(cliente.getNombre());
@@ -81,7 +97,7 @@ public class ClienteServiceImpl implements ClienteService {
                 .orElse(null);
     }
 
-    // ✅ NUEVO: Obtener pedidos del cliente
+    // obtener pedidos del cliente
     @Override
     public List<Map<String, Object>> obtenerMisPedidos(Integer idCliente) {
         List<Pedido> pedidos = pedidoRepository.findByClienteIdUsuarios(idCliente);
@@ -100,7 +116,7 @@ public class ClienteServiceImpl implements ClienteService {
                 map.put("fechaEntrega", pedido.getFechaEntrega());
             }
 
-            // Obtener productos
+            // obtener productos del pedido
             List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
 
             List<Map<String, Object>> productos = detalles.stream().map(detalle -> {
@@ -116,7 +132,7 @@ public class ClienteServiceImpl implements ClienteService {
             map.put("productos", productos);
             map.put("tiposProductos", detalles.size());
 
-            // Calcular total
+            // calcular total del pedido
             java.math.BigDecimal total = detalles.stream()
                     .map(d -> d.getPrecioUnitario().multiply(java.math.BigDecimal.valueOf(d.getCantidad())))
                     .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
@@ -126,13 +142,13 @@ public class ClienteServiceImpl implements ClienteService {
         }).collect(Collectors.toList());
     }
 
-    // ✅ NUEVO: Obtener factura
+    // obtener factura de un pedido
     @Override
     public Map<String, Object> obtenerFacturaPorPedido(Integer idPedido, Integer idCliente) {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // Verificar que el pedido pertenezca al cliente
+        // verificar que el pedido pertenezca al cliente
         if (!pedido.getCliente().getIdUsuarios().equals(idCliente)) {
             throw new RuntimeException("No tienes permiso para ver esta factura");
         }
@@ -146,13 +162,13 @@ public class ClienteServiceImpl implements ClienteService {
         facturaMap.put("metodoPago", factura.getMetodoPago().toString());
         facturaMap.put("totalPagado", factura.getTotalPagado());
 
-        // Datos del cliente
+        // datos del cliente
         facturaMap.put("clienteNombre", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
         facturaMap.put("clienteDocumento", pedido.getCliente().getNumDocumento());
         facturaMap.put("clienteDireccion", pedido.getDireccion());
         facturaMap.put("clienteTelefono", pedido.getCliente().getTelefono());
 
-        // Productos
+        // productos de la factura
         List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(idPedido);
 
         List<Map<String, Object>> productos = detalles.stream().map(detalle -> {

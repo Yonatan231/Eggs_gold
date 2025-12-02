@@ -15,6 +15,7 @@ import com.sena.eggs_gold.repository.PedidoRepository;
 import com.sena.eggs_gold.repository.DetallePedidoRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.LogisticaService;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -46,13 +47,23 @@ public class LogisticaServiceImpl implements LogisticaService {
 
     @Override
     public LogisticaDTO login(String numDocumento, String password) {
-        return logisticaRepository.findByNumDocumentoAndPassword(numDocumento, password)
+        // paso 1: buscar logistica solo por numero de documento
+        return logisticaRepository.findByNumDocumento(numDocumento)
                 .map(logistica -> {
-                    // Verificar que el usuario esté ACTIVO
+                    // paso 2: verificar que el usuario este activo
                     if (logistica.getEstado() != EstadoUsuario.ACTIVO) {
-                        return null; // No permitir login si está inactivo
+                        return null;
                     }
 
+                    // paso 3: validar la contrasena usando bcrypt
+                    // bcrypt.checkpw compara la contrasena en texto plano con la hasheada
+                    boolean passwordCorrecta = BCrypt.checkpw(password, logistica.getPassword());
+
+                    if (!passwordCorrecta) {
+                        return null;
+                    }
+
+                    // paso 4: si todo esta bien, crear y retornar el dto
                     return new LogisticaDTO(
                             logistica.getIdUsuarios(),
                             logistica.getNombre(),
@@ -70,7 +81,7 @@ public class LogisticaServiceImpl implements LogisticaService {
 
     @Override
     public void registrarLogistica(LogisticaDTO dto) {
-        // ✅ Crear nueva instancia de Logística
+        // crear nueva instancia de logistica
         Logistica logistica = new Logistica();
         logistica.setNombre(dto.getNombre());
         logistica.setApellido(dto.getApellido());
@@ -78,44 +89,46 @@ public class LogisticaServiceImpl implements LogisticaService {
         logistica.setNumDocumento(dto.getNumDocumento());
         logistica.setTelefono(dto.getTelefono());
         logistica.setCorreo(dto.getCorreo());
-        logistica.setPassword(dto.getPassword());
-        logistica.setEdad(dto.getEdad()); // ✅ Mapear edad
 
-        // ✅ CAMPO OBLIGATORIO: Asignar ESTADO como ACTIVO
+        // hashear la contrasena antes de guardarla
+        // bcrypt.gensalt() genera una sal aleatoria para mayor seguridad
+        String passwordHasheada = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
+        logistica.setPassword(passwordHasheada);
+
+        logistica.setEdad(dto.getEdad());
+
+        // asignar estado como activo
         logistica.setEstado(EstadoUsuario.ACTIVO);
 
-        // ✅ CAMPO OBLIGATORIO: Asignar TIPO_DOCUMENTO (por defecto CEDULA_CIUDADANIA)
+        // asignar tipo de documento por defecto cedula ciudadania
         logistica.setTipoDocumento(TipoDocumento.CC);
 
-        // ✅ CAMPO OBLIGATORIO: Asignar FECHA_REGISTRO con la fecha actual
+        // asignar fecha de registro con la fecha actual
         logistica.setFechaRegistro(LocalDate.now());
 
-        // ✅ Asignar el ROL de Logística (ID = 2)
+        // asignar el rol de logistica id 2
         Rol rol = rolRepository.findById(2)
-                .orElseThrow(() -> new RuntimeException("Rol Logística no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Rol Logistica no encontrado"));
         logistica.setRol(rol);
 
-        // ✅ Guardar en la base de datos
+        // guardar en la base de datos
         logisticaRepository.save(logistica);
     }
 
-    // =====================================================
-    // NUEVOS MÉTODOS PARA GESTIÓN DE PEDIDOS
-    // =====================================================
-
+    // obtener pedidos pendientes
     @Override
     public List<Map<String, Object>> obtenerPedidosPendientes() {
-        // Buscar pedidos con estado PENDIENTE, ordenados por fecha de creación
+        // buscar pedidos con estado pendiente ordenados por fecha de creacion
         List<Pedido> pedidos = pedidoRepository.findByEstadoOrderByFechaCreacionDesc(EstadoPedido.PENDIENTE);
 
-        // Convertir cada pedido a un Map con la información necesaria
+        // convertir cada pedido a un map con la informacion necesaria
         return pedidos.stream().map(pedido -> {
             Map<String, Object> pedidoMap = new HashMap<>();
             pedidoMap.put("idPedido", pedido.getIdPedidos());
             pedidoMap.put("cantidadTotal", pedido.getCantidadTotal());
             pedidoMap.put("fechaCreacion", pedido.getFechaCreacion());
 
-            // Contar tipos de productos diferentes
+            // contar tipos de productos diferentes
             List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
             pedidoMap.put("tiposProductos", detalles.size());
 
@@ -125,50 +138,50 @@ public class LogisticaServiceImpl implements LogisticaService {
 
     @Override
     public void tomarPedido(Integer idPedido, Integer idLogistica) {
-        // Buscar el pedido
+        // buscar el pedido
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // Verificar que el pedido esté en estado PENDIENTE
+        // verificar que el pedido este en estado pendiente
         if (pedido.getEstado() != EstadoPedido.PENDIENTE) {
-            throw new RuntimeException("El pedido no está pendiente");
+            throw new RuntimeException("El pedido no esta pendiente");
         }
 
-        // Buscar el usuario de logística
+        // buscar el usuario de logistica
         Usuario logistica = usuarioRepository.findById(idLogistica)
-                .orElseThrow(() -> new RuntimeException("Usuario de logística no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuario de logistica no encontrado"));
 
-        // Asignar logística al pedido y cambiar estado
+        // asignar logistica al pedido y cambiar estado
         pedido.setLogistica(logistica);
         pedido.setEstado(EstadoPedido.EN_ALISTAMIENTO);
 
-        // Guardar cambios
+        // guardar cambios
         pedidoRepository.save(pedido);
     }
 
     @Override
     public List<Map<String, Object>> obtenerPedidosEnAlistamiento(Integer idLogistica) {
-        // ✅ Buscar pedidos que estén EN_ALISTAMIENTO O LISTO y asignados a este usuario
+        // buscar pedidos que esten en alistamiento o listo y asignados a este usuario
         List<Pedido> pedidos = pedidoRepository.findAll().stream()
                 .filter(p -> (p.getEstado() == EstadoPedido.EN_ALISTAMIENTO
-                        || p.getEstado() == EstadoPedido.LISTO) // ✅ INCLUIR AMBOS ESTADOS
+                        || p.getEstado() == EstadoPedido.LISTO)
                         && p.getLogistica() != null
                         && p.getLogistica().getIdUsuarios().equals(idLogistica))
                 .collect(Collectors.toList());
 
-        // Convertir a Map
+        // convertir a map
         return pedidos.stream().map(pedido -> {
             Map<String, Object> pedidoMap = new HashMap<>();
             pedidoMap.put("idPedido", pedido.getIdPedidos());
             pedidoMap.put("cantidadTotal", pedido.getCantidadTotal());
             pedidoMap.put("fechaCreacion", pedido.getFechaCreacion());
-            pedidoMap.put("estado", pedido.getEstado().toString()); // ✅ AGREGAR ESTADO para el JS
+            pedidoMap.put("estado", pedido.getEstado().toString());
 
-            // Contar tipos de productos
+            // contar tipos de productos
             List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
             pedidoMap.put("tiposProductos", detalles.size());
 
-            // ✅ AGREGAR NOMBRE DEL CLIENTE
+            // agregar nombre del cliente
             if (pedido.getCliente() != null) {
                 pedidoMap.put("cliente", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
             }
@@ -179,14 +192,14 @@ public class LogisticaServiceImpl implements LogisticaService {
 
     @Override
     public Map<String, Object> obtenerDetallesPedido(Integer idPedido) {
-        // Buscar el pedido
+        // buscar el pedido
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // Buscar los detalles del pedido
+        // buscar los detalles del pedido
         List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(idPedido);
 
-        // Crear lista de productos con su información
+        // crear lista de productos con su informacion
         List<Map<String, Object>> productos = detalles.stream().map(detalle -> {
             Map<String, Object> productoMap = new HashMap<>();
             productoMap.put("nombre", detalle.getProducto().getNombre());
@@ -195,19 +208,19 @@ public class LogisticaServiceImpl implements LogisticaService {
             return productoMap;
         }).collect(Collectors.toList());
 
-        // Crear mapa con toda la información
+        // crear mapa con toda la informacion
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("idPedido", pedido.getIdPedidos());
         resultado.put("productos", productos);
         resultado.put("cantidadTotal", pedido.getCantidadTotal());
 
-        // ✅ AGREGAR INFORMACIÓN DEL CLIENTE
+        // agregar informacion del cliente
         if (pedido.getCliente() != null) {
             resultado.put("clienteNombre", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
             resultado.put("clienteTelefono", pedido.getCliente().getTelefono());
         }
 
-        // ✅ AGREGAR DIRECCIÓN Y COMENTARIO
+        // agregar direccion y comentario
         resultado.put("direccion", pedido.getDireccion());
         resultado.put("detalleCliente", pedido.getDetalleCliente());
 
@@ -216,19 +229,19 @@ public class LogisticaServiceImpl implements LogisticaService {
 
     @Override
     public void marcarPedidoListo(Integer idPedido) {
-        // Buscar el pedido
+        // buscar el pedido
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // Verificar que esté en alistamiento
+        // verificar que este en alistamiento
         if (pedido.getEstado() != EstadoPedido.EN_ALISTAMIENTO) {
-            throw new RuntimeException("El pedido no está en alistamiento");
+            throw new RuntimeException("El pedido no esta en alistamiento");
         }
 
-        // Cambiar estado a LISTO
+        // cambiar estado a listo
         pedido.setEstado(EstadoPedido.LISTO);
 
-        // Guardar cambios
+        // guardar cambios
         pedidoRepository.save(pedido);
     }
 }

@@ -6,6 +6,7 @@ import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.model.enums.TipoDocumento;
 import com.sena.eggs_gold.repository.RolRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,14 +33,16 @@ public class DataInitializer {
                 admin.setEdad(30);
                 admin.setEstado(EstadoUsuario.ACTIVO);
                 admin.setCorreo("admin@tuapp.com");
-                admin.setPassword("1234");
+                String passwordHasheada = BCrypt.hashpw("123456789", BCrypt.gensalt());
+                admin.setPassword(passwordHasheada);
+
                 admin.setFechaRegistro(LocalDate.now());
 
                 usuarioRepository.save(admin);
 
                 System.out.println(">>> Usuario administrador creado por defecto");
-
-
+                System.out.println(">>> Documento: 123456789");
+                System.out.println(">>> Password: 123456789 (hasheada con BCrypt)");
             }
         };
     }
