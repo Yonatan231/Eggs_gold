@@ -1,7 +1,52 @@
-/* ============================================
-   ESTILOS PARA PEDIDOS PENDIENTES
-   Versión básica para principiantes
-   ============================================ */
+/* pedidos_pendientes.css - estilos especificos */
+
+:root {
+    --color-verde: #27AE60;
+    --color-amarillo: #F7DC6F;
+    --color-gris: #95a5a6;
+    --color-fondo: #FEFCF4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FEFCF4;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* contenido principal */
+main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    padding-bottom: 40px;
+    transition: margin-left 0.3s ease;
+}
+
+/* cabecera (solo desktop) */
+header[role="banner"] {
+    background: #ffffff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+.opciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+}
 
 .marca-contenedor {
     display: flex;
@@ -9,296 +54,293 @@
     gap: 15px;
 }
 
-body {
-    background-color: #FEFCF4;
+.logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-main {
-    padding-bottom: 40px;
+.marca-texto .titulo {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    font-weight: 700;
+    margin: 0;
 }
 
-/* ============================================
-   CONTENEDOR DE LA TABLA
-   ============================================ */
+.marca-texto .subtitulo {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.titulo2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.resaltado {
+    color: var(--color-verde);
+    font-weight: bold;
+}
+
+/* alertas */
+.alert {
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-success {
+    background-color: #e8f7ee;
+    color: #2e7d32;
+    border: 1px solid #2e7d32;
+}
+
+.alert-error {
+    background-color: #fdecea;
+    color: #c62828;
+    border: 1px solid #c62828;
+}
+
+/* contenedor de la tabla */
 .tabla-contenedor {
-    max-width: 1200px; /* Ancho máximo */
-    margin: 40px auto; /* Centrado con espacio arriba y abajo */
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 12px; /* Esquinas redondeadas */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra suave */
-    overflow: hidden; /* Oculta lo que sobresale */
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
-/* ============================================
-   ENCABEZADO DE LA TABLA
-   ============================================ */
+/* encabezado de la tabla */
 .tabla-header {
-    padding: 25px 30px; /* Espacio interno */
-    background: #27AE60; /* Fondo verde */
-    color: white; /* Texto blanco */
-    display: flex; /* Organiza en fila */
-    justify-content: space-between; /* Espacio entre elementos */
-    align-items: center; /* Centra verticalmente */
-    flex-wrap: wrap; /* Permite ajuste en móviles */
-    gap: 15px; /* Espacio entre elementos */
+    padding: 25px 30px;
+    background: var(--color-verde);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .tabla-header h2 {
-    margin: 0; /* Sin márgenes */
-    font-size: 22px; /* Tamaño del texto */
-    font-weight: 700; /* Texto en negrita */
-    display: flex; /* Para alinear icono y texto */
-    align-items: center; /* Centra verticalmente */
-    gap: 10px; /* Espacio entre icono y texto */
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Contador de pedidos pendientes */
 .contador-pendientes {
-    background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco semi-transparente */
-    padding: 8px 16px; /* Espacio interno */
-    border-radius: 20px; /* Esquinas muy redondeadas */
-    font-size: 14px; /* Tamaño del texto */
-    font-weight: 600; /* Texto en negrita */
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .contador-pendientes span {
-    background-color: #F7DC6F; /* Fondo amarillo */
-    color: #333; /* Texto oscuro */
-    padding: 2px 10px; /* Espacio interno */
-    border-radius: 12px; /* Esquinas redondeadas */
-    margin-right: 5px; /* Espacio a la derecha */
-    font-weight: 700; /* Texto en negrita */
+    background-color: var(--color-amarillo);
+    color: #333;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-right: 5px;
+    font-weight: 700;
 }
 
-/* ============================================
-   TABLA
-   ============================================ */
-.tabla-wrapper {
-    overflow-x: auto; /* Permite scroll horizontal si es necesario */
-    padding: 30px; /* Espacio interno */
+/* contenedor con scroll horizontal */
+.tabla-contenedor-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    padding: 30px;
+    -webkit-overflow-scrolling: touch;
 }
 
-table {
-    width: 100%; /* Ocupa todo el ancho */
-    border-collapse: collapse; /* Une los bordes de las celdas */
+.tabla-contenedor-scroll::-webkit-scrollbar {
+    height: 8px;
 }
 
-/* Encabezado de la tabla */
-thead {
-    background-color: #f8f9fa; /* Fondo gris muy claro */
+.tabla-contenedor-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
-th {
-    padding: 15px 12px; /* Espacio interno */
-    text-align: left; /* Texto alineado a la izquierda */
-    font-weight: 600; /* Texto en negrita */
-    color: #333; /* Color oscuro */
-    border-bottom: 2px solid #27AE60; /* Línea verde */
-    font-size: 14px; /* Tamaño del texto */
-    white-space: nowrap; /* El texto no se divide en varias líneas */
+.tabla-contenedor-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
 }
 
-/* Filas del cuerpo de la tabla */
-tbody tr {
-    border-bottom: 1px solid #eee; /* Línea divisoria sutil */
-    transition: background-color 0.2s; /* Animación suave */
+.tabla-contenedor-scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
-/* Efecto al pasar el mouse sobre una fila */
-tbody tr:hover {
-    background-color: #f8f9fa; /* Fondo gris muy claro */
+/* tabla con ancho minimo */
+.tabla-datos {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    white-space: nowrap;
 }
 
-/* Celdas de la tabla */
-td {
-    padding: 15px 12px; /* Espacio interno */
-    color: #555; /* Color gris oscuro */
-    font-size: 14px; /* Tamaño del texto */
-    text-align: center; /* Texto centrado */
+.tabla-datos th,
+.tabla-datos td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
 }
 
-/* ============================================
-   BOTÓN TOMAR
-   ============================================ */
+.tabla-datos th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-verde);
+}
+
+.tabla-datos tbody tr {
+    transition: background-color 0.2s;
+}
+
+.tabla-datos tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* boton tomar */
 .btn-tomar {
-    background-color: #27AE60; /* Fondo verde */
-    color: white; /* Texto blanco */
-    border: none; /* Sin borde */
-    padding: 10px 18px; /* Espacio interno */
-    border-radius: 6px; /* Esquinas redondeadas */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    font-weight: 600; /* Texto en negrita */
-    transition: background-color 0.3s, transform 0.2s; /* Animaciones suaves */
-    white-space: nowrap; /* El texto no se divide */
+    background-color: var(--color-verde);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .btn-tomar:hover {
-    background-color: #1F8A4E; /* Verde más oscuro */
-    transform: translateY(-2px); /* Se eleva 2px */
+    background-color: #1F8A4E;
+    transform: translateY(-2px);
 }
 
 .btn-tomar:active {
-    transform: translateY(0); /* Vuelve a su posición original */
+    transform: translateY(0);
 }
 
-/* ============================================
-   MENSAJE CUANDO NO HAY PEDIDOS
-   ============================================ */
+/* mensaje sin pedidos */
 .sin-pedidos {
-    text-align: center; /* Texto centrado */
-    padding: 60px 20px; /* Espacio interno */
-    color: #999; /* Color gris */
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
 }
 
 .sin-pedidos i {
-    font-size: 64px; /* Icono grande */
-    color: #2196f3; /* Color azul */
-    margin-bottom: 20px; /* Espacio abajo */
+    font-size: 64px;
+    color: #2196f3;
+    margin-bottom: 20px;
+    display: block;
 }
 
 .sin-pedidos p {
-    font-size: 18px; /* Tamaño del texto */
-    margin: 0; /* Sin márgenes */
+    font-size: 18px;
+    margin: 0;
 }
 
-/* ============================================
-   ALERTAS (mensajes de éxito y error)
-   ============================================ */
-.alert {
-    max-width: 1200px; /* Ancho máximo */
-    margin: 20px auto; /* Centrado con espacio arriba y abajo */
-    padding: 12px; /* Espacio interno */
-    border-radius: 8px; /* Esquinas redondeadas */
-    text-align: center; /* Texto centrado */
-    font-weight: 600; /* Texto en negrita */
-    animation: slideDown 0.3s ease-out; /* Animación al aparecer */
-}
-
-/* Animación de entrada */
-@keyframes slideDown {
-    from {
-        opacity: 0; /* Invisible */
-        transform: translateY(-10px); /* Arriba */
-    }
-    to {
-        opacity: 1; /* Visible */
-        transform: translateY(0); /* En su posición */
-    }
-}
-
-/* Alerta de éxito */
-.alert-success {
-    background-color: #e8f7ee; /* Fondo verde claro */
-    color: #2e7d32; /* Texto verde oscuro */
-    border: 1px solid #2e7d32; /* Borde verde */
-}
-
-/* Alerta de error */
-.alert-error {
-    background-color: #fdecea; /* Fondo rojo claro */
-    color: #c62828; /* Texto rojo oscuro */
-    border: 1px solid #c62828; /* Borde rojo */
-}
-
-/* ============================================
-   HEADER (Cabecera)
-   ============================================ */
-header {
-    background-color: white; /* Fondo blanco */
-    border-bottom: 1px solid #ddd; /* Línea divisoria */
-    padding: 20px 40px; /* Espacio interno */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Sombra sutil */
-}
-
-header .titulo2 {
-    color: #444; /* Color oscuro */
-    font-size: 22px; /* Tamaño del texto */
-    display: flex; /* Para alinear icono y texto */
-    align-items: center; /* Centra verticalmente */
-    gap: 10px; /* Espacio entre icono y texto */
-}
-
-header .titulo2 i {
-    color: #F7DC6F; /* Color amarillo para el icono */
-}
-
-/* ============================================
-   RESPONSIVE PARA MÓVILES
-   ============================================ */
-@media (max-width: 1024px) {
-    .tabla-contenedor {
-        margin: 20px; /* Menos margen en tablets */
-    }
-
-    .tabla-wrapper {
-        padding: 20px; /* Menos espacio interno */
-    }
-
-    table {
-        font-size: 13px; /* Texto más pequeño */
-    }
-
-    th, td {
-        padding: 10px 8px; /* Menos espacio interno */
-    }
-}
-
-@media (max-width: 768px) {
-    .tabla-header {
-        flex-direction: column; /* Organiza en columna */
-        align-items: flex-start; /* Alinea a la izquierda */
-    }
-
-    .tabla-wrapper {
-        padding: 15px; /* Menos espacio interno */
-    }
-
-    header {
-        padding: 15px 20px; /* Menos espacio interno */
-    }
-
-    header .titulo2 {
-        font-size: 18px; /* Texto más pequeño */
-    }
-
-    .marca-contenedor {
-        flex-direction: column; /* Organiza en columna */
-        gap: 10px; /* Espacio entre elementos */
-    }
-
-    table {
-        font-size: 12px; /* Texto más pequeño */
-    }
-
-    th, td {
-        padding: 8px 6px; /* Menos espacio interno */
-    }
-
-    .btn-tomar {
-        padding: 8px 12px; /* Botón más pequeño */
-        font-size: 12px; /* Texto más pequeño */
-    }
-}
-
-/* ============================================
-   ANIMACIÓN DE FILA ELIMINADA
-   ============================================ */
+/* animacion de fila eliminada */
 @keyframes fadeOut {
     from {
-        opacity: 1; /* Visible */
-        transform: translateX(0); /* En su posición */
+        opacity: 1;
+        transform: translateX(0);
     }
     to {
-        opacity: 0; /* Invisible */
-        transform: translateX(100%); /* Se mueve a la derecha */
+        opacity: 0;
+        transform: translateX(100%);
     }
 }
 
 .row-removing {
-    animation: fadeOut 0.5s ease-out forwards; /* Aplica la animación */
+    animation: fadeOut 0.5s ease-out forwards;
 }
 
-/* ============================================
-   FIN DE LOS ESTILOS
-   ============================================ */
+/* responsive */
+@media (max-width: 768px) {
+    main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .titulo2 {
+        font-size: 18px;
+    }
+
+    .tabla-contenedor {
+        margin: 0;
+    }
+
+    .tabla-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .tabla-contenedor-scroll {
+        padding: 15px;
+    }
+
+    .tabla-datos {
+        min-width: 900px;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo2 {
+        font-size: 16px;
+    }
+
+    .tabla-header h2 {
+        font-size: 18px;
+    }
+
+    .tabla-datos {
+        min-width: 800px;
+    }
+
+    .tabla-datos th,
+    .tabla-datos td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+
+    .btn-tomar {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}

@@ -1,31 +1,21 @@
-// ============================================
-// SCRIPT PARA INICIO DEL CONDUCTOR
-// ============================================
+/* ============================================
+   CONDUCTOR_INICIO.JS - LÓGICA ESPECÍFICA
+   Solo contiene la lógica de negocio de conductor
+   La funcionalidad del sidebar está en utils/sidebar.js
+   ============================================ */
 
 // Variable global para el ID del pedido a entregar
 let pedidoAEntregar = null;
 
 // ============================================
-// BOTÓN PARA ABRIR/CERRAR EL MENÚ
-// ============================================
-const botonMenu = document.querySelector('.toggle-btn');
-
-if (botonMenu) {
-    botonMenu.addEventListener('click', function () {
-        const menuLateral = document.getElementById('sidebar');
-        menuLateral.classList.toggle('active');
-    });
-}
-
-// ============================================
 // CUANDO LA PÁGINA CARGA
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
-    cargarDashboard(); // Cargar tarjetas de resumen
+    cargarDashboard();
     cargarPedidosEnCamino();
     configurarBusqueda();
     configurarModalNovedad();
-    inicializarActualizacionAutomatica(); // Actualizar cada minuto
+    inicializarActualizacionAutomatica();
 });
 
 // ============================================
@@ -207,6 +197,8 @@ function cerrarModalEntrega() {
 function configurarBusqueda() {
     const inputBuscar = document.getElementById("buscarPedido");
     const tbody = document.getElementById("tablaPedidosDiaBody");
+
+    if (!inputBuscar || !tbody) return;
 
     inputBuscar.addEventListener("keyup", function() {
         const textoBusqueda = inputBuscar.value.toLowerCase();

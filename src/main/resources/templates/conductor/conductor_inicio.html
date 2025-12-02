@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- INFORMACIÓN BÁSICA DE LA PÁGINA -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Panel de conductor de Eggs Gold">
     <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}">
-
-    <!-- ICONOS DE FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ESTILOS PERSONALIZADOS -->
-    <link rel="stylesheet" th:href="@{css/conductor/conductor_inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
+    <link rel="stylesheet" th:href="@{/css/conductor/conductor_inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
     <title>Panel de Conductor - Eggs Gold</title>
 </head>
 <body>
 
-<!-- ============================================
-     BOTÓN PARA ABRIR EL MENÚ EN MÓVILES
-     ============================================ -->
-<button class="toggle-btn">
-    ☰
-</button>
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+        <h1 class="header-title">
+            Bienvenido, <span class="resaltado">Conductor</span>
+        </h1>
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
 
-<!-- ============================================
-     MENÚ LATERAL
-     ============================================ -->
 <nav id="sidebar">
     <ul>
-        <!-- PERFIL DEL CONDUCTOR -->
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
-                <!-- Iniciales cuando no hay foto -->
                 <span id="avatar-iniciales">CD</span>
 
-                <!-- Foto de perfil -->
                 <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
 
-                <!-- Botón para subir foto -->
-                <label for="input-foto" class="boton-subir-foto">+</label>
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
                 <input type="file" id="input-foto" accept="image/*" style="display: none;">
             </div>
             <h2>Panel de Conductor</h2>
@@ -80,10 +81,8 @@
 
 <main id="main-content">
 
-    <!-- CABECERA -->
     <header role="banner">
         <div class="opciones">
-            <!-- Logo y marca alineados horizontalmente -->
             <div class="marca-contenedor">
                 <div class="logo">
                     <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
@@ -99,12 +98,8 @@
         </div>
     </header>
 
-    <!-- ============================================
-         TARJETAS DE RESUMEN
-         ============================================ -->
     <section class="contenedor-cuadros">
 
-        <!-- Tarjeta 1: Pedidos Asignados -->
         <div class="tarjeta-resumen pedidos-asignados">
             <div class="tarjeta-icono">
                 <i class="fas fa-clipboard-list"></i>
@@ -115,7 +110,6 @@
             </div>
         </div>
 
-        <!-- Tarjeta 2: Pedidos Pendientes -->
         <div class="tarjeta-resumen pedidos-pendientes">
             <div class="tarjeta-icono">
                 <i class="fas fa-clock"></i>
@@ -128,25 +122,20 @@
 
     </section>
 
-    <!-- ============================================
-         SECCIÓN DE PEDIDOS DEL DÍA
-         ============================================ -->
     <section class="seccion-tabla">
         <div class="encabezado-tabla">
             <h2><i class="fas fa-clipboard-list"></i> Pedidos del Día</h2>
 
-            <!-- Barra de búsqueda -->
             <div class="contenedor-busqueda">
                 <input type="text" id="buscarPedido" placeholder="Buscar por cliente o dirección..." class="input-buscar">
             </div>
         </div>
 
-        <!-- Tabla de pedidos -->
         <div class="tabla-contenedor-scroll">
             <table id="tablaPedidosDia" class="tabla-datos">
                 <thead>
                 <tr>
-                    <th>ID Pedido</th>
+                    <th>Código Pedido</th>
                     <th>Cliente</th>
                     <th>Dirección</th>
                     <th>Contacto</th>
@@ -162,7 +151,6 @@
                 </tbody>
             </table>
 
-            <!-- Mensaje cuando no hay pedidos -->
             <div id="mensajeVacio" class="mensaje-vacio" style="display: none;">
                 <i class="fas fa-inbox"></i>
                 <p>No hay pedidos para hoy</p>
@@ -170,18 +158,13 @@
         </div>
     </section>
 
-    <!-- ============================================
-         MODAL PARA VER DETALLE DEL PEDIDO
-         ============================================ -->
     <div id="modalDetallePedido" class="modal">
         <div class="modal-contenido">
-            <!-- Botón para cerrar -->
+
             <span class="cerrar" onclick="cerrarModal()">&times;</span>
 
-            <!-- Título del modal -->
             <h2>Detalle del Pedido #<span id="pedidoId"></span></h2>
 
-            <!-- Información del cliente -->
             <div class="info-cliente">
                 <h3>Información del Cliente:</h3>
                 <p><strong>Nombre:</strong> <span id="clienteNombre"></span></p>
@@ -190,13 +173,11 @@
                 <p><strong>Comentario:</strong> <span id="clienteComentario"></span></p>
             </div>
 
-            <!-- Lista de productos -->
             <div class="detalle-productos">
                 <h3>Productos del Pedido:</h3>
                 <ul id="listaProductos" class="lista-productos"></ul>
             </div>
 
-            <!-- Botones del modal -->
             <div class="modal-botones">
                 <button class="btn-modal btn-cancelar" onclick="cerrarModal()">
                     Cerrar
@@ -205,26 +186,20 @@
         </div>
     </div>
 
-    <!-- ============================================
-         MODAL PARA REPORTAR NOVEDAD
-         ============================================ -->
     <div class="modal" id="novedadModal">
         <div class="modal-content">
-            <!-- Encabezado del modal con título y botón de cerrar -->
             <div class="modal-header">
                 <h2>Reportar Novedad</h2>
                 <button class="close-modal" id="closeModal">&times;</button>
             </div>
 
-            <!-- Formulario para reportar la novedad -->
             <form id="novedadForm">
-                <!-- Campo 1: Número de Pedido -->
+
                 <div class="form-group">
-                    <label for="orderNumber">Número de Pedido</label>
+                    <label for="orderNumber">Código de Pedido</label>
                     <input type="text" id="orderNumber" class="form-control" required>
                 </div>
 
-                <!-- Campo 2: Tipo de Novedad (selector desplegable) -->
                 <div class="form-group">
                     <label for="tipoNovedad">Tipo de Novedad</label>
                     <select id="tipoNovedad" class="form-control" required>
@@ -235,19 +210,16 @@
                     </select>
                 </div>
 
-                <!-- Campo 3: Descripción detallada -->
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
                     <textarea id="descripcion" class="form-control" placeholder="Describa la novedad en detalle..." required></textarea>
                 </div>
 
-                <!-- Campo 4: Evidencia (foto o archivo opcional) -->
                 <div class="form-group">
                     <label for="evidencia">Evidencia (opcional)</label>
                     <input type="file" id="evidencia" class="form-control" accept="image/*">
                 </div>
 
-                <!-- Botones de acción -->
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancelNovedad">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Enviar Novedad</button>
@@ -256,9 +228,6 @@
         </div>
     </div>
 
-    <!-- ============================================
-     MODAL PARA ENTREGAR PEDIDO (NUEVO)
-     ============================================ -->
     <div id="modalEntregarPedido" class="modal">
         <div class="modal-contenido">
             <span class="cerrar" onclick="cerrarModalEntrega()">&times;</span>
@@ -274,7 +243,7 @@
                         placeholder="Ej: Cliente recibió conforme, sin novedades..."
                         rows="4"
                         style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
-            </textarea>
+                </textarea>
             </div>
 
             <div class="modal-botones">
@@ -288,17 +257,16 @@
         </div>
     </div>
 
-
 </main>
+
+<script th:src="@{/js/utils/sidebar.js}"></script>
 
 <script th:src="@{/js/utils/reportar_novedad.js}"></script>
 <script th:src="@{/js/conductor/conductor_inicio.js}"></script>
-<script th:src="@{/js/utils/foto_panel.js}"></script>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('CONDUCTOR'); </script>
-
 
 </body>
 </html>

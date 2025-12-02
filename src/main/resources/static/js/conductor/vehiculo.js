@@ -1,15 +1,15 @@
+// vehiculo.js - funcionalidad especifica
+
 let todosVehiculos = [];
 let vehiculosFiltrados = [];
 let kilometrajeActual = 0;
 
-// Cargar vehículos desde el servidor
+// cargar vehiculos desde el servidor
 document.addEventListener('DOMContentLoaded', function() {
     cargarVehiculosDesdeServidor();
 });
 
-// ============================================
-// CARGAR VEHÍCULOS DESDE EL BACKEND
-// ============================================
+// cargar vehiculos desde el backend
 async function cargarVehiculosDesdeServidor() {
     try {
         const response = await fetch('/api/vehiculos/listar');
@@ -34,15 +34,13 @@ async function cargarVehiculosDesdeServidor() {
     }
 }
 
-// ============================================
-// MOSTRAR VEHÍCULOS EN LA TABLA
-// ============================================
+// mostrar vehiculos en la tabla
 function mostrarVehiculosEnTabla(vehiculos) {
     const tbody = document.getElementById("tablaVehiculos").querySelector("tbody");
-    tbody.innerHTML = ''; // Limpiar tabla
+    tbody.innerHTML = '';
 
     if (vehiculos.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No hay vehículos registrados</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay vehículos registrados</td></tr>';
         return;
     }
 
@@ -53,7 +51,6 @@ function mostrarVehiculosEnTabla(vehiculos) {
         const estadoTexto = vehiculo.estado === 'ACTIVO' ? 'Activo' : 'Inactivo';
 
         fila.innerHTML = `
-            <td>${vehiculo.idVehiculos}</td>
             <td>${vehiculo.placa}</td>
             <td>${vehiculo.kilometraje}</td>
             <td><span class="${estadoClass}">${estadoTexto}</span></td>
@@ -65,9 +62,7 @@ function mostrarVehiculosEnTabla(vehiculos) {
     });
 }
 
-// ============================================
-// VALIDACIONES
-// ============================================
+// validaciones
 function validarPlaca(placa) {
     if (!placa || placa.trim() === '') {
         return { valido: false, mensaje: 'La placa es obligatoria' };
@@ -200,15 +195,12 @@ function mostrarExito(mensaje) {
     alert('✅ ' + mensaje);
 }
 
-// ============================================
-// CREAR VEHÍCULO
-// ============================================
+// crear vehiculo
 function abrirModalCrear() {
     document.getElementById("modalCrear").style.display = "flex";
 }
 
 async function crearVehiculo() {
-    // Obtener valores
     const placa = document.getElementById("crear_placa").value;
     const color = document.getElementById("crear_color").value;
     const modelo = document.getElementById("crear_modelo").value;
@@ -216,7 +208,7 @@ async function crearVehiculo() {
     const capacidad = document.getElementById("crear_capacidad").value;
     const km = document.getElementById("crear_km").value;
 
-    // Validaciones
+    // validaciones
     const validacionPlaca = validarPlaca(placa);
     if (!validacionPlaca.valido) {
         mostrarError(validacionPlaca.mensaje);
@@ -247,13 +239,12 @@ async function crearVehiculo() {
         return;
     }
 
-    const validacionKm = validarKilometraje(km, false);
+    const validacionKm = validarKilometraje(km);
     if (!validacionKm.valido) {
         mostrarError(validacionKm.mensaje);
         return;
     }
 
-    // Preparar datos para enviar
     const datos = {
         placa: validacionPlaca.valor,
         color: validacionColor.valor,
@@ -277,7 +268,7 @@ async function crearVehiculo() {
         if (resultado.exito) {
             mostrarExito(resultado.mensaje);
             cerrarModal("modalCrear");
-            cargarVehiculosDesdeServidor(); // Recargar tabla
+            cargarVehiculosDesdeServidor();
         } else {
             mostrarError(resultado.mensaje);
         }
@@ -288,12 +279,9 @@ async function crearVehiculo() {
     }
 }
 
-// ============================================
-// ACTUALIZAR VEHÍCULO
-// ============================================
+// actualizar vehiculo
 async function abrirModalActualizar(idVehiculo) {
     try {
-        // Buscar el vehículo en el servidor
         const response = await fetch(`/api/vehiculos/${idVehiculo}`);
 
         if (!response.ok) {
@@ -302,7 +290,6 @@ async function abrirModalActualizar(idVehiculo) {
 
         const vehiculo = await response.json();
 
-        // Llenar el formulario
         document.getElementById("upd_id").value = vehiculo.idVehiculos;
         document.getElementById("upd_placa").value = vehiculo.placa;
         document.getElementById("upd_color").value = vehiculo.color;
@@ -312,7 +299,6 @@ async function abrirModalActualizar(idVehiculo) {
         document.getElementById("upd_km").value = vehiculo.kilometraje;
         document.getElementById("upd_estado").value = vehiculo.estado.toLowerCase();
 
-        // Guardar kilometraje actual para validación
         kilometrajeActual = vehiculo.kilometraje;
 
         document.getElementById("modalActualizar").style.display = "flex";
@@ -333,7 +319,7 @@ async function actualizarVehiculo() {
     const km = document.getElementById("upd_km").value;
     const estado = document.getElementById("upd_estado").value;
 
-    // Validaciones
+    // validaciones
     const validacionPlaca = validarPlaca(placa);
     if (!validacionPlaca.valido) {
         mostrarError(validacionPlaca.mensaje);
@@ -370,7 +356,6 @@ async function actualizarVehiculo() {
         return;
     }
 
-    // Preparar datos
     const datos = {
         placa: validacionPlaca.valor,
         color: validacionColor.valor,
@@ -392,7 +377,6 @@ async function actualizarVehiculo() {
         const resultado = await response.json();
 
         if (resultado.exito) {
-            // Si cambió el estado, hacer llamada adicional
             const vehiculoActual = todosVehiculos.find(v => v.idVehiculos == idVehiculo);
             if (vehiculoActual && vehiculoActual.estado.toLowerCase() !== estado) {
                 await cambiarEstadoVehiculo(idVehiculo);
@@ -411,9 +395,7 @@ async function actualizarVehiculo() {
     }
 }
 
-// ============================================
-// CAMBIAR ESTADO (ACTIVAR/INACTIVAR)
-// ============================================
+// cambiar estado (activar/inactivar)
 async function cambiarEstadoVehiculo(idVehiculo) {
     try {
         const response = await fetch(`/api/vehiculos/cambiar-estado/${idVehiculo}`, {
@@ -432,9 +414,7 @@ async function cambiarEstadoVehiculo(idVehiculo) {
     }
 }
 
-// ============================================
-// FILTRAR VEHÍCULOS
-// ============================================
+// filtrar vehiculos
 function filtrarVehiculos() {
     const filtro = document.getElementById('filtro-estado-vehiculo').value;
 
@@ -447,9 +427,7 @@ function filtrarVehiculos() {
     mostrarVehiculosEnTabla(vehiculosFiltrados);
 }
 
-// ============================================
-// CERRAR MODALES
-// ============================================
+// cerrar modales
 function cerrarModal(id) {
     document.getElementById(id).style.display = "none";
 
@@ -463,7 +441,7 @@ function cerrarModal(id) {
     }
 }
 
-// Cerrar modal al hacer clic fuera
+// cerrar modal al hacer clic fuera
 document.addEventListener('click', function(e) {
     const modalCrear = document.getElementById('modalCrear');
     const modalActualizar = document.getElementById('modalActualizar');
@@ -476,7 +454,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Cerrar modal con tecla ESC
+// cerrar modal con tecla esc
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         cerrarModal('modalCrear');
@@ -484,7 +462,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Convertir placa a mayúsculas automáticamente
+// convertir placa a mayusculas automaticamente
 document.addEventListener('DOMContentLoaded', function() {
     const inputPlacaCrear = document.getElementById('crear_placa');
     const inputPlacaActualizar = document.getElementById('upd_placa');

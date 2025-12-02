@@ -1,18 +1,6 @@
-/**
- * SCRIPT PARA GESTIÓN DE NOVEDADES DEL ADMINISTRADOR
- * Funcionalidades: Filtro por estado, cambio de estado, lightbox para imágenes
- */
+// novedades.js - gestion de novedades del administrador
 
-
-console.log(`
-====================================
-   Bienvenido a la consola :)
-   No toques nada si no sabes.
-====================================
-`);
-// ============================================
-// FILTRO POR ESTADO
-// ============================================
+// filtro por estado
 document.addEventListener('DOMContentLoaded', function() {
     const filtroEstado = document.getElementById('filtroEstado');
     const tabla = document.getElementById('tablaNovedades');
@@ -34,12 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Verificar si hay filas visibles
             verificarFilasVisibles();
         });
     }
 
-    // Verificar si hay filas visibles para mostrar mensaje
     function verificarFilasVisibles() {
         const filasVisibles = Array.from(filas).filter(fila => fila.style.display !== 'none');
         const emptyRow = tabla.querySelector('.empty-row');
@@ -48,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const tbody = tabla.querySelector('tbody');
             const mensajeVacio = document.createElement('tr');
             mensajeVacio.className = 'empty-row temporal';
-            mensajeVacio.innerHTML = '<td colspan="10" class="empty-message">No hay novedades con este estado</td>';
+            mensajeVacio.innerHTML = '<td colspan="9" class="empty-message">No hay novedades con este estado</td>';
             tbody.appendChild(mensajeVacio);
         } else {
             const mensajeTemporal = tabla.querySelector('.temporal');
@@ -59,9 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ============================================
-// CAMBIO DE ESTADO
-// ============================================
+// cambio de estado
 document.addEventListener('DOMContentLoaded', function() {
     const selectsEstado = document.querySelectorAll('.cambiar-estado');
 
@@ -74,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (confirm('¿Está seguro de cambiar el estado de esta novedad?')) {
                 cambiarEstadoNovedad(idNovedad, nuevoEstado, this);
             } else {
-                // Revertir selección
                 this.value = estadoAnterior;
             }
         });
@@ -96,19 +79,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     alert(data.message);
 
-                    // Actualizar badge de estado visualmente
                     const fila = selectElement.closest('tr');
                     const badge = fila.querySelector('.estado-badge');
 
                     badge.textContent = estado;
                     badge.className = 'estado-badge ' + (estado === 'RESUELTO' ? 'estado-resuelto' : 'estado-pendiente');
 
-                    // Actualizar data-estado de la fila
                     fila.setAttribute('data-estado', estado);
 
                 } else {
                     alert('Error: ' + data.message);
-                    // Revertir cambio
                     location.reload();
                 }
             })
@@ -120,16 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ============================================
-// LIGHTBOX PARA VER IMÁGENES
-// ============================================
+// lightbox para ver imagenes
 document.addEventListener('DOMContentLoaded', function() {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxClose = document.querySelector('.lightbox-close');
     const botonesVerImagen = document.querySelectorAll('.btn-ver-imagen');
 
-    // Abrir lightbox al hacer clic en "Ver"
     botonesVerImagen.forEach(boton => {
         boton.addEventListener('click', function() {
             const rutaImagen = this.getAttribute('data-imagen');
@@ -138,21 +115,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Cerrar lightbox con X
     if (lightboxClose) {
         lightboxClose.addEventListener('click', function() {
             lightbox.style.display = 'none';
         });
     }
 
-    // Cerrar lightbox al hacer clic fuera de la imagen
     lightbox.addEventListener('click', function(e) {
         if (e.target === lightbox) {
             lightbox.style.display = 'none';
         }
     });
 
-    // Cerrar lightbox con tecla Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && lightbox.style.display === 'flex') {
             lightbox.style.display = 'none';

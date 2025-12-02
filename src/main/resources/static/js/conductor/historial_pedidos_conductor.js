@@ -1,30 +1,11 @@
-// ============================================
-// SCRIPT PARA HISTORIAL DE PEDIDOS ENTREGADOS
-// ============================================
+// historial_pedidos_conductor.js - funcionalidad especifica
 
-// ============================================
-// BOTÓN PARA ABRIR/CERRAR EL MENÚ
-// ============================================
-const botonMenu = document.querySelector('.toggle-btn');
-
-if (botonMenu) {
-    botonMenu.addEventListener('click', function () {
-        const menuLateral = document.getElementById('sidebar');
-        menuLateral.classList.toggle('active');
-    });
-}
-
-// ============================================
-// CUANDO LA PÁGINA CARGA
-// ============================================
+// cuando la pagina carga
 document.addEventListener('DOMContentLoaded', function() {
     cargarHistorialPedidos();
 });
 
-// ============================================
-// FUNCIÓN: cargarHistorialPedidos()
-// Obtiene el historial desde el servidor
-// ============================================
+// obtener historial desde el servidor
 function cargarHistorialPedidos() {
     fetch('/api/conductor/historial')
         .then(response => response.json())
@@ -42,10 +23,7 @@ function cargarHistorialPedidos() {
         });
 }
 
-// ============================================
-// FUNCIÓN: mostrarPedidosEnTabla(pedidos)
-// Muestra los pedidos en la tabla
-// ============================================
+// mostrar pedidos en la tabla
 function mostrarPedidosEnTabla(pedidos) {
     const tbody = document.getElementById('tablaBody');
     const tabla = document.getElementById('tablaPedidos');
@@ -64,7 +42,7 @@ function mostrarPedidosEnTabla(pedidos) {
     pedidos.forEach(pedido => {
         const fila = document.createElement('tr');
 
-        // Formatear fecha
+        // formatear fecha
         const fecha = new Date(pedido.fechaEntrega);
         const fechaFormateada = fecha.toLocaleDateString('es-CO');
 
@@ -77,7 +55,7 @@ function mostrarPedidosEnTabla(pedidos) {
             <td>${pedido.cantidadTotal} unidades</td>
             <td>
                 <button class="btn-accion btn-ver" onclick="verDetalle(${pedido.idPedido})">
-                    <i class="fas fa-eye"></i> Ver
+                    Ver
                 </button>
             </td>
         `;
@@ -86,19 +64,13 @@ function mostrarPedidosEnTabla(pedidos) {
     });
 }
 
-// ============================================
-// FUNCIÓN: mostrarSinPedidos()
-// Muestra mensaje cuando no hay pedidos
-// ============================================
+// mostrar mensaje cuando no hay pedidos
 function mostrarSinPedidos() {
     document.getElementById('tablaPedidos').style.display = 'none';
     document.getElementById('sin-pedidos').style.display = 'block';
 }
 
-// ============================================
-// FUNCIÓN: filtrarPedidos()
-// Filtra los pedidos según el texto de búsqueda
-// ============================================
+// filtrar pedidos segun texto de busqueda
 function filtrarPedidos() {
     const textoBusqueda = document.getElementById('busqueda').value.toLowerCase();
     const filas = document.querySelectorAll('#tablaBody tr');
@@ -114,35 +86,31 @@ function filtrarPedidos() {
     });
 }
 
-// ============================================
-// FUNCIÓN: verDetalle(idPedido)
-// Abre el modal con los detalles del pedido
-// ============================================
+// abrir modal con detalles del pedido
 function verDetalle(idPedido) {
     document.getElementById('pedidoId').textContent = idPedido;
 
-    // Obtener detalles del pedido
     fetch('/api/conductor/detalle-pedido/' + idPedido)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 const detalle = data.detalle;
 
-                // Información del cliente
+                // informacion del cliente
                 document.getElementById('clienteNombre').textContent = detalle.clienteNombre || 'N/A';
                 document.getElementById('clienteDireccion').textContent = detalle.direccion || 'N/A';
 
-                // Fecha de entrega
+                // fecha de entrega
                 if (detalle.fechaEntrega) {
                     const fecha = new Date(detalle.fechaEntrega);
                     document.getElementById('fechaEntrega').textContent = fecha.toLocaleString('es-CO');
                 }
 
-                // Comentarios
+                // comentarios
                 document.getElementById('comentarioCliente').textContent = detalle.detalleCliente || 'Sin comentarios';
                 document.getElementById('comentarioConductor').textContent = detalle.observacionConductor || 'Sin observaciones';
 
-                // Productos
+                // productos
                 const lista = document.getElementById('listaProductos');
                 lista.innerHTML = '';
 
@@ -163,18 +131,13 @@ function verDetalle(idPedido) {
         });
 }
 
-// ============================================
-// FUNCIÓN: cerrarModal()
-// Cierra el modal de detalles
-// ============================================
+// cerrar modal
 function cerrarModal() {
     const modal = document.getElementById('modalDetallePedido');
     modal.style.display = 'none';
 }
 
-// ============================================
-// CERRAR MODAL AL HACER CLIC FUERA
-// ============================================
+// cerrar modal al hacer clic fuera
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('modalDetallePedido');
 

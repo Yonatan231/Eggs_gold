@@ -1,481 +1,505 @@
-/* ============================================
-   ESTILOS PARA HISTORIAL DE PEDIDOS ENTREGADOS
-   Versión simplificada para principiantes
-   ============================================ */
+/* historial_pedidos_conductor.css - estilos especificos */
 
-/* ============================================
-   CONTENEDOR PRINCIPAL DE LA TABLA
-   ============================================ */
-.tabla-contenedor {
-    max-width: 1400px; /* Ancho máximo */
-    margin: 40px auto; /* Centrado con espacio arriba y abajo */
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 12px; /* Esquinas redondeadas */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra suave */
-    overflow: hidden; /* Oculta lo que sobresale */
+:root {
+    --color-verde: #27AE60;
+    --color-amarillo: #F7DC6F;
+    --color-naranja: #f39c12;
+    --color-azul: #3498db;
+    --color-gris: #95a5a6;
+    --color-fondo: #FFFEF5;
 }
 
-/* ============================================
-   ENCABEZADO DE LA TABLA
-   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFEF5;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* contenido principal */
+main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+/* cabecera (solo desktop) */
+header[role="banner"] {
+    background: #ffffff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+.opciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+}
+
+.marca-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.marca-texto .titulo {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    font-weight: 700;
+    margin: 0;
+}
+
+.marca-texto .subtitulo {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.titulo2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.resaltado {
+    color: var(--color-verde);
+    font-weight: bold;
+}
+
+/* contenedor principal de la tabla */
+.tabla-contenedor {
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* encabezado de la tabla */
 .tabla-header {
-    padding: 25px 30px; /* Espacio interno */
-    background: #27AE60;
-    color: white; /* Texto blanco */
-    display: flex; /* Organiza en fila */
-    justify-content: space-between; /* Espacio entre elementos */
-    align-items: center; /* Centra verticalmente */
-    flex-wrap: wrap; /* Permite ajuste en móviles */
-    gap: 15px; /* Espacio entre elementos */
+    padding: 25px 30px;
+    background: var(--color-verde);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .tabla-header h2 {
-    margin: 0; /* Sin márgenes */
-    font-size: 22px; /* Tamaño del texto */
-    font-weight: 700; /* Texto en negrita */
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Contador de pedidos */
-.contador-pedidos {
-    background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco semi-transparente */
-    padding: 8px 16px; /* Espacio interno */
-    border-radius: 20px; /* Esquinas muy redondeadas */
-    font-size: 14px; /* Tamaño del texto */
-    font-weight: 600; /* Texto en negrita */
-}
-
-.contador-pedidos span {
-    background-color: #fff; /* Fondo blanco */
-    color: #27AE60;
-    padding: 2px 10px; /* Espacio interno */
-    border-radius: 12px; /* Esquinas redondeadas */
-    margin-right: 5px; /* Espacio a la derecha */
-    font-weight: 700; /* Texto en negrita */
-}
-
-/* ============================================
-   BARRA DE BÚSQUEDA
-   ============================================ */
+/* barra de busqueda */
 .busqueda-contenedor {
-    padding: 20px 30px; /* Espacio interno */
-    border-bottom: 1px solid #eee; /* Línea divisoria */
-    position: relative; /* Para posicionar el icono */
+    padding: 20px 30px;
+    border-bottom: 1px solid #eee;
+    position: relative;
 }
 
 .icono-busqueda {
-    position: absolute; /* Posición absoluta */
-    left: 45px; /* Separación desde la izquierda */
-    top: 50%; /* Centrado vertical */
-    transform: translateY(-50%); /* Ajuste fino del centrado */
-    color: #999; /* Color gris */
-    font-size: 16px; /* Tamaño del icono */
+    position: absolute;
+    left: 45px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
 }
 
 #busqueda {
-    width: 100%; /* Ocupa todo el ancho */
-    padding: 12px 12px 12px 40px; /* Espacio interno (más a la izquierda para el icono) */
-    border: 2px solid #e0e0e0; /* Borde gris claro */
-    border-radius: 8px; /* Esquinas redondeadas */
-    font-size: 14px; /* Tamaño del texto */
-    transition: border-color 0.3s; /* Animación suave */
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
 }
 
 #busqueda:focus {
-    outline: none; /* Quita el borde predeterminado */
-    border-color: #27AE60;
+    outline: none;
+    border-color: var(--color-verde);
 }
 
-/* ============================================
-   CONTENEDOR DE LA TABLA CON SCROLL
-   ============================================ */
-.tabla-wrapper {
-    overflow-x: auto; /* Permite scroll horizontal si es necesario */
-    padding: 30px; /* Espacio interno */
+/* contenedor con scroll horizontal */
+.tabla-contenedor-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    padding: 30px;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* ============================================
-   ESTILOS DE LA TABLA
-   ============================================ */
-table {
-    width: 100%; /* Ocupa todo el ancho */
-    border-collapse: collapse; /* Une los bordes de las celdas */
+/* personalizar barra de scroll */
+.tabla-contenedor-scroll::-webkit-scrollbar {
+    height: 8px;
 }
 
-/* Encabezado de la tabla */
-thead {
-    background-color: #f8f9fa; /* Fondo gris muy claro */
+.tabla-contenedor-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
-th {
-    padding: 15px 12px; /* Espacio interno */
-    text-align: left; /* Texto alineado a la izquierda */
-    font-weight: 600; /* Texto en negrita */
-    color: #333; /* Color oscuro */
-    border-bottom: 2px solid #27AE60;
-    font-size: 14px; /* Tamaño del texto */
-    white-space: nowrap; /* El texto no se divide en varias líneas */
+.tabla-contenedor-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
 }
 
-/* Filas del cuerpo de la tabla */
-tbody tr {
-    border-bottom: 1px solid #eee; /* Línea divisoria sutil */
-    transition: background-color 0.2s; /* Animación suave */
+.tabla-contenedor-scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
-tbody tr:hover {
-    background-color: #f8f9fa; /* Fondo gris claro al pasar el mouse */
+/* tabla con ancho minimo */
+.tabla-datos {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    white-space: nowrap;
 }
 
-/* Celdas de la tabla */
-td {
-    padding: 15px 12px; /* Espacio interno */
-    color: #555; /* Color gris oscuro */
-    font-size: 14px; /* Tamaño del texto */
-    text-align: center; /* Texto centrado */
+.tabla-datos th,
+.tabla-datos td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
 }
 
-/* ============================================
-   BOTONES DE ACCIÓN
-   ============================================ */
+.tabla-datos th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-verde);
+}
+
+.tabla-datos tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* botones de accion */
 .btn-accion {
-    padding: 8px 16px; /* Espacio interno */
-    border: none; /* Sin borde */
-    border-radius: 6px; /* Esquinas redondeadas */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 13px; /* Tamaño del texto */
-    font-weight: 600; /* Texto en negrita */
-    margin: 2px; /* Pequeño margen entre botones */
-    white-space: nowrap; /* El texto no se divide */
-    transition: all 0.3s; /* Animación suave */
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 2px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
 }
 
-/* Botón Ver */
 .btn-ver {
-    background-color: #27AE60;
-    color: white; /* Texto blanco */
-}
-
-.btn-ver:hover {
-    background-color: #27AE60;
-    transform: translateY(-2px); /* Efecto de elevación */
-}
-
-.btn-ver i {
-    margin-right: 5px; /* Espacio entre icono y texto */
-}
-
-/* ============================================
-   MENSAJE CUANDO NO HAY PEDIDOS
-   ============================================ */
-.sin-pedidos {
-    text-align: center; /* Texto centrado */
-    padding: 60px 20px; /* Espacio interno */
-    color: #999; /* Color gris */
-}
-
-.sin-pedidos .icono-vacio {
-    font-size: 48px; /* Icono grande */
-    color: #ddd; /* Color gris claro */
-    margin-bottom: 15px; /* Espacio abajo */
-}
-
-.sin-pedidos p {
-    font-size: 18px; /* Tamaño del texto */
-    margin: 0; /* Sin márgenes */
-}
-
-/* ============================================
-   MODAL (Ventana emergente)
-   ============================================ */
-.modal {
-    display: none; /* Oculto por defecto */
-    position: fixed; /* Se queda fijo en la pantalla */
-    top: 0; /* Pegado arriba */
-    left: 0; /* Pegado a la izquierda */
-    width: 100%; /* Ocupa todo el ancho */
-    height: 100%; /* Ocupa todo el alto */
-    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    z-index: 1000; /* Aparece encima de todo */
-}
-
-/* Contenido del modal */
-.modal-contenido {
-    background: white; /* Fondo blanco */
-    border-radius: 12px; /* Esquinas redondeadas */
-    padding: 30px; /* Espacio interno */
-    width: 90%; /* Ancho del 90% */
-    max-width: 700px; /* Ancho máximo */
-    max-height: 90vh; /* Altura máxima */
-    overflow-y: auto; /* Permite scroll si el contenido es largo */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
-    position: relative; /* Para posicionar el botón cerrar */
-}
-
-.modal-contenido h2 {
-    margin-bottom: 25px; /* Espacio abajo */
-    color: #2c3e50; /* Color oscuro */
-    text-align: center; /* Texto centrado */
-    font-size: 24px; /* Tamaño del título */
-    border-bottom: 2px solid #27AE60;
-    padding-bottom: 15px; /* Espacio interno abajo */
-}
-
-/* Botón para cerrar (X) */
-.cerrar {
-    position: absolute; /* Se posiciona en la esquina */
-    top: 15px; /* Separación desde arriba */
-    right: 20px; /* Separación desde la derecha */
-    font-size: 28px; /* Tamaño grande */
-    font-weight: bold; /* Texto en negrita */
-    cursor: pointer; /* Cambia el cursor a manita */
-    color: #999; /* Color gris */
-    transition: color 0.3s; /* Animación suave */
-}
-
-.cerrar:hover {
-    color: #e74c3c; /* Se vuelve rojo */
-}
-
-/* ============================================
-   INFORMACIÓN DEL CLIENTE EN EL MODAL
-   ============================================ */
-.info-cliente {
-    background-color: #f8f9fa; /* Fondo gris claro */
-    padding: 20px; /* Espacio interno */
-    border-radius: 8px; /* Esquinas redondeadas */
-    margin-bottom: 20px; /* Espacio abajo */
-    border-left: 4px solid #3498db; /* Línea azul a la izquierda */
-}
-
-.info-cliente h3 {
-    font-size: 16px; /* Tamaño del subtítulo */
-    color: #2c3e50; /* Color oscuro */
-    margin-bottom: 15px; /* Espacio abajo */
-    display: flex; /* Para alinear icono y texto */
-    align-items: center; /* Centra verticalmente */
-}
-
-.info-cliente h3 i {
-    margin-right: 8px; /* Espacio entre icono y texto */
-    color: #3498db; /* Color azul */
-}
-
-.info-cliente p {
-    margin: 10px 0; /* Espacio arriba y abajo */
-    font-size: 14px; /* Tamaño del texto */
-    color: #555; /* Color gris oscuro */
-}
-
-/* ============================================
-   SECCIÓN DE COMENTARIOS
-   ============================================ */
-.comentarios-section {
-    margin-bottom: 20px; /* Espacio abajo */
-}
-
-.comentario-item {
-    background-color: #fffbea; /* Fondo amarillo claro */
-    padding: 15px; /* Espacio interno */
-    border-radius: 8px; /* Esquinas redondeadas */
-    margin-bottom: 15px; /* Espacio abajo */
-    border-left: 4px solid #f39c12; /* Línea naranja a la izquierda */
-}
-
-.comentario-item h3 {
-    font-size: 14px; /* Tamaño del subtítulo */
-    color: #2c3e50; /* Color oscuro */
-    margin-bottom: 10px; /* Espacio abajo */
-    display: flex; /* Para alinear icono y texto */
-    align-items: center; /* Centra verticalmente */
-}
-
-.comentario-item h3 i {
-    margin-right: 8px; /* Espacio entre icono y texto */
-    color: #f39c12; /* Color naranja */
-}
-
-.comentario-texto {
-    margin: 0; /* Sin márgenes */
-    font-size: 14px; /* Tamaño del texto */
-    color: #555; /* Color gris oscuro */
-    font-style: italic; /* Texto en cursiva */
-}
-
-/* ============================================
-   DETALLE DE PRODUCTOS EN EL MODAL
-   ============================================ */
-.detalle-productos {
-    margin-bottom: 20px; /* Espacio abajo */
-}
-
-.detalle-productos h3 {
-    font-size: 16px; /* Tamaño del subtítulo */
-    color: #2c3e50; /* Color oscuro */
-    margin-bottom: 15px; /* Espacio abajo */
-    display: flex; /* Para alinear icono y texto */
-    align-items: center; /* Centra verticalmente */
-}
-
-.detalle-productos h3 i {
-    margin-right: 8px; /* Espacio entre icono y texto */
-    color: #27ae60; /* Color verde */
-}
-
-/* Lista de productos */
-.lista-productos {
-    list-style: none; /* Quita los puntos de la lista */
-    padding: 0; /* Sin espacio interno */
-}
-
-.lista-productos li {
-    padding: 15px; /* Espacio interno */
-    background-color: #f8f9fa; /* Fondo gris claro */
-    margin-bottom: 10px; /* Espacio abajo */
-    border-radius: 6px; /* Esquinas redondeadas */
-    border-left: 4px solid #27ae60; /* Línea verde a la izquierda */
-    font-size: 14px; /* Tamaño del texto */
-    color: #333; /* Color oscuro */
-    display: flex; /* Para organizar el contenido */
-    align-items: center; /* Centra verticalmente */
-}
-
-.lista-productos li::before {
-    content: "🥚"; /* Emoji de huevo */
-    margin-right: 10px; /* Espacio a la derecha */
-    font-size: 18px; /* Tamaño del emoji */
-}
-
-/* ============================================
-   BOTONES DEL MODAL
-   ============================================ */
-.modal-botones {
-    display: flex; /* Organiza los botones en fila */
-    justify-content: center; /* Centrados */
-    gap: 10px; /* Espacio entre botones */
-    margin-top: 25px; /* Espacio arriba */
-}
-
-/* Botones del modal */
-.btn-modal {
-    padding: 12px 25px; /* Espacio interno */
-    border: none; /* Sin borde */
-    border-radius: 6px; /* Esquinas redondeadas */
-    cursor: pointer; /* Cambia el cursor a manita */
-    font-size: 14px; /* Tamaño del texto */
-    font-weight: 600; /* Texto en negrita */
-    transition: all 0.3s; /* Animación suave */
-}
-
-/* Botón Cerrar del modal */
-.btn-cerrar {
-    background: #95a5a6; /* Fondo gris */
-    color: white; /* Texto blanco */
-}
-
-.btn-cerrar:hover {
-    background: #7f8c8d; /* Gris más oscuro */
-    transform: translateY(-2px); /* Efecto de elevación */
-}
-
-.btn-cerrar i {
-    margin-right: 5px; /* Espacio entre icono y texto */
-}
-
-/* ============================================
-   RESPONSIVE PARA MÓVILES
-   ============================================ */
-@media (max-width: 1024px) {
-    .tabla-contenedor {
-        margin: 20px; /* Menos margen en tablets */
-    }
-
-    .tabla-wrapper {
-        padding: 20px; /* Menos espacio interno */
-    }
-
-    table {
-        font-size: 13px; /* Texto más pequeño */
-    }
-
-    th, td {
-        padding: 10px 8px; /* Menos espacio interno */
-    }
-}
-
-@media (max-width: 768px) {
-    .tabla-header {
-        flex-direction: column; /* Organiza en columna */
-        align-items: flex-start; /* Alinea a la izquierda */
-    }
-
-    .busqueda-contenedor {
-        padding: 15px 20px; /* Menos espacio interno */
-    }
-
-    .icono-busqueda {
-        left: 35px; /* Ajuste de posición */
-    }
-
-    .tabla-wrapper {
-        padding: 15px; /* Menos espacio interno */
-    }
-
-    .modal-contenido {
-        width: 95%; /* Más ancho en móviles */
-        padding: 20px; /* Menos espacio interno */
-    }
-
-    .modal-botones {
-        flex-direction: column; /* Botones en columna */
-    }
-
-    .btn-modal {
-        width: 100%; /* Botones ocupan todo el ancho */
-        justify-content: center; /* Centra el contenido */
-    }
-
-    table {
-        font-size: 12px; /* Texto más pequeño */
-    }
-
-    th, td {
-        padding: 8px 6px; /* Menos espacio interno */
-    }
-
-    .btn-accion {
-        padding: 6px 10px; /* Botones más pequeños */
-        font-size: 12px; /* Texto más pequeño */
-    }
-}
-
-/* Modal para entregar pedido */
-.btn-confirmar {
-    background-color: #27AE60;
+    background-color: var(--color-verde);
     color: white;
 }
 
-.btn-confirmar:hover {
+.btn-ver:hover {
     background-color: #229954;
 }
 
-.form-group {
-    margin: 20px 0;
+/* mensaje sin pedidos */
+.sin-pedidos {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
 }
 
-.form-group label {
+.sin-pedidos i {
+    font-size: 48px;
+    color: #ddd;
+    margin-bottom: 15px;
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
+}
+
+.sin-pedidos p {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-contenido {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.modal-contenido h2 {
+    margin-bottom: 25px;
+    color: #2c3e50;
+    text-align: center;
+    font-size: 24px;
+    border-bottom: 2px solid var(--color-verde);
+    padding-bottom: 15px;
+}
+
+.cerrar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    transition: color 0.3s;
+}
+
+.cerrar:hover {
+    color: #e74c3c;
+}
+
+/* info cliente en modal */
+.info-cliente {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--color-azul);
+}
+
+.info-cliente h3 {
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.info-cliente h3 i {
+    margin-right: 8px;
+    color: var(--color-azul);
+}
+
+.info-cliente p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* seccion de comentarios */
+.comentarios-section {
+    margin-bottom: 20px;
+}
+
+.comentario-item {
+    background-color: #fffbea;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--color-naranja);
+}
+
+.comentario-item h3 {
+    font-size: 14px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.comentario-item h3 i {
+    margin-right: 8px;
+    color: var(--color-naranja);
+}
+
+.comentario-texto {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+    font-style: italic;
+}
+
+/* detalle productos en modal */
+.detalle-productos {
+    margin-bottom: 20px;
+}
+
+.detalle-productos h3 {
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.detalle-productos h3 i {
+    margin-right: 8px;
+    color: var(--color-verde);
+}
+
+.lista-productos {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-productos li {
+    padding: 15px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border-left: 4px solid var(--color-verde);
+    font-size: 14px;
     color: #333;
+    display: flex;
+    align-items: center;
 }
 
-.form-group i {
+.lista-productos li::before {
+    content: "🥚";
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* botones del modal */
+.modal-botones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn-modal {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-cerrar {
+    background: var(--color-gris);
+    color: white;
+}
+
+.btn-cerrar:hover {
+    background: #7f8c8d;
+}
+
+.btn-cerrar i {
     margin-right: 5px;
-    color: #27AE60;
 }
 
-/* ============================================
-   FIN DE LOS ESTILOS
-   ============================================ */
+/* responsive */
+@media (max-width: 768px) {
+    main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .titulo2 {
+        font-size: 18px;
+    }
+
+    .tabla-contenedor {
+        margin: 0;
+    }
+
+    .tabla-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .busqueda-contenedor {
+        padding: 15px 20px;
+    }
+
+    .icono-busqueda {
+        left: 35px;
+    }
+
+    .tabla-contenedor-scroll {
+        padding: 15px;
+    }
+
+    .tabla-datos {
+        min-width: 900px;
+    }
+
+    .modal-contenido {
+        width: 95%;
+        padding: 20px;
+        height: 80vh;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .modal-botones {
+        flex-direction: column;
+    }
+
+    .btn-modal {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo2 {
+        font-size: 16px;
+    }
+
+    .tabla-header h2 {
+        font-size: 18px;
+    }
+
+    .tabla-datos {
+        min-width: 800px;
+    }
+
+    .btn-accion {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}

@@ -1,31 +1,18 @@
-// ============================================
-// SCRIPT PARA PEDIDOS PENDIENTES
-// Gestiona la visualización y toma de pedidos
-// Versión básica para principiantes
-// ============================================
+// pedidos_pendientes.js - funcionalidad especifica
 
-// ============================================
-// CUANDO LA PÁGINA CARGA
-// Ejecuta estas funciones automáticamente
-// ============================================
+// cuando la pagina carga
 document.addEventListener('DOMContentLoaded', function() {
-    cargarPedidosPendientes(); // Cargar pedidos del servidor
+    cargarPedidosPendientes();
 });
 
-// ============================================
-// FUNCIÓN: cargarPedidosPendientes()
-// Obtiene los pedidos PENDIENTES del servidor
-// ============================================
+// obtener pedidos pendientes del servidor
 function cargarPedidosPendientes() {
-    // Hacer petición al servidor
     fetch('/api/logistica/pedidos-pendientes')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Si hay pedidos, mostrarlos en la tabla
                 mostrarPedidos(data.pedidos);
             } else {
-                // Si hay error, mostrarlo
                 mostrarMensaje('Error al cargar pedidos: ' + data.message, 'error');
             }
         })
@@ -35,20 +22,15 @@ function cargarPedidosPendientes() {
         });
 }
 
-// ============================================
-// FUNCIÓN: mostrarPedidos(pedidos)
-// Muestra los pedidos en la tabla
-// ============================================
+// mostrar pedidos en la tabla
 function mostrarPedidos(pedidos) {
     const tbody = document.getElementById('tablaBody');
     const tablaPedidos = document.getElementById('tablaPedidos');
     const sinPedidos = document.getElementById('sin-pedidos');
     const contador = document.getElementById('contador');
 
-    // Limpiar la tabla
     tbody.innerHTML = '';
 
-    // Si no hay pedidos
     if (pedidos.length === 0) {
         tablaPedidos.style.display = 'none';
         sinPedidos.style.display = 'block';
@@ -56,16 +38,13 @@ function mostrarPedidos(pedidos) {
         return;
     }
 
-    // Mostrar la tabla
     tablaPedidos.style.display = 'table';
     sinPedidos.style.display = 'none';
     contador.textContent = pedidos.length;
 
-    // Agregar cada pedido a la tabla
     pedidos.forEach(pedido => {
         const fila = document.createElement('tr');
 
-        // Formatear la fecha
         const fecha = new Date(pedido.fechaCreacion);
         const fechaFormateada = fecha.toLocaleString('es-CO', {
             year: 'numeric',
@@ -74,9 +53,6 @@ function mostrarPedidos(pedidos) {
             hour: '2-digit',
             minute: '2-digit'
         });
-
-        // Formatear el precio total
-        const precioTotal = pedido.precioTotal ? `$${pedido.precioTotal.toLocaleString('es-CO')}` : '$0';
 
         fila.innerHTML = `
             <td>${pedido.idPedido}</td>
@@ -95,17 +71,12 @@ function mostrarPedidos(pedidos) {
     });
 }
 
-// ============================================
-// FUNCIÓN: tomarPedido(idPedido)
-// Toma un pedido y lo asigna al usuario
-// ============================================
+// tomar un pedido
 function tomarPedido(idPedido) {
-    // Confirmar acción
     if (!confirm('¿Deseas tomar el pedido #' + idPedido + '?')) {
         return;
     }
 
-    // Hacer petición al servidor
     fetch('/api/logistica/tomar-pedido/' + idPedido, {
         method: 'POST',
         headers: {
@@ -115,10 +86,8 @@ function tomarPedido(idPedido) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Mensaje de éxito
                 mostrarMensaje(data.message, 'success');
 
-                // Recargar pedidos
                 setTimeout(() => {
                     cargarPedidosPendientes();
                 }, 500);
@@ -132,10 +101,7 @@ function tomarPedido(idPedido) {
         });
 }
 
-// ============================================
-// FUNCIÓN: mostrarMensaje(texto, tipo)
-// Muestra mensajes al usuario
-// ============================================
+// mostrar mensajes al usuario
 function mostrarMensaje(texto, tipo) {
     let mensaje;
 
@@ -145,16 +111,10 @@ function mostrarMensaje(texto, tipo) {
         mensaje = document.getElementById('mensaje-error');
     }
 
-    // Mostrar el mensaje
     mensaje.textContent = texto;
     mensaje.style.display = 'block';
 
-    // Ocultar el mensaje después de 3 segundos
     setTimeout(function() {
         mensaje.style.display = 'none';
     }, 3000);
 }
-
-// ============================================
-// FIN DEL SCRIPT
-// ============================================

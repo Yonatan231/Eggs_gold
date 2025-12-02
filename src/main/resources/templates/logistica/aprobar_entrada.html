@@ -6,84 +6,116 @@
     <title>Aprobar Entradas de Stock - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}" />
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Estilos base -->
-    <link rel="stylesheet" th:href="@{/css/conductor/conductor_inicio.css}" />
+    <!-- estilos reutilizables -->
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
+    <!-- estilos especificos -->
     <link rel="stylesheet" th:href="@{/css/logistica/aprobar_entrada.css}" />
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
 
 <body>
 
-<!-- Sidebar -->
+<!-- header responsive (moviles/tablets) -->
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+
+        <h1 class="header-title">
+            Aprobar <span class="resaltado">Entradas</span>
+        </h1>
+
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
+
+<!-- menu lateral -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">LG</span>
-                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
-                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
+                <input type="file" id="input-foto" accept="image/*" style="display: none;">
             </div>
             <h2>Panel de Logística</h2>
         </li>
-        <li><a th:href="@{/logistica_inicio}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+
+        <li>
+            <a th:href="@{/logistica_inicio}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </li>
+
+        <li>
+            <a href="/logout" id="cerrar_sesion">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
     </ul>
 </nav>
 
-<!-- Contenido principal -->
+<!-- contenido principal -->
 <main id="main-content">
-    <header>
+    <!-- cabecera (solo desktop) -->
+    <header role="banner">
         <div class="opciones">
             <div class="marca-contenedor">
                 <div class="logo">
                     <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
                 </div>
+
                 <div class="marca-texto">
                     <h1 class="titulo">Eggs Gold</h1>
                     <p class="subtitulo">Huevos frescos a tu puerta</p>
                 </div>
             </div>
-            <h1 class="titulo2"><i class="fas fa-clipboard-check"></i> Aprobación de Entradas de Stock</h1>
+
+            <h1 class="titulo2">Aprobación de <span class="resaltado">Entradas</span></h1>
         </div>
     </header>
 
-    <!-- Mensajes -->
+    <!-- mensajes -->
     <div id="mensaje-success" class="alert alert-success" style="display: none;"></div>
     <div id="mensaje-error" class="alert alert-error" style="display: none;"></div>
 
-    <!-- Contenedor de la tabla -->
+    <!-- contenedor de la tabla -->
     <div class="tabla-contenedor">
         <div class="tabla-header">
-            <h2><i class="fas fa-list-alt"></i> Entradas Pendientes de Aprobación</h2>
+            <h2>Entradas Pendientes de Aprobación</h2>
             <div class="contador-pendientes">
                 <span id="contador">0</span> entradas pendientes
             </div>
         </div>
 
-        <!-- Tabla de entradas -->
-        <div class="tabla-wrapper">
-            <table id="tablaEntradas">
+        <!-- tabla con scroll horizontal -->
+        <div class="tabla-contenedor-scroll">
+            <table id="tablaEntradas" class="tabla-datos">
                 <thead>
                 <tr>
-                    <th><i class="fas fa-hashtag"></i> ID</th>
-                    <th><i class="fas fa-box"></i> Producto</th>
-                    <th><i class="fas fa-sort-numeric-up"></i> Cantidad</th>
-                    <th><i class="fas fa-truck"></i> Proveedor</th>
-                    <th><i class="fas fa-calendar-alt"></i> Fecha</th>
-                    <th><i class="fas fa-comment"></i> Observación</th>
-                    <th><i class="fas fa-tools"></i> Acción</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Proveedor</th>
+                    <th>Fecha</th>
+                    <th>Observación</th>
+                    <th>Acción</th>
                 </tr>
                 </thead>
                 <tbody id="tablaBody">
-                <!-- Filas se cargarán dinámicamente -->
                 </tbody>
             </table>
 
-            <!-- Mensaje cuando no hay entradas -->
+            <!-- mensaje cuando no hay entradas -->
             <div id="sin-entradas" class="sin-entradas" style="display: none;">
                 <i class="fas fa-check-circle"></i>
                 <p>No hay entradas pendientes de aprobación</p>
@@ -92,11 +124,16 @@
     </div>
 </main>
 
+<!-- scripts reutilizables (primero) -->
+<script th:src="@{/js/utils/sidebar.js}"></script>
+
+<!-- scripts especificos (despues) -->
 <script th:src="@{/js/logistica/aprobar_entrada.js}"></script>
-<script th:src="@{/js/utils/foto_panel.js}"></script>
+
+<!-- scripts de sesion y validacion -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
-<script> validarRolPagina('LOGISTICA' || 'ADMIN'); </script>
+<script> validarRolPagina('LOGISTICA'); </script>
 
 </body>
 </html>

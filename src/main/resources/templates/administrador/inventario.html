@@ -6,18 +6,34 @@
     <title>Inventario - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
 
-    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Estilos base -->
-    <link rel="stylesheet" th:href="@{css/conductor/conductor_inicio.css}" />
-    <link rel="stylesheet" th:href="@{css/administrador/inventario.css}" />
-    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
+    <!-- Archivos reutilizables -->
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
 
+    <!-- CSS específico de esta vista -->
+    <link rel="stylesheet" th:href="@{/css/administrador/inventario.css}" />
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
 
 <body>
+
+<!-- Header Responsive (móviles/tablets) -->
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+        <h1 class="header-title">
+            Inventario
+        </h1>
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
 
 <!-- Sidebar -->
 <nav id="sidebar">
@@ -25,22 +41,42 @@
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">AD</span>
-                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;" />
 
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
                 <input type="file" id="input-foto" accept="image/*" style="display: none;" />
             </div>
             <h2>Panel de Administración</h2>
         </li>
-        <li><a th:href="@{/administrador_inicio}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a th:href="@{/registrar_producto}" class="nav-link"><i class="fas fa-plus-circle"></i> Agregar Producto</a></li>
-        <li><a th:href="@{/entrada_stock}" class="nav-link"><i class="fas fa-truck-loading"></i> Llegada Stock</a></li>
-        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <li>
+            <a th:href="@{/administrador_inicio}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/registrar_producto}">
+                <i class="fas fa-plus-circle"></i> Agregar Producto
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/entrada_stock}">
+                <i class="fas fa-truck-loading"></i> Llegada Stock
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/logout}">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
     </ul>
 </nav>
 
 <!-- Contenido principal -->
 <main id="main-content">
-    <header>
+    <!-- Header Desktop -->
+    <header role="banner">
         <div class="opciones">
             <div class="marca-contenedor">
                 <div class="logo">
@@ -52,6 +88,7 @@
                     <p class="subtitulo">Huevos frescos a tu puerta</p>
                 </div>
             </div>
+
             <h1 class="titulo2">Inventario</h1>
         </div>
     </header>
@@ -82,9 +119,9 @@
         </select>
     </div>
 
-    <!-- Tabla de inventario -->
-    <div class="contenedor-tabla">
-        <table>
+    <!-- Tabla de inventario con scroll horizontal -->
+    <div class="tabla-contenedor-scroll">
+        <table class="tabla-datos">
             <thead>
             <tr>
                 <th>Código Producto</th>
@@ -184,8 +221,11 @@
     </div>
 </div>
 
+<!-- Scripts reutilizables -->
+<script th:src="@{/js/utils/sidebar.js}"></script>
+
+<!-- Scripts específicos -->
 <script th:src="@{/js/administrador/inventario.js}"></script>
-<script th:src="@{/js/utils/foto_panel.js}"></script>
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('ADMIN'); </script>

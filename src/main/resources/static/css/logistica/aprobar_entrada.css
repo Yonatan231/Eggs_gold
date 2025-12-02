@@ -1,188 +1,101 @@
+/* aprobar_entrada.css - estilos especificos */
+
+:root {
+    --color-verde: #27AE60;
+    --color-amarillo: #F7DC6F;
+    --color-gris: #95a5a6;
+    --color-fondo: ;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FEFCF4;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* contenido principal */
+main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    padding-bottom: 40px;
+    transition: margin-left 0.3s ease;
+}
+
+/* cabecera (solo desktop) */
+header[role="banner"] {
+    background: #ffffff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+.opciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+}
+
 .marca-contenedor {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-body {
-    background-color: #FEFCF4;
+.logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-main {
-    padding-bottom: 40px;
-}
-
-/* Contenedor de la tabla */
-.tabla-contenedor {
-    max-width: 1200px;
-    margin: 40px auto;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    overflow: hidden;
-}
-
-.tabla-header {
-    padding: 25px 30px;
-    background: linear-gradient(135deg, #27AE60 0%, #229954 100%);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.tabla-header h2 {
+.marca-texto .titulo {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    font-weight: 700;
     margin: 0;
-    font-size: 22px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
-.contador-pendientes {
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
+.marca-texto .subtitulo {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.titulo2 {
+    font-size: 1.5rem;
     font-weight: 600;
-}
-
-.contador-pendientes span {
-    background-color: #F7DC6F;
-    color: #333;
-    padding: 2px 10px;
-    border-radius: 12px;
-    margin-right: 5px;
-    font-weight: 700;
-}
-
-/* Tabla */
-.tabla-wrapper {
-    overflow-x: auto;
-    padding: 30px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-thead {
-    background-color: #f8f9fa;
-}
-
-th {
-    padding: 15px 12px;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    border-bottom: 2px solid #27AE60;
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-th i {
-    margin-right: 5px;
-    color: #27AE60;
-}
-
-tbody tr {
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s;
-}
-
-tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-td {
-    padding: 15px 12px;
-    color: #555;
-    font-size: 14px;
-}
-
-/* Inputs dentro de la tabla */
-input[type="number"],
-input[type="text"] {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    box-sizing: border-box;
-}
-
-input[type="number"]:focus,
-input[type="text"]:focus {
-    border-color: #27AE60;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
-}
-
-input[type="number"] {
-    min-width: 80px;
-}
-
-input[type="text"] {
-    min-width: 150px;
-}
-
-/* Botón aprobar */
-.btn-approve {
-    background-color: #27AE60;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.3s, transform 0.2s;
-    white-space: nowrap;
-}
-
-.btn-approve:hover {
-    background-color: #229954;
-    transform: translateY(-2px);
-}
-
-.btn-approve:active {
-    transform: translateY(0);
-}
-
-.btn-approve i {
-    font-size: 16px;
-}
-
-/* Mensaje cuando no hay entradas */
-.sin-entradas {
+    color: #2c3e50;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
     text-align: center;
-    padding: 60px 20px;
-    color: #999;
+    white-space: nowrap;
 }
 
-.sin-entradas i {
-    font-size: 64px;
-    color: #27AE60;
-    margin-bottom: 20px;
+.resaltado {
+    color: var(--color-verde);
+    font-weight: bold;
 }
 
-.sin-entradas p {
-    font-size: 18px;
-    margin: 0;
-}
-
-/* Alertas */
+/* alertas */
 .alert {
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 0 auto 20px auto;
     padding: 12px;
     border-radius: 8px;
     text-align: center;
@@ -213,88 +126,218 @@ input[type="text"] {
     border: 1px solid #c62828;
 }
 
-/* Header */
-header {
-    background-color: white;
-    border-bottom: 1px solid #ddd;
-    padding: 20px 40px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+/* contenedor de la tabla */
+.tabla-contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
-header .titulo2 {
-    color: #444;
+/* encabezado de la tabla */
+.tabla-header {
+    padding: 25px 30px;
+    background: linear-gradient(135deg, var(--color-verde) 0%, #229954 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.tabla-header h2 {
+    margin: 0;
     font-size: 22px;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-header .titulo2 i {
-    color: #F7DC6F;
-}
-
-/* Badge de estado */
-.badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
+.contador-pendientes {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
     font-weight: 600;
 }
 
-.badge-pendiente {
-    background-color: #FFF3CD;
-    color: #856404;
+.contador-pendientes span {
+    background-color: var(--color-amarillo);
+    color: #333;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-right: 5px;
+    font-weight: 700;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-    .tabla-contenedor {
-        margin: 20px;
-    }
+/* contenedor con scroll horizontal */
+.tabla-contenedor-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    padding: 30px;
+    -webkit-overflow-scrolling: touch;
+}
 
-    .tabla-wrapper {
-        padding: 20px;
-    }
+.tabla-contenedor-scroll::-webkit-scrollbar {
+    height: 8px;
+}
 
-    table {
-        font-size: 13px;
-    }
+.tabla-contenedor-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
 
-    th, td {
-        padding: 10px 8px;
+.tabla-contenedor-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.tabla-contenedor-scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* tabla con ancho minimo */
+.tabla-datos {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+.tabla-datos th,
+.tabla-datos td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.tabla-datos th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-verde);
+}
+
+.tabla-datos tbody tr {
+    transition: background-color 0.2s;
+}
+
+.tabla-datos tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* inputs dentro de la tabla */
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+    border-color: var(--color-verde);
+    outline: none;
+}
+
+input[type="number"] {
+    min-width: 80px;
+}
+
+input[type="text"] {
+    min-width: 150px;
+}
+
+/* boton aprobar */
+.btn-approve {
+    background-color: var(--color-verde);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.btn-approve:hover {
+    background-color: #229954;
+}
+
+/* mensaje sin entradas */
+.sin-entradas {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.sin-entradas i {
+    font-size: 64px;
+    color: var(--color-verde);
+    margin-bottom: 20px;
+    display: block;
+}
+
+.sin-entradas p {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* animacion de fila eliminada */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
     }
 }
 
+.row-removing {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+/* responsive */
 @media (max-width: 768px) {
-    .tabla-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .tabla-wrapper {
+    main {
+        margin-left: 0;
         padding: 15px;
     }
 
-    header {
-        padding: 15px 20px;
-    }
-
-    header .titulo2 {
+    .titulo2 {
         font-size: 18px;
     }
 
-    .marca-contenedor {
+    .tabla-contenedor {
+        margin: 0;
+    }
+
+    .tabla-header {
         flex-direction: column;
-        gap: 10px;
+        align-items: flex-start;
+        padding: 20px;
     }
 
-    table {
-        font-size: 12px;
+    .tabla-contenedor-scroll {
+        padding: 15px;
     }
 
-    th, td {
-        padding: 8px 6px;
+    .tabla-datos {
+        min-width: 900px;
     }
 
     input[type="number"],
@@ -309,18 +352,22 @@ header .titulo2 i {
     }
 }
 
-/* Animación de fila eliminada */
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateX(0);
+@media (max-width: 480px) {
+    .titulo2 {
+        font-size: 16px;
     }
-    to {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-}
 
-.row-removing {
-    animation: fadeOut 0.5s ease-out forwards;
+    .tabla-header h2 {
+        font-size: 18px;
+    }
+
+    .tabla-datos {
+        min-width: 800px;
+    }
+
+    .tabla-datos th,
+    .tabla-datos td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
 }

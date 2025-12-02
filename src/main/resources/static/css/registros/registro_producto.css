@@ -1,98 +1,84 @@
+:root {
+    --color-verde: #27AE60;
+    --color-amarillo: #F7DC6F;
+    --color-gris: #7f8c8d;
+}
+
+body {
+    background-color: #FEFCF4;
+    font-family: Arial, sans-serif;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    padding-bottom: 40px;
+    transition: margin-left 0.3s ease;
+}
+
+/* header desktop */
+header[role="banner"] {
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    padding: 20px 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.opciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+}
+
 .marca-contenedor {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-body {
-    background-color: #FEFCF4;
+.logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-main {
-    padding-bottom: 40px;
-}
-
-.formulario-contenedor {
-    max-width: 700px;
-    margin: 40px auto;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    padding: 35px 45px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.formulario-contenedor h2 {
-    text-align: center;
-    color: #27AE60;
-    font-size: 24px;
-    margin-bottom: 25px;
+.marca-texto .titulo {
+    font-size: 1.3rem;
+    color: #2c3e50;
     font-weight: 700;
+    margin: 0;
 }
 
-label {
-    margin-top: 15px;
+.marca-texto .subtitulo {
+    font-size: 0.85rem;
+    color: var(--color-gris);
+    margin: 0;
+}
+
+.titulo2 {
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #333;
-    display: block;
+    color: #2c3e50;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
 }
 
-input[type="text"],
-input[type="number"],
-select,
-textarea,
-input[type="file"] {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-top: 6px;
-    font-size: 15px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-input:focus, select:focus, textarea:focus {
-    border-color: #27AE60;
-    outline: none;
-}
-
-textarea {
-    resize: vertical;
-    min-height: 90px;
-}
-
-.btn-guardar {
-    margin-top: 25px; /* Espacio arriba */
-    background-color: #F7DC6F; /* Fondo amarillo */
-    color: #fff; /* Texto blanco */
-    border: none; /* Sin borde */
-    padding: 14px; /* Espacio interno */
-    border-radius: 8px; /* Esquinas redondeadas */
-    font-size: 17px; /* Tamaño del texto */
-    cursor: pointer; /* Cursor de manita */
-    font-weight: 600; /* Texto en negrita */
-    transition: background-color 0.3s; /* Animación suave */
-}
-
-.btn-guardar:hover {
-    background-color: #27AE60; /* Verde al pasar el mouse */
-}
-
-.preview-imagen {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-}
-
-.preview-imagen img {
-    max-width: 200px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    display: none;
-}
-
+/* alertas */
 .alert {
     max-width: 700px;
     margin: 20px auto;
@@ -114,29 +100,19 @@ textarea {
     border: 1px solid #c62828;
 }
 
-header {
-    background-color: white;
-    border-bottom: 1px solid #ddd;
-    padding: 20px 40px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-header .titulo2 {
-    color: #444;
-    font-size: 22px;
+/* formulario principal */
+.formulario-contenedor {
+    max-width: 700px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 35px 45px;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
 }
 
-header .titulo2 i {
-    color: #F7DC6F;
-}
-
-/* ===== registro_producto.css ===== */
-/* Agrega estos estilos al final del archivo */
-
-/* ✅ Contenedor del header con botón CSV */
 .header-formulario {
     display: flex;
     justify-content: space-between;
@@ -148,17 +124,20 @@ header .titulo2 i {
 .header-formulario h2 {
     margin: 0;
     flex: 1;
+    text-align: left;
+    color: var(--color-verde);
+    font-size: 24px;
+    font-weight: 700;
 }
 
-/* ✅ Botón CSV */
+/* boton csv */
 .btn-csv {
-    background-color: #27AE60;
+    background-color: var(--color-verde);
     color: white;
     border: none;
     padding: 10px 18px;
     border-radius: 8px;
     font-size: 14px;
-    cursor: pointer;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -171,19 +150,80 @@ header .titulo2 i {
     background-color: #229954;
 }
 
+.btn-csv:disabled {
+    opacity: 0.6;
+}
+
 .btn-csv i {
     font-size: 16px;
 }
 
-/* ✅ Ajuste del h2 original (quitar estilos que ahora maneja .header-formulario) */
-.formulario-contenedor h2 {
-    text-align: left;
-    color: #27AE60;
-    font-size: 24px;
-    margin-bottom: 0;
-    font-weight: 700;
+/* campos del formulario */
+.formulario-contenedor label {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #333;
+    display: block;
 }
 
+.formulario-contenedor input[type="text"],
+.formulario-contenedor input[type="number"],
+.formulario-contenedor select,
+.formulario-contenedor textarea,
+.formulario-contenedor input[type="file"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.formulario-contenedor input:focus,
+.formulario-contenedor select:focus,
+.formulario-contenedor textarea:focus {
+    border-color: var(--color-verde);
+    outline: none;
+}
+
+.formulario-contenedor textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+/* preview de imagen */
+.preview-imagen {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.preview-imagen img {
+    max-width: 200px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    display: none;
+}
+
+/* boton guardar */
+.btn-guardar {
+    margin-top: 25px;
+    background-color: var(--color-amarillo);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-guardar:hover {
+    background-color: var(--color-verde);
+}
+
+/* modal de resultados */
 .modal-resultado {
     display: none;
     position: fixed;
@@ -243,17 +283,60 @@ header .titulo2 i {
 
 .btn-cerrar-modal {
     margin-top: 20px;
-    background-color: #27AE60;
+    background-color: var(--color-verde);
     color: white;
     border: none;
     padding: 12px 24px;
     border-radius: 8px;
     font-size: 16px;
-    cursor: pointer;
     font-weight: 600;
     width: 100%;
+    transition: background-color 0.3s;
 }
 
 .btn-cerrar-modal:hover {
     background-color: #229954;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+    main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    header[role="banner"] {
+        display: none;
+    }
+
+    .formulario-contenedor {
+        padding: 25px 20px;
+        margin: 20px auto;
+    }
+
+    .header-formulario {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .header-formulario h2 {
+        text-align: center;
+    }
+
+    .btn-csv {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-contenido {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .formulario-contenedor {
+        padding: 20px 15px;
+    }
 }

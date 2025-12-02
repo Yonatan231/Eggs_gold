@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("✅ Página de envío de correos cargada");
+// correo_administrador.js - logica de seleccion de roles y envio
 
+document.addEventListener("DOMContentLoaded", () => {
     const roleCards = document.querySelectorAll(".role-card");
     const hiddenInput = document.getElementById("rolIds");
     const form = document.querySelector("form");
@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const mensajeInput = document.getElementById("mensaje");
 
     if (!roleCards.length) {
-        console.error("❌ No se encontraron elementos con clase .role-card");
+        console.error("no se encontraron elementos con clase .role-card");
         return;
     }
 
     const rolesSeleccionados = new Set();
 
-    // Selección de roles
+    // seleccion de roles
     roleCards.forEach(card => {
         card.addEventListener("click", () => {
             const id = card.dataset.id;
@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             hiddenInput.value = Array.from(rolesSeleccionados).join(",");
-            console.log("📩 Roles seleccionados:", hiddenInput.value);
+            console.log("roles seleccionados:", hiddenInput.value);
         });
     });
 
-    // Validar antes de enviar
+    // validar antes de enviar
     form.addEventListener("submit", (event) => {
         const asunto = asuntoInput.value.trim();
         const mensaje = mensajeInput.value.trim();
@@ -41,13 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!roles) {
             event.preventDefault();
-            alert("⚠️ Debes seleccionar al menos un rol destinatario.");
+            alert("Debes seleccionar al menos un rol destinatario.");
             return;
         }
 
         if (!asunto || !mensaje) {
             event.preventDefault();
-            alert("⚠️ Completa el asunto y el mensaje antes de enviar.");
+            alert("Completa el asunto y el mensaje antes de enviar.");
             return;
         }
 

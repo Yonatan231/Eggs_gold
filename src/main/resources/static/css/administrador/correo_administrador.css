@@ -1,0 +1,256 @@
+:root {
+    --color-amarillo: #ffb300;
+    --color-amarillo-hover: #e6b800;
+    --color-rojo: #ff4e4e;
+    --color-rojo-hover: #e03e3e;
+    --color-gris: #7f8c8d;
+    --color-oscuro: #2c3e50;
+    --color-fondo: #FFFEF5;
+    --sombra: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFEF5;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+header[role="banner"] {
+    background: #ffffff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    margin-bottom: 25px;
+}
+
+.opciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+}
+
+.marca-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: var(--sombra);
+}
+
+.marca-texto .titulo {
+    font-size: 1.3rem;
+    color: var(--color-oscuro);
+    font-weight: 700;
+    margin: 0;
+}
+
+.marca-texto .subtitulo {
+    font-size: 0.85rem;
+    color: var(--color-gris);
+    margin: 0;
+}
+
+.titulo2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-oscuro);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.seccion-tabla {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: var(--sombra);
+    margin-bottom: 30px;
+}
+
+.encabezado-seccion {
+    margin-bottom: 20px;
+}
+
+.encabezado-seccion h2 {
+    font-size: 1.4rem;
+    color: var(--color-oscuro);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.encabezado-seccion p {
+    color: var(--color-gris);
+    font-size: 0.95rem;
+}
+
+.form-envio-correos {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-envio-correos label {
+    font-weight: 600;
+    color: var(--color-oscuro);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.roles-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 10px;
+}
+
+.role-card {
+    background: #f9f9f9;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.role-card:hover {
+    border-color: #27AE60;
+    transform: scale(1.03);
+}
+
+.role-card.selected {
+    background: #eaffea;
+    border-color: #27AE60;
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
+}
+
+.icono-rol {
+    font-size: 2.5rem;
+    color: var(--color-amarillo);
+    margin-bottom: 0.5rem;
+}
+
+.role-card.selected .icono-rol {
+    color: #27AE60;
+}
+
+.role-card p {
+    margin: 0;
+    font-weight: 600;
+    color: var(--color-oscuro);
+    font-size: 14px;
+}
+
+.form-envio-correos input[type="text"],
+.form-envio-correos textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.form-envio-correos input:focus,
+.form-envio-correos textarea:focus {
+    outline: none;
+    border-color: #27AE60;
+}
+
+.form-envio-correos textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+
+.acciones-seccion {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 10px;
+}
+
+.btn-enviar {
+    background: #27AE60;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.btn-enviar:hover {
+    background:#229954;
+}
+
+@media (max-width: 768px) {
+    main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .titulo2 {
+        font-size: 1.2rem;
+    }
+
+    .roles-container {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .acciones-seccion {
+        flex-direction: column;
+    }
+
+    .btn-enviar {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo2 {
+        font-size: 1rem;
+    }
+
+    .seccion-tabla {
+        padding: 15px;
+    }
+
+    .roles-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .icono-rol {
+        font-size: 2rem;
+    }
+}

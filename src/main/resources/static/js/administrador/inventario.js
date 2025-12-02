@@ -1,24 +1,22 @@
 // ============================================
+// INVENTARIO.JS - GESTIÓN DE INVENTARIO
+// ============================================
+
+// ============================================
 // VARIABLES GLOBALES
 // ============================================
-let inventarioCompleto = []; // Almacena todos los datos del inventario
+let inventarioCompleto = [];
 
 // ============================================
 // CARGAR INVENTARIO DESDE EL BACKEND
 // ============================================
 function cargarInventario() {
-    // Hacer petición al backend
     fetch('/api/inventario/lista')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Guardar datos en variable global
                 inventarioCompleto = data.data;
-
-                // Mostrar datos en la tabla
                 mostrarInventario(inventarioCompleto);
-
-                // Aplicar colores a los badges
                 aplicarColores();
             } else {
                 mostrarError("Error al cargar inventario: " + data.message);
@@ -35,11 +33,8 @@ function cargarInventario() {
 // ============================================
 function mostrarInventario(inventarios) {
     const tbody = document.getElementById("tabla-inventario-body");
-
-    // Limpiar tabla
     tbody.innerHTML = "";
 
-    // Si no hay datos, mostrar mensaje
     if (inventarios.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -52,21 +47,14 @@ function mostrarInventario(inventarios) {
         return;
     }
 
-    // Recorrer cada registro y crear una fila
     inventarios.forEach(inv => {
         const fila = document.createElement("tr");
         fila.className = "fila-inventario";
-
-        // Atributo data-estado basado en el estado del producto
         fila.setAttribute("data-estado", inv.estado || "DISPONIBLE");
 
-        // Formatear fecha de actualización
         const fechaActualizacion = formatearFecha(inv.fechaActualizacion);
-
-        // Obtener ID del producto (viene del DTO que agrupa inventarios por producto)
         const idProducto = obtenerIdProducto(inv);
 
-        // Construir el HTML de la fila
         fila.innerHTML = `
             <td>${idProducto}</td>
             <td class="td-nombre">${inv.nombre}</td>
@@ -80,7 +68,7 @@ function mostrarInventario(inventarios) {
             <td>${fechaActualizacion}</td>
             <td>
                 <button class="btn-editar" onclick="abrirModalEdicion(${idProducto})">
-                    <i class="fas fa-edit"></i> Editar
+                    Editar
                 </button>
             </td>
         `;
@@ -93,34 +81,40 @@ function mostrarInventario(inventarios) {
 // OBTENER ID DEL PRODUCTO
 // ============================================
 function obtenerIdProducto(inv) {
-    // El DTO puede tener el ID como 'idProducto' o extraerlo del inventario
     return inv.idProducto || inv.idInventario || 0;
 }
 
 // ============================================
 // OBTENER CLASE CSS SEGÚN ESTADO
 // ============================================
-function obtenerClaseEstado(categoria) {
-    // Nota: El DTO usa 'categoria' pero puede contener info de estado
-    // Por ahora basamos el estado en la categoría, puedes ajustar según necesites
-    return "disponible"; // Por defecto verde
+function obtenerClaseEstado(estado) {
+    const estadoLower = (estado || '').toLowerCase();
+
+    if (estadoLower === 'disponible') return 'disponible';
+    if (estadoLower === 'descontinuado') return 'descontinuado';
+    if (estadoLower === 'agotado') return 'agotado';
+
+    return 'disponible';
 }
 
 // ============================================
 // FORMATEAR NOMBRE DEL ESTADO
 // ============================================
-function formatearEstado(categoria) {
-    // Mapear estado
-    return "Disponible"; // Por defecto
+function formatearEstado(estado) {
+    const estadoLower = (estado || '').toLowerCase();
+
+    if (estadoLower === 'disponible') return 'Disponible';
+    if (estadoLower === 'descontinuado') return 'Descontinuado';
+    if (estadoLower === 'agotado') return 'Agotado';
+
+    return 'Disponible';
 }
 
 // ============================================
 // APLICAR COLORES A LOS BADGES DE CANTIDAD
 // ============================================
 function aplicarColores() {
-    // Seleccionar todas las filas de inventario
     document.querySelectorAll(".fila-inventario").forEach(fila => {
-        // Obtener el td que contiene la cantidad
         const td = fila.querySelector(".td-cantidad");
         if (!td) return;
 
@@ -129,10 +123,8 @@ function aplicarColores() {
 
         const cantidad = parseInt(badge.innerText);
 
-        // Limpiar clases anteriores
         badge.classList.remove("roja", "amarilla", "verde");
 
-        // Aplicar clase según la cantidad
         if (cantidad < 100) {
             badge.classList.add("roja");
         } else if (cantidad < 500) {
@@ -147,26 +139,21 @@ function aplicarColores() {
 // FILTRAR DATOS (Búsqueda + Estado)
 // ============================================
 function filtrarDatos() {
-    // Obtener valores de filtros
     const texto = document.getElementById("buscar").value.toLowerCase();
     const estadoFiltro = document.getElementById("filtro-estado").value;
 
-    // Filtrar el inventario completo
     const inventarioFiltrado = inventarioCompleto.filter(inv => {
-        // Filtro por texto de búsqueda
         const coincideBusqueda = texto === "" ||
             inv.nombre.toLowerCase().includes(texto) ||
             inv.categoria.toLowerCase().includes(texto) ||
             inv.descripcion.toLowerCase().includes(texto);
 
-        // Filtro por estado del producto (DISPONIBLE, DESCONTINUADO)
         const coincideEstado = estadoFiltro === "todos" ||
             (inv.estado && inv.estado.toUpperCase() === estadoFiltro);
 
         return coincideBusqueda && coincideEstado;
     });
 
-    // Mostrar inventario filtrado
     mostrarInventario(inventarioFiltrado);
     aplicarColores();
 }
@@ -175,28 +162,22 @@ function filtrarDatos() {
 // ABRIR MODAL DE EDICIÓN
 // ============================================
 function abrirModalEdicion(idProducto) {
-    // Mostrar el modal
     document.getElementById("modal").style.display = "flex";
 
-    // Obtener datos del producto desde el backend
     fetch(`/api/inventario/producto/${idProducto}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 const prod = data.data;
 
-                // Llenar campos del modal - SOLO PRODUCTO
                 document.getElementById("prod-id").value = prod.idProducto;
                 document.getElementById("prod-nombre").value = prod.nombre;
                 document.getElementById("prod-precio").value = prod.precio;
                 document.getElementById("prod-categoria").value = prod.categoria;
                 document.getElementById("prod-descripcion").value = prod.descripcion;
                 document.getElementById("prod-estado").value = prod.estado;
-
-                // Guardar imagen actual
                 document.getElementById("prod-imagen-actual").value = prod.imagen;
 
-                // Mostrar preview de imagen actual
                 const previewImg = document.getElementById("preview-imagen-modal");
                 if (prod.imagen) {
                     previewImg.src = `/uploads/productos/${prod.imagen}`;
@@ -205,7 +186,6 @@ function abrirModalEdicion(idProducto) {
                     previewImg.style.display = "none";
                 }
 
-                // Limpiar input de archivo y nombre
                 document.getElementById("prod-imagen-file").value = "";
                 document.getElementById("nombre-archivo-seleccionado").textContent = "";
             } else {
@@ -224,19 +204,15 @@ function abrirModalEdicion(idProducto) {
 // GUARDAR CAMBIOS DEL MODAL
 // ============================================
 function guardarCambios(event) {
-    event.preventDefault(); // Prevenir envío normal del formulario
+    event.preventDefault();
 
-    // Validar que el precio sea mayor a 0
     const precio = parseFloat(document.getElementById("prod-precio").value);
     if (precio <= 0) {
         alert("❌ El precio debe ser mayor a 0");
-        return; // Detener el envío
+        return;
     }
 
-    // Crear FormData para enviar archivos
     const formData = new FormData();
-
-    // Añadir campos del producto
     formData.append("idProducto", document.getElementById("prod-id").value);
     formData.append("nombre", document.getElementById("prod-nombre").value);
     formData.append("precio", precio);
@@ -244,23 +220,21 @@ function guardarCambios(event) {
     formData.append("descripcion", document.getElementById("prod-descripcion").value);
     formData.append("estado", document.getElementById("prod-estado").value);
 
-    // Añadir archivo de imagen si se seleccionó uno nuevo
     const imagenFile = document.getElementById("prod-imagen-file").files[0];
     if (imagenFile) {
         formData.append("imagenFile", imagenFile);
     }
 
-    // Enviar datos al backend
     fetch('/api/inventario/actualizar-con-imagen', {
         method: 'POST',
-        body: formData // NO incluir Content-Type, el navegador lo hace automáticamente
+        body: formData
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 alert("✅ Producto actualizado correctamente");
                 cerrarModal();
-                cargarInventario(); // Recargar tabla
+                cargarInventario();
             } else {
                 alert("❌ Error al actualizar: " + data.message);
             }
@@ -272,39 +246,24 @@ function guardarCambios(event) {
 }
 
 // ============================================
-// VALIDAR FORMULARIO
-// ============================================
-function validarFormulario(datos) {
-    // Verificar campos obligatorios - SOLO PRODUCTO
-    return datos.nombre &&
-        datos.precio &&
-        datos.categoria &&
-        datos.descripcion &&
-        datos.estado;
-}
-
-// ============================================
 // CERRAR MODAL
 // ============================================
 function cerrarModal() {
     document.getElementById("modal").style.display = "none";
-    // Limpiar formulario
     document.getElementById("form-editar-inventario").reset();
 }
 
 // ============================================
-// FORMATEAR FECHA (de YYYY-MM-DD a DD/MM/YYYY)
+// FORMATEAR FECHA
 // ============================================
 function formatearFecha(fecha) {
     if (!fecha) return "No especificada";
 
-    // Si la fecha ya viene en formato array [YYYY, M, D]
     if (Array.isArray(fecha)) {
         const [anio, mes, dia] = fecha;
         return `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}/${anio}`;
     }
 
-    // Si la fecha viene en formato string "YYYY-MM-DD"
     const partes = fecha.split("-");
     if (partes.length === 3) {
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -329,71 +288,9 @@ function mostrarError(mensaje) {
 }
 
 // ============================================
-// EVENTOS AL CARGAR LA PÁGINA
-// ============================================
-window.addEventListener("DOMContentLoaded", function() {
-    // Cargar inventario al iniciar
-    cargarInventario();
-
-    // Agregar evento al formulario de edición
-    const formEditar = document.getElementById("form-editar-inventario");
-    if (formEditar) {
-        formEditar.addEventListener("submit", guardarCambios);
-    }
-
-    // Cerrar modal al hacer clic fuera de él
-    const modal = document.getElementById("modal");
-    if (modal) {
-        modal.addEventListener("click", function(e) {
-            if (e.target === modal) {
-                cerrarModal();
-            }
-        });
-    }
-});
-
-// ============================================
-// OBTENER CLASE CSS SEGÚN ESTADO
-// ============================================
-function obtenerClaseEstado(estado) {
-    // Convertir estado a minúsculas para comparación
-    const estadoLower = (estado || '').toLowerCase();
-
-    if (estadoLower === 'disponible') return 'disponible';
-    if (estadoLower === 'descontinuado') return 'descontinuado';
-    if (estadoLower === 'agotado') return 'agotado';
-
-    // Por defecto
-    return 'disponible';
-}
-
-// ============================================
-// FORMATEAR NOMBRE DEL ESTADO
-// ============================================
-function formatearEstado(estado) {
-    // Mapear estado a texto legible
-    const estadoLower = (estado || '').toLowerCase();
-
-    if (estadoLower === 'disponible') return 'Disponible';
-    if (estadoLower === 'descontinuado') return 'Descontinuado';
-    if (estadoLower === 'agotado') return 'Agotado';
-
-    // Por defecto
-    return 'Disponible';
-}
-
-// ============================================
-// OBTENER ID DEL PRODUCTO
-// ============================================
-function obtenerIdProducto(inv) {
-    // El DTO tiene el ID como 'idProducto'
-    return inv.idProducto || 0;
-}
-
-// ============================================
 // PREVIEW DE IMAGEN EN EL MODAL
 // ============================================
-document.addEventListener("DOMContentLoaded", function() {
+function configurarPreviewImagen() {
     const inputImagen = document.getElementById("prod-imagen-file");
     const previewImagen = document.getElementById("preview-imagen-modal");
     const nombreArchivo = document.getElementById("nombre-archivo-seleccionado");
@@ -403,10 +300,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const file = e.target.files[0];
 
             if (file) {
-                // Mostrar nombre del archivo seleccionado
                 nombreArchivo.textContent = file.name;
 
-                // Crear preview de la nueva imagen
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     previewImagen.src = event.target.result;
@@ -414,7 +309,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 };
                 reader.readAsDataURL(file);
             } else {
-                // Si se cancela la selección, restaurar imagen actual
                 nombreArchivo.textContent = "";
                 const imagenActual = document.getElementById("prod-imagen-actual").value;
                 if (imagenActual) {
@@ -423,4 +317,27 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+}
+
+// ============================================
+// EVENTOS AL CARGAR LA PÁGINA
+// ============================================
+window.addEventListener("DOMContentLoaded", function() {
+    cargarInventario();
+
+    const formEditar = document.getElementById("form-editar-inventario");
+    if (formEditar) {
+        formEditar.addEventListener("submit", guardarCambios);
+    }
+
+    const modal = document.getElementById("modal");
+    if (modal) {
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) {
+                cerrarModal();
+            }
+        });
+    }
+
+    configurarPreviewImagen();
 });

@@ -1,0 +1,229 @@
+/* ============================================
+   SIDEBAR.CSS - ESTILOS REUTILIZABLES DEL MENÚ LATERAL
+   Este archivo contiene todos los estilos del sidebar
+   que son compartidos entre todos los roles
+   ============================================ */
+
+/* ============================================
+   VARIABLES PARA EL SIDEBAR
+   ============================================ */
+:root {
+    --sidebar-width: 250px;
+    --sidebar-bg: #F7DC6F;
+    --sidebar-text: #333;
+    --sidebar-hover-bg: rgba(52, 152, 219, 0.2);
+    --sidebar-hover-text: #27AE60;
+    --avatar-gradient-1: #27AE60;
+    --avatar-gradient-2: #3498db;
+    --transition-speed: 0.3s;
+}
+
+/* ============================================
+   MENÚ LATERAL (SIDEBAR)
+   ============================================ */
+#sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    transition: transform var(--transition-speed) ease;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+#sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+#sidebar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* Lista del menú */
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Elementos de la lista */
+#sidebar ul li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Enlaces del menú */
+#sidebar ul li a {
+    color: var(--sidebar-text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    transition: all var(--transition-speed) ease;
+    cursor: default;
+}
+
+/* Hover en enlaces */
+#sidebar ul li a:hover {
+    background-color: var(--sidebar-hover-bg);
+    color: var(--sidebar-hover-text);
+    padding-left: 25px;
+}
+
+/* Iconos del menú */
+#sidebar ul li a i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* ============================================
+   PERFIL DEL USUARIO
+   ============================================ */
+.perfil-admin {
+    text-align: center;
+    padding: 25px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.perfil-admin h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    margin-top: 10px;
+}
+
+/* ============================================
+   AVATAR (Foto de perfil)
+   ============================================ */
+.avatar-contenedor {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--avatar-gradient-1), var(--avatar-gradient-2));
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagen del avatar */
+#avatar-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Iniciales del avatar */
+#avatar-iniciales {
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Botón para subir foto */
+.boton-subir-foto {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--avatar-gradient-1);
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: transform var(--transition-speed) ease;
+}
+
+.boton-subir-foto:hover {
+    transform: scale(1.1);
+}
+
+/* ============================================
+   BOTÓN HAMBURGUESA
+   ============================================ */
+.toggle-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    background: #27AE60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: default;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-speed) ease;
+    display: none;
+}
+
+.toggle-btn:hover {
+    background: #229954;
+    transform: scale(1.05);
+}
+
+.toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE
+   ============================================ */
+@media (max-width: 768px) {
+    /* Mostrar botón hamburguesa */
+    .toggle-btn {
+        display: block;
+    }
+
+    /* Ocultar sidebar por defecto en móviles */
+    #sidebar {
+        transform: translateX(-100%);
+    }
+
+    /* Mostrar sidebar cuando está activo */
+    #sidebar.active {
+        transform: translateX(0);
+    }
+}
+
+/* ============================================
+   OVERLAY PARA CERRAR SIDEBAR EN MÓVILES
+   ============================================ */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .sidebar-overlay.active {
+        display: block;
+    }
+}

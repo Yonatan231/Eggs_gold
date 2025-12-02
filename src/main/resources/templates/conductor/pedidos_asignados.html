@@ -10,24 +10,42 @@
     <!-- ICONOS DE FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ESTILOS PERSONALIZADOS -->
-    <link rel="stylesheet" th:href="@{css/conductor/conductor_inicio.css}">
-    <link rel="stylesheet" th:href="@{css/inicio/logo.css}">
-    <link rel="stylesheet" th:href="@{css/conductor/pedidos_asignados.css}">
+    <!-- ESTILOS REUTILIZABLES -->
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
+    <!-- ESTILOS ESPECÍFICOS -->
+    <link rel="stylesheet" th:href="@{/css/conductor/pedidos_asignados.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
     <title>Pedidos Asignados - Conductor - Eggs Gold</title>
 </head>
 <body>
 
 <!-- ============================================
-     BOTÓN PARA ABRIR EL MENÚ EN MÓVILES
+     HEADER RESPONSIVE (Nuevo - para móviles/tablets)
      ============================================ -->
-<button class="toggle-btn">
-    ☰
-</button>
+<div class="header-responsive">
+    <div class="header-content">
+        <!-- Logo a la izquierda (solo imagen) -->
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+
+        <!-- Título en el centro -->
+        <h1 class="header-title">
+            Mis Pedidos <span class="resaltado">Asignados</span>
+        </h1>
+
+        <!-- Menú hamburguesa a la derecha (tres líneas negras) -->
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
 
 <!-- ============================================
-     MENÚ LATERAL
+     MENÚ LATERAL (SIDEBAR)
      ============================================ -->
 <nav id="sidebar">
     <ul>
@@ -40,13 +58,17 @@
                 <!-- Foto de perfil -->
                 <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
 
+                <!-- Botón para subir foto -->
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
                 <input type="file" id="input-foto" accept="image/*" style="display: none;">
             </div>
             <h2>Panel de Conductor</h2>
         </li>
 
         <li>
-            <a th:href="@{conductor_inicio}">
+            <a th:href="@{/conductor_inicio}">
                 <i class="fas fa-home"></i> Inicio
             </a>
         </li>
@@ -64,7 +86,7 @@
      ============================================ -->
 <main id="main-content">
 
-    <!-- CABECERA -->
+    <!-- CABECERA (Solo visible en desktop) -->
     <header role="banner">
         <div class="opciones">
             <!-- Logo y marca alineados horizontalmente -->
@@ -79,7 +101,7 @@
                 </div>
             </div>
 
-            <h1 class="titulo2">Mis Pedidos Asignados</h1>
+            <h1 class="titulo2">Mis Pedidos <span class="resaltado">Asignados</span></h1>
         </div>
     </header>
 
@@ -92,18 +114,18 @@
          ============================================ -->
     <div class="tabla-contenedor">
         <div class="tabla-header">
-            <h2>Lista de Pedidos Asignados</h2>
+            <h2><i class="fas fa-clipboard-list"></i> Lista de Pedidos Asignados</h2>
             <div class="contador-pedidos">
                 <span id="contador">0</span> pedidos asignados
             </div>
         </div>
 
-        <!-- Tabla de pedidos -->
-        <div class="tabla-wrapper">
-            <table id="tablaPedidos">
+        <!-- Tabla de pedidos con scroll horizontal -->
+        <div class="tabla-contenedor-scroll">
+            <table id="tablaPedidos" class="tabla-datos">
                 <thead>
                 <tr>
-                    <th>ID Pedido</th>
+                    <th>Código Pedido</th>
                     <th>Cliente</th>
                     <th>Dirección</th>
                     <th>Contacto</th>
@@ -113,64 +135,13 @@
                 </tr>
                 </thead>
                 <tbody id="tablaBody">
-                <!-- Ejemplo de pedido 1 -->
-                <tr>
-                    <td>15</td>
-                    <td>Juan Pérez</td>
-                    <td>Calle 12 # 5-10</td>
-                    <td>321 456 7890</td>
-                    <td>2</td>
-                    <td>3 unidades</td>
-                    <td>
-                        <button class="btn-accion btn-aceptar" onclick="aceptarPedido(15)">
-                            Aceptar
-                        </button>
-                        <button class="btn-accion btn-ver" onclick="verDetalle(15)">
-                            Ver
-                        </button>
-                    </td>
-                </tr>
-
-                <!-- Ejemplo de pedido 2 -->
-                <tr>
-                    <td>16</td>
-                    <td>María González</td>
-                    <td>Carrera 20 # 22-33</td>
-                    <td>310 234 5678</td>
-                    <td>1</td>
-                    <td>2 unidades</td>
-                    <td>
-                        <button class="btn-accion btn-aceptar" onclick="aceptarPedido(16)">
-                            Aceptar
-                        </button>
-                        <button class="btn-accion btn-ver" onclick="verDetalle(16)">
-                            Ver
-                        </button>
-                    </td>
-                </tr>
-
-                <!-- Ejemplo de pedido 3 -->
-                <tr>
-                    <td>17</td>
-                    <td>Carlos Rodríguez</td>
-                    <td>Avenida 15 # 30-45</td>
-                    <td>315 678 9012</td>
-                    <td>3</td>
-                    <td>5 unidades</td>
-                    <td>
-                        <button class="btn-accion btn-aceptar" onclick="aceptarPedido(17)">
-                            Aceptar
-                        </button>
-                        <button class="btn-accion btn-ver" onclick="verDetalle(17)">
-                            Ver
-                        </button>
-                    </td>
-                </tr>
+                <!-- Los datos se cargan dinámicamente con JS -->
                 </tbody>
             </table>
 
             <!-- Mensaje cuando no hay pedidos -->
             <div id="sin-pedidos" class="sin-pedidos" style="display: none;">
+                <i class="fas fa-inbox"></i>
                 <p>No tienes pedidos asignados</p>
             </div>
         </div>
@@ -209,16 +180,19 @@
                 Cerrar
             </button>
             <button class="btn-modal btn-aceptar-modal" onclick="aceptarDesdeModal()">
-                Aceptar Pedido
+                <i class="fas fa-check"></i> Aceptar Pedido
             </button>
         </div>
     </div>
 </div>
 
-<!-- SCRIPTS -->
-<script th:src="@{js/conductor/pedidos_asignados.js}"></script>
+<!-- SCRIPTS REUTILIZABLES (primero) -->
+<script th:src="@{/js/utils/sidebar.js}"></script>
 
-<script th:src="@{js/utils/foto_panel.js}"></script>
+<!-- SCRIPTS ESPECÍFICOS (después) -->
+<script th:src="@{/js/conductor/pedidos_asignados.js}"></script>
+
+<!-- SCRIPTS DE SESIÓN Y VALIDACIÓN -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('CONDUCTOR'); </script>

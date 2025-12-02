@@ -6,10 +6,13 @@
     <meta name="description" content="Panel de administración de Eggs Gold - Gestión de pedidos, productos y usuarios">
     <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}">
 
-    <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Hoja de estilos personalizada -->
+    <!-- estilos reutilizables -->
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
+    <!-- estilos especificos -->
     <link rel="stylesheet" th:href="@{css/administrador/administrador_inicio.css}" />
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
@@ -18,40 +21,59 @@
 
 <body>
 
-<!-- BOTÓN PARA ABRIR/CERRAR MENÚ LATERAL -->
-<button class="toggle-btn" aria-label="Abrir menú lateral" aria-expanded="false">
-    <span>&#9776;</span>
-</button>
+<!-- header responsive (moviles/tablets) -->
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
 
-<!-- MENÚ LATERAL (SIDEBAR) -->
+        <h1 class="header-title">
+            Bienvenido <span class="resaltado">Admin</span>
+        </h1>
+
+        <div class="header-right">
+            <a th:href="@{/novedades}" class="campana-noti-mobile" aria-label="Notificaciones">
+                <i class="fas fa-bell"></i>
+                <span class="notificacion-contador" id="notificacion-contador-mobile" style="display: none;">0</span>
+            </a>
+
+            <button class="header-hamburger" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- menu lateral -->
 <nav id="sidebar" aria-label="Menú de administración">
     <ul>
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">AD</span>
-                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
                 <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
                     <i class="fas fa-camera"></i>
                 </label>
-                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+                <input type="file" id="input-foto" accept="image/*" style="display: none;">
             </div>
             <h2>Panel de Administración</h2>
         </li>
 
-        <li><a href="#titulo-pedidos" class="nav-link"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
-        <li><a href="#titulo-usuarios" class="nav-link"><i class="fas fa-users"></i> Usuarios</a></li>
-        <li><a th:href="@{/inventario}" class="nav-link"><i class="fas fa-warehouse"></i> Inventario</a></li>
-        <li><a th:href="@{/correos}" class="nav-link"><i class="fas fa-envelope"></i> Correos</a></li>
-        <li><a th:href="@{/registrar_logistica}" class="nav-link"><i class="fas fa-user-plus"></i> Registro Logística</a></li>
-        <li><a th:href="@{/registrar_conductor}" class="nav-link"><i class="fas fa-id-card"></i> Registrar Conductor</a></li>
-        <li><a th:href="@{/logout}" id="cerrar_sesion" class="nav-link texto"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <li><a href="#titulo-pedidos"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+        <li><a href="#titulo-usuarios"><i class="fas fa-users"></i> Usuarios</a></li>
+        <li><a th:href="@{/inventario}"><i class="fas fa-warehouse"></i> Inventario</a></li>
+        <li><a th:href="@{/correos}"><i class="fas fa-envelope"></i> Correos</a></li>
+        <li><a th:href="@{/registrar_logistica}"><i class="fas fa-user-plus"></i> Registro Logística</a></li>
+        <li><a th:href="@{/registrar_conductor}"><i class="fas fa-id-card"></i> Registrar Conductor</a></li>
+        <li><a th:href="@{/logout}" id="cerrar_sesion"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
 </nav>
 
-<!-- CONTENIDO PRINCIPAL -->
+<!-- contenido principal -->
 <main id="main-content" role="main">
 
-    <!-- CABECERA FIJA (HEADER) -->
+    <!-- cabecera (solo desktop) -->
     <header role="banner">
         <div class="opciones">
             <div class="marca">
@@ -72,7 +94,7 @@
         </div>
     </header>
 
-    <!-- TARJETAS DE RESUMEN (DASHBOARD) -->
+    <!-- tarjetas de resumen -->
     <section class="contenedor-cuadros" aria-label="Resumen del sistema">
 
         <div class="tarjeta-resumen registrados">
@@ -96,7 +118,7 @@
         </div>
     </section>
 
-    <!-- SECCIÓN DE PEDIDOS -->
+    <!-- seccion de pedidos -->
     <section class="seccion-tabla" aria-labelledby="titulo-pedidos">
         <div class="encabezado-seccion">
             <h2 id="titulo-pedidos">Pedidos Realizados</h2>
@@ -107,7 +129,7 @@
             </div>
         </div>
 
-        <!-- Controles: Búsqueda y Filtro -->
+        <!-- controles: busqueda y filtro -->
         <div class="controles-pedidos">
             <form class="form-busqueda" id="form-busqueda-pedidos">
                 <input type="text" name="buscar" id="buscar-pedido" placeholder="Buscar por ID, cliente..." aria-label="Buscar pedidos">
@@ -130,8 +152,8 @@
             </div>
         </div>
 
-        <!-- Tabla de pedidos -->
-        <div class="contenedor-tabla">
+        <!-- tabla de pedidos con scroll horizontal -->
+        <div class="contenedor-tabla-scroll">
             <table class="tabla-datos" id="tabla-pedidos" aria-describedby="titulo-pedidos">
                 <thead>
                 <tr>
@@ -145,7 +167,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Los pedidos se cargarán aquí dinámicamente con JavaScript -->
                 </tbody>
             </table>
 
@@ -155,7 +176,7 @@
         </div>
     </section>
 
-    <!-- MODAL DE DETALLE DEL PEDIDO -->
+    <!-- modal de detalle del pedido -->
     <div id="modal-pedido" class="modal-overlay" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-pedido">
         <div class="modal-contenido">
             <div class="modal-header">
@@ -165,12 +186,11 @@
                 </button>
             </div>
             <div id="detalle-pedido" class="modal-body">
-                <!-- El detalle se cargará dinámicamente aquí -->
             </div>
         </div>
     </div>
 
-    <!-- SECCIÓN DE USUARIOS -->
+    <!-- seccion de usuarios -->
     <section class="seccion-tabla" aria-labelledby="titulo-usuarios">
         <div class="encabezado-seccion">
             <h2 id="titulo-usuarios">Gestión de Usuarios</h2>
@@ -181,7 +201,7 @@
             </div>
         </div>
 
-        <!-- Controles: Búsqueda y Filtros -->
+        <!-- controles: busqueda y filtros -->
         <div class="controles-usuarios">
             <form class="form-busqueda" id="form-busqueda-usuarios">
                 <input type="text" name="buscar" id="buscar-usuario" placeholder="Buscar por nombre, documento..." aria-label="Buscar usuarios">
@@ -195,7 +215,6 @@
                     <label for="filtro-rol">Filtrar por rol:</label>
                     <select id="filtro-rol" aria-label="Filtrar usuarios por rol">
                         <option value="TODOS">Todos</option>
-                        <!-- Se llenará dinámicamente -->
                     </select>
                 </div>
 
@@ -210,12 +229,11 @@
             </div>
         </div>
 
-        <!-- Tabla de usuarios -->
-        <div class="contenedor-tabla">
+        <!-- tabla de usuarios con scroll horizontal sin columna id -->
+        <div class="contenedor-tabla-scroll">
             <table class="tabla-datos" id="tabla-usuarios" aria-describedby="titulo-usuarios">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Documento</th>
                     <th scope="col">Teléfono</th>
@@ -225,7 +243,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Los usuarios se cargarán aquí dinámicamente con JavaScript -->
                 </tbody>
             </table>
 
@@ -235,7 +252,7 @@
         </div>
     </section>
 
-    <!-- MODAL DE EDICIÓN DE USUARIO -->
+    <!-- modal de edicion de usuario -->
     <div id="modal-usuario" class="modal-overlay" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-usuario">
         <div class="modal-contenido modal-edicion">
             <div class="modal-header">
@@ -289,7 +306,6 @@
                 <div class="form-group">
                     <label for="edit-rol">Rol:</label>
                     <select id="edit-rol" required>
-                        <!-- Se llenará dinámicamente -->
                     </select>
                 </div>
 
@@ -317,8 +333,13 @@
 
 </main>
 
+<!-- scripts reutilizables (primero) -->
+<script th:src="@{/js/utils/sidebar.js}"></script>
+
+<!-- scripts especificos (despues) -->
 <script th:src="@{/js/administrador/administrador_inicio.js}"></script>
-<script th:src="@{/js/utils/foto_panel.js}"></script>
+
+<!-- scripts de sesion y validacion -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('ADMIN'); </script>

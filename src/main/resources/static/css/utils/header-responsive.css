@@ -1,0 +1,252 @@
+/* ============================================
+   HEADER-RESPONSIVE.CSS - HEADER FIJO RESPONSIVE
+   Este archivo maneja el header que se muestra
+   en todas las pantallas con diseño responsive
+   ============================================ */
+
+/* ============================================
+   RESET GLOBAL PARA PREVENIR OVERFLOW
+   ============================================ */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================
+   VARIABLES DEL HEADER
+   ============================================ */
+:root {
+    --header-height: 70px;
+    --header-bg: #F7DC6F;
+    --header-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --color-primary: #27AE60;
+    --color-dark: #2c3e50;
+}
+
+/* ============================================
+   HEADER PRINCIPAL
+   ============================================ */
+.header-responsive {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: var(--header-height);
+    background: var(--header-bg);
+    box-shadow: var(--header-shadow);
+    z-index: 900;
+    display: none;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 15px;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* ============================================
+   LOGO EN EL HEADER (solo imagen)
+   ============================================ */
+.header-logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.header-logo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 20%;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-logo-text {
+    display: none;
+}
+
+/* ============================================
+   TÍTULO DEL CENTRO
+   ============================================ */
+.header-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin: 0 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header-title .resaltado {
+    color: var(--color-primary);
+}
+
+/* ============================================
+   BOTÓN HAMBURGUESA EN EL HEADER
+   ============================================ */
+.header-hamburger {
+    background: transparent;
+    color: #333;
+    border: none;
+    padding: 8px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    flex-shrink: 0;
+}
+
+.header-hamburger i {
+    color: #333;
+}
+
+/* ============================================
+   AJUSTE DEL CONTENIDO PRINCIPAL
+   ============================================ */
+main {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+    width: calc(100% - 250px);
+    max-width: 100%;
+}
+
+/* ============================================
+   HEADER ANTIGUO (el que ya existe)
+   ============================================ */
+header[role="banner"] {
+    background-color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+/* ============================================
+   CONTENEDORES DE TABLAS CON SCROLL
+   ============================================ */
+.tabla-contenedor,
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+}
+
+.tabla-contenedor table,
+.table-container table {
+    min-width: 600px;
+    width: 100%;
+}
+
+/* ============================================
+   RESPONSIVE - TABLETS Y MÓVILES
+   ============================================ */
+@media (max-width: 768px) {
+    .header-responsive {
+        display: block;
+    }
+
+    header[role="banner"] {
+        display: none;
+    }
+
+    main {
+        margin-left: 0;
+        margin-top: var(--header-height);
+        padding: 15px;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .header-title {
+        font-size: 1.1rem;
+    }
+
+    .tarjeta,
+    .card {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    @media (max-width: 480px) {
+        .header-title {
+            font-size: 0.95rem;
+            margin: 0 10px;
+        }
+
+        .header-logo img {
+            width: 45px;
+            height: 45px;
+        }
+
+        .header-hamburger {
+            padding: 8px 10px;
+            min-width: 40px;
+            min-height: 40px;
+            font-size: 1.2rem;
+        }
+
+        .header-content {
+            padding: 0 10px;
+        }
+
+        main {
+            padding: 10px;
+        }
+    }
+}
+
+/* ============================================
+   RESPONSIVE - DESKTOP
+   ============================================ */
+@media (min-width: 769px) {
+    .toggle-btn {
+        display: none !important;
+    }
+
+    #sidebar {
+        transform: translateX(0) !important;
+    }
+}
+
+/* ============================================
+   PREVENIR OVERFLOW EN TODOS LOS ELEMENTOS
+   ============================================ */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+section,
+article,
+div {
+    max-width: 100%;
+}

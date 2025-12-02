@@ -4,68 +4,92 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Registrar Conductor - Eggs Gold</title>
-    <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
+    <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}" />
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Estilos base -->
-    <link rel="stylesheet" th:href="@{/css/administrador/administrador_inicio.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
     <link rel="stylesheet" th:href="@{/css/registros/registro_conductor_logistica.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
-
 </head>
 <body>
-<!-- Sidebar -->
+
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+        <h1 class="header-title">
+            Registro de Conductor
+        </h1>
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
+
+<!-- sidebar -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">AD</span>
-                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;" />
 
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
                 <input type="file" id="input-foto" accept="image/*" style="display: none;" />
             </div>
             <h2>Panel de Administración</h2>
         </li>
-        <li><a th:href="@{/administrador_inicio}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <li>
+            <a th:href="@{/administrador_inicio}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/logout}">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
     </ul>
 </nav>
 
-<!-- Contenido principal -->
+<!-- contenido principal -->
 <main id="main-content">
-    <header>
+    <!-- header desktop -->
+    <header role="banner">
         <div class="opciones">
             <div class="marca-contenedor">
                 <div class="logo">
                     <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
                 </div>
-
                 <div class="marca-texto">
                     <h1 class="titulo">Eggs Gold</h1>
                     <p class="subtitulo">Huevos frescos a tu puerta</p>
                 </div>
-                <h1 class="titulo2"><i class="fas fa-id-card"></i> Registro de Conductor</h1>
             </div>
+            <h1 class="titulo2">Registro de Conductor</h1>
+        </div>
     </header>
 
+    <!-- formulario -->
     <form th:action="@{/registro_conductor}" th:object="${conductor}" method="post"
           class="formulario-contenedor">
 
         <h2>Formulario de registro</h2>
 
-        <!-- ✅ MENSAJES DEL SERVIDOR - AHORA SE MUESTRAN CORRECTAMENTE -->
-        <!-- Mensaje de éxito -->
-        <div th:if="${mensaje}" class="alert alert-success" style="padding: 15px; margin-bottom: 20px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; display: flex; align-items: center; gap: 10px;">
-            <i class="fas fa-check-circle" style="font-size: 20px;"></i>
+        <!-- mensajes del servidor -->
+        <div th:if="${mensaje}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
             <span th:text="${mensaje}"></span>
         </div>
 
-        <!-- Mensaje de error -->
-        <div th:if="${error}" class="alert alert-error" style="padding: 15px; margin-bottom: 20px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px; display: flex; align-items: center; gap: 10px;">
-            <i class="fas fa-exclamation-circle" style="font-size: 20px;"></i>
+        <div th:if="${error}" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
             <span th:text="${error}"></span>
         </div>
 
@@ -94,12 +118,12 @@
         <input type="password" id="password" th:field="*{password}" placeholder="Ingrese una contraseña" required>
 
         <button type="submit" class="btn-guardar">
-            <i class="fas fa-save"></i> Registrar Conductor
+            Registrar Conductor
         </button>
     </form>
 </main>
 
-<script th:src="@{/js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/utils/sidebar.js}"></script>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>

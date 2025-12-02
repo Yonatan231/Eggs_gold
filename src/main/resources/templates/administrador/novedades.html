@@ -3,38 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Novedades - Administrador</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{css/administrador/novedades.css}">
+
+    <link rel="stylesheet" th:href="@{/css/administrador/novedades.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
 <body>
-<header>
-    <div class="header-top">
-        <!-- Logo y nombre de la empresa -->
-        <div class="marca">
-            <div class="logo">
-                <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
-            </div>
 
-            <div>
-                <h1 class="titulo">Eggs Gold</h1>
-                <p class="subtitulo">Huevos frescos a tu puerta</p>
-            </div>
+<!-- header fijo responsive -->
+<header class="header-novedades">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
 
-        <!-- Título principal centrado -->
-        <div class="header-title">
-            <h1>Notificaciones</h1>
-        </div>
+        <h1 class="header-title">Notificaciones</h1>
 
         <div class="header-actions">
             <form th:action="@{/administrador_inicio}">
-                <button type="submit" class="btn-link">
-                    <i class="fas fa-external-link-alt"></i> Regresar
+                <button type="submit" class="btn-volver">
+                    <span>←</span>
                 </button>
             </form>
         </div>
@@ -42,7 +33,7 @@
 </header>
 
 <div class="container">
-    <!-- Filtro por estado -->
+    <!-- filtro por estado -->
     <div class="filter-container">
         <label for="filtroEstado">Filtrar por estado:</label>
         <select id="filtroEstado" class="filter-select">
@@ -52,64 +43,64 @@
         </select>
     </div>
 
-    <table id="tablaNovedades">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Pedido</th>
-            <th>Tipo</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Fecha Creación</th>
-            <th>Usuario</th>
-            <th>Rol</th>
-            <th>Imagen</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Thymeleaf loop -->
-        <tr th:each="novedad : ${novedades}" th:attr="data-estado=${novedad.estado}">
-            <td th:text="${novedad.idNovedad}"></td>
-            <td th:text="${novedad.pedido.idPedidos}"></td>
-            <td th:text="${novedad.tipoNovedad}"></td>
-            <td th:text="${novedad.descripcion}"></td>
-            <td>
-                <span class="estado-badge"
-                      th:classappend="${novedad.estado.name() == 'RESUELTO' ? 'estado-resuelto' : 'estado-pendiente'}"
-                      th:text="${novedad.estado}">
-                </span>
-            </td>
-            <td th:text="${#temporals.format(novedad.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:text="${novedad.usuario.nombre + ' ' + novedad.usuario.apellido}"></td>
-            <td th:text="${novedad.usuario.rol.nombreRol}"></td>
-            <td>
-                <button th:if="${novedad.imagen != null}"
-                        class="btn-ver-imagen"
-                        th:attr="data-imagen=${'/uploads/novedades/' + novedad.imagen}">
-                    <i class="fas fa-image"></i> Ver
-                </button>
-                <span th:unless="${novedad.imagen != null}" class="sin-imagen">Sin imagen</span>
-            </td>
-            <td>
-                <select class="cambiar-estado" th:attr="data-id=${novedad.idNovedad}">
-                    <option value="PENDIENTE" th:selected="${novedad.estado.name() == 'PENDIENTE'}">Pendiente</option>
-                    <option value="RESUELTO" th:selected="${novedad.estado.name() == 'RESUELTO'}">Resuelto</option>
-                </select>
-            </td>
-        </tr>
-        <!-- Mensaje si no hay novedades -->
-        <tr th:if="${#lists.isEmpty(novedades)}" class="empty-row">
-            <td colspan="10" class="empty-message">No hay novedades registradas</td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- contenedor con scroll horizontal -->
+    <div class="tabla-contenedor-scroll">
+        <table id="tablaNovedades">
+            <thead>
+            <tr>
+                <th>Código Pedido</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Fecha Creación</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="novedad : ${novedades}" th:attr="data-estado=${novedad.estado}">
+                <td th:text="${novedad.pedido.idPedidos}"></td>
+                <td th:text="${novedad.tipoNovedad}"></td>
+                <td th:text="${novedad.descripcion}"></td>
+                <td>
+                    <span class="estado-badge"
+                          th:classappend="${novedad.estado.name() == 'RESUELTO' ? 'estado-resuelto' : 'estado-pendiente'}"
+                          th:text="${novedad.estado}">
+                    </span>
+                </td>
+                <td th:text="${#temporals.format(novedad.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${novedad.usuario.nombre + ' ' + novedad.usuario.apellido}"></td>
+                <td th:text="${novedad.usuario.rol.nombreRol}"></td>
+                <td>
+                    <button th:if="${novedad.imagen != null}"
+                            class="btn-ver-imagen"
+                            th:attr="data-imagen=${'/uploads/novedades/' + novedad.imagen}">
+                        Ver
+                    </button>
+                    <span th:unless="${novedad.imagen != null}" class="sin-imagen">Sin imagen</span>
+                </td>
+                <td>
+                    <select class="cambiar-estado" th:attr="data-id=${novedad.idNovedad}">
+                        <option value="PENDIENTE" th:selected="${novedad.estado.name() == 'PENDIENTE'}">Pendiente</option>
+                        <option value="RESUELTO" th:selected="${novedad.estado.name() == 'RESUELTO'}">Resuelto</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(novedades)}" class="empty-row">
+                <td colspan="9" class="empty-message">No hay novedades registradas</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<!-- Lightbox para ver imagen -->
+<!-- lightbox para ver imagen -->
 <div id="lightbox" class="lightbox">
     <span class="lightbox-close">&times;</span>
-    <img class="lightbox-content" id="lightbox-img">
+    <img class="lightbox-content" id="lightbox-img" alt="Imagen de novedad">
 </div>
 
 <footer>

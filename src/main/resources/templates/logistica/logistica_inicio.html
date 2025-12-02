@@ -1,74 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- INFORMACIÓN BÁSICA DE LA PÁGINA -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Panel de logística de Eggs Gold">
     <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}" />
 
-    <!-- ICONOS DE FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ESTILOS PERSONALIZADOS -->
-    <link rel="stylesheet" th:href="@{css/logistica/logistica_inicio.css}">
+    <!-- estilos reutilizables -->
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
+    <!-- estilos especificos -->
+    <link rel="stylesheet" th:href="@{/css/logistica/logistica_inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
     <title>Panel de Logística - Eggs Gold</title>
 </head>
 <body>
 
-<!-- ============================================
-     BOTÓN PARA ABRIR EL MENÚ EN MÓVILES
-     ============================================ -->
-<button class="toggle-btn">
-    ☰
-</button>
+<!-- header responsive (moviles/tablets) -->
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
 
-<!-- ============================================
-     MENÚ LATERAL
-     ============================================ -->
+        <h1 class="header-title">
+            Bienvenido, <span class="resaltado">Logística</span>
+        </h1>
+
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
+
+<!-- menu lateral -->
 <nav id="sidebar">
     <ul>
-        <!-- PERFIL DEL USUARIO -->
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
-                <!-- Iniciales cuando no hay foto -->
-                <span id="avatar-iniciales">AD</span>
-
-                <!-- Foto de perfil -->
+                <span id="avatar-iniciales">LG</span>
                 <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
-
-                <!-- Botón para subir foto -->
-                <label for="input-foto" class="boton-subir-foto">+</label>
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
                 <input type="file" id="input-foto" accept="image/*" style="display: none;">
             </div>
             <h2>Panel de Logística</h2>
         </li>
 
-        <!-- OPCIONES DEL MENÚ -->
-        <!-- Opción 1: Pedidos Pendientes -->
+        <li>
+            <a th:href="@{/logistica_inicio}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </li>
+
         <li>
             <a th:href="@{/pedidos_pendientes}">
                 <i class="fas fa-clock"></i> Pedidos Pendientes
             </a>
         </li>
 
-        <!-- Opción 2: Aprobar Entrada -->
         <li>
             <a th:href="@{/aprobar_entrada}">
                 <i class="fas fa-clipboard-check"></i> Aprobar Entrada
             </a>
         </li>
 
-        <!-- Opción 3: Reportar Novedad -->
         <li>
             <a href="#" id="btnNovedad">
                 <i class="fas fa-exclamation-circle"></i> Reportar Novedad
             </a>
         </li>
 
-        <!-- Opción 4: Cerrar Sesión -->
         <li>
             <a href="/logout" id="cerrar_sesion">
                 <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -77,15 +84,12 @@
     </ul>
 </nav>
 
-<!-- ============================================
-     CONTENIDO PRINCIPAL
-     ============================================ -->
+<!-- contenido principal -->
 <main id="main-content">
 
-    <!-- CABECERA -->
+    <!-- cabecera (solo desktop) -->
     <header role="banner">
         <div class="opciones">
-            <!-- Logo y marca alineados horizontalmente -->
             <div class="marca-contenedor">
                 <div class="logo">
                     <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
@@ -97,16 +101,14 @@
                 </div>
             </div>
 
-            <h1 class="titulo2"> Bienvenido, <span class="resaltado">Logística</span></h1>
+            <h1 class="titulo2">Bienvenido, <span class="resaltado">Logística</span></h1>
         </div>
     </header>
 
-    <!-- ============================================
-         TARJETAS DE RESUMEN (MODIFICADAS)
-         ============================================ -->
+    <!-- tarjetas de resumen -->
     <section class="contenedor-cuadros">
 
-        <!-- Tarjeta 1: Pedidos Nuevos -->
+        <!-- tarjeta 1: pedidos nuevos -->
         <div class="tarjeta-resumen pedidos-nuevos">
             <div class="tarjeta-icono">
                 <i class="fas fa-box-open"></i>
@@ -117,7 +119,7 @@
             </div>
         </div>
 
-        <!-- Tarjeta 2: Entradas Pendientes -->
+        <!-- tarjeta 2: entradas pendientes -->
         <div class="tarjeta-resumen entradas-pendientes">
             <div class="tarjeta-icono">
                 <i class="fas fa-truck-loading"></i>
@@ -130,25 +132,22 @@
 
     </section>
 
-    <!-- ============================================
-         SECCIÓN DE PEDIDOS PARA ALISTAR (NUEVO)
-         ============================================ -->
+    <!-- seccion de pedidos para alistar -->
     <section class="seccion-tabla">
         <div class="encabezado-tabla">
             <h2>Pedidos para Alistar</h2>
 
-            <!-- Barra de búsqueda -->
             <div class="contenedor-busqueda">
                 <input type="text" id="buscar" placeholder="Buscar por ID de pedido..." class="input-buscar">
             </div>
         </div>
 
-        <!-- Tabla de pedidos -->
+        <!-- tabla con scroll horizontal -->
         <div class="tabla-contenedor-scroll">
             <table id="tablaPedidos" class="tabla-datos">
                 <thead>
                 <tr>
-                    <th>ID Pedido</th>
+                    <th>Código Pedido</th>
                     <th>Fecha Creación</th>
                     <th>Cliente</th>
                     <th>Total Unidades</th>
@@ -158,11 +157,10 @@
                 </thead>
 
                 <tbody id="tablaPedidosBody">
-
                 </tbody>
             </table>
 
-            <!-- Mensaje cuando no hay pedidos -->
+            <!-- mensaje cuando no hay pedidos -->
             <div id="mensajeVacio" class="mensaje-vacio" style="display: none;">
                 <i class="fas fa-inbox"></i>
                 <p>No hay pedidos para alistar</p>
@@ -170,9 +168,7 @@
         </div>
     </section>
 
-    <!-- ============================================
-         MODAL PARA VER DETALLES DEL PEDIDO (NUEVO)
-         ============================================ -->
+    <!-- modal para ver detalles del pedido -->
     <div id="modalDetallePedido" class="modal">
         <div class="modal-contenido">
             <span class="cerrar" onclick="cerrarModal()">&times;</span>
@@ -190,26 +186,20 @@
         </div>
     </div>
 
-    <!-- ============================================
-         MODAL PARA REPORTAR NOVEDAD
-         ============================================ -->
+    <!-- modal para reportar novedad -->
     <div class="modal" id="novedadModal">
         <div class="modal-content">
-            <!-- Encabezado del modal con título y botón de cerrar -->
             <div class="modal-header">
                 <h2>Reportar Novedad</h2>
                 <button class="close-modal" id="closeModal">&times;</button>
             </div>
 
-            <!-- Formulario para reportar la novedad -->
             <form id="novedadForm">
-                <!-- Campo 1: Número de Pedido -->
                 <div class="form-group">
                     <label for="orderNumber">Número de Pedido</label>
                     <input type="text" id="orderNumber" class="form-control" required>
                 </div>
 
-                <!-- Campo 2: Tipo de Novedad (selector desplegable) -->
                 <div class="form-group">
                     <label for="tipoNovedad">Tipo de Novedad</label>
                     <select id="tipoNovedad" class="form-control" required>
@@ -220,19 +210,16 @@
                     </select>
                 </div>
 
-                <!-- Campo 3: Descripción detallada -->
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
                     <textarea id="descripcion" class="form-control" placeholder="Describa la novedad en detalle..." required></textarea>
                 </div>
 
-                <!-- Campo 4: Evidencia (foto o archivo opcional) -->
                 <div class="form-group">
                     <label for="evidencia">Evidencia (opcional)</label>
                     <input type="file" id="evidencia" class="form-control" accept="image/*">
                 </div>
 
-                <!-- Botones de acción -->
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancelNovedad">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Enviar Reporte</button>
@@ -241,9 +228,7 @@
         </div>
     </div>
 
-    <!-- ============================================
-     MODAL PARA ASIGNAR CONDUCTOR (NUEVO)
-     ============================================ -->
+    <!-- modal para asignar conductor -->
     <div id="modalAsignarConductor" class="modal">
         <div class="modal-contenido">
             <span class="cerrar" onclick="cerrarModalConductor()">&times;</span>
@@ -255,7 +240,6 @@
             </div>
 
             <div class="lista-conductores" id="listaConductores">
-                <!-- Se llena dinámicamente -->
             </div>
 
             <div class="modal-botones">
@@ -266,9 +250,14 @@
 
 </main>
 
+<!-- scripts reutilizables (primero) -->
+<script th:src="@{/js/utils/sidebar.js}"></script>
+
+<!-- scripts especificos (despues) -->
 <script th:src="@{/js/utils/reportar_novedad.js}"></script>
-<script th:src="@{js/logistica/logistica_inicio.js}"></script>
-<script th:src="@{js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/logistica/logistica_inicio.js}"></script>
+
+<!-- scripts de sesion y validacion -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('LOGISTICA'); </script>

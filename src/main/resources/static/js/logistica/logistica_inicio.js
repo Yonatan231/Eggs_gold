@@ -1,39 +1,15 @@
-/* ============================================
-   PANEL DE LOGÍSTICA - VERSIÓN CON SERVIDOR
-   Este archivo controla toda la funcionalidad
-   de la página de logística con conexión real al backend
-   ============================================ */
+// logistica_inicio.js - funcionalidad especifica
 
-// ============================================
-// BOTÓN PARA ABRIR/CERRAR EL MENÚ
-// ============================================
-const botonMenu = document.querySelector('.toggle-btn');
-
-// Cuando se hace clic en el botón del menú
-botonMenu.addEventListener('click', function () {
-    const menuLateral = document.getElementById('sidebar');
-    menuLateral.classList.toggle('active');
-});
-
-// ============================================
-// CUANDO LA PÁGINA CARGA
-// Ejecuta estas funciones automáticamente
-// ============================================
+// cuando la pagina carga
 document.addEventListener("DOMContentLoaded", function() {
-    cargarDashboard(); // Cargar tarjetas de resumen
-    cargarPedidosEnAlistamiento(); // Cargar pedidos que el usuario tomó
-    actualizarContadores(); // Actualizar contadores de tarjetas
-    configurarBusqueda(); // Configurar búsqueda
-    inicializarActualizacionAutomatica(); // Actualizar cada minuto
+    cargarDashboard();
+    cargarPedidosEnAlistamiento();
+    actualizarContadores();
+    configurarBusqueda();
+    inicializarActualizacionAutomatica();
 });
 
-// ============================================
-// FUNCIONES PARA EL DASHBOARD (TARJETAS DE RESUMEN)
-// ============================================
-
-/**
- * Carga los datos del dashboard: pedidos nuevos y entradas pendientes
- */
+// cargar datos del dashboard
 async function cargarDashboard() {
     try {
         const response = await fetch('/api/logistica/dashboard/resumen');
@@ -44,13 +20,11 @@ async function cargarDashboard() {
 
         const datos = await response.json();
 
-        // Actualizar contador de pedidos nuevos
         const contadorPedidosNuevos = document.getElementById('totalPedidosNuevos');
         if (contadorPedidosNuevos) {
             contadorPedidosNuevos.textContent = datos.pedidosNuevos;
         }
 
-        // Actualizar contador de entradas pendientes
         const contadorEntradasPendientes = document.getElementById('totalEntradasPendientes');
         if (contadorEntradasPendientes) {
             contadorEntradasPendientes.textContent = datos.entradasPendientes;
@@ -61,21 +35,14 @@ async function cargarDashboard() {
     }
 }
 
-/**
- * Inicializa la actualización automática del dashboard
- * Se actualiza cada minuto
- */
+// inicializar actualizacion automatica
 function inicializarActualizacionAutomatica() {
-    // Actualizar cada 60 segundos
     setInterval(() => {
         cargarDashboard();
     }, 60000);
 }
 
-// ============================================
-// FUNCIÓN: cargarPedidosEnAlistamiento()
-// Obtiene los pedidos EN_ALISTAMIENTO del usuario
-// ============================================
+// cargar pedidos en alistamiento del usuario
 function cargarPedidosEnAlistamiento() {
     fetch('/api/logistica/mis-pedidos')
         .then(response => response.json())
@@ -93,10 +60,7 @@ function cargarPedidosEnAlistamiento() {
         });
 }
 
-// ============================================
-// FUNCIÓN: mostrarPedidosEnTabla(pedidos)
-// Muestra los pedidos en la tabla principal
-// ============================================
+// mostrar pedidos en la tabla
 function mostrarPedidosEnTabla(pedidos) {
     const tbody = document.getElementById('tablaPedidosBody');
     const tabla = document.getElementById('tablaPedidos');
@@ -120,13 +84,9 @@ function mostrarPedidosEnTabla(pedidos) {
 
         fila.setAttribute('data-pedido-id', pedido.idPedido);
 
-        // ✅ DETECTAR EL ESTADO DEL PEDIDO
         const estado = pedido.estado || 'EN_ALISTAMIENTO';
         fila.setAttribute('data-estado', estado.toLowerCase());
 
-        const precioTotal = pedido.precioTotal ? `$${pedido.precioTotal.toLocaleString('es-CO')}` : '$0';
-
-        // ✅ CAMBIAR EL BOTÓN SEGÚN EL ESTADO
         let botonAccion = '';
         if (estado === 'EN_ALISTAMIENTO') {
             botonAccion = `<button onclick="marcarComoListo(this, ${pedido.idPedido})" class="btn-listo">Marcar como Listo</button>`;
@@ -150,10 +110,7 @@ function mostrarPedidosEnTabla(pedidos) {
     });
 }
 
-// ============================================
-// FUNCIÓN: mostrarMensajeVacio()
-// Muestra mensaje cuando no hay pedidos
-// ============================================
+// mostrar mensaje cuando no hay pedidos
 function mostrarMensajeVacio() {
     const tabla = document.getElementById('tablaPedidos');
     const mensajeVacio = document.getElementById('mensajeVacio');
@@ -162,12 +119,8 @@ function mostrarMensajeVacio() {
     mensajeVacio.style.display = 'block';
 }
 
-// ============================================
-// FUNCIÓN: actualizarContadores()
-// Actualiza los números en las tarjetas de resumen
-// ============================================
+// actualizar contadores de tarjetas
 function actualizarContadores() {
-    // Obtener total de pedidos nuevos (PENDIENTES)
     fetch('/api/logistica/pedidos-pendientes')
         .then(response => response.json())
         .then(data => {
@@ -177,77 +130,61 @@ function actualizarContadores() {
         })
         .catch(error => console.error('Error:', error));
 
-    // Obtener total de entradas pendientes (puedes ajustar esto según tu lógica)
-    // Por ahora lo dejamos en 0 o implementar según necesites
     document.getElementById('totalEntradasPendientes').textContent = '0';
 }
 
-// ============================================
-// FUNCIÓN: configurarBusqueda()
-// Configura la barra de búsqueda de pedidos
-// ============================================
+// configurar busqueda de pedidos
 function configurarBusqueda() {
     const inputBuscar = document.getElementById("buscar");
     const tbody = document.getElementById("tablaPedidosBody");
 
-    // Cuando el usuario escribe en el campo de búsqueda
     inputBuscar.addEventListener("keyup", function() {
-        const textoBusqueda = inputBuscar.value.toLowerCase(); // Convertimos a minúsculas
-        const filas = tbody.querySelectorAll("tr"); // Obtenemos todas las filas
-        let hayResultados = false; // Variable para saber si encontramos algo
+        const textoBusqueda = inputBuscar.value.toLowerCase();
+        const filas = tbody.querySelectorAll("tr");
+        let hayResultados = false;
 
-        // Revisamos cada fila
         filas.forEach(function(fila) {
-            const contenido = fila.textContent.toLowerCase(); // Texto de la fila en minúsculas
+            const contenido = fila.textContent.toLowerCase();
 
-            // Si el texto de búsqueda está en la fila, la mostramos
             if (contenido.includes(textoBusqueda)) {
-                fila.style.display = ""; // Mostramos la fila
+                fila.style.display = "";
                 hayResultados = true;
             } else {
-                fila.style.display = "none"; // Ocultamos la fila
+                fila.style.display = "none";
             }
         });
 
-        // Si no hay resultados, mostramos el mensaje vacío
         const mensajeVacio = document.getElementById("mensajeVacio");
         const tablaPedidos = document.getElementById("tablaPedidos");
 
         if (!hayResultados) {
-            tablaPedidos.style.display = "none"; // Ocultamos la tabla
-            mensajeVacio.style.display = "block"; // Mostramos el mensaje
+            tablaPedidos.style.display = "none";
+            mensajeVacio.style.display = "block";
         } else {
-            tablaPedidos.style.display = "table"; // Mostramos la tabla
-            mensajeVacio.style.display = "none"; // Ocultamos el mensaje
+            tablaPedidos.style.display = "table";
+            mensajeVacio.style.display = "none";
         }
     });
 }
 
-// ============================================
-// FUNCIÓN: abrirModal(id)
-// Abre el modal con los detalles del pedido desde el servidor
-// ============================================
+// abrir modal con detalles del pedido
 function abrirModal(id) {
-    // Mostrar el ID del pedido en el título del modal
     document.getElementById("pedidoId").textContent = id;
 
-    // Obtener detalles del pedido desde el servidor
     fetch('/api/logistica/detalle-pedido/' + id)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 const detalle = data.detalle;
                 const lista = document.getElementById("listaProductos");
-                lista.innerHTML = ''; // Limpiar la lista
+                lista.innerHTML = '';
 
-                // Agregar cada producto a la lista
                 detalle.productos.forEach(producto => {
                     const li = document.createElement("li");
                     li.textContent = `${producto.nombre} - Categoría: ${producto.categoria} - ${producto.cantidad} unidades`;
                     lista.appendChild(li);
                 });
 
-                // Mostrar el modal
                 const modal = document.getElementById("modalDetallePedido");
                 modal.style.display = "flex";
             } else {
@@ -260,19 +197,13 @@ function abrirModal(id) {
         });
 }
 
-// ============================================
-// FUNCIÓN: cerrarModal()
-// Cierra el modal de detalles del pedido
-// ============================================
+// cerrar modal de detalles
 function cerrarModal() {
     const modal = document.getElementById("modalDetallePedido");
-    modal.style.display = "none"; // Ocultamos el modal
+    modal.style.display = "none";
 }
 
-// ============================================
-// FUNCIÓN: marcarComoListo(btn, idPedido)
-// Marca un pedido como listo y cambia el botón
-// ============================================
+// marcar pedido como listo
 function marcarComoListo(btn, idPedido) {
     if (!confirm(`¿Marcar el pedido #${idPedido} como listo?`)) {
         return;
@@ -287,13 +218,11 @@ function marcarComoListo(btn, idPedido) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Cambiar el botón a "Asignar Conductor"
                 btn.textContent = 'Asignar Conductor';
                 btn.classList.remove('btn-listo');
                 btn.classList.add('btn-asignar');
                 btn.onclick = function() { abrirModalAsignarConductor(idPedido); };
 
-                // Cambiar el estado de la fila
                 const fila = btn.closest('tr');
                 fila.setAttribute('data-estado', 'listo');
 
@@ -309,25 +238,19 @@ function marcarComoListo(btn, idPedido) {
         });
 }
 
-// ============================================
-// FUNCIÓN: abrirModalAsignarConductor(idPedido)
-// Abre el modal para seleccionar conductor
-// ============================================
+// abrir modal para asignar conductor
 function abrirModalAsignarConductor(idPedido) {
     document.getElementById('pedidoIdAsignar').textContent = idPedido;
 
-    // Cargar conductores disponibles
     fetch('/api/logistica/conductores')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 mostrarConductores(data.conductores, idPedido);
 
-                // Mostrar modal
                 const modal = document.getElementById('modalAsignarConductor');
                 modal.style.display = 'flex';
 
-                // Configurar búsqueda
                 configurarBusquedaConductor();
             } else {
                 alert('Error al cargar conductores: ' + data.message);
@@ -339,10 +262,7 @@ function abrirModalAsignarConductor(idPedido) {
         });
 }
 
-// ============================================
-// FUNCIÓN: mostrarConductores(conductores, idPedido)
-// Muestra la lista de conductores en el modal
-// ============================================
+// mostrar lista de conductores
 function mostrarConductores(conductores, idPedido) {
     const lista = document.getElementById('listaConductores');
     lista.innerHTML = '';
@@ -373,10 +293,7 @@ function mostrarConductores(conductores, idPedido) {
     });
 }
 
-// ============================================
-// FUNCIÓN: confirmarAsignacion(idPedido, idConductor, nombreConductor)
-// Asigna el conductor al pedido
-// ============================================
+// confirmar asignacion de conductor
 function confirmarAsignacion(idPedido, idConductor, nombreConductor) {
     if (!confirm(`¿Asignar el pedido #${idPedido} a ${nombreConductor}?`)) {
         return;
@@ -398,13 +315,11 @@ function confirmarAsignacion(idPedido, idConductor, nombreConductor) {
                 alert(data.message);
                 cerrarModalConductor();
 
-                // Eliminar la fila del pedido (ya no está en logística)
                 const fila = document.querySelector(`tr[data-pedido-id="${idPedido}"]`);
                 if (fila) {
                     fila.remove();
                 }
 
-                // Recargar pedidos
                 cargarPedidosEnAlistamiento();
                 actualizarContadores();
             } else {
@@ -417,20 +332,14 @@ function confirmarAsignacion(idPedido, idConductor, nombreConductor) {
         });
 }
 
-// ============================================
-// FUNCIÓN: cerrarModalConductor()
-// Cierra el modal de asignar conductor
-// ============================================
+// cerrar modal de asignar conductor
 function cerrarModalConductor() {
     const modal = document.getElementById('modalAsignarConductor');
     modal.style.display = 'none';
     document.getElementById('buscarConductor').value = '';
 }
 
-// ============================================
-// FUNCIÓN: configurarBusquedaConductor()
-// Configura búsqueda en tiempo real de conductores
-// ============================================
+// configurar busqueda de conductores
 function configurarBusquedaConductor() {
     const inputBuscar = document.getElementById('buscarConductor');
 
@@ -451,16 +360,12 @@ function configurarBusquedaConductor() {
     });
 }
 
-// ============================================
-// CERRAR MODAL AL HACER CLIC FUERA
-// Si el usuario hace clic fuera del contenido del modal, se cierra
-// ============================================
+// cerrar modales al hacer clic fuera
 window.addEventListener('click', function(e) {
     const modalDetalle = document.getElementById('modalDetallePedido');
     const modalNovedad = document.getElementById('novedadModal');
     const modalConductor = document.getElementById('modalAsignarConductor');
 
-    // Si se hace clic en el fondo oscuro (fuera del contenido), cerramos
     if (e.target === modalDetalle) {
         cerrarModal();
     }
@@ -474,21 +379,14 @@ window.addEventListener('click', function(e) {
     }
 });
 
-// ============================================
-// MODAL DE NOVEDADES - REPORTAR NOVEDAD
-// ============================================
-
-// Obtenemos los elementos del DOM
-// ============================================
-// MODAL DE NOVEDAD - Usando funciones compartidas
-// ============================================
+// modal de novedad - usando funciones compartidas
 const btnNovedad = document.getElementById('btnNovedad');
 const novedadModal = document.getElementById('novedadModal');
 const closeModal = document.getElementById('closeModal');
 const cancelNovedad = document.getElementById('cancelNovedad');
 const novedadForm = document.getElementById('novedadForm');
 
-// Abrir modal
+// abrir modal
 if (btnNovedad) {
     btnNovedad.addEventListener('click', function(e) {
         e.preventDefault();
@@ -496,7 +394,7 @@ if (btnNovedad) {
     });
 }
 
-// Cerrar modal con X
+// cerrar modal con x
 if (closeModal) {
     closeModal.addEventListener('click', function() {
         novedadModal.style.display = 'none';
@@ -504,7 +402,7 @@ if (closeModal) {
     });
 }
 
-// Cerrar modal con botón Cancelar
+// cerrar modal con boton cancelar
 if (cancelNovedad) {
     cancelNovedad.addEventListener('click', function() {
         novedadModal.style.display = 'none';
@@ -512,7 +410,7 @@ if (cancelNovedad) {
     });
 }
 
-// Envío del formulario usando funciones compartidas
+// envio del formulario
 if (novedadForm) {
     novedadForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -522,21 +420,18 @@ if (novedadForm) {
         const descripcion = document.getElementById('descripcion').value.trim();
         const imagenFile = document.getElementById('evidencia').files[0];
 
-        // Validar campos usando función compartida
         const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
         if (!validacion.valido) {
             alert(validacion.mensaje);
             return;
         }
 
-        // Obtener ID de usuario
         const idUsuario = obtenerIdUsuario();
         if (!idUsuario) {
             alert('Error: No se pudo obtener la información de usuario. Recargue la página.');
             return;
         }
 
-        // Reportar novedad usando función compartida
         reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
             .then(resultado => {
                 if (resultado.success) {

@@ -5,48 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eggs Gold - Envío de Correos Masivos</title>
 
-    <!-- Ícono y fuentes -->
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- Estilos base -->
-    <link rel="stylesheet" th:href="@{/css/administrador/administrador_inicio.css}">
+    <!-- CSS reutilizables -->
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
+    <!-- CSS especificos -->
+    <link rel="stylesheet" th:href="@{/css/administrador/correo_administrador.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
-    <link rel="stylesheet" th:href="@{/css/administrador/correo_admin.css}">
 </head>
 
 <body>
-<!-- Botón menú responsive -->
-<button class="toggle-btn" aria-label="Abrir menú lateral" aria-expanded="false">
-    <span>&#9776;</span>
-</button>
 
-<!-- =================== SIDEBAR =================== -->
+<!-- header responsive (solo movil) -->
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+        <h1 class="header-title">
+            Envío de Correos Masivos
+        </h1>
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
+
+<!-- sidebar -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">AD</span>
-                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
-                
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;" />
+
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
                 <input type="file" id="input-foto" accept="image/*" style="display: none;" />
             </div>
             <h2>Panel de Administración</h2>
         </li>
-        <li><a th:href="@{/administrador_inicio}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a th:href="@{/logout}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        <li>
+            <a th:href="@{/administrador_inicio}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/logout}">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
     </ul>
 </nav>
 
-<!-- =================== CONTENIDO PRINCIPAL =================== -->
-<main id="main-content" role="main">
+<!-- contenido principal -->
+<main id="main-content">
+    <!-- header desktop -->
     <header role="banner">
         <div class="opciones">
-            <div class="marca">
+            <div class="marca-contenedor">
                 <div class="logo">
-                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
                 </div>
-                <div>
+                <div class="marca-texto">
                     <h1 class="titulo">Eggs Gold</h1>
                     <p class="subtitulo">Huevos frescos a tu puerta</p>
                 </div>
@@ -55,17 +80,15 @@
         </div>
     </header>
 
-    <!-- =================== FORMULARIO =================== -->
+    <!-- formulario -->
     <section class="seccion-tabla" aria-labelledby="titulo-correos">
         <div class="encabezado-seccion">
-            <h2 id="titulo-correos"> Enviar Correos Masivos</h2>
+            <h2 id="titulo-correos">Enviar Correos Masivos</h2>
             <p>Selecciona los roles destinatarios y redacta el mensaje que deseas enviar.</p>
         </div>
 
-        <!-- 🔹 Se agrega id="correoForm" -->
         <form id="correoForm" th:action="@{/correos/enviar}" method="post" class="form-envio-correos">
 
-            <!-- 🔹 Contenedor de roles -->
             <label>Seleccionar Roles Destinatarios:</label>
             <div class="roles-container">
                 <div class="role-card selectable"
@@ -97,7 +120,7 @@
 
             <div class="acciones-seccion">
                 <button id="btnEnviarCorreos" type="submit" class="btn-enviar">
-                    <i class="fas fa-paper-plane"></i> Enviar Correos
+                    Enviar Correos
                 </button>
             </div>
 
@@ -107,8 +130,11 @@
     </section>
 </main>
 
-<script th:src="@{/js/administrador/correo_admin.js}" defer></script>
-<script th:src="@{/js/utils/foto_panel.js}"></script>
+<!-- JS reutilizables -->
+<script th:src="@{/js/utils/sidebar.js}"></script>
+
+<!-- JS especificos -->
+<script th:src="@{/js/administrador/correo_administrador.js}"></script>
 
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>

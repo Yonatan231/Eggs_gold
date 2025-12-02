@@ -1,16 +1,8 @@
 // ============================================
-// SCRIPT PARA PEDIDOS ASIGNADOS DEL CONDUCTOR
+// PEDIDOS_ASIGNADOS.JS - FUNCIONALIDAD ESPECÍFICA
+// Este archivo solo maneja la lógica de pedidos asignados
+// El sidebar y su funcionalidad están en utils/sidebar.js
 // ============================================
-
-// ============================================
-// BOTÓN PARA ABRIR/CERRAR EL MENÚ
-// ============================================
-const botonMenu = document.querySelector('.toggle-btn');
-
-botonMenu.addEventListener('click', function () {
-    const menuLateral = document.getElementById('sidebar');
-    menuLateral.classList.toggle('active');
-});
 
 // ============================================
 // CUANDO LA PÁGINA CARGA

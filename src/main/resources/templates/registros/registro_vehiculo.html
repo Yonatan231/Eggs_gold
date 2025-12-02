@@ -6,59 +6,89 @@
     <title>Gestión de Vehículos - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 
-    <!-- Font Awesome para iconos -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Estilos -->
-    <link rel="stylesheet" th:href="@{/css/administrador/administrador_inicio.css}">
+    <!-- estilos reutilizables -->
+    <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
+
+    <!-- estilos especificos -->
     <link rel="stylesheet" th:href="@{/css/conductor/vehiculo.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
-
 </head>
 <body>
+
+<!-- header responsive (moviles/tablets) -->
+<div class="header-responsive">
+    <div class="header-content">
+        <div class="header-logo">
+            <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+        </div>
+
+        <h1 class="header-title">
+            Gestión de <span class="resaltado">Vehículos</span>
+        </h1>
+
+        <button class="header-hamburger" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
+
+<!-- menu lateral -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
                 <span id="avatar-iniciales">CD</span>
-                <img id="avatar-imagen" src="" alt="Avatar" style="display: none;" />
-                <input type="file" id="input-foto" accept="image/*" style="display: none;" />
+                <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
+                <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
+                    <i class="fas fa-camera"></i>
+                </label>
+                <input type="file" id="input-foto" accept="image/*" style="display: none;">
             </div>
             <h2>Panel de Conductor</h2>
         </li>
-        <li><a th:href="@{/conductor_inicio}" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
-        <li><a id="cerrar_sesion" th:href="@{/logout}" class="nav-link">
-            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-        </a></li>
+
+        <li>
+            <a th:href="@{/conductor_inicio}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </li>
+
+        <li>
+            <a href="/logout" id="cerrar_sesion">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </li>
     </ul>
 </nav>
 
-<!-- Contenido principal -->
+<!-- contenido principal -->
 <main id="main-content">
-    <header>
+    <!-- cabecera (solo desktop) -->
+    <header role="banner">
         <div class="opciones">
-            <!-- Logo de la empresa -->
-            <div class="marca">
+            <div class="marca-contenedor">
                 <div class="logo">
-                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
+                    <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
                 </div>
 
-                <div>
+                <div class="marca-texto">
                     <h1 class="titulo">Eggs Gold</h1>
                     <p class="subtitulo">Huevos frescos a tu puerta</p>
                 </div>
             </div>
-            <!-- Título de la página con icono -->
-            <h1 class="titulo2"><i class="fas fa-car"></i> Gestión de Vehículos</h1>
+
+            <h1 class="titulo2">Gestión de <span class="resaltado">Vehículos</span></h1>
         </div>
     </header>
 
-    <!-- Tabla de vehículos -->
+    <!-- tabla de vehiculos -->
     <div class="tabla-contenedor">
-        <!-- Header verde con título, botón y filtro -->
+        <!-- header verde con titulo, boton y filtro -->
         <div class="tabla-header">
-            <h2><i class="fas fa-truck"></i> Mis Vehículos Registrados</h2>
+            <h2>Mis Vehículos Registrados</h2>
 
             <div class="header-controles">
                 <button class="btn-crear" onclick="abrirModalCrear()">
@@ -76,12 +106,11 @@
             </div>
         </div>
 
-        <!-- Tabla con wrapper -->
-        <div class="tabla-wrapper">
-            <table id="tablaVehiculos">
+        <!-- tabla con scroll horizontal -->
+        <div class="tabla-contenedor-scroll">
+            <table id="tablaVehiculos" class="tabla-datos">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Placa</th>
                     <th>Kilometraje</th>
                     <th>Estado</th>
@@ -90,19 +119,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Los datos se cargan dinámicamente desde el servidor -->
                 <tr>
-                    <td colspan="6" style="text-align:center;">Cargando vehículos...</td>
+                    <td colspan="5" style="text-align:center;">Cargando vehículos...</td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- MODAL CREAR -->
+        <!-- modal crear -->
         <div id="modalCrear" class="modal-overlay">
             <div class="modal-contenido">
                 <div class="modal-header">
-                    <h3><i class="fas fa-plus-circle"></i> Registrar Nuevo Vehículo</h3>
+                    <h3>Registrar Nuevo Vehículo</h3>
                     <button class="btn-cerrar-modal" onclick="cerrarModal('modalCrear')">
                         <i class="fas fa-times"></i>
                     </button>
@@ -148,18 +176,18 @@
 
                     <div class="modal-botones">
                         <button class="btn-guardar" onclick="crearVehiculo()">
-                            <i class="fas fa-save"></i> Registrar Vehículo
+                            Registrar Vehículo
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL ACTUALIZAR -->
+        <!-- modal actualizar -->
         <div id="modalActualizar" class="modal-overlay">
             <div class="modal-contenido">
                 <div class="modal-header">
-                    <h3><i class="fas fa-edit"></i> Actualizar Vehículo</h3>
+                    <h3>Actualizar Vehículo</h3>
                     <button class="btn-cerrar-modal" onclick="cerrarModal('modalActualizar')">
                         <i class="fas fa-times"></i>
                     </button>
@@ -215,7 +243,7 @@
 
                     <div class="modal-botones">
                         <button class="btn-guardar" onclick="actualizarVehiculo()">
-                            <i class="fas fa-save"></i> Guardar Cambios
+                            Guardar Cambios
                         </button>
                     </div>
                 </div>
@@ -224,10 +252,12 @@
     </div>
 </main>
 
-<script th:src="@{/js/utils/foto_panel.js}"></script>
+<script th:src="@{/js/utils/sidebar.js}"></script>
+
+<script th:src="@{/js/conductor/vehiculo.js}"></script>
+
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
-<script th:src="@{/js/conductor/vehiculo.js}"></script>
 <script> validarRolPagina('CONDUCTOR'); </script>
 
 </body>

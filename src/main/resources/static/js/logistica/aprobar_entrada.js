@@ -1,60 +1,50 @@
-/* ============================================
-   CARGAR ENTRADAS PENDIENTES
-   ============================================ */
+// aprobar_entrada.js - funcionalidad especifica
 
+// cuando la pagina carga
 document.addEventListener('DOMContentLoaded', () => {
     cargarEntradas();
 });
 
-// Referencias a elementos del DOM
+// referencias a elementos del dom
 const tablaBody = document.getElementById("tablaBody");
 const contador = document.getElementById("contador");
 const sinEntradas = document.getElementById("sin-entradas");
 
-/**
- * Carga las entradas pendientes desde el backend
- */
+// cargar entradas pendientes desde el backend
 function cargarEntradas() {
     fetch("/entrada-stock/api/pendientes")
         .then(response => response.json())
         .then(entradas => {
-            // Limpiar tabla
             tablaBody.innerHTML = "";
 
-            // Actualizar contador
             contador.textContent = entradas.length;
 
-            // Si no hay entradas, mostrar mensaje
             if (entradas.length === 0) {
                 sinEntradas.style.display = 'block';
-                document.querySelector('.tabla-wrapper table').style.display = 'none';
+                document.querySelector('.tabla-contenedor-scroll table').style.display = 'none';
                 return;
             }
 
             sinEntradas.style.display = 'none';
-            document.querySelector('.tabla-wrapper table').style.display = 'table';
+            document.querySelector('.tabla-contenedor-scroll table').style.display = 'table';
 
-            // Renderizar cada entrada
             entradas.forEach(entrada => {
                 const fila = crearFilaEntrada(entrada);
                 tablaBody.appendChild(fila);
             });
         })
         .catch(error => {
-            console.error("❌ Error al cargar entradas:", error);
+            console.error("Error al cargar entradas:", error);
             mostrarMensaje("Error al cargar las entradas pendientes", "error");
         });
 }
 
-/**
- * Crea una fila HTML para una entrada
- */
+// crear una fila html para una entrada
 function crearFilaEntrada(entrada) {
     const fila = document.createElement("tr");
     fila.id = `fila-${entrada.id}`;
 
     fila.innerHTML = `
-        <td><strong>#${entrada.id}</strong></td>
         <td>${entrada.nombreProducto}</td>
         <td>
             <input type="number" 
@@ -73,7 +63,6 @@ function crearFilaEntrada(entrada) {
         </td>
         <td>
             <button class="btn-approve" onclick="aprobar(${entrada.id})">
-                <i class="fas fa-check"></i>
                 Aprobar
             </button>
         </td>
@@ -82,14 +71,11 @@ function crearFilaEntrada(entrada) {
     return fila;
 }
 
-/**
- * Muestra un mensaje de éxito o error
- */
+// mostrar mensaje de exito o error
 function mostrarMensaje(texto, tipo) {
     const mensajeSuccess = document.getElementById("mensaje-success");
     const mensajeError = document.getElementById("mensaje-error");
 
-    // Ocultar ambos mensajes primero
     mensajeSuccess.style.display = 'none';
     mensajeError.style.display = 'none';
 
@@ -112,30 +98,24 @@ function mostrarMensaje(texto, tipo) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/**
- * Aprueba una entrada específica
- */
+// aprobar una entrada especifica
 function aprobar(id) {
-    // Obtener valores actualizados
     const inputCantidad = document.getElementById(`cantidad-${id}`);
     const inputObservacion = document.getElementById(`observacion-${id}`);
 
     const cantidad = parseInt(inputCantidad.value);
     const observacion = inputObservacion.value.trim();
 
-    // Validar cantidad
     if (isNaN(cantidad) || cantidad <= 0) {
         mostrarMensaje("La cantidad debe ser un número mayor a 0", "error");
         inputCantidad.focus();
         return;
     }
 
-    // Confirmar aprobación
     if (!confirm(`¿Confirmas la aprobación de la entrada #${id}?`)) {
         return;
     }
 
-    // Enviar aprobación al servidor
     const datos = {
         idEntrada: id,
         cantidad: cantidad,
@@ -154,14 +134,13 @@ function aprobar(id) {
             if (data.success) {
                 mostrarMensaje(data.message, "success");
 
-                // Animar y eliminar la fila
                 const fila = document.getElementById(`fila-${id}`);
                 if (fila) {
                     fila.style.opacity = '0';
                     fila.style.transition = 'opacity 0.5s';
 
                     setTimeout(() => {
-                        cargarEntradas(); // Recargar tabla
+                        cargarEntradas();
                     }, 500);
                 }
             } else {
@@ -169,14 +148,12 @@ function aprobar(id) {
             }
         })
         .catch(error => {
-            console.error("❌ Error:", error);
+            console.error("Error:", error);
             mostrarMensaje("Error al aprobar la entrada. Por favor, intenta nuevamente.", "error");
         });
 }
 
-/**
- * Validación en tiempo real de los inputs de cantidad
- */
+// validacion en tiempo real de los inputs de cantidad
 document.addEventListener('input', (e) => {
     if (e.target.classList.contains('input-cantidad')) {
         const valor = parseInt(e.target.value);
