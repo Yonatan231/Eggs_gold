@@ -65,15 +65,17 @@ public class ClienteController {
             return "registros/registro_cliente";
         }
 
-        // ✅ Validar que el número de documento no esté registrado
+        // validar que el numero de documento no este registrado
         if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
-            model.addAttribute("error", "El número de documento o correo electrónico ya está registrado");
+            model.addAttribute("error", "el numero de documento o correo electronico ya esta registrado");
+            model.addAttribute("clienteDTO", clienteDTO); // mantener los datos del formulario
             return "registros/registro_cliente";
         }
 
-        // ✅ Validar que el correo no esté registrado
+        // validar que el correo no este registrado
         if (usuarioService.correoYaExistente(clienteDTO.getCorreo())) {
-            model.addAttribute("error", "El número de documento o correo electrónico ya está registrado");
+            model.addAttribute("error", "el numero de documento o correo electronico ya esta registrado");
+            model.addAttribute("clienteDTO", clienteDTO); // mantener los datos del formulario
             return "registros/registro_cliente";
         }
 
@@ -83,10 +85,11 @@ public class ClienteController {
                     clienteDTO.getNombre()
             );
             clienteService.registrarCliente(clienteDTO);
-            model.addAttribute("mensaje", "Cliente registrado exitosamente");
+            model.addAttribute("mensaje", "cliente registrado exitosamente");
             return "redirect:/iniciar_sesion";
         } catch (Exception e) {
-            model.addAttribute("error", "Error al registrar cliente: " + e.getMessage());
+            model.addAttribute("error", "error al registrar cliente: " + e.getMessage());
+            model.addAttribute("clienteDTO", clienteDTO); // mantener los datos del formulario
             return "registros/registro_cliente";
         }
     }
@@ -120,11 +123,9 @@ public class ClienteController {
         return ResponseEntity.ok(productos);
     }
 
-    // ============================================
-    // ✅ ENDPOINTS PARA GESTIÓN DE PERFIL
-    // ============================================
+    // endpoints para gestion de perfil
 
-    // Obtener datos del cliente actual
+    // obtener datos del cliente actual
     @GetMapping("/api/cliente/datos")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerDatosCliente(HttpSession session) {
@@ -135,12 +136,12 @@ public class ClienteController {
 
             if (idCliente == null) {
                 response.put("success", false);
-                response.put("message", "Sesión no válida");
+                response.put("message", "sesion no valida");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
             Usuario usuario = usuarioRepository.findById(idCliente)
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                    .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
 
             Map<String, Object> datos = new HashMap<>();
             datos.put("nombre", usuario.getNombre());
@@ -160,12 +161,12 @@ public class ClienteController {
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Error: " + e.getMessage());
+            response.put("message", "error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    // Actualizar datos del cliente
+    // actualizar datos del cliente
     @PutMapping("/api/cliente/actualizar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> actualizarDatosCliente(
@@ -179,31 +180,31 @@ public class ClienteController {
 
             if (idCliente == null) {
                 response.put("success", false);
-                response.put("message", "Sesión no válida");
+                response.put("message", "sesion no valida");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
             Usuario usuario = usuarioRepository.findById(idCliente)
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                    .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
 
-            // Validar si el correo cambió y ya existe en otro usuario
+            // validar si el correo cambio y ya existe en otro usuario
             String nuevoCorreo = (String) datos.get("correo");
             if (!usuario.getCorreo().equals(nuevoCorreo)) {
                 if (usuarioService.correoYaExistente(nuevoCorreo)) {
                     response.put("success", false);
-                    response.put("message", "El correo electrónico ya está registrado");
+                    response.put("message", "el correo electronico ya esta registrado");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
                 }
             }
 
-            // Actualizar datos
+            // actualizar datos
             usuario.setNombre((String) datos.get("nombre"));
             usuario.setApellido((String) datos.get("apellido"));
             usuario.setDireccionUsuario((String) datos.get("direccion"));
             usuario.setTelefono((String) datos.get("telefono"));
             usuario.setCorreo(nuevoCorreo);
 
-            // Actualizar edad
+            // actualizar edad
             if (datos.get("edad") != null) {
                 usuario.setEdad((Integer) datos.get("edad"));
             }
@@ -211,21 +212,19 @@ public class ClienteController {
             usuarioRepository.save(usuario);
 
             response.put("success", true);
-            response.put("message", "Datos actualizados correctamente");
+            response.put("message", "datos actualizados correctamente");
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Error al actualizar: " + e.getMessage());
+            response.put("message", "error al actualizar: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    // ============================================
-    // ✅ ENDPOINTS PARA HISTORIAL DE PEDIDOS
-    // ============================================
+    // endpoints para historial de pedidos
 
-    // Obtener todos los pedidos del cliente
+    // obtener todos los pedidos del cliente
     @GetMapping("/api/cliente/mis-pedidos")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerMisPedidos(HttpSession session) {
@@ -236,7 +235,7 @@ public class ClienteController {
 
             if (idCliente == null) {
                 response.put("success", false);
-                response.put("message", "Sesión no válida");
+                response.put("message", "sesion no valida");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
@@ -248,12 +247,12 @@ public class ClienteController {
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Error: " + e.getMessage());
+            response.put("message", "error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    // Obtener factura de un pedido
+    // obtener factura de un pedido
     @GetMapping("/api/cliente/factura/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerFactura(
@@ -267,7 +266,7 @@ public class ClienteController {
 
             if (idCliente == null) {
                 response.put("success", false);
-                response.put("message", "Sesión no válida");
+                response.put("message", "sesion no valida");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
@@ -279,12 +278,12 @@ public class ClienteController {
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Error: " + e.getMessage());
+            response.put("message", "error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    // Descargar factura en PDF
+    // descargar factura en pdf
     @GetMapping("/api/cliente/factura/{idPedido}/pdf")
     public ResponseEntity<byte[]> descargarFacturaPDF(
             @PathVariable Integer idPedido,

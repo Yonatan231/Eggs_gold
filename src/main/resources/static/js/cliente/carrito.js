@@ -1,18 +1,9 @@
-// ===== carrito.js =====
-// Archivo completo con validaciones
-
-/* ============================================
-   INICIALIZACIÓN
-   ============================================ */
-
 document.addEventListener('DOMContentLoaded', () => {
     cargarCarrito();
     configurarEventos();
 });
 
-/* ============================================
-   CARGAR CARRITO
-   ============================================ */
+/* cargar carrito */
 
 function cargarCarrito() {
     fetch('/carrito/api/obtener')
@@ -29,8 +20,6 @@ function cargarCarrito() {
             console.error("Error al cargar carrito:", error);
         });
 }
-
-// Reemplazar solo la función mostrarProductosCarrito() en carrito.js
 
 function mostrarProductosCarrito(productos) {
     const lista = document.getElementById("lista-productos");
@@ -76,9 +65,7 @@ function actualizarTotal(total) {
     }
 }
 
-/* ============================================
-   MODIFICAR CARRITO
-   ============================================ */
+/* modificar carrito */
 
 function cambiarCantidad(idCarrito, nuevaCantidad) {
     if (nuevaCantidad <= 0) {
@@ -117,104 +104,102 @@ function eliminarProducto(idCarrito) {
         .catch(error => console.error("Error:", error));
 }
 
-/* ============================================
-   FUNCIONES DE VALIDACIÓN
-   ============================================ */
+/* funciones de validacion */
 
-// Validación de dirección
+// validacion de direccion
 function validarDireccion(direccion) {
     if (!direccion || direccion.trim().length < 6) {
         return {
             valido: false,
-            mensaje: "La dirección debe tener al menos 6 caracteres"
+            mensaje: "la direccion debe tener al menos 6 caracteres"
         };
     }
     return { valido: true };
 }
 
-// Validación de teléfono de contacto
+// validacion de telefono de contacto debe tener exactamente 10 digitos
 function validarTelefonoContacto(telefono) {
     const soloNumeros = telefono.replace(/\D/g, '');
 
-    if (soloNumeros.length < 6 || soloNumeros.length > 12) {
+    if (soloNumeros.length !== 10) {
         return {
             valido: false,
-            mensaje: "El teléfono debe tener entre 6 y 12 dígitos"
+            mensaje: "el telefono debe tener exactamente 10 digitos"
         };
     }
 
     return { valido: true };
 }
 
-// Validación de número Nequi
+// validacion de numero nequi
 function validarNumeroNequi(numero) {
     const soloNumeros = numero.replace(/\D/g, '');
 
     if (soloNumeros.length !== 10) {
         return {
             valido: false,
-            mensaje: "El número Nequi debe tener exactamente 10 dígitos"
+            mensaje: "el numero nequi debe tener exactamente 10 digitos"
         };
     }
 
     return { valido: true };
 }
 
-// Validación de código de verificación Nequi
+// validacion de codigo de verificacion nequi
 function validarCodigoNequi(codigo) {
     const soloNumeros = codigo.replace(/\D/g, '');
 
     if (soloNumeros.length !== 4) {
         return {
             valido: false,
-            mensaje: "El código debe tener exactamente 4 dígitos"
+            mensaje: "el codigo debe tener exactamente 4 digitos"
         };
     }
 
     return { valido: true };
 }
 
-// Validación de número de tarjeta Visa
+// validacion de numero de tarjeta visa
 function validarNumeroTarjeta(numero) {
     const soloNumeros = numero.replace(/\D/g, '');
 
     if (soloNumeros.length !== 16) {
         return {
             valido: false,
-            mensaje: "El número de tarjeta debe tener exactamente 16 dígitos"
+            mensaje: "el numero de tarjeta debe tener exactamente 16 digitos"
         };
     }
 
     return { valido: true };
 }
 
-// Validación de nombre en tarjeta
+// validacion de nombre en tarjeta
 function validarNombreTarjeta(nombre) {
     if (!nombre || nombre.trim().length === 0) {
         return {
             valido: false,
-            mensaje: "El nombre no puede estar vacío"
+            mensaje: "el nombre no puede estar vacio"
         };
     }
 
     if (nombre.trim().length < 3) {
         return {
             valido: false,
-            mensaje: "El nombre debe tener al menos 3 caracteres"
+            mensaje: "el nombre debe tener al menos 3 caracteres"
         };
     }
 
     return { valido: true };
 }
 
-// Validación de fecha de expiración
+// validacion de fecha de expiracion
 function validarFechaExpiracion(fecha) {
     const soloNumeros = fecha.replace(/\D/g, '');
 
     if (soloNumeros.length !== 4) {
         return {
             valido: false,
-            mensaje: "La fecha debe tener exactamente 4 dígitos (MMYY)"
+            mensaje: "la fecha debe tener exactamente 4 digitos (MMYY)"
         };
     }
 
@@ -224,177 +209,121 @@ function validarFechaExpiracion(fecha) {
     if (mes < 1 || mes > 12) {
         return {
             valido: false,
-            mensaje: "El mes debe estar entre 01 y 12"
+            mensaje: "el mes debe estar entre 01 y 12"
         };
     }
 
-    // Validar que no esté vencida
+    // validar que no este vencida
     const fechaActual = new Date();
-    const anioActual = fechaActual.getFullYear() % 100; // Últimos 2 dígitos del año
+    const anioActual = fechaActual.getFullYear() % 100;
     const mesActual = fechaActual.getMonth() + 1;
 
     if (anio < anioActual || (anio === anioActual && mes < mesActual)) {
         return {
             valido: false,
-            mensaje: "La tarjeta está vencida"
+            mensaje: "la tarjeta esta vencida"
         };
     }
 
     return { valido: true };
 }
 
-// Validación de CVV
+// validacion de cvv
 function validarCVV(cvv) {
     const soloNumeros = cvv.replace(/\D/g, '');
 
     if (soloNumeros.length !== 3) {
         return {
             valido: false,
-            mensaje: "El CVV debe tener exactamente 3 dígitos"
+            mensaje: "el cvv debe tener exactamente 3 digitos"
         };
     }
 
     return { valido: true };
 }
 
-/* ============================================
-   FORMATEO AUTOMÁTICO DE CAMPOS
-   ============================================ */
+/* formateo automatico de campos */
 
-function configurarFormateoInputs() {
-    // Teléfono de contacto - solo números
-    const telefonoInput = document.getElementById("telefono");
-    if (telefonoInput) {
-        telefonoInput.addEventListener("input", function(e) {
-            let valor = e.target.value.replace(/\D/g, '');
-            if (valor.length > 12) valor = valor.substring(0, 12);
-            e.target.value = valor;
-        });
-    }
-
-    // Número Nequi - solo números, máximo 10
-    const telefonoNequiInput = document.getElementById("telefono-nequi");
-    if (telefonoNequiInput) {
-        telefonoNequiInput.addEventListener("input", function(e) {
-            let valor = e.target.value.replace(/\D/g, '');
-            if (valor.length > 10) valor = valor.substring(0, 10);
-            e.target.value = valor;
-        });
-    }
-
-    // Código Nequi - solo números, máximo 4
-    const codigoNequiInput = document.getElementById("codigo-nequi");
-    if (codigoNequiInput) {
-        codigoNequiInput.addEventListener("input", function(e) {
-            let valor = e.target.value.replace(/\D/g, '');
-            if (valor.length > 4) valor = valor.substring(0, 4);
-            e.target.value = valor;
-        });
-    }
-
-    // Número de tarjeta - formateo con espacios
-    const numeroTarjetaInput = document.getElementById("numero-tarjeta");
-    if (numeroTarjetaInput) {
-        numeroTarjetaInput.addEventListener("input", function(e) {
-            let valor = e.target.value.replace(/\D/g, '');
-            if (valor.length > 16) valor = valor.substring(0, 16);
-
-            // Formatear con espacios cada 4 dígitos
-            let formateado = valor.match(/.{1,4}/g)?.join(' ') || valor;
-            e.target.value = formateado;
-        });
-    }
-
-    // Fecha de expiración - formato MM/YY
-    const fechaExpInput = document.getElementById("fecha-exp");
-    if (fechaExpInput) {
-        fechaExpInput.addEventListener("input", function(e) {
-            let valor = e.target.value.replace(/\D/g, '');
-            if (valor.length > 4) valor = valor.substring(0, 4);
-
-            // Agregar slash automáticamente
-            if (valor.length >= 2) {
-                valor = valor.substring(0, 2) + '/' + valor.substring(2);
-            }
-
-            e.target.value = valor;
-        });
-    }
-
-    // CVV - solo números, máximo 3
-    const cvvInput = document.getElementById("cvv");
-    if (cvvInput) {
-        cvvInput.addEventListener("input", function(e) {
-            let valor = e.target.value.replace(/\D/g, '');
-            if (valor.length > 3) valor = valor.substring(0, 3);
-            e.target.value = valor;
-        });
-    }
-
-    // Nombre en tarjeta - solo letras y espacios
-    const nombreTarjetaInput = document.getElementById("nombre-tarjeta");
-    if (nombreTarjetaInput) {
-        nombreTarjetaInput.addEventListener("input", function(e) {
-            // Permitir solo letras, espacios y convertir a mayúsculas
-            e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase();
-        });
-    }
+function formatearNumeroTarjeta(input) {
+    let valor = input.value.replace(/\D/g, '');
+    valor = valor.substring(0, 16);
+    const partes = valor.match(/.{1,4}/g);
+    input.value = partes ? partes.join(' ') : '';
 }
 
-/* ============================================
-   CONFIGURAR EVENTOS
-   ============================================ */
+function formatearFechaExpiracion(input) {
+    let valor = input.value.replace(/\D/g, '');
+    if (valor.length >= 2) {
+        valor = valor.substring(0, 2) + '/' + valor.substring(2, 4);
+    }
+    input.value = valor;
+}
+
+function soloNumeros(input) {
+    input.value = input.value.replace(/\D/g, '');
+}
+
+/* configurar eventos */
 
 function configurarEventos() {
-    // Botones de navegación
-    document.getElementById("continuar-pedido")?.addEventListener("click", continuarConPedido);
-    document.getElementById("confirmar-pedido")?.addEventListener("click", confirmarPedido);
-    document.getElementById("volver-carrito")?.addEventListener("click", volverAlCarrito);
+    // boton continuar pedido
+    const btnContinuar = document.getElementById("continuar-pedido");
+    if (btnContinuar) {
+        btnContinuar.addEventListener("click", continuarConPedido);
+    }
 
-    // Métodos de pago - usar event delegation
-    document.querySelectorAll(".metodo-pago").forEach(elemento => {
-        elemento.addEventListener("click", function() {
-            const radio = this.querySelector('input[type="radio"]');
-            if (radio) {
-                radio.checked = true;
-            }
+    // boton confirmar pedido
+    const btnConfirmar = document.getElementById("confirmar-pedido");
+    if (btnConfirmar) {
+        btnConfirmar.addEventListener("click", confirmarPedido);
+    }
+
+    // boton volver al carrito
+    const btnVolver = document.getElementById("volver-carrito");
+    if (btnVolver) {
+        btnVolver.addEventListener("click", volverAlCarrito);
+    }
+
+    // formateo automatico de campos
+    const numeroTarjeta = document.getElementById("numero-tarjeta");
+    if (numeroTarjeta) {
+        numeroTarjeta.addEventListener("input", function() {
+            formatearNumeroTarjeta(this);
         });
-    });
+    }
 
-    // Cerrar modal al hacer clic fuera
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal-overlay')) {
-            const modalId = e.target.id;
-            if (modalId === 'modal-nequi') cerrarModal('nequi');
-            if (modalId === 'modal-visa') cerrarModal('visa');
-        }
-    });
+    const fechaExp = document.getElementById("fecha-exp");
+    if (fechaExp) {
+        fechaExp.addEventListener("input", function() {
+            formatearFechaExpiracion(this);
+        });
+    }
 
-    // Configurar formateo automático de inputs
-    configurarFormateoInputs();
+    const cvv = document.getElementById("cvv");
+    if (cvv) {
+        cvv.addEventListener("input", function() {
+            soloNumeros(this);
+        });
+    }
+
+    const telefonoNequi = document.getElementById("telefono-nequi");
+    if (telefonoNequi) {
+        telefonoNequi.addEventListener("input", function() {
+            soloNumeros(this);
+        });
+    }
+
+    const codigoNequi = document.getElementById("codigo-nequi");
+    if (codigoNequi) {
+        codigoNequi.addEventListener("input", function() {
+            soloNumeros(this);
+        });
+    }
 }
 
-/* ============================================
-   NAVEGACIÓN ENTRE PASOS
-   ============================================ */
+/* navegacion entre pasos */
 
 function continuarConPedido() {
-    fetch('/pedido/api/validar-stock')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                mostrarFormularioPedido();
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("Error al validar stock");
-        });
-}
-
-function mostrarFormularioPedido() {
     document.getElementById("vista-carrito").classList.add("oculto");
     document.getElementById("formulario-pedido").classList.remove("oculto");
     document.getElementById("paso1").classList.remove("activo");
@@ -408,16 +337,14 @@ function volverAlCarrito() {
     document.getElementById("paso2").classList.remove("activo");
 }
 
-/* ============================================
-   CONFIRMAR PEDIDO CON VALIDACIONES
-   ============================================ */
+/* confirmar pedido con validaciones */
 
 function confirmarPedido() {
     const telefono = document.getElementById("telefono").value.trim();
     const direccion = document.getElementById("direccion").value.trim();
     const metodoPago = document.querySelector('input[name="metodo-pago"]:checked');
 
-    // Validar dirección
+    // validar direccion
     const validacionDireccion = validarDireccion(direccion);
     if (!validacionDireccion.valido) {
         alert(validacionDireccion.mensaje);
@@ -425,7 +352,7 @@ function confirmarPedido() {
         return;
     }
 
-    // Validar teléfono
+    // validar telefono
     const validacionTelefono = validarTelefonoContacto(telefono);
     if (!validacionTelefono.valido) {
         alert(validacionTelefono.mensaje);
@@ -433,34 +360,32 @@ function confirmarPedido() {
         return;
     }
 
-    // Validar método de pago
+    // validar metodo de pago
     if (!metodoPago) {
-        alert("Debes seleccionar un método de pago");
+        alert("debes seleccionar un metodo de pago");
         return;
     }
 
-    // Abrir modal según el método
+    // abrir modal segun el metodo
     const metodo = metodoPago.value.toLowerCase();
     if (metodo === 'nequi' || metodo === 'visa') {
         abrirModal(metodo);
     } else {
-        alert("Método de pago no válido");
+        alert("metodo de pago no valido");
     }
 }
 
-/* ============================================
-   GESTIÓN DE MODALES
-   ============================================ */
+/* gestion de modales */
 
 function abrirModal(tipo) {
     const modal = document.getElementById(`modal-${tipo}`);
     if (!modal) return;
 
-    // Mostrar modal
+    // mostrar modal
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('activo'), 10);
 
-    // Mostrar total
+    // mostrar total
     const totalElement = document.getElementById("total-general");
     if (totalElement) {
         const total = totalElement.textContent.replace('Total: ', '');
@@ -479,15 +404,13 @@ function cerrarModal(tipo) {
     setTimeout(() => modal.style.display = 'none', 300);
 }
 
-/* ============================================
-   PROCESAR PAGOS CON VALIDACIONES
-   ============================================ */
+/* procesar pagos con validaciones */
 
 function procesarPagoNequi() {
     const telefono = document.getElementById("telefono-nequi").value.trim();
     const codigo = document.getElementById("codigo-nequi").value.trim();
 
-    // Validar número Nequi
+    // validar numero nequi
     const validacionTelefono = validarNumeroNequi(telefono);
     if (!validacionTelefono.valido) {
         alert(validacionTelefono.mensaje);
@@ -495,7 +418,7 @@ function procesarPagoNequi() {
         return;
     }
 
-    // Validar código
+    // validar codigo
     const validacionCodigo = validarCodigoNequi(codigo);
     if (!validacionCodigo.valido) {
         alert(validacionCodigo.mensaje);
@@ -513,7 +436,7 @@ function procesarPagoVisa() {
     const fechaExp = document.getElementById("fecha-exp").value.trim();
     const cvv = document.getElementById("cvv").value.trim();
 
-    // Validar número de tarjeta
+    // validar numero de tarjeta
     const validacionNumero = validarNumeroTarjeta(numeroTarjeta);
     if (!validacionNumero.valido) {
         alert(validacionNumero.mensaje);
@@ -521,7 +444,7 @@ function procesarPagoVisa() {
         return;
     }
 
-    // Validar nombre
+    // validar nombre
     const validacionNombre = validarNombreTarjeta(nombreTarjeta);
     if (!validacionNombre.valido) {
         alert(validacionNombre.mensaje);
@@ -529,7 +452,7 @@ function procesarPagoVisa() {
         return;
     }
 
-    // Validar fecha de expiración
+    // validar fecha de expiracion
     const validacionFecha = validarFechaExpiracion(fechaExp);
     if (!validacionFecha.valido) {
         alert(validacionFecha.mensaje);
@@ -537,7 +460,7 @@ function procesarPagoVisa() {
         return;
     }
 
-    // Validar CVV
+    // validar cvv
     const validacionCVV = validarCVV(cvv);
     if (!validacionCVV.valido) {
         alert(validacionCVV.mensaje);
@@ -549,9 +472,7 @@ function procesarPagoVisa() {
     enviarPedidoAlServidor();
 }
 
-/* ============================================
-   ENVIAR PEDIDO AL SERVIDOR CON OVERLAY
-   ============================================ */
+/* enviar pedido al servidor con overlay */
 
 function enviarPedidoAlServidor() {
     const telefono = document.getElementById("telefono").value.trim();
@@ -560,7 +481,7 @@ function enviarPedidoAlServidor() {
     const metodoPagoElement = document.querySelector('input[name="metodo-pago"]:checked');
 
     if (!metodoPagoElement) {
-        alert("Error: No se pudo obtener el método de pago");
+        alert("error: no se pudo obtener el metodo de pago");
         return;
     }
 
@@ -571,14 +492,14 @@ function enviarPedidoAlServidor() {
         metodoPago: metodoPagoElement.value
     };
 
-    // Mostrar overlay de carga
+    // mostrar overlay de carga
     mostrarOverlayCarga();
 
-    // Deshabilitar botón de confirmar
+    // deshabilitar boton de confirmar
     const btnConfirmar = document.getElementById("confirmar-pedido");
     if (btnConfirmar) {
         btnConfirmar.disabled = true;
-        btnConfirmar.textContent = "Procesando...";
+        btnConfirmar.textContent = "procesando...";
     }
 
     fetch('/pedido/api/confirmar', {
@@ -588,7 +509,7 @@ function enviarPedidoAlServidor() {
     })
         .then(response => response.json())
         .then(data => {
-            // Delay mínimo de 2 segundos
+            // delay minimo de 2 segundos
             setTimeout(() => {
                 ocultarOverlayCarga();
 
@@ -598,7 +519,7 @@ function enviarPedidoAlServidor() {
                     alert(data.message);
                     if (btnConfirmar) {
                         btnConfirmar.disabled = false;
-                        btnConfirmar.textContent = "Confirmar pedido";
+                        btnConfirmar.textContent = "confirmar pedido";
                     }
                 }
             }, 2000);
@@ -606,13 +527,13 @@ function enviarPedidoAlServidor() {
         .catch(error => {
             ocultarOverlayCarga();
 
-            console.error("Error:", error);
-            alert("Error al confirmar el pedido");
+            console.error("error:", error);
+            alert("error al confirmar el pedido");
 
-            // Restaurar botón en caso de error
+            // restaurar boton en caso de error
             if (btnConfirmar) {
                 btnConfirmar.disabled = false;
-                btnConfirmar.textContent = "Confirmar pedido";
+                btnConfirmar.textContent = "confirmar pedido";
             }
         });
 }
@@ -624,12 +545,10 @@ function mostrarConfirmacion() {
     document.getElementById("paso3").classList.add("activo");
 }
 
-/* ============================================
-   OVERLAY DE CARGA
-   ============================================ */
+/* overlay de carga */
 
 function mostrarOverlayCarga() {
-    // Crear overlay si no existe
+    // crear overlay si no existe
     let overlay = document.getElementById('overlay-carga');
 
     if (!overlay) {
@@ -639,16 +558,16 @@ function mostrarOverlayCarga() {
         overlay.innerHTML = `
             <div class="spinner-contenedor">
                 <div class="spinner"></div>
-                <p>Procesando pago...</p>
+                <p>procesando pago...</p>
                 <p style="font-size: 0.9em; color: #ccc; margin-top: 10px;">
-                    Por favor espera, no cierres esta ventana
+                    por favor espera no cierres esta ventana
                 </p>
             </div>
         `;
         document.body.appendChild(overlay);
     }
 
-    // Mostrar con animación
+    // mostrar con animacion
     setTimeout(() => overlay.classList.add('activo'), 10);
 }
 

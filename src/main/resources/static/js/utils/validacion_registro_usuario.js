@@ -1,15 +1,13 @@
-// ============================================
-// VALIDACIÓN GENÉRICA DE FORMULARIOS DE REGISTRO
-// Este archivo contiene validaciones para Cliente, Conductor y Logística
-// ============================================
+// validacion generica de formularios de registro
+// este archivo contiene validaciones para cliente conductor y logistica
 
 /**
- * Función principal de validación
- * @param {Object} config - Configuración con los IDs de los campos del formulario
- * @returns {boolean} - true si el formulario es válido, false en caso contrario
+ * funcion principal de validacion
+ * @param {Object} config - configuracion con los ids de los campos del formulario
+ * @returns {boolean} - true si el formulario es valido false en caso contrario
  */
 function validarFormularioRegistro(config) {
-    // Obtener valores de los campos
+    // obtener valores de los campos
     const nombre = document.getElementById(config.nombreId).value.trim();
     const apellido = document.getElementById(config.apellidoId).value.trim();
     const numDocumento = document.getElementById(config.numDocumentoId).value.trim();
@@ -19,137 +17,119 @@ function validarFormularioRegistro(config) {
     const correo = document.getElementById(config.correoId).value.trim();
     const password = document.getElementById(config.passwordId).value.trim();
 
-    // ============================================
-    // 1. VALIDAR NOMBRE
-    // ============================================
+    // validar nombre
     if (!nombre) {
-        alert("El nombre es obligatorio");
+        alert("el nombre es obligatorio");
         return false;
     }
     if (!validarSoloLetrasYEspacios(nombre)) {
-        alert("El nombre solo puede contener letras y espacios");
+        alert("el nombre solo puede contener letras y espacios");
         return false;
     }
     if (nombre.length < 2) {
-        alert("El nombre debe tener al menos 2 caracteres");
+        alert("el nombre debe tener al menos 2 caracteres");
         return false;
     }
 
-    // ============================================
-    // 2. VALIDAR APELLIDO
-    // ============================================
+    // validar apellido
     if (!apellido) {
-        alert("El apellido es obligatorio");
+        alert("el apellido es obligatorio");
         return false;
     }
     if (!validarSoloLetrasYEspacios(apellido)) {
-        alert("El apellido solo puede contener letras y espacios");
+        alert("el apellido solo puede contener letras y espacios");
         return false;
     }
     if (apellido.length < 2) {
-        alert("El apellido debe tener al menos 2 caracteres");
+        alert("el apellido debe tener al menos 2 caracteres");
         return false;
     }
 
-    // ============================================
-    // 3. VALIDAR NÚMERO DE DOCUMENTO
-    // ============================================
+    // validar numero de documento
     if (!numDocumento) {
-        alert("El número de documento es obligatorio");
+        alert("el numero de documento es obligatorio");
         return false;
     }
     if (!validarSoloNumeros(numDocumento)) {
-        alert("El número de documento solo puede contener números");
+        alert("el numero de documento solo puede contener numeros");
         return false;
     }
     if (numDocumento.length < 6 || numDocumento.length > 12) {
-        alert("El número de documento debe tener entre 6 y 12 dígitos");
+        alert("el numero de documento debe tener entre 6 y 12 digitos");
         return false;
     }
 
-    // ============================================
-    // 4. VALIDAR DIRECCIÓN
-    // ============================================
+    // validar direccion
     if (!direccion) {
-        alert("La dirección es obligatoria");
+        alert("la direccion es obligatoria");
         return false;
     }
     if (direccion.length < 5) {
-        alert("La dirección debe tener al menos 5 caracteres");
+        alert("la direccion debe tener al menos 5 caracteres");
         return false;
     }
 
-    // ============================================
-    // 5. VALIDAR EDAD
-    // ============================================
+    // validar edad
     if (!edad) {
-        alert("La edad es obligatoria");
+        alert("la edad es obligatoria");
         return false;
     }
     const edadNum = parseInt(edad);
     if (isNaN(edadNum)) {
-        alert("La edad debe ser un número válido");
+        alert("la edad debe ser un numero valido");
         return false;
     }
     if (edadNum < 18 || edadNum > 100) {
-        alert("La edad debe estar entre 18 y 100 años");
+        alert("la edad debe estar entre 18 y 100 anos");
         return false;
     }
 
-    // ============================================
-    // 6. VALIDAR TELÉFONO
-    // ============================================
+    // validar telefono debe tener exactamente 10 digitos
     if (!telefono) {
-        alert("El teléfono es obligatorio");
+        alert("el telefono es obligatorio");
         return false;
     }
     if (!validarSoloNumeros(telefono)) {
-        alert("El teléfono solo puede contener números");
+        alert("el telefono solo puede contener numeros");
         return false;
     }
-    if (telefono.length < 7 || telefono.length > 10) {
-        alert("El teléfono debe tener entre 7 y 10 dígitos");
+    if (telefono.length !== 10) {
+        alert("el telefono debe tener exactamente 10 digitos");
         return false;
     }
 
-    // ============================================
-    // 7. VALIDAR CORREO ELECTRÓNICO
-    // ============================================
+    // validar correo electronico
     if (!correo) {
-        alert("El correo electrónico es obligatorio");
+        alert("el correo electronico es obligatorio");
         return false;
     }
     if (!validarFormatoCorreo(correo)) {
-        alert("El formato del correo electrónico no es válido");
+        alert("el formato del correo electronico no es valido");
         return false;
     }
 
-    // ============================================
-    // 8. VALIDAR CONTRASEÑA
-    // ============================================
+    // validar contrasena
     if (!password) {
-        alert("La contraseña es obligatoria");
+        alert("la contrasena es obligatoria");
         return false;
     }
     if (password.length < 7) {
-        alert("La contraseña debe tener al menos 7 caracteres");
+        alert("la contrasena debe tener al menos 7 caracteres");
         return false;
     }
     if (!validarPasswordConNumerosYLetras(password)) {
-        alert("La contraseña debe contener números y letras");
+        alert("la contrasena debe contener numeros y letras");
         return false;
     }
 
-    // Si todas las validaciones pasaron
+    // si todas las validaciones pasaron
     return true;
 }
 
-// ============================================
-// FUNCIONES AUXILIARES DE VALIDACIÓN
-// ============================================
+// funciones auxiliares de validacion
 
 /**
- * Valida que un texto contenga solo letras y espacios
+ * valida que un texto contenga solo letras y espacios
  */
 function validarSoloLetrasYEspacios(texto) {
     const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
@@ -157,7 +137,7 @@ function validarSoloLetrasYEspacios(texto) {
 }
 
 /**
- * Valida que un texto contenga solo números
+ * valida que un texto contenga solo numeros
  */
 function validarSoloNumeros(texto) {
     const regex = /^[0-9]+$/;
@@ -165,7 +145,7 @@ function validarSoloNumeros(texto) {
 }
 
 /**
- * Valida el formato de un correo electrónico
+ * valida el formato de un correo electronico
  */
 function validarFormatoCorreo(correo) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -173,7 +153,7 @@ function validarFormatoCorreo(correo) {
 }
 
 /**
- * Valida que la contraseña contenga números y letras
+ * valida que la contrasena contenga numeros y letras
  */
 function validarPasswordConNumerosYLetras(password) {
     const tieneNumeros = /\d/.test(password);
@@ -181,30 +161,28 @@ function validarPasswordConNumerosYLetras(password) {
     return tieneNumeros && tieneLetras;
 }
 
-// ============================================
-// FUNCIÓN PARA INICIALIZAR VALIDACIÓN EN UN FORMULARIO
-// ============================================
+// funcion para inicializar validacion en un formulario
 
 /**
- * Inicializa la validación en un formulario específico
- * @param {string} formId - ID del formulario
- * @param {Object} config - Configuración de IDs de campos
+ * inicializa la validacion en un formulario especifico
+ * @param {string} formId - id del formulario
+ * @param {Object} config - configuracion de ids de campos
  */
 function inicializarValidacion(formId, config) {
     const formulario = document.querySelector(formId);
 
     if (formulario) {
         formulario.addEventListener('submit', function(event) {
-            // Validar el formulario
+            // validar el formulario
             const esValido = validarFormularioRegistro(config);
 
-            // Si no es válido, prevenir el envío
+            // si no es valido prevenir el envio
             if (!esValido) {
                 event.preventDefault();
                 return false;
             }
 
-            // Si es válido, permitir el envío
+            // si es valido permitir el envio
             return true;
         });
     }
