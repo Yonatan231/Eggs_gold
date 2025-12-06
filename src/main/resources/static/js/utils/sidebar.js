@@ -153,9 +153,9 @@ function inicializarGestionFotoPerfil(usuarioId) {
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.ruta) {
-                    // Si tiene foto, mostrarla con timestamp para evitar caché
-                    const timestamp = new Date().getTime();
-                    avatarImg.src = data.ruta + '?t=' + timestamp;
+                    // ✅ CORRECCIÓN: Ya no necesitamos timestamp porque Cloudinary maneja el caché
+                    // La URL de Cloudinary ya es única y siempre apunta a la última versión
+                    avatarImg.src = data.ruta; // URL completa de Cloudinary
                     avatarImg.style.display = "block";
                     avatarIniciales.style.display = "none";
                 } else {
@@ -216,9 +216,9 @@ function inicializarGestionFotoPerfil(usuarioId) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Foto subida exitosamente
-                    const timestamp = new Date().getTime();
-                    avatarImg.src = data.ruta + '?t=' + timestamp;
+                    // ✅ CORRECCIÓN: Ya no necesitamos timestamp
+                    // Cloudinary ya maneja las versiones automáticamente
+                    avatarImg.src = data.ruta; // URL completa de Cloudinary
                     avatarImg.style.display = "block";
                     avatarIniciales.style.display = "none";
 

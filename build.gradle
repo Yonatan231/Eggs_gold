@@ -42,10 +42,9 @@ dependencies {
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 
-
-
+    // ✅ CLOUDINARY - Para subir imágenes a la nube
+    implementation 'com.cloudinary:cloudinary-http44:1.36.0'
 }
-
 
 tasks.named('test') {
     useJUnitPlatform()

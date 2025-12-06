@@ -178,12 +178,14 @@ function abrirModalEdicion(idProducto) {
                 document.getElementById("prod-estado").value = prod.estado;
                 document.getElementById("prod-imagen-actual").value = prod.imagen;
 
+                // ✅ CORRECCIÓN: Usar URL completa de Cloudinary
                 const previewImg = document.getElementById("preview-imagen-modal");
-                if (prod.imagen) {
-                    previewImg.src = `/uploads/productos/${prod.imagen}`;
+                if (prod.imagen && prod.imagen !== 'default.jpg') {
+                    previewImg.src = prod.imagen; // URL completa de Cloudinary
                     previewImg.style.display = "block";
                 } else {
-                    previewImg.style.display = "none";
+                    previewImg.src = '/imagenes/default.png'; // Imagen por defecto local
+                    previewImg.style.display = "block";
                 }
 
                 document.getElementById("prod-imagen-file").value = "";
@@ -310,9 +312,12 @@ function configurarPreviewImagen() {
                 reader.readAsDataURL(file);
             } else {
                 nombreArchivo.textContent = "";
+                // ✅ CORRECCIÓN: Usar URL completa de Cloudinary
                 const imagenActual = document.getElementById("prod-imagen-actual").value;
-                if (imagenActual) {
-                    previewImagen.src = `/uploads/productos/${imagenActual}`;
+                if (imagenActual && imagenActual !== 'default.jpg') {
+                    previewImagen.src = imagenActual; // URL completa de Cloudinary
+                } else {
+                    previewImagen.src = '/imagenes/default.png'; // Imagen por defecto local
                 }
             }
         });

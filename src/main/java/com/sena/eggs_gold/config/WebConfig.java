@@ -27,33 +27,17 @@ public class WebConfig implements WebMvcConfigurer {
                         "/css/**",
                         "/js/**",
                         "/imagenes/**",
-                        "/uploads/**",
                         "/error/**"
                 ); // Excluir recursos estáticos
     }
 
     /**
      * Configuración de recursos estáticos
+     * ✅ YA NO necesitamos /uploads/** porque las imágenes están en Cloudinary
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        // carpeta para las fotos de perfil
-        registry.addResourceHandler("/uploads/perfil/**")
-                .addResourceLocations("file:C:/eggs_gold_uploads/perfil/")
-                .setCachePeriod(0);  // Sin caché para fotos de perfil
-
-        // carpeta para las fotos de los productos
-        registry.addResourceHandler("/uploads/productos/**")
-                .addResourceLocations("file:C:/eggs_gold_uploads/productos/")
-                .setCachePeriod(0);  // Sin caché para productos
-
-        // carpeta para las imágenes de novedades
-        registry.addResourceHandler("/uploads/novedades/**")
-                .addResourceLocations("file:C:/eggs_gold_uploads/novedades/")
-                .setCachePeriod(0);  // Sin caché para novedades
-
-        // configuracion para mantener las imagenes por defecto (logo, inicio...
+        // Configuración para mantener las imágenes por defecto (logo, inicio, etc.)
         registry.addResourceHandler("/imagenes/**")
                 .addResourceLocations("classpath:/static/imagenes/")
                 .setCachePeriod(3600);  // Caché de 1 hora para recursos estáticos

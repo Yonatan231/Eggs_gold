@@ -1,5 +1,7 @@
 package com.sena.eggs_gold.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.sena.eggs_gold.model.entity.Novedad;
 import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.model.entity.Usuario;
@@ -9,6 +11,7 @@ import com.sena.eggs_gold.repository.NovedadRepository;
 import com.sena.eggs_gold.repository.PedidoRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,17 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
 
 /**
  * Controlador para gestionar novedades
  * Maneja la creación, listado y cambio de estado de novedades
- * Soporta subida de imágenes como evidencia
+ * Soporta subida de imágenes como evidencia a Cloudinary
  */
 @Controller
 public class NovedadController {
@@ -34,21 +33,26 @@ public class NovedadController {
     private final NovedadRepository novedadRepository;
     private final PedidoRepository pedidoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final Cloudinary cloudinary;
 
-    // Ruta donde se guardarán las imágenes de novedades
-    private static final String UPLOAD_DIR = "C:/eggs_gold_uploads/novedades/";
-
-    public NovedadController(NovedadRepository novedadRepository, PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository) {
+    public NovedadController(
+            NovedadRepository novedadRepository,
+            PedidoRepository pedidoRepository,
+            UsuarioRepository usuarioRepository,
+            @Value("${cloudinary.cloud-name}") String cloudName,
+            @Value("${cloudinary.api-key}") String apiKey,
+            @Value("${cloudinary.api-secret}") String apiSecret
+    ) {
         this.novedadRepository = novedadRepository;
         this.pedidoRepository = pedidoRepository;
         this.usuarioRepository = usuarioRepository;
 
-        // Crear directorio si no existe
-        try {
-            Files.createDirectories(Paths.get(UPLOAD_DIR));
-        } catch (IOException e) {
-            System.err.println("Error al crear directorio de novedades: " + e.getMessage());
-        }
+        // Configurar Cloudinary con las credenciales
+        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret
+        ));
     }
 
     /**
@@ -129,10 +133,10 @@ public class NovedadController {
             novedad.setEstado(EstadoNovedad.PENDIENTE);
             novedad.setFechaCreacion(LocalDateTime.now());
 
-            // Guardar imagen si existe
+            // Guardar imagen en Cloudinary si existe
             if (imagen != null && !imagen.isEmpty()) {
-                String nombreImagen = guardarImagen(imagen);
-                novedad.setImagen(nombreImagen);
+                String urlImagen = guardarImagenCloudinary(imagen);
+                novedad.setImagen(urlImagen);
             }
 
             // Guardar en base de datos
@@ -166,7 +170,6 @@ public class NovedadController {
     /**
      * Endpoint para cambiar estado de novedad (admin)
      */
-
     @PostMapping("/api/novedades/cambiar-estado/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> cambiarEstado(
@@ -177,7 +180,7 @@ public class NovedadController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // 🔥 CAMBIO: Obtener el ID del usuario de la sesión
+            // Obtener el ID del usuario de la sesión
             Integer usuarioId = (Integer) session.getAttribute("usuario_id");
             String rol = (String) session.getAttribute("rol");
 
@@ -229,35 +232,32 @@ public class NovedadController {
     }
 
     /**
-     * Método auxiliar para guardar imagen de novedad
-     * Genera nombre único con timestamp
+     * ✅ NUEVO: Guardar imagen de novedad en CLOUDINARY
+     * @param imagen - Archivo MultipartFile de la imagen
+     * @return String - URL completa de la imagen en Cloudinary
      */
-    private String guardarImagen(MultipartFile imagen) throws IOException {
+    private String guardarImagenCloudinary(MultipartFile imagen) throws IOException {
         if (imagen.isEmpty()) {
             return null;
         }
 
-        // Generar nombre único con timestamp
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        String extension = obtenerExtension(imagen.getOriginalFilename());
-        String nombreArchivo = "novedad_" + timestamp + extension;
+        try {
+            // Subir imagen a Cloudinary en la carpeta "eggs_gold/novedades"
+            Map uploadResult = cloudinary.uploader().upload(imagen.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", "eggs_gold/novedades",
+                            "resource_type", "image"
+                    ));
 
-        // Ruta completa del archivo
-        Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
+            // Obtener la URL segura de la imagen
+            String urlImagen = (String) uploadResult.get("secure_url");
+            System.out.println("✅ Imagen de novedad subida a Cloudinary: " + urlImagen);
 
-        // Guardar archivo
-        Files.copy(imagen.getInputStream(), rutaArchivo, StandardCopyOption.REPLACE_EXISTING);
+            return urlImagen;
 
-        return nombreArchivo;
-    }
-
-    /**
-     * Obtener extensión de archivo
-     */
-    private String obtenerExtension(String nombreArchivo) {
-        if (nombreArchivo == null || !nombreArchivo.contains(".")) {
-            return ".jpg"; // Extensión por defecto
+        } catch (IOException e) {
+            System.err.println("❌ Error al subir imagen de novedad a Cloudinary: " + e.getMessage());
+            throw new IOException("Error al subir la imagen de novedad a Cloudinary", e);
         }
-        return nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
     }
 }

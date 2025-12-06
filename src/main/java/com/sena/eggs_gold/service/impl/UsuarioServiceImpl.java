@@ -1,5 +1,7 @@
 package com.sena.eggs_gold.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.sena.eggs_gold.dto.ClientePedidosDTO;
 import com.sena.eggs_gold.dto.ConductorDTO;
 import com.sena.eggs_gold.dto.LogisticaDTO;
@@ -9,17 +11,14 @@ import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.UsuarioService;
 import com.sena.eggs_gold.service.EmailService;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,14 +27,24 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final EmailService emailService;
+    private final Cloudinary cloudinary;
 
-    // RUTA DONDE SE GUARDARAN LAS FOTOS DE PERFIL (FUERA DEL PROYECTO)
-    // Esta carpeta se crea automaticamente si no existe
-    private static final String DIRECTORIO_UPLOADS = "C:/eggs_gold_uploads/perfil";
-
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EmailService emailService) {
+    public UsuarioServiceImpl(
+            UsuarioRepository usuarioRepository,
+            EmailService emailService,
+            @Value("${cloudinary.cloud-name}") String cloudName,
+            @Value("${cloudinary.api-key}") String apiKey,
+            @Value("${cloudinary.api-secret}") String apiSecret
+    ) {
         this.usuarioRepository = usuarioRepository;
         this.emailService = emailService;
+
+        // Configurar Cloudinary con las credenciales
+        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret
+        ));
     }
 
     @Override
@@ -105,82 +114,46 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     /**
-     * METODO: Guarda la foto de perfil en una carpeta EXTERNA al proyecto
-     * Esto permite que las fotos se vean inmediatamente sin reiniciar el servidor
+     * ✅ NUEVO: Guarda la foto de perfil en CLOUDINARY (nube)
+     * Esto permite que las fotos persistan incluso si el servidor se reinicia
      */
     @Override
     public String guardarFotoPerfil(Integer usuarioId, MultipartFile foto) throws IOException {
-        // 1. VALIDAR que se envio una imagen
+        // 1. VALIDAR que se envió una imagen
         if (foto.isEmpty()) {
-            throw new IOException("No se envio ninguna imagen");
+            throw new IOException("No se envió ninguna imagen");
         }
 
-        // 2. CREAR la carpeta de uploads si no existe
-        Path directorioUploads = Paths.get(DIRECTORIO_UPLOADS);
-        if (!Files.exists(directorioUploads)) {
-            Files.createDirectories(directorioUploads);
-            System.out.println("Carpeta de uploads creada: " + DIRECTORIO_UPLOADS);
-        }
-
-        // 3. GENERAR un nombre unico para el archivo
-        // Formato: perfil_usuario123_uuid.jpg
-        String extension = StringUtils.getFilenameExtension(foto.getOriginalFilename());
-        String nombreArchivo = "perfil_usuario" + usuarioId + "_" + UUID.randomUUID() + "." + extension;
-
-        // 4. GUARDAR el archivo en la carpeta externa
-        Path rutaCompleta = directorioUploads.resolve(nombreArchivo);
-        Files.copy(foto.getInputStream(), rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
-        System.out.println("Foto guardada en: " + rutaCompleta);
-
-        // 5. CREAR la ruta relativa que se guardara en la base de datos
-        // Esta ruta es la que usara el navegador para cargar la imagen
-        String rutaRelativa = "/uploads/perfil/" + nombreArchivo;
-
-        // 6. ACTUALIZAR la base de datos con la nueva ruta
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // Si el usuario ya tenia una foto anterior, la eliminamos
-        if (usuario.getFotoPanel() != null && !usuario.getFotoPanel().isBlank()) {
-            eliminarFotoAnterior(usuario.getFotoPanel());
-        }
-
-        usuario.setFotoPanel(rutaRelativa);
-        usuarioRepository.save(usuario);
-
-        return rutaRelativa;
-    }
-
-    /**
-     * METODO AUXILIAR: Elimina la foto anterior del usuario
-     * Esto evita que se acumulen fotos viejas
-     */
-    private void eliminarFotoAnterior(String rutaRelativa) {
         try {
-            // Extraemos solo el nombre del archivo de la ruta
-            String nombreArchivo = rutaRelativa.substring(rutaRelativa.lastIndexOf("/") + 1);
-            Path rutaArchivo = Paths.get(DIRECTORIO_UPLOADS, nombreArchivo);
+            // 2. SUBIR imagen a Cloudinary en la carpeta "eggs_gold/perfiles"
+            Map uploadResult = cloudinary.uploader().upload(foto.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", "eggs_gold/perfiles",
+                            "resource_type", "image",
+                            "public_id", "perfil_usuario" + usuarioId // Nombre personalizado
+                    ));
 
-            // Eliminamos el archivo si existe
-            if (Files.exists(rutaArchivo)) {
-                Files.delete(rutaArchivo);
-                System.out.println("Foto anterior eliminada: " + nombreArchivo);
-            }
+            // 3. OBTENER la URL segura de la imagen
+            String urlImagen = (String) uploadResult.get("secure_url");
+            System.out.println("✅ Foto de perfil subida a Cloudinary: " + urlImagen);
+
+            // 4. ACTUALIZAR la base de datos con la nueva URL
+            Usuario usuario = usuarioRepository.findById(usuarioId)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            usuario.setFotoPanel(urlImagen);
+            usuarioRepository.save(usuario);
+
+            return urlImagen;
+
         } catch (IOException e) {
-            // Si hay error al eliminar, solo lo registramos pero no detenemos el proceso
-            System.err.println("Error al eliminar foto anterior: " + e.getMessage());
+            System.err.println("❌ Error al subir foto a Cloudinary: " + e.getMessage());
+            throw new IOException("Error al subir la foto de perfil a Cloudinary", e);
         }
     }
 
-    // ========== METODOS PARA RECUPERACION DE CONTRASENA ==========
+    // ========== MÉTODOS PARA RECUPERACIÓN DE CONTRASEÑA ==========
 
-    /**
-     * METODO: Solicitar recuperacion de contrasena
-     * 1. Busca el usuario por correo
-     * 2. Si existe, genera un token unico
-     * 3. Guarda el token y su fecha de expiracion (1 hora)
-     * 4. Envia un correo con el enlace de recuperacion
-     */
     @Override
     public void solicitarRecuperacionContrasena(String correo) {
         // Buscar usuario por correo
@@ -190,34 +163,27 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
 
-            // Generar token unico (UUID)
+            // Generar token único (UUID)
             String token = UUID.randomUUID().toString();
 
-            // Establecer fecha de expiracion (1 hora desde ahora)
+            // Establecer fecha de expiración (1 hora desde ahora)
             LocalDateTime expiracion = LocalDateTime.now().plusHours(1);
 
-            // Guardar token y expiracion en el usuario
+            // Guardar token y expiración en el usuario
             usuario.setTokenRecuperacion(token);
             usuario.setTokenExpiracion(expiracion);
             usuarioRepository.save(usuario);
 
-            // Enviar correo con el enlace de recuperacion
+            // Enviar correo con el enlace de recuperación
             emailService.enviarCorreoRecuperacion(correo, token);
 
-            System.out.println("Token de recuperacion generado para: " + correo);
+            System.out.println("Token de recuperación generado para: " + correo);
         } else {
             // Si el usuario no existe, no hacemos nada (por seguridad)
-            // No queremos revelar si un correo existe o no en la base de datos
-            System.out.println("Intento de recuperacion para correo no registrado: " + correo);
+            System.out.println("Intento de recuperación para correo no registrado: " + correo);
         }
     }
 
-    /**
-     * METODO: Validar si un token es valido
-     * Un token es valido si:
-     * 1. Existe en la base de datos
-     * 2. No ha expirado (la fecha actual es menor a la fecha de expiracion)
-     */
     @Override
     public boolean validarToken(String token) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByTokenRecuperacion(token);
@@ -234,13 +200,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         return false;
     }
 
-    /**
-     * METODO: Actualizar contrasena del usuario
-     * 1. Busca el usuario por token
-     * 2. Valida que el token no haya expirado
-     * 3. Actualiza la contrasena (encriptada)
-     * 4. Elimina el token y su expiracion (para que no se pueda usar de nuevo)
-     */
     @Override
     public void actualizarContrasena(String token, String nuevaContrasena) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByTokenRecuperacion(token);
@@ -253,25 +212,25 @@ public class UsuarioServiceImpl implements UsuarioService {
             if (usuario.getTokenExpiracion() != null &&
                     ahora.isBefore(usuario.getTokenExpiracion())) {
 
-                // Encriptar la nueva contrasena
+                // Encriptar la nueva contraseña
                 String contrasenaEncriptada = BCrypt.hashpw(nuevaContrasena, BCrypt.gensalt());
 
-                // Actualizar contrasena
+                // Actualizar contraseña
                 usuario.setPassword(contrasenaEncriptada);
 
-                // Eliminar token y expiracion (para que no se pueda reutilizar)
+                // Eliminar token y expiración (para que no se pueda reutilizar)
                 usuario.setTokenRecuperacion(null);
                 usuario.setTokenExpiracion(null);
 
                 // Guardar cambios
                 usuarioRepository.save(usuario);
 
-                System.out.println("Contrasena actualizada para usuario: " + usuario.getCorreo());
+                System.out.println("Contraseña actualizada para usuario: " + usuario.getCorreo());
             } else {
                 throw new RuntimeException("El token ha expirado");
             }
         } else {
-            throw new RuntimeException("Token invalido");
+            throw new RuntimeException("Token inválido");
         }
     }
 }

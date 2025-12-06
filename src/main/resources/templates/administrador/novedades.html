@@ -74,9 +74,10 @@
                 <td th:text="${novedad.usuario.nombre + ' ' + novedad.usuario.apellido}"></td>
                 <td th:text="${novedad.usuario.rol.nombreRol}"></td>
                 <td>
+                    <!-- ✅ CORRECCIÓN: Usar directamente la URL de Cloudinary -->
                     <button th:if="${novedad.imagen != null}"
                             class="btn-ver-imagen"
-                            th:attr="data-imagen=${'/uploads/novedades/' + novedad.imagen}">
+                            th:attr="data-imagen=${novedad.imagen}">
                         Ver
                     </button>
                     <span th:unless="${novedad.imagen != null}" class="sin-imagen">Sin imagen</span>

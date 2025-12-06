@@ -1,5 +1,7 @@
 package com.sena.eggs_gold.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.sena.eggs_gold.dto.ProductoBusquedaDTO;
 import com.sena.eggs_gold.dto.ProductoDTO;
 import com.sena.eggs_gold.model.entity.Producto;
@@ -12,27 +14,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
 
     private final ProductoRepository productoRepository;
+    private final Cloudinary cloudinary;
 
-    @Value("${app.upload.path}")
-    private String uploadBasePath;
-
-    public ProductoServiceImpl(ProductoRepository productoRepository) {
+    public ProductoServiceImpl(
+            ProductoRepository productoRepository,
+            @Value("${cloudinary.cloud-name}") String cloudName,
+            @Value("${cloudinary.api-key}") String apiKey,
+            @Value("${cloudinary.api-secret}") String apiSecret
+    ) {
         this.productoRepository = productoRepository;
+
+        // Configurar Cloudinary con las credenciales
+        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret
+        ));
     }
 
     @Override
@@ -49,38 +56,41 @@ public class ProductoServiceImpl implements ProductoService {
             producto.setEstado(productoDTO.getEstado());
         }
 
-        // Guardar imagen físicamente en el disco
+        // Guardar imagen en Cloudinary
         if (!imagenFile.isEmpty()) {
-            String nombreArchivo = guardarImagenProducto(imagenFile);
-            producto.setImagen(nombreArchivo);
+            String urlImagen = guardarImagenProducto(imagenFile);
+            producto.setImagen(urlImagen);
+        } else {
+            producto.setImagen("default.jpg"); // Imagen por defecto
         }
 
         productoRepository.save(producto);
     }
 
     /**
-     * Guarda una imagen de producto en la carpeta externa
+     * ✅ NUEVO: Guarda una imagen de producto en CLOUDINARY
      * @param archivo - Archivo MultipartFile de la imagen
-     * @return String - Nombre único del archivo guardado
+     * @return String - URL completa de la imagen en Cloudinary
      */
     private String guardarImagenProducto(MultipartFile archivo) throws IOException {
-        Path directorioProductos = Paths.get(uploadBasePath + "productos");
+        try {
+            // Subir imagen a Cloudinary en la carpeta "eggs_gold/productos"
+            Map uploadResult = cloudinary.uploader().upload(archivo.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", "eggs_gold/productos",
+                            "resource_type", "image"
+                    ));
 
-        if (!Files.exists(directorioProductos)) {
-            Files.createDirectories(directorioProductos);
+            // Obtener la URL segura de la imagen
+            String urlImagen = (String) uploadResult.get("secure_url");
+            System.out.println("✅ Imagen subida a Cloudinary: " + urlImagen);
+
+            return urlImagen;
+
+        } catch (IOException e) {
+            System.err.println("❌ Error al subir imagen a Cloudinary: " + e.getMessage());
+            throw new IOException("Error al subir la imagen a Cloudinary", e);
         }
-
-        String nombreOriginal = archivo.getOriginalFilename();
-        String extension = "";
-        if (nombreOriginal != null && nombreOriginal.contains(".")) {
-            extension = nombreOriginal.substring(nombreOriginal.lastIndexOf("."));
-        }
-
-        String nombreUnico = "producto_" + UUID.randomUUID().toString() + "_" + System.currentTimeMillis() + extension;
-        Path rutaArchivo = directorioProductos.resolve(nombreUnico);
-        Files.copy(archivo.getInputStream(), rutaArchivo, StandardCopyOption.REPLACE_EXISTING);
-
-        return nombreUnico;
     }
 
     @Override
@@ -114,9 +124,6 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.save(producto);
     }
 
-    // ============================================
-    // NUEVO MÉTODO: Actualizar producto con imagen opcional
-    // ============================================
     @Override
     public Producto actualizarProductoConImagen(Integer id, Producto datosProducto, MultipartFile imagenFile) throws IOException {
         // Buscar el producto existente
@@ -130,12 +137,11 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setDescripcion(datosProducto.getDescripcion());
         producto.setEstado(datosProducto.getEstado());
 
-        // Si se envió una nueva imagen, guardarla y actualizar
+        // Si se envió una nueva imagen, subirla a Cloudinary
         if (imagenFile != null && !imagenFile.isEmpty()) {
-            String nombreArchivo = guardarImagenProducto(imagenFile);
-            producto.setImagen(nombreArchivo);
+            String urlImagen = guardarImagenProducto(imagenFile);
+            producto.setImagen(urlImagen);
         }
-        // Si no se envió imagen, mantener la imagen actual (no hacer nada)
 
         return productoRepository.save(producto);
     }
@@ -256,7 +262,7 @@ public class ProductoServiceImpl implements ProductoService {
                 producto.setCategoria(categoria);
                 producto.setDescripcion(descripcion);
                 producto.setEstado(EstadoProducto.DISPONIBLE);
-                producto.setImagen("default.jpg"); // Imagen por defecto
+                producto.setImagen("default.jpg"); // Imagen por defecto (los CSV no traen imágenes)
 
                 // Guardar en la base de datos
                 productoRepository.save(producto);
@@ -275,5 +281,4 @@ public class ProductoServiceImpl implements ProductoService {
 
         return resultado;
     }
-
 }

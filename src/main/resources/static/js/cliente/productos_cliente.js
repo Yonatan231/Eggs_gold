@@ -69,12 +69,12 @@ function crearTarjetaProducto(producto) {
     card.setAttribute("data-id", producto.idProducto);
 
     const img = document.createElement("img");
-    img.src = producto.imagen && producto.imagen.trim() !== ''
-        ? `/uploads/productos/${producto.imagen.trim()}`
-        : '/uploads/productos/default.png';
+    img.src = producto.imagen && producto.imagen.trim() !== '' && producto.imagen !== 'default.jpg'
+        ? producto.imagen.trim()
+        : '/imagenes/default.png';
     img.alt = producto.nombre;
     img.onerror = function() {
-        this.src = '/uploads/productos/default.png';
+        this.src = '/imagenes/default.png';
     };
 
     const nombre = document.createElement("h4");
@@ -131,7 +131,7 @@ function abrirModalCantidad(producto) {
                 <button class="modal-close" onclick="cerrarModalCantidad()">×</button>
             </div>
             <div class="modal-body">
-                <img src="/uploads/productos/${producto.imagen || 'default.png'}" alt="${producto.nombre}">
+                <img src="${producto.imagen && producto.imagen !== 'default.jpg' ? producto.imagen : '/imagenes/default.png'}" alt="${producto.nombre}">
                 <p class="modal-precio">$${parseInt(producto.precio).toLocaleString("es-CO")}</p>
                 <p class="modal-disponible">Disponibles: ${producto.cantidad} unidades</p>
                 
