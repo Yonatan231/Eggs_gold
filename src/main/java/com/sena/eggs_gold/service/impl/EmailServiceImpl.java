@@ -152,7 +152,7 @@ public class EmailServiceImpl implements EmailService {
                             <h1>Eggs Gold</h1>
                             <p>Factura de Compra</p>
                         </div>
-                        
+                
                         <div class="content">
                             <h2>Gracias por tu compra, %s</h2>
                             <p><strong>Factura N:</strong> %d</p>
