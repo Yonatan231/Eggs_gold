@@ -128,6 +128,11 @@ public class LogisticaServiceImpl implements LogisticaService {
             pedidoMap.put("cantidadTotal", pedido.getCantidadTotal());
             pedidoMap.put("fechaCreacion", pedido.getFechaCreacion());
 
+            // agregar nombre del cliente
+            if (pedido.getCliente() != null) {
+                pedidoMap.put("cliente", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
+            }
+
             // contar tipos de productos diferentes
             List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
             pedidoMap.put("tiposProductos", detalles.size());
