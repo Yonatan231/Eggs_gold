@@ -78,7 +78,7 @@ public class EmailServiceImpl implements EmailService {
     @Async
     @Override
     public void enviarCorreoCambioEstado(String para, String nombreUsuario, String nuevoEstado) {
-        String asunto = "Actualizacion del estado de tu cuenta";
+        String asunto = "Actualización del estado de tu cuenta";
         String cuerpo = """
                 <p>Hola <b>%s</b>,</p>
                 <p>Tu cuenta ha cambiado de estado a: <b>%s</b></p>
@@ -178,11 +178,11 @@ public class EmailServiceImpl implements EmailService {
                                 <p>TOTAL: $%,.2f</p>
                             </div>
                             
-                            <p style="margin-top: 30px;">Tu pedido esta siendo procesado y pronto lo recibiras.</p>
+                            <p style="margin-top: 30px;">Tu pedido esta siendo procesado y pronto lo recibirás.</p>
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automatico, por favor no responder.</p>
+                            <p>Este es un correo automático, por favor no responder.</p>
                             <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
@@ -253,7 +253,7 @@ public class EmailServiceImpl implements EmailService {
                             <h1>Eggs Gold</h1>
                             <h2>Pedido Entregado</h2>
                         </div>
-                        
+                
                         <div class="content">
                             <h2>Hola %s</h2>
                             <p>Tu pedido ha sido entregado exitosamente.</p>
@@ -261,7 +261,7 @@ public class EmailServiceImpl implements EmailService {
                             <div class="info-box">
                                 <p><strong>Numero de pedido:</strong> #%d</p>
                                 <p><strong>Fecha de entrega:</strong> %s</p>
-                                <p><strong>Direccion:</strong> %s</p>
+                                <p><strong>Dirección:</strong> %s</p>
                                 <p><strong>Conductor:</strong> %s</p>
                             </div>
                             
@@ -270,12 +270,12 @@ public class EmailServiceImpl implements EmailService {
                             <p style="margin-top: 30px;">Esperamos que disfrutes de tus productos. Gracias por confiar en nosotros</p>
                             
                             <p style="margin-top: 20px; font-size: 14px; color: #666;">
-                                Si tienes algun problema con tu pedido, por favor contactanos lo antes posible.
+                                Si tienes algún problema con tu pedido, por favor contactanos lo antes posible.
                             </p>
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automatico, por favor no responder.</p>
+                            <p>Este es un correo automático, por favor no responder.</p>
                             <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
@@ -301,7 +301,7 @@ public class EmailServiceImpl implements EmailService {
     public void enviarCorreoRecuperacion(String correo, String token) {
         String asunto = "Recuperacion de contrasena - Eggs Gold";
 
-        String enlaceRecuperacion = "http://localhost:8080/reset-password?token=" + token;
+        String enlaceRecuperacion = "https://eggs-gold.onrender.com/auth/restablecer-password?token=" + token;
 
         String cuerpoHtml = String.format("""
                 <!DOCTYPE html>
@@ -313,7 +313,7 @@ public class EmailServiceImpl implements EmailService {
                         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
                         .header { background-color: #F7DC6F; padding: 20px; text-align: center; }
                         .content { padding: 20px; background-color: #f9f9f9; }
-                        .button { 
+                        .button {
                             display: inline-block; 
                             padding: 15px 30px; 
                             background-color: #27AE60; 
@@ -329,15 +329,15 @@ public class EmailServiceImpl implements EmailService {
                     <div class="container">
                         <div class="header">
                             <h1>Eggs Gold</h1>
-                            <p>Recuperacion de Contrasena</p>
+                            <p>Recuperación de Contraseña</p>
                         </div>
                         
                         <div class="content">
-                            <h2>Has solicitado recuperar tu contrasena</h2>
-                            <p>Haz clic en el siguiente boton para restablecer tu contrasena:</p>
+                            <h2>Has solicitado recuperar tu contraseña</h2>
+                            <p>Haz clic en el siguiente botón para restablecer tu contraseña:</p>
                             
                             <div style="text-align: center;">
-                                <a href="%s" class="button">Restablecer Contrasena</a>
+                                <a href="%s" class="button">Restablecer Contraseña</a>
                             </div>
                             
                             <p style="margin-top: 20px; font-size: 14px; color: #666;">
@@ -345,13 +345,13 @@ public class EmailServiceImpl implements EmailService {
                             </p>
                             
                             <p style="font-size: 12px; color: #999; margin-top: 20px;">
-                                Si el boton no funciona, copia y pega este enlace en tu navegador:<br>
+                                Si el botón no funciona, copia y pega este enlace en tu navegador:<br>
                                 <span style="color: #27AE60;">%s</span>
                             </p>
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automatico, por favor no responder.</p>
+                            <p>Este es un correo automático, por favor no responder.</p>
                             <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
@@ -362,7 +362,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             enviarCorreo(correo, asunto, cuerpoHtml);
         } catch (Exception e) {
-            System.err.println("Error al enviar correo de recuperacion: " + e.getMessage());
+            System.err.println("Error al enviar correo de recuperación: " + e.getMessage());
         }
 
 
@@ -384,7 +384,7 @@ public class EmailServiceImpl implements EmailService {
                         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
                         .header { background-color: #dc3545; padding: 20px; text-align: center; color: white; }
                         .content { padding: 20px; background-color: #f9f9f9; }
-                        .warning-box { 
+                        .warning-box {
                             background-color: #fff3cd; 
                             border-left: 4px solid #ffc107; 
                             padding: 15px; 
