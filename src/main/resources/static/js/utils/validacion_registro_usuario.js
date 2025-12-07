@@ -114,7 +114,7 @@ function validarFormularioRegistro(config) {
         return false;
     }
     if (password.length < 7) {
-        alert("la contrasena debe tener al menos 7 caracteres");
+        alert("la contrasena debe tener al menos 8 caracteres");
         return false;
     }
     if (!validarPasswordConNumerosYLetras(password)) {

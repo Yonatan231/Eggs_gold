@@ -132,6 +132,7 @@ function abrirModalCantidad(producto) {
             </div>
             <div class="modal-body">
                 <img src="${producto.imagen && producto.imagen !== 'default.jpg' ? producto.imagen : '/imagenes/default.png'}" alt="${producto.nombre}">
+                <p class="modal-descripcion">${producto.descripcion}</p>
                 <p class="modal-precio">$${parseInt(producto.precio).toLocaleString("es-CO")}</p>
                 <p class="modal-disponible">Disponibles: ${producto.cantidad} unidades</p>
                 

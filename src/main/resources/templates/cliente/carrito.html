@@ -15,17 +15,14 @@
 <!-- header simple fixed -->
 <header class="header">
     <div class="header-top">
-        <!-- logo solo imagen -->
         <div class="logo">
             <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
 
-        <!-- titulo central visible en todas las pantallas -->
         <div class="header-title">
             <h1>Carrito</h1>
         </div>
 
-        <!-- boton salir icono de regresar -->
         <a th:href="@{/inicio_cliente}" class="btn-salir" title="Regresar">
             <span>←</span>
         </a>
@@ -62,7 +59,7 @@
         <h2>Completa tu pedido</h2>
 
         <div class="campo-formulario">
-            <label for="direccion">Direccion de entrega:</label>
+            <label for="direccion">Dirección de entrega:</label>
             <input
                     type="text"
                     id="direccion"
@@ -72,7 +69,7 @@
         </div>
 
         <div class="campo-formulario">
-            <label for="telefono">Telefono de contacto:</label>
+            <label for="telefono">Teléfono de contacto:</label>
             <input
                     type="tel"
                     id="telefono"
@@ -91,7 +88,7 @@
         </div>
 
         <div class="campo-formulario">
-            <label>Selecciona tu metodo de pago:</label>
+            <label>Selecciona tu método de pago:</label>
             <div class="metodos-pago">
                 <label class="metodo-pago">
                     <input type="radio" name="metodo-pago" value="nequi">
@@ -129,7 +126,7 @@
             </div>
             <h1>pedido confirmado</h1>
             <p>tu pedido ha sido procesado correctamente.</p>
-            <p>recibiras una confirmacion por correo electronico pronto.</p>
+            <p>recibirás una confirmación por correo electrónico pronto.</p>
             <a th:href="@{/historial_pedidos_cliente}" class="boton-principal">ver historial de pedidos</a>
             <a th:href="@{/inicio_cliente}" class="boton-secundario">realizar nueva compra</a>
         </div>
@@ -245,7 +242,6 @@
     </div>
 </div>
 
-<!-- pie de pagina footer -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
