@@ -42,7 +42,6 @@ public class UsuarioController {
         return usuarioService.obtenerClientesConPedidos();
     }
 
-    // ✅ CORREGIDO: Cambiado ConductorPedidosDTO por ConductorDTO
     @GetMapping("/conductores/pedidos-entregados")
     @ResponseBody
     public List<ConductorDTO> obtenerConductoresConPedidosEntregados() {
@@ -70,7 +69,7 @@ public class UsuarioController {
     @PutMapping("/eliminar/{id}")
     public ResponseEntity<String> eliminarLogico(@PathVariable Integer id) {
         usuarioService.eliminarLogico(id);
-        return ResponseEntity.ok("✅ Usuario eliminado");
+        return ResponseEntity.ok(" Usuario eliminado");
     }
 
     @GetMapping("clientes/activos")
