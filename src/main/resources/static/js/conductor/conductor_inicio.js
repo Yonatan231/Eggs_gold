@@ -1,15 +1,11 @@
-/* ============================================
-   CONDUCTOR_INICIO.JS - LÓGICA ESPECÍFICA
-   Solo contiene la lógica de negocio de conductor
-   La funcionalidad del sidebar está en utils/sidebar.js
-   ============================================ */
+/* conductor_inicio.js - logica especifica
+   solo contiene la logica de negocio de conductor
+   la funcionalidad del sidebar esta en utils/sidebar.js */
 
-// Variable global para el ID del pedido a entregar
+// variable global para el id del pedido a entregar
 let pedidoAEntregar = null;
 
-// ============================================
-// CUANDO LA PÁGINA CARGA
-// ============================================
+// cuando la pagina carga
 document.addEventListener("DOMContentLoaded", function() {
     cargarDashboard();
     cargarPedidosEnCamino();
@@ -18,13 +14,9 @@ document.addEventListener("DOMContentLoaded", function() {
     inicializarActualizacionAutomatica();
 });
 
-// ============================================
-// FUNCIONES PARA EL DASHBOARD (TARJETAS DE RESUMEN)
-// ============================================
+// funciones para el dashboard (tarjetas de resumen)
 
-/**
- * Carga los datos del dashboard: pedidos asignados y pendientes
- */
+/* carga los datos del dashboard: pedidos asignados y pendientes */
 async function cargarDashboard() {
     try {
         const response = await fetch('/api/conductor/dashboard/resumen');
@@ -35,13 +27,13 @@ async function cargarDashboard() {
 
         const datos = await response.json();
 
-        // Actualizar contador de pedidos asignados
+        // actualizar contador de pedidos asignados
         const contadorAsignados = document.getElementById('totalAsignados');
         if (contadorAsignados) {
             contadorAsignados.textContent = datos.pedidosAsignados;
         }
 
-        // Actualizar contador de pedidos pendientes
+        // actualizar contador de pedidos pendientes
         const contadorPendientes = document.getElementById('totalPendientes');
         if (contadorPendientes) {
             contadorPendientes.textContent = datos.pedidosPendientes;
@@ -52,21 +44,17 @@ async function cargarDashboard() {
     }
 }
 
-/**
- * Inicializa la actualización automática del dashboard
- * Se actualiza cada minuto
- */
+/* inicializa la actualizacion automatica del dashboard
+   se actualiza cada minuto */
 function inicializarActualizacionAutomatica() {
-    // Actualizar cada 60 segundos
+    // actualizar cada 60 segundos
     setInterval(() => {
         cargarDashboard();
     }, 60000);
 }
 
-// ============================================
-// FUNCIÓN: cargarPedidosEnCamino()
-// Obtiene los pedidos EN_CAMINO desde el servidor
-// ============================================
+// funcion: cargarPedidosEnCamino()
+// obtiene los pedidos en_camino desde el servidor
 function cargarPedidosEnCamino() {
     fetch('/api/conductor/pedidos-en-camino')
         .then(response => response.json())
@@ -84,10 +72,8 @@ function cargarPedidosEnCamino() {
         });
 }
 
-// ============================================
-// FUNCIÓN: mostrarPedidosEnTabla(pedidos)
-// Muestra los pedidos en la tabla
-// ============================================
+// funcion: mostrarPedidosEnTabla(pedidos)
+// muestra los pedidos en la tabla
 function mostrarPedidosEnTabla(pedidos) {
     const tbody = document.getElementById('tablaPedidosDiaBody');
     const tabla = document.getElementById('tablaPedidosDia');
@@ -129,19 +115,15 @@ function mostrarPedidosEnTabla(pedidos) {
     });
 }
 
-// ============================================
-// FUNCIÓN: mostrarMensajeVacio()
-// Muestra mensaje cuando no hay pedidos
-// ============================================
+// funcion: mostrarMensajeVacio()
+// muestra mensaje cuando no hay pedidos
 function mostrarMensajeVacio() {
     document.getElementById('tablaPedidosDia').style.display = 'none';
     document.getElementById('mensajeVacio').style.display = 'block';
 }
 
-// ============================================
-// FUNCIÓN: marcarEntregado(idPedido)
-// Abre modal para confirmar entrega
-// ============================================
+// funcion: marcarEntregado(idPedido)
+// abre modal para confirmar entrega
 function marcarEntregado(idPedido) {
     pedidoAEntregar = idPedido;
     document.getElementById('pedidoIdEntrega').textContent = idPedido;
@@ -149,10 +131,8 @@ function marcarEntregado(idPedido) {
     document.getElementById('modalEntregarPedido').style.display = 'flex';
 }
 
-// ============================================
-// FUNCIÓN: confirmarEntrega()
-// Confirma la entrega con observación
-// ============================================
+// funcion: confirmarEntrega()
+// confirma la entrega con observacion
 function confirmarEntrega() {
     const observacion = document.getElementById('observacionEntrega').value;
 
@@ -181,19 +161,15 @@ function confirmarEntrega() {
         });
 }
 
-// ============================================
-// FUNCIÓN: cerrarModalEntrega()
-// Cierra el modal de entrega
-// ============================================
+// funcion: cerrarModalEntrega()
+// cierra el modal de entrega
 function cerrarModalEntrega() {
     document.getElementById('modalEntregarPedido').style.display = 'none';
     pedidoAEntregar = null;
 }
 
-// ============================================
-// FUNCIÓN: configurarBusqueda()
-// Configura la barra de búsqueda de pedidos
-// ============================================
+// funcion: configurarBusqueda()
+// configura la barra de busqueda de pedidos
 function configurarBusqueda() {
     const inputBuscar = document.getElementById("buscarPedido");
     const tbody = document.getElementById("tablaPedidosDiaBody");
@@ -216,10 +192,8 @@ function configurarBusqueda() {
     });
 }
 
-// ============================================
-// FUNCIÓN: verDetalle(idPedido)
-// Abre el modal con los detalles del pedido
-// ============================================
+// funcion: verDetalle(idPedido)
+// abre el modal con los detalles del pedido
 function verDetalle(idPedido) {
     document.getElementById('pedidoId').textContent = idPedido;
 
@@ -229,19 +203,19 @@ function verDetalle(idPedido) {
             if (data.success) {
                 const detalle = data.detalle;
 
-                // Llenar información del cliente
+                // llenar informacion del cliente
                 document.getElementById('clienteNombre').textContent = detalle.clienteNombre || 'N/A';
                 document.getElementById('clienteDireccion').textContent = detalle.direccion || 'N/A';
                 document.getElementById('clienteTelefono').textContent = detalle.clienteTelefono || 'N/A';
                 document.getElementById('clienteComentario').textContent = detalle.detalleCliente || 'Ninguno';
 
-                // Llenar lista de productos
+                // llenar lista de productos
                 const lista = document.getElementById('listaProductos');
                 lista.innerHTML = '';
 
                 detalle.productos.forEach(producto => {
                     const li = document.createElement('li');
-                    li.textContent = `${producto.nombre} - Categoría: ${producto.categoria} - ${producto.cantidad} unidades`;
+                    li.textContent = `${producto.nombre} - Categoria: ${producto.categoria} - ${producto.cantidad} unidades`;
                     lista.appendChild(li);
                 });
 
@@ -256,28 +230,22 @@ function verDetalle(idPedido) {
         });
 }
 
-// ============================================
-// FUNCIÓN: cerrarModal()
-// Cierra el modal de detalles
-// ============================================
+// funcion: cerrarModal()
+// cierra el modal de detalles
 function cerrarModal() {
     const modal = document.getElementById('modalDetallePedido');
     modal.style.display = 'none';
 }
 
-// ============================================
-// FUNCIÓN: verRuta(direccion)
-// Abre Google Maps con la dirección
-// ============================================
+// funcion: verRuta(direccion)
+// abre google maps con la direccion
 function verRuta(direccion) {
     const direccionCodificada = encodeURIComponent(direccion);
     const urlMaps = 'https://www.google.com/maps/search/?api=1&query=' + direccionCodificada;
     window.open(urlMaps, '_blank');
 }
 
-// ============================================
-// CERRAR MODAL AL HACER CLIC FUERA
-// ============================================
+// cerrar modal al hacer clic fuera
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('modalDetallePedido');
     const novedadModal = document.getElementById('novedadModal');
@@ -296,9 +264,7 @@ window.addEventListener('click', function(e) {
     }
 });
 
-// ============================================
-// CONFIGURAR MODAL DE NOVEDAD - Usando funciones compartidas
-// ============================================
+// configurar modal de novedad - usando funciones compartidas
 function configurarModalNovedad() {
     const novedadForm = document.getElementById('novedadForm');
 
@@ -311,21 +277,21 @@ function configurarModalNovedad() {
             const descripcion = document.getElementById('descripcion').value.trim();
             const imagenFile = document.getElementById('evidencia').files[0];
 
-            // Validar campos usando función compartida
+            // validar campos usando funcion compartida
             const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
             if (!validacion.valido) {
                 alert(validacion.mensaje);
                 return;
             }
 
-            // Obtener ID de usuario
+            // obtener id de usuario
             const idUsuario = obtenerIdUsuario();
             if (!idUsuario) {
-                alert('Error: No se pudo obtener la información de usuario. Recargue la página.');
+                alert('Error: No se pudo obtener la informacion de usuario. Recargue la pagina.');
                 return;
             }
 
-            // Reportar novedad usando función compartida
+            // reportar novedad usando funcion compartida
             reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
                 .then(resultado => {
                     if (resultado.success) {
@@ -339,7 +305,7 @@ function configurarModalNovedad() {
         });
     }
 
-    // Configurar botones del modal
+    // configurar botones del modal
     const btnNovedad = document.getElementById('btnNovedad');
     const novedadModal = document.getElementById('novedadModal');
     const closeModal = document.getElementById('closeModal');

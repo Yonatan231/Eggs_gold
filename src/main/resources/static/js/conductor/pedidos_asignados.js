@@ -1,20 +1,14 @@
-// ============================================
-// PEDIDOS_ASIGNADOS.JS - FUNCIONALIDAD ESPECÍFICA
-// Este archivo solo maneja la lógica de pedidos asignados
-// El sidebar y su funcionalidad están en utils/sidebar.js
-// ============================================
+// pedidos_asignados.js - funcionalidad especifica
+// este archivo solo maneja la logica de pedidos asignados
+// el sidebar y su funcionalidad estan en utils/sidebar.js
 
-// ============================================
-// CUANDO LA PÁGINA CARGA
-// ============================================
+// cuando la pagina carga
 document.addEventListener('DOMContentLoaded', function() {
     cargarPedidosAsignados();
 });
 
-// ============================================
-// FUNCIÓN: cargarPedidosAsignados()
-// Obtiene los pedidos asignados desde el servidor
-// ============================================
+// funcion: cargarPedidosAsignados()
+// obtiene los pedidos asignados desde el servidor
 function cargarPedidosAsignados() {
     fetch('/api/conductor/pedidos-asignados')
         .then(response => response.json())
@@ -32,10 +26,8 @@ function cargarPedidosAsignados() {
         });
 }
 
-// ============================================
-// FUNCIÓN: mostrarPedidosEnTabla(pedidos)
-// Muestra los pedidos en la tabla
-// ============================================
+// funcion: mostrarPedidosEnTabla(pedidos)
+// muestra los pedidos en la tabla
 function mostrarPedidosEnTabla(pedidos) {
     const tbody = document.getElementById('tablaBody');
     const tabla = document.getElementById('tablaPedidos');
@@ -75,29 +67,23 @@ function mostrarPedidosEnTabla(pedidos) {
     actualizarContador();
 }
 
-// ============================================
-// FUNCIÓN: mostrarSinPedidos()
-// Muestra mensaje cuando no hay pedidos
-// ============================================
+// funcion: mostrarSinPedidos()
+// muestra mensaje cuando no hay pedidos
 function mostrarSinPedidos() {
     document.getElementById('tablaPedidos').style.display = 'none';
     document.getElementById('sin-pedidos').style.display = 'block';
     document.getElementById('contador').textContent = '0';
 }
 
-// ============================================
-// FUNCIÓN: actualizarContador()
-// Actualiza el contador de pedidos
-// ============================================
+// funcion: actualizarContador()
+// actualiza el contador de pedidos
 function actualizarContador() {
     const filas = document.querySelectorAll('#tablaBody tr');
     document.getElementById('contador').textContent = filas.length;
 }
 
-// ============================================
-// FUNCIÓN: aceptarPedido(idPedido)
-// Acepta un pedido asignado
-// ============================================
+// funcion: aceptarPedido(idPedido)
+// acepta un pedido asignado
 function aceptarPedido(idPedido) {
     if (!confirm('¿Deseas aceptar el pedido #' + idPedido + '?')) {
         return;
@@ -114,7 +100,7 @@ function aceptarPedido(idPedido) {
             if (data.success) {
                 mostrarMensaje(data.message, 'success');
 
-                // Recargar pedidos después de 1 segundo
+                // recargar pedidos despues de 1 segundo
                 setTimeout(() => {
                     cargarPedidosAsignados();
                 }, 1000);
@@ -128,10 +114,8 @@ function aceptarPedido(idPedido) {
         });
 }
 
-// ============================================
-// FUNCIÓN: verDetalle(idPedido)
-// Abre el modal con los detalles del pedido
-// ============================================
+// funcion: verDetalle(idPedido)
+// abre el modal con los detalles del pedido
 function verDetalle(idPedido) {
     document.getElementById('pedidoId').textContent = idPedido;
 
@@ -141,22 +125,22 @@ function verDetalle(idPedido) {
             if (data.success) {
                 const detalle = data.detalle;
 
-                // Llenar información del cliente
+                // llenar informacion del cliente
                 document.getElementById('clienteNombre').textContent = detalle.clienteNombre || 'N/A';
                 document.getElementById('clienteDireccion').textContent = detalle.direccion || 'N/A';
                 document.getElementById('clienteTelefono').textContent = detalle.clienteTelefono || 'N/A';
 
-                // Llenar lista de productos
+                // llenar lista de productos
                 const lista = document.getElementById('listaProductos');
                 lista.innerHTML = '';
 
                 detalle.productos.forEach(producto => {
                     const li = document.createElement('li');
-                    li.textContent = `${producto.nombre} - Categoría: ${producto.categoria} - ${producto.cantidad} unidades`;
+                    li.textContent = `${producto.nombre} - Categoria: ${producto.categoria} - ${producto.cantidad} unidades`;
                     lista.appendChild(li);
                 });
 
-                // Mostrar modal
+                // mostrar modal
                 document.getElementById('modalDetallePedido').style.display = 'flex';
             } else {
                 alert('Error al cargar detalles: ' + data.message);
@@ -168,29 +152,23 @@ function verDetalle(idPedido) {
         });
 }
 
-// ============================================
-// FUNCIÓN: cerrarModal()
-// Cierra el modal de detalles
-// ============================================
+// funcion: cerrarModal()
+// cierra el modal de detalles
 function cerrarModal() {
     const modal = document.getElementById('modalDetallePedido');
     modal.style.display = 'none';
 }
 
-// ============================================
-// FUNCIÓN: aceptarDesdeModal()
-// Acepta el pedido desde el modal
-// ============================================
+// funcion: aceptarDesdeModal()
+// acepta el pedido desde el modal
 function aceptarDesdeModal() {
     const idPedido = document.getElementById('pedidoId').textContent;
     cerrarModal();
     aceptarPedido(idPedido);
 }
 
-// ============================================
-// FUNCIÓN: mostrarMensaje(texto, tipo)
-// Muestra mensajes al usuario
-// ============================================
+// funcion: mostrarMensaje(texto, tipo)
+// muestra mensajes al usuario
 function mostrarMensaje(texto, tipo) {
     let mensaje;
 
@@ -208,9 +186,7 @@ function mostrarMensaje(texto, tipo) {
     }, 3000);
 }
 
-// ============================================
-// CERRAR MODAL AL HACER CLIC FUERA
-// ============================================
+// cerrar modal al hacer clic fuera
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('modalDetallePedido');
 

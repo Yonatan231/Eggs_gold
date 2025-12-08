@@ -128,7 +128,10 @@ function mostrarPedidos(pedidos) {
         mensajeSinPedidos.style.display = 'none';
     }
 
-    pedidos.forEach(pedido => {
+    // invertir orden: mas antiguos arriba, mas recientes abajo (cola fifo)
+    const pedidosOrdenados = [...pedidos].reverse();
+
+    pedidosOrdenados.forEach(pedido => {
         const fila = crearFilaPedido(pedido);
         tbody.appendChild(fila);
     });

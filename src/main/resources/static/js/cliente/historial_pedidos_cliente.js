@@ -1,18 +1,12 @@
-// ============================================
-// VARIABLES GLOBALES
-// ============================================
+// variables globales
 let todosLosPedidos = [];
 let pedidoIdParaFactura = null;
 
-// ============================================
-// ELEMENTOS DEL DOM (se inicializarán después)
-// ============================================
+// elementos del dom (se inicializaran despues)
 let tabs, orderSections, btnNovedad, novedadModal, closeModal, cancelNovedad, novedadForm;
 let facturaModal, closeFacturaModal, closeFacturaBtn, downloadFacturaBtn;
 
-// ============================================
-// CARGAR PEDIDOS DESDE EL SERVIDOR
-// ============================================
+// cargar pedidos desde el servidor
 function cargarPedidos() {
     fetch('/api/cliente/mis-pedidos')
         .then(response => response.json())
@@ -31,9 +25,7 @@ function cargarPedidos() {
         });
 }
 
-// ============================================
-// MAPEO DE ESTADOS
-// ============================================
+// mapeo de estados
 function mapearEstado(estado) {
     const estadosAlistamiento = ['PENDIENTE', 'EN_ALISTAMIENTO', 'LISTO'];
     const estadosEntrega = ['ASIGNADO', 'EN_CAMINO'];
@@ -65,17 +57,13 @@ function mapearEstado(estado) {
     };
 }
 
-// ============================================
-// FORMATEAR FECHA
-// ============================================
+// formatear fecha
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
 }
 
-// ============================================
-// CREAR TARJETA DE PEDIDO
-// ============================================
+// crear tarjeta de pedido
 function createOrderCard(pedido) {
     const estadoInfo = mapearEstado(pedido.estado);
 
@@ -98,7 +86,7 @@ function createOrderCard(pedido) {
             
             <div class="order-details">
                 <div class="detail-item">
-                    <span class="detail-label">Dirección de Entrega</span>
+                    <span class="detail-label">Direccion de Entrega</span>
                     <span class="detail-value">${pedido.direccion}</span>
                 </div>
                 <div class="detail-item">
@@ -106,7 +94,7 @@ function createOrderCard(pedido) {
                     <span class="detail-value">$${parseFloat(pedido.total).toLocaleString('es-CO', {minimumFractionDigits: 2})}</span>
                 </div>
                 <div class="detail-item">
-                    <span class="detail-label">Método de Pago</span>
+                    <span class="detail-label">Metodo de Pago</span>
                     <span class="detail-value">${pedido.metodoPago}</span>
                 </div>
                 ${pedido.fechaEntrega ? `
@@ -125,15 +113,13 @@ function createOrderCard(pedido) {
             </div>
             
             <button class="btn-ver-factura" onclick="verFactura(${pedido.idPedido})">
-                <i class="fas fa-file-invoice"></i> Ver Factura
+                Ver Factura
             </button>
         </div>
     `;
 }
 
-// ============================================
-// MOSTRAR PEDIDOS POR FILTRO
-// ============================================
+// mostrar pedidos por filtro
 function mostrarPedidosPorFiltro(filtro) {
     let pedidosFiltrados = [];
 
@@ -157,9 +143,7 @@ function mostrarPedidosPorFiltro(filtro) {
     displayOrders(pedidosFiltrados, containerId);
 }
 
-// ============================================
-// MOSTRAR PEDIDOS EN CONTENEDOR
-// ============================================
+// mostrar pedidos en contenedor
 function displayOrders(orders, containerId) {
     const container = document.getElementById(containerId);
 
@@ -181,9 +165,7 @@ function displayOrders(orders, containerId) {
     container.innerHTML = orders.map(order => createOrderCard(order)).join('');
 }
 
-// ============================================
-// MOSTRAR SIN PEDIDOS
-// ============================================
+// mostrar sin pedidos
 function mostrarSinPedidos(filtro) {
     const containerMap = {
         'all': 'orders-container-all',
@@ -196,9 +178,7 @@ function mostrarSinPedidos(filtro) {
     displayOrders([], containerId);
 }
 
-// ============================================
-// VER FACTURA
-// ============================================
+// ver factura
 function verFactura(idPedido) {
     pedidoIdParaFactura = idPedido;
 
@@ -217,9 +197,7 @@ function verFactura(idPedido) {
         });
 }
 
-// ============================================
-// MOSTRAR FACTURA EN MODAL
-// ============================================
+// mostrar factura en modal
 function mostrarFacturaEnModal(factura) {
     const fecha = new Date(factura.fechaPago);
     const fechaFormateada = fecha.toLocaleString('es-ES');
@@ -241,18 +219,18 @@ function mostrarFacturaEnModal(factura) {
         
         <div class="factura-info">
             <div class="factura-section">
-                <h3>Información de Factura</h3>
+                <h3>Informacion de Factura</h3>
                 <p><strong>N° Factura:</strong> ${factura.numeroFactura}</p>
                 <p><strong>Fecha:</strong> ${fechaFormateada}</p>
-                <p><strong>Método de Pago:</strong> ${factura.metodoPago}</p>
+                <p><strong>Metodo de Pago:</strong> ${factura.metodoPago}</p>
             </div>
             
             <div class="factura-section">
                 <h3>Datos del Cliente</h3>
                 <p><strong>Nombre:</strong> ${factura.clienteNombre}</p>
                 <p><strong>Documento:</strong> ${factura.clienteDocumento}</p>
-                <p><strong>Teléfono:</strong> ${factura.clienteTelefono}</p>
-                <p><strong>Dirección:</strong> ${factura.clienteDireccion}</p>
+                <p><strong>Telefono:</strong> ${factura.clienteTelefono}</p>
+                <p><strong>Direccion:</strong> ${factura.clienteDireccion}</p>
             </div>
         </div>
         
@@ -279,19 +257,15 @@ function mostrarFacturaEnModal(factura) {
     facturaModal.style.display = 'flex';
 }
 
-// ============================================
-// DESCARGAR FACTURA PDF
-// ============================================
+// descargar factura pdf
 function descargarFacturaPDF() {
     if (!pedidoIdParaFactura) return;
     window.open('/api/cliente/factura/' + pedidoIdParaFactura + '/pdf', '_blank');
 }
 
-// ============================================
-// INICIALIZACIÓN Y EVENT LISTENERS
-// ============================================
+// inicializacion y event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar elementos del DOM
+    // inicializar elementos del dom
     tabs = document.querySelectorAll('.tab');
     orderSections = document.querySelectorAll('.orders-section');
     btnNovedad = document.getElementById('btnNovedad');
@@ -304,17 +278,17 @@ document.addEventListener('DOMContentLoaded', function() {
     closeFacturaBtn = document.getElementById('closeFacturaBtn');
     downloadFacturaBtn = document.getElementById('downloadFacturaBtn');
 
-    // Navegación por pestañas
+    // navegacion por pestanas
     tabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            // Remover clase active
+            // remover clase active
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            // Ocultar todas las secciones
+            // ocultar todas las secciones
             orderSections.forEach(section => section.classList.remove('active'));
 
-            // Obtener filtro y mostrar sección
+            // obtener filtro y mostrar seccion
             const filtro = tab.getAttribute('data-tab');
             const seccion = document.getElementById(`${filtro}-orders`);
 
@@ -322,12 +296,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 seccion.classList.add('active');
             }
 
-            // Filtrar pedidos
+            // filtrar pedidos
             mostrarPedidosPorFiltro(filtro);
         });
     });
 
-    // Modal de novedades
+    // modal de novedades
     if (btnNovedad) {
         btnNovedad.addEventListener('click', () => {
             novedadModal.style.display = 'flex';
@@ -346,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Modal de factura
+    // modal de factura
     if (closeFacturaModal) {
         closeFacturaModal.addEventListener('click', () => {
             facturaModal.style.display = 'none';
@@ -363,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadFacturaBtn.addEventListener('click', descargarFacturaPDF);
     }
 
-    // Formulario de novedad - Usando función compartida
+    // formulario de novedad - usando funcion compartida
     if (novedadForm) {
         novedadForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -373,21 +347,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const descripcion = document.getElementById('descripcion').value.trim();
             const imagenFile = document.getElementById('evidencia').files[0];
 
-            // Validar campos usando función compartida
+            // validar campos usando funcion compartida
             const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
             if (!validacion.valido) {
                 alert(validacion.mensaje);
                 return;
             }
 
-            // Obtener ID de usuario
+            // obtener id de usuario
             const idUsuario = obtenerIdUsuario();
             if (!idUsuario) {
-                alert('Error: No se pudo obtener la información de usuario. Recargue la página.');
+                alert('Error: No se pudo obtener la informacion de usuario. Recargue la pagina.');
                 return;
             }
 
-            // Reportar novedad usando función compartida
+            // reportar novedad usando funcion compartida
             reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
                 .then(resultado => {
                     if (resultado.success) {
@@ -401,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Cerrar modales al hacer clic fuera
+    // cerrar modales al hacer clic fuera
     window.addEventListener('click', (e) => {
         if (e.target === novedadModal) {
             novedadModal.style.display = 'none';
@@ -411,6 +385,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Cargar pedidos al iniciar
+    // cargar pedidos al iniciar
     cargarPedidos();
 });

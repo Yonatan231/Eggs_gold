@@ -22,9 +22,7 @@ body {
     width: 100%;
 }
 
-/* ========================================
-   HEADER FIXED RESPONSIVE
-   ======================================== */
+/* header fixed responsive */
 
 .header {
     background-color: #F7DC6F;
@@ -45,17 +43,17 @@ body {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    gap: 20px; /* AUMENTAR/DISMINUIR: Espacio entre logo, título y botones (SOLO DESKTOP) */
+    gap: 20px;
 }
 
-/* Logo empujado a la izquierda (SOLO DESKTOP) */
+/* logo empujado a la izquierda (solo desktop) */
 .logo {
-    margin-right: auto; /* ELIMINAR: Logo pegado al título */
+    margin-right: auto;
 }
 
-/* Título central */
+/* titulo central */
 .header-title {
-    flex: 0 1 auto; /* CAMBIAR A "flex: 1": Título ocupa más espacio */
+    flex: 0 1 auto;
     text-align: center;
     min-width: 0;
 }
@@ -69,12 +67,12 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Navegación empujada a la derecha (SOLO DESKTOP) */
+/* navegacion empujada a la derecha (solo desktop) */
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 12px; /* AUMENTAR/DISMINUIR: Espacio entre los botones */
-    margin-left: auto; /* ELIMINAR: Botones pegados al título */
+    gap: 12px;
+    margin-left: auto;
 }
 
 .nav-item {
@@ -87,7 +85,6 @@ body {
     border-radius: 8px;
     font-weight: 600;
     border: none;
-    cursor: pointer;
     font-size: 14px;
     line-height: 1.5;
 }
@@ -108,13 +105,12 @@ body {
     background-color: #1e8449;
 }
 
-/* Botón hamburguesa - oculto por defecto */
+/* boton hamburguesa - oculto por defecto */
 .menu-toggle {
     display: none;
     flex-direction: column;
     background: none;
     border: none;
-    cursor: pointer;
     padding: 5px;
     gap: 5px;
 }
@@ -126,9 +122,7 @@ body {
     border-radius: 2px;
 }
 
-/* ========================================
-   MAIN CONTENT
-   ======================================== */
+/* main content */
 
 .container {
     width: calc(100% - 40px);
@@ -153,7 +147,6 @@ body {
     flex: 1;
     padding: 12px;
     text-align: center;
-    cursor: pointer;
     border-radius: 8px;
     transition: all 0.3s;
     font-weight: 600;
@@ -166,7 +159,7 @@ body {
     color: #ffff;
 }
 
-/* Secciones ocultas por defecto */
+/* secciones ocultas por defecto */
 .orders-section {
     display: none;
 }
@@ -175,7 +168,7 @@ body {
     display: block;
 }
 
-/* Grid de pedidos */
+/* grid de pedidos */
 .orders-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -305,7 +298,6 @@ body {
     border: none;
     padding: 8px 16px;
     border-radius: 5px;
-    cursor: pointer;
     font-weight: 600;
     margin-top: auto;
     display: inline-flex;
@@ -320,9 +312,7 @@ body {
     background-color: #2980b9;
 }
 
-/* ========================================
-   MODALES
-   ======================================== */
+/* modales */
 
 .modal {
     display: none;
@@ -369,7 +359,6 @@ body {
     border: none;
     color: white;
     font-size: 28px;
-    cursor: pointer;
     padding: 0;
     line-height: 1;
 }
@@ -407,16 +396,11 @@ body {
 .form-control:focus {
     outline: none;
     border-color: #27AE60;
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
 }
 
 textarea.form-control {
     min-height: 100px;
     resize: vertical;
-}
-
-select.form-control {
-    cursor: pointer;
 }
 
 .form-actions {
@@ -425,17 +409,16 @@ select.form-control {
     gap: 10px;
     margin-top: 25px;
     flex-wrap: wrap;
-    padding: 0 15px 15px; /* Padding para los botones de factura */
+    padding: 0 15px 15px;
 }
 
 .btn {
     padding: 12px 24px;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
     font-size: 14px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -448,7 +431,6 @@ select.form-control {
 
 .btn-secondary:hover {
     background: #7f8c8d;
-    transform: translateY(-1px);
 }
 
 .btn-primary {
@@ -458,13 +440,12 @@ select.form-control {
 
 .btn-primary:hover {
     background: #2ecc71;
-    transform: translateY(-1px);
 }
 
-/* Modal de factura */
+/* modal de factura */
 .modal-factura {
-    max-width: 600px; /* Mismo tamaño que modal de novedad */
-    max-height: 77vh; /* Altura controlada con scroll */
+    max-width: 600px;
+    max-height: 77vh;
 }
 
 .factura-content {
@@ -547,11 +528,9 @@ select.form-control {
     border-top: 2px solid #F7DC6F;
 }
 
-/* ========================================
-   MEDIA QUERIES - RESPONSIVE
-   ======================================== */
+/* media queries - responsive */
 
-/* Tablets y móviles (768px o menos) */
+/* tablets y moviles (768px o menos) */
 @media (max-width: 768px) {
 
     body {
@@ -563,10 +542,10 @@ select.form-control {
     }
 
     .header-top {
-        gap: 10px; /* Gap más pequeño en móvil */
+        gap: 10px;
     }
 
-    /* Resetear márgenes del logo en móvil */
+    /* resetear margenes del logo en movil */
     .logo {
         margin-right: 0;
         width: 40px;
@@ -574,21 +553,21 @@ select.form-control {
         flex-shrink: 0;
     }
 
-    /* Título más pequeño */
+    /* titulo mas pequeno */
     .header-title {
-        flex: 1; /* En móvil el título ocupa espacio disponible */
+        flex: 1;
     }
 
     .header-title h1 {
         font-size: 18px;
     }
 
-    /* Mostrar botón hamburguesa */
+    /* mostrar boton hamburguesa */
     .menu-toggle {
         display: flex;
     }
 
-    /* Menú desplegable en móvil */
+    /* menu desplegable en movil */
     .header-actions {
         position: absolute;
         top: 100%;
@@ -601,15 +580,15 @@ select.form-control {
         max-height: 0;
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        margin-left: 0; /* Resetear margin-left en móvil */
+        margin-left: 0;
     }
 
-    /* Menú abierto */
+    /* menu abierto */
     .header-actions.active {
         max-height: 200px;
     }
 
-    /* Items en móvil ocupan todo el ancho */
+    /* items en movil ocupan todo el ancho */
     .nav-item {
         width: 100%;
         padding: 15px 20px;
@@ -624,13 +603,13 @@ select.form-control {
         border-bottom: none;
     }
 
-    /* Hover en móvil */
+    /* hover en movil */
     .nav-item:hover {
         background-color: #27AE60;
         color: white;
     }
 
-    /* Mantener colores de fondo en los botones del menú móvil */
+    /* mantener colores de fondo en los botones del menu movil */
     .btn-novedad {
         background-color: transparent;
         color: #333333;
@@ -651,14 +630,14 @@ select.form-control {
         color: white;
     }
 
-    /* Container ajustado */
+    /* container ajustado */
     .container {
         width: calc(100% - 30px);
         margin: 15px auto;
         padding: 10px;
     }
 
-    /* Tabs responsive */
+    /* tabs responsive */
     .tabs {
         flex-direction: column;
         gap: 5px;
@@ -668,7 +647,7 @@ select.form-control {
         min-width: auto;
     }
 
-    /* Grid de 1 columna en móviles */
+    /* grid de 1 columna en moviles */
     .orders-grid {
         grid-template-columns: 1fr;
     }
@@ -677,7 +656,7 @@ select.form-control {
         grid-template-columns: 1fr;
     }
 
-    /* Factura responsive */
+    /* factura responsive */
     .factura-info {
         grid-template-columns: 1fr;
     }
@@ -702,7 +681,7 @@ select.form-control {
     }
 }
 
-/* Móviles pequeños (480px o menos) */
+/* moviles pequenos (480px o menos) */
 @media (max-width: 480px) {
 
     body {

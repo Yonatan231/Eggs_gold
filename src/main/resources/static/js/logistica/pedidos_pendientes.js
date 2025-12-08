@@ -42,7 +42,10 @@ function mostrarPedidos(pedidos) {
     sinPedidos.style.display = 'none';
     contador.textContent = pedidos.length;
 
-    pedidos.forEach(pedido => {
+    // invertir orden: mas antiguos arriba, mas recientes abajo (cola fifo)
+    const pedidosOrdenados = [...pedidos].reverse();
+
+    pedidosOrdenados.forEach(pedido => {
         const fila = document.createElement('tr');
 
         const fecha = new Date(pedido.fechaCreacion);

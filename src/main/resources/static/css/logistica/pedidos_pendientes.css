@@ -242,18 +242,14 @@ header[role="banner"] {
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
     white-space: nowrap;
 }
 
 .btn-tomar:hover {
     background-color: #1F8A4E;
-    transform: translateY(-2px);
 }
 
-.btn-tomar:active {
-    transform: translateY(0);
-}
 
 /* mensaje sin pedidos */
 .sin-pedidos {

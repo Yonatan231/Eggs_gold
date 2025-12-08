@@ -1,4 +1,4 @@
-/* ===== ENCABEZADO (HEADER) ===== */
+/* encabezado (header) */
 header {
     position: fixed;
     top: 0;
@@ -13,14 +13,14 @@ header {
     z-index: 1000;
 }
 
-/* Enlace activo durante scroll */
+/* enlace activo durante scroll */
 .activo-scroll {
     background-color: var(--color-verde);
     color: #fff;
     transform: translateY(-1px);
 }
 
-/* Botón hamburguesa para móviles */
+/* boton hamburguesa para moviles */
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -39,7 +39,7 @@ header {
     border-radius: 3px;
 }
 
-/* Navegación */
+/* navegacion */
 nav {
     display: flex;
     align-items: center;
@@ -74,7 +74,7 @@ nav a.activo {
     color: #fff;
 }
 
-/* Carrito de compras */
+/* carrito de compras */
 .carrito {
     display: inline-flex;
     align-items: center;
@@ -92,26 +92,21 @@ nav a.activo {
     width: 28px;
     height: 28px;
     vertical-align: middle;
-    transition: transform 0.3s ease;
 }
 
-.carrito:hover img {
-    transform: scale(1.15);
-}
+/* responsive */
 
-/* ===== RESPONSIVE ===== */
-
-/* Tablets y móviles (768px o menos) */
+/* tablets y moviles (768px o menos) */
 @media (max-width: 768px) {
     header {
-        padding: 10px 16px; /* REDUCIR padding: Menos espacio entre header y main */
+        padding: 10px 16px;
     }
 
     .menu-toggle {
         display: flex;
     }
 
-    /* Menú móvil desplegable */
+    /* menu movil desplegable */
     nav {
         position: absolute;
         top: 100%;
@@ -162,10 +157,10 @@ nav a.activo {
     }
 }
 
-/* Móviles pequeños (480px o menos) */
+/* moviles pequenos (480px o menos) */
 @media (max-width: 480px) {
     header {
-        padding: 8px 12px; /* REDUCIR padding: Menos espacio entre header y main */
+        padding: 8px 12px;
     }
 
     .logo {
@@ -202,7 +197,7 @@ nav a.activo {
     }
 }
 
-/* Animación del botón hamburguesa */
+/* animacion del boton hamburguesa */
 @media (max-width: 768px) {
     nav.active ~ .menu-toggle span:nth-child(1) {
         transform: rotate(-45deg) translate(-5px, 6px);

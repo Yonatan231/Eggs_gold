@@ -1,4 +1,4 @@
-/* ===== PIE DE PÁGINA (FOOTER) ===== */
+/* pie de pagina (footer) */
 footer {
     background-color: var(--color-fondo);
     padding: 40px 0;
@@ -9,7 +9,7 @@ footer {
     margin-top: auto;
 }
 
-/* Contenedor principal del footer con diseño flex */
+/* contenedor principal del footer con diseno flex */
 .footer-container {
     display: flex;
     justify-content: space-between;
@@ -21,20 +21,20 @@ footer {
     padding: 0 20px;
 }
 
-/* ===== LOGO DEL FOOTER ===== */
+/* logo del footer */
 .footer-logo img {
     width: 90px;
     border-radius: 8px;
 }
 
-/* ===== SECCIONES DEL FOOTER ===== */
+/* secciones del footer */
 .footer-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-/* Títulos de las secciones */
+/* titulos de las secciones */
 .footer-section h2 {
     font-size: 16px;
     font-weight: bold;
@@ -42,7 +42,7 @@ footer {
     margin-bottom: 10px;
 }
 
-/* Enlaces del footer */
+/* enlaces del footer */
 .footer-section a {
     color: var(--color-secundario);
     text-decoration: none;
@@ -50,30 +50,29 @@ footer {
     transition: color 0.3s;
 }
 
-/* Efecto hover en los enlaces */
+/* efecto hover en los enlaces */
 .footer-section a:hover {
     color: var(--color-verde);
 }
 
-/* ===== ICONOS DE REDES SOCIALES ===== */
+/* iconos de redes sociales */
 .social-icons {
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
 
-/* Transición suave para los iconos */
 .social-icons img {
-    transition: transform 0.2s;
     border-radius: 4px;
+    transition: transform 0.2s;
 }
 
-/* Efecto hover: agranda los iconos */
+/* efecto hover: agranda los iconos */
 .social-icons img:hover {
     transform: scale(1.15);
 }
 
-/* ===== PARTE INFERIOR DEL FOOTER (opcional) ===== */
+/* parte inferior del footer (opcional) */
 .footer-bottom {
     text-align: center;
     margin-top: 30px;
@@ -92,26 +91,23 @@ footer {
     color: var(--color-verde);
 }
 
-/* ==========================================
-   MEDIA QUERIES PARA RESPONSIVE
-   ========================================== */
+/* media queries para responsive */
 
-/* ===== TABLETS (768px o menos) ===== */
-/* ===== TABLETS (768px o menos) ===== */
+/* tablets (768px o menos) */
 @media (max-width: 768px) {
     footer {
         padding: 30px 0;
     }
 
     .footer-container {
-        flex-direction: row;  /* Horizontal en tablets */
+        flex-direction: row;
         justify-content: space-around;
         gap: 20px;
         padding: 0 15px;
     }
 
     .footer-logo img {
-        width: 60px;  /* Reducido para tablets */
+        width: 60px;
     }
 
     .footer-section {
@@ -134,15 +130,16 @@ footer {
         justify-content: center;
     }
 }
-/* ===== MÓVILES (480px o menos) ===== */
+
+/* moviles (480px o menos) */
 @media (max-width: 480px) {
     footer {
         padding: 25px 0;
     }
 
     .footer-container {
-        flex-direction: row;  /* Cambiado de column a row */
-        justify-content: space-around;  /* Distribuye el espacio */
+        flex-direction: row;
+        justify-content: space-around;
         align-items: flex-start;
         text-align: center;
         gap: 15px;
@@ -150,17 +147,17 @@ footer {
     }
 
     .footer-logo img {
-        width: 50px;  /* Reducido para que quepa horizontalmente */
+        width: 50px;
     }
 
     .footer-section {
         align-items: center;
         gap: 6px;
-        flex: 1;  /* Cada sección ocupa el mismo espacio */
+        flex: 1;
     }
 
     .footer-section h2 {
-        font-size: 12px;  /* Reducido ligeramente */
+        font-size: 12px;
         margin-bottom: 6px;
     }
 

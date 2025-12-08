@@ -4,22 +4,18 @@
     --color-naranja: #e67e22;
     --color-amarillo: #ff0000;
     --color-azul: #3498db;
-    --color-fondo: #FFFEF5; /* Blanco crema */
+    --color-fondo: #FFFEF5;
     --color-gris: #7f8c8d;
 }
 
-/* ============================================
-   RESETEO BÁSICO
-   ============================================ */
+/* reseteo basico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ============================================
-   BODY
-   ============================================ */
+/* body */
 body {
     font-family: Arial, sans-serif;
     background-color: #FFFEF5;
@@ -27,9 +23,8 @@ body {
     display: flex;
     min-height: 100vh;
 }
-/* ============================================
-   CONTENIDO PRINCIPAL
-   ============================================ */
+
+/* contenido principal */
 main {
     flex: 1;
     margin-left: 250px;
@@ -37,9 +32,7 @@ main {
     transition: margin-left 0.3s ease;
 }
 
-/* ============================================
-   CABECERA (solo para desktop)
-   ============================================ */
+/* cabecera (solo para desktop) */
 header[role="banner"] {
     background: #ffffff;
     padding: 15px 20px;
@@ -101,9 +94,7 @@ header[role="banner"] {
     font-weight: bold;
 }
 
-/* ============================================
-   TARJETAS DE RESUMEN
-   ============================================ */
+/* tarjetas de resumen */
 .contenedor-cuadros {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -160,9 +151,7 @@ header[role="banner"] {
     color: #2c3e50;
 }
 
-/* ============================================
-   SECCIÓN DE TABLA
-   ============================================ */
+/* seccion de tabla */
 .seccion-tabla {
     background: white;
     border-radius: 10px;
@@ -206,17 +195,15 @@ header[role="banner"] {
     border-color: var(--color-verde);
 }
 
-/* ============================================
-   CONTENEDOR CON SCROLL HORIZONTAL
-   ============================================ */
+/* contenedor con scroll horizontal */
 .tabla-contenedor-scroll {
-    overflow-x: auto; /* Permite scroll horizontal */
+    overflow-x: auto;
     overflow-y: visible;
     width: 100%;
-    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Personalizar la barra de scroll (opcional) */
+/* personalizar la barra de scroll (opcional) */
 .tabla-contenedor-scroll::-webkit-scrollbar {
     height: 8px;
 }
@@ -235,19 +222,17 @@ header[role="banner"] {
     background: #555;
 }
 
-/* ============================================
-   TABLA - CON ANCHO MÍNIMO PARA NO COMPRIMIR
-   ============================================ */
+/* tabla - con ancho minimo para no comprimir */
 .tabla-datos {
     width: 100%;
-    min-width: 900px; /* CLAVE: Ancho mínimo para que no se comprima */
+    min-width: 900px;
     border-collapse: collapse;
-    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    white-space: nowrap;
 }
 
 .tabla-datos th,
 .tabla-datos td {
-    padding: 12px 15px; /* Aumenté el padding horizontal */
+    padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
@@ -264,9 +249,7 @@ header[role="banner"] {
     background-color: #f8f9fa;
 }
 
-/* ============================================
-   BOTONES DE ACCIÓN EN TABLAS
-   ============================================ */
+/* botones de accion en tablas */
 .btn-accion-tabla {
     padding: 8px 12px;
     border: none;
@@ -276,7 +259,7 @@ header[role="banner"] {
     margin-bottom: 5px;
     transition: all 0.2s ease;
     color: white;
-    white-space: nowrap; /* Evita que el texto del botón se divida */
+    white-space: nowrap;
 }
 
 .btn-ruta {
@@ -296,16 +279,14 @@ header[role="banner"] {
 }
 
 .btn-ver-pedido {
-    background: var(--color-naranja);
+    background: #F7DC6F;
 }
 
 .btn-ver-pedido:hover {
-    background: #d68910;
+    background: #F1C40F;
 }
 
-/* ============================================
-   MENSAJE VACÍO
-   ============================================ */
+/* mensaje vacio */
 .mensaje-vacio {
     text-align: center;
     padding: 40px 20px;
@@ -320,9 +301,7 @@ header[role="banner"] {
     display: block;
 }
 
-/* ============================================
-   MODALES
-   ============================================ */
+/* modales */
 .modal {
     display: none;
     position: fixed;
@@ -368,9 +347,7 @@ header[role="banner"] {
     color: #e74c3c;
 }
 
-/* ============================================
-   INFO CLIENTE EN MODAL
-   ============================================ */
+/* info cliente en modal */
 .info-cliente {
     background-color: #f8f9fa;
     padding: 15px;
@@ -390,9 +367,7 @@ header[role="banner"] {
     color: #555;
 }
 
-/* ============================================
-   DETALLE PRODUCTOS EN MODAL
-   ============================================ */
+/* detalle productos en modal */
 .detalle-productos {
     margin-bottom: 20px;
 }
@@ -418,9 +393,7 @@ header[role="banner"] {
     color: #333;
 }
 
-/* ============================================
-   BOTONES DEL MODAL
-   ============================================ */
+/* botones del modal */
 .modal-botones {
     display: flex;
     justify-content: flex-end;
@@ -434,6 +407,7 @@ header[role="banner"] {
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
+    transition: background-color 0.3s ease;
 }
 
 .btn-cancelar {
@@ -454,9 +428,7 @@ header[role="banner"] {
     background: #2ecc71;
 }
 
-/* ============================================
-   MODAL DE NOVEDAD
-   ============================================ */
+/* modal de novedad */
 #novedadModal {
     display: none;
     position: fixed;
@@ -546,10 +518,6 @@ textarea.form-control {
     resize: vertical;
 }
 
-select.form-control {
-    cursor: pointer;
-}
-
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -563,7 +531,7 @@ select.form-control {
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .btn-secondary {
@@ -584,9 +552,7 @@ select.form-control {
     background: #2ecc71;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
+/* responsive */
 @media (max-width: 768px) {
     main {
         margin-left: 0;
@@ -601,9 +567,9 @@ select.form-control {
         grid-template-columns: 1fr;
     }
 
-    /* En móviles, la tabla mantiene su ancho mínimo y permite scroll */
+    /* en moviles, la tabla mantiene su ancho minimo y permite scroll */
     .tabla-datos {
-        min-width: 900px; /* Mismo ancho que en desktop */
+        min-width: 900px;
     }
 
     .modal-contenido {
@@ -634,7 +600,7 @@ select.form-control {
         font-size: 28px;
     }
 
-    /* En móviles pequeños, puedes reducir ligeramente el ancho mínimo si lo deseas */
+    /* en moviles pequenos, se puede reducir ligeramente el ancho minimo */
     .tabla-datos {
         min-width: 800px;
     }

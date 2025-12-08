@@ -1,12 +1,8 @@
-/* ============================================
-   PEDIDOS_ASIGNADOS.CSS - ESTILOS ESPECÍFICOS
-   Solo contiene estilos únicos de la vista de pedidos asignados
-   Los estilos del sidebar y header están en utils/
-   ============================================ */
+/* pedidos_asignados.css - estilos especificos
+   solo contiene estilos unicos de la vista de pedidos asignados
+   los estilos del sidebar y header estan en utils/ */
 
-/* ============================================
-   VARIABLES ESPECÍFICAS
-   ============================================ */
+/* variables especificas */
 :root {
     --color-verde: #27AE60;
     --color-amarillo: #F7DC6F;
@@ -14,18 +10,14 @@
     --color-fondo: #FFFEF5;
 }
 
-/* ============================================
-   RESETEO BÁSICO
-   ============================================ */
+/* reseteo basico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ============================================
-   BODY
-   ============================================ */
+/* body */
 body {
     font-family: Arial, sans-serif;
     background-color: #FFFEF5;
@@ -34,9 +26,7 @@ body {
     min-height: 100vh;
 }
 
-/* ============================================
-   CONTENIDO PRINCIPAL
-   ============================================ */
+/* contenido principal */
 main {
     flex: 1;
     margin-left: 250px;
@@ -44,9 +34,7 @@ main {
     transition: margin-left 0.3s ease;
 }
 
-/* ============================================
-   CABECERA (solo para desktop)
-   ============================================ */
+/* cabecera (solo para desktop) */
 header[role="banner"] {
     background: #ffffff;
     padding: 15px 20px;
@@ -108,9 +96,7 @@ header[role="banner"] {
     font-weight: bold;
 }
 
-/* ============================================
-   ALERTAS (mensajes de éxito y error)
-   ============================================ */
+/* alertas (mensajes de exito y error) */
 .alert {
     max-width: 1400px;
     margin: 0 auto 20px auto;
@@ -132,9 +118,7 @@ header[role="banner"] {
     border: 1px solid #c62828;
 }
 
-/* ============================================
-   CONTENEDOR PRINCIPAL DE LA TABLA
-   ============================================ */
+/* contenedor principal de la tabla */
 .tabla-contenedor {
     max-width: 1400px;
     margin: 0 auto;
@@ -144,9 +128,7 @@ header[role="banner"] {
     overflow: hidden;
 }
 
-/* ============================================
-   ENCABEZADO DE LA TABLA
-   ============================================ */
+/* encabezado de la tabla */
 .tabla-header {
     padding: 25px 30px;
     background: var(--color-verde);
@@ -184,9 +166,7 @@ header[role="banner"] {
     font-weight: 700;
 }
 
-/* ============================================
-   CONTENEDOR CON SCROLL HORIZONTAL
-   ============================================ */
+/* contenedor con scroll horizontal */
 .tabla-contenedor-scroll {
     overflow-x: auto;
     overflow-y: visible;
@@ -195,7 +175,7 @@ header[role="banner"] {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Personalizar la barra de scroll */
+/* personalizar la barra de scroll */
 .tabla-contenedor-scroll::-webkit-scrollbar {
     height: 8px;
 }
@@ -214,9 +194,7 @@ header[role="banner"] {
     background: #555;
 }
 
-/* ============================================
-   TABLA - CON ANCHO MÍNIMO PARA NO COMPRIMIR
-   ============================================ */
+/* tabla - con ancho minimo para no comprimir */
 .tabla-datos {
     width: 100%;
     min-width: 900px;
@@ -244,9 +222,7 @@ header[role="banner"] {
     background-color: #f8f9fa;
 }
 
-/* ============================================
-   BOTONES DE ACCIÓN EN TABLA
-   ============================================ */
+/* botones de accion en tabla */
 .btn-accion {
     padding: 8px 16px;
     border: none;
@@ -255,7 +231,7 @@ header[role="banner"] {
     font-weight: 600;
     margin: 2px;
     white-space: nowrap;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .btn-aceptar {
@@ -276,9 +252,7 @@ header[role="banner"] {
     background-color: #F1C40F;
 }
 
-/* ============================================
-   MENSAJE CUANDO NO HAY PEDIDOS
-   ============================================ */
+/* mensaje cuando no hay pedidos */
 .sin-pedidos {
     text-align: center;
     padding: 60px 20px;
@@ -297,9 +271,7 @@ header[role="banner"] {
     margin: 0;
 }
 
-/* ============================================
-   MODAL (Ventana emergente)
-   ============================================ */
+/* modal (ventana emergente) */
 .modal {
     display: none;
     position: fixed;
@@ -345,9 +317,7 @@ header[role="banner"] {
     color: #e74c3c;
 }
 
-/* ============================================
-   INFORMACIÓN DEL CLIENTE EN EL MODAL
-   ============================================ */
+/* informacion del cliente en el modal */
 .info-cliente {
     background-color: #f8f9fa;
     padding: 15px;
@@ -367,9 +337,7 @@ header[role="banner"] {
     color: #555;
 }
 
-/* ============================================
-   DETALLE DE PRODUCTOS EN EL MODAL
-   ============================================ */
+/* detalle de productos en el modal */
 .detalle-productos {
     margin-bottom: 20px;
 }
@@ -395,9 +363,7 @@ header[role="banner"] {
     color: #333;
 }
 
-/* ============================================
-   BOTONES DEL MODAL
-   ============================================ */
+/* botones del modal */
 .modal-botones {
     display: flex;
     justify-content: flex-end;
@@ -411,7 +377,7 @@ header[role="banner"] {
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .btn-cancelar {
@@ -432,9 +398,7 @@ header[role="banner"] {
     background: #2ecc71;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
+/* responsive */
 @media (max-width: 768px) {
     main {
         margin-left: 0;
@@ -459,7 +423,7 @@ header[role="banner"] {
         padding: 15px;
     }
 
-    /* En móviles, la tabla mantiene su ancho mínimo y permite scroll */
+    /* en moviles, la tabla mantiene su ancho minimo y permite scroll */
     .tabla-datos {
         min-width: 900px;
     }
@@ -491,7 +455,7 @@ header[role="banner"] {
         font-size: 13px;
     }
 
-    /* En móviles pequeños, puedes reducir ligeramente el ancho mínimo si lo deseas */
+    /* en moviles pequenos, se puede reducir ligeramente el ancho minimo */
     .tabla-datos {
         min-width: 800px;
     }
