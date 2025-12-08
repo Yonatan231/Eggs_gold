@@ -43,8 +43,11 @@ function mostrarPedidosEnTabla(pedidos) {
         const fila = document.createElement('tr');
 
         // formatear fecha
-        const fecha = new Date(pedido.fechaEntrega);
-        const fechaFormateada = fecha.toLocaleDateString('es-CO');
+        let fechaFormateada = 'Fecha no registrada';
+        if (pedido.fechaEntrega) {
+            const fecha = new Date(pedido.fechaEntrega);
+            fechaFormateada = fecha.toLocaleDateString('es-CO');
+        }
 
         fila.innerHTML = `
             <td>${pedido.idPedido}</td>

@@ -423,10 +423,13 @@ function llenarSelectRoles() {
         }
 
         if (editRol) {
-            const option = document.createElement('option');
-            option.value = rol.idRoles;
-            option.textContent = rol.nombreRol;
-            editRol.appendChild(option);
+            // ❌ No permitir seleccionar rol ADMIN (código 1) en el modal de edición
+            if (rol.idRoles !== 1) {
+                const option = document.createElement('option');
+                option.value = rol.idRoles;
+                option.textContent = rol.nombreRol;
+                editRol.appendChild(option);
+            }
         }
     });
 }
@@ -502,6 +505,10 @@ async function abrirModalEditarUsuario(idUsuario) {
 }
 
 function llenarFormularioEdicion(usuario) {
+    // Obtener ID del admin actual
+    const idAdminActual = parseInt(sessionStorage.getItem('usuario_id'));
+    const esPropiaCuenta = usuario.idUsuario === idAdminActual;
+
     document.getElementById('edit-id-usuario').value = usuario.idUsuario;
     document.getElementById('edit-nombre').value = usuario.nombre;
     document.getElementById('edit-apellido').value = usuario.apellido;
@@ -513,6 +520,53 @@ function llenarFormularioEdicion(usuario) {
     document.getElementById('edit-rol').value = usuario.idRol;
     document.getElementById('edit-estado').value = usuario.estado;
     document.getElementById('edit-fecha-registro').textContent = formatearFecha(usuario.fechaRegistro);
+
+    // Deshabilitar correo SIEMPRE (política de seguridad)
+    document.getElementById('edit-correo').disabled = true;
+    document.getElementById('edit-correo').style.backgroundColor = '#f5f5f5';
+    document.getElementById('edit-correo').style.cursor = 'not-allowed';
+
+    // Si es su propia cuenta, deshabilitar TODO y mostrar advertencia
+    if (esPropiaCuenta) {
+        const campos = ['edit-nombre', 'edit-apellido', 'edit-tipo-documento',
+            'edit-direccion', 'edit-telefono', 'edit-estado', 'edit-rol'];
+
+        campos.forEach(id => {
+            const campo = document.getElementById(id);
+            campo.disabled = true;
+            campo.style.backgroundColor = '#f5f5f5';
+            campo.style.cursor = 'not-allowed';
+        });
+
+        // Deshabilitar botón guardar
+        const btnGuardar = document.querySelector('#modal-usuario .btn-guardar');
+        if (btnGuardar) {
+            btnGuardar.disabled = true;
+            btnGuardar.style.opacity = '0.5';
+            btnGuardar.style.cursor = 'not-allowed';
+        }
+
+        mostrarMensaje('No puedes modificar tu propia cuenta', 'error');
+    } else {
+        // Si NO es su propia cuenta, habilitar campos editables (incluyendo rol)
+        const campos = ['edit-nombre', 'edit-apellido', 'edit-tipo-documento',
+            'edit-direccion', 'edit-telefono', 'edit-estado', 'edit-rol'];
+
+        campos.forEach(id => {
+            const campo = document.getElementById(id);
+            campo.disabled = false;
+            campo.style.backgroundColor = '';
+            campo.style.cursor = '';
+        });
+
+        // Habilitar botón guardar
+        const btnGuardar = document.querySelector('#modal-usuario .btn-guardar');
+        if (btnGuardar) {
+            btnGuardar.disabled = false;
+            btnGuardar.style.opacity = '1';
+            btnGuardar.style.cursor = 'pointer';
+        }
+    }
 }
 
 async function guardarCambiosUsuario() {
@@ -539,6 +593,12 @@ async function guardarCambiosUsuario() {
             },
             body: JSON.stringify(usuarioDTO)
         });
+
+        if (response.status === 403) {
+            const errorData = await response.json();
+            mostrarMensaje(errorData.error || 'No tienes permiso para realizar esta acción', 'error');
+            return;
+        }
 
         if (!response.ok) {
             throw new Error('Error al actualizar el usuario');
@@ -634,4 +694,3 @@ cargarDashboard = async function() {
     await cargarDashboardOriginal();
     sincronizarContadorNotificaciones();
 };
-

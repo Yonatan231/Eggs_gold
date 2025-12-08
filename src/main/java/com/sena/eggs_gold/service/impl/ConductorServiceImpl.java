@@ -207,7 +207,9 @@ public class ConductorServiceImpl implements ConductorService {
 
         return pedidos.stream().map(pedido -> {
             Map<String, Object> map = convertirPedidoAMap(pedido);
-            map.put("fechaEntrega", pedido.getFechaEntrega());
+            if (pedido.getFechaEntrega() != null) {
+                map.put("fechaEntrega", pedido.getFechaEntrega());
+            }
             return map;
         }).collect(Collectors.toList());
     }

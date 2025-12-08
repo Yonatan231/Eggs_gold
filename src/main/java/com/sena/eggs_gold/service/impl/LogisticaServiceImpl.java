@@ -229,6 +229,14 @@ public class LogisticaServiceImpl implements LogisticaService {
         resultado.put("direccion", pedido.getDireccion());
         resultado.put("detalleCliente", pedido.getDetalleCliente());
 
+        // agregar fecha de entrega si existe
+        if (pedido.getFechaEntrega() != null) {
+            resultado.put("fechaEntrega", pedido.getFechaEntrega());
+        }
+
+        // agregar observacion del conductor
+        resultado.put("observacionConductor", pedido.getObservacionConductor());
+
         return resultado;
     }
 

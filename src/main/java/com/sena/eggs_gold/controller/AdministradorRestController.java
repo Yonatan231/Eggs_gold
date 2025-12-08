@@ -36,17 +36,20 @@ public class AdministradorRestController {
     private final UsuarioRepository usuarioRepository;
     private final NovedadRepository novedadRepository;
     private final AdminService adminService;
+    private final org.springframework.jdbc.core.JdbcTemplate jdbcTemplate;
 
     public AdministradorRestController(PedidoRepository pedidoRepository,
                                        DetallePedidoRepository detallePedidoRepository,
                                        UsuarioRepository usuarioRepository,
                                        NovedadRepository novedadRepository,
-                                       AdminService adminService) {
+                                       AdminService adminService,
+                                       org.springframework.jdbc.core.JdbcTemplate jdbcTemplate) {
         this.pedidoRepository = pedidoRepository;
         this.detallePedidoRepository = detallePedidoRepository;
         this.usuarioRepository = usuarioRepository;
         this.novedadRepository = novedadRepository;
         this.adminService = adminService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // ============================================
@@ -125,9 +128,26 @@ public class AdministradorRestController {
     }
 
     @PutMapping("/usuarios/{id}")
-    public ResponseEntity<UsuarioAdminDTO> actualizarUsuario(
+    public ResponseEntity<?> actualizarUsuario(
             @PathVariable Integer id,
-            @RequestBody UsuarioAdminDTO usuarioDTO) {
+            @RequestBody UsuarioAdminDTO usuarioDTO,
+            jakarta.servlet.http.HttpSession session) {
+
+        // Obtener ID del admin actual
+        Integer idAdminActual = (Integer) session.getAttribute("usuario_id");
+
+        if (idAdminActual == null) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Sesión no válida");
+            return ResponseEntity.status(401).body(error);
+        }
+
+        // VALIDACIÓN 1: No puede modificar su propia cuenta
+        if (id.equals(idAdminActual)) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "No puedes modificar tu propia cuenta");
+            return ResponseEntity.status(403).body(error);
+        }
 
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -135,20 +155,38 @@ public class AdministradorRestController {
         // Guardar estado anterior para detectar cambios
         EstadoUsuario estadoAnterior = usuario.getEstado();
 
-        // Actualizar solo los campos permitidos (no ID, fecha registro, ni documento)
+        // VALIDACIÓN 2: No permitir cambio de correo
+        // El correo NO se actualiza, se mantiene el original
+
+        // Actualizar solo los campos permitidos (no ID, fecha registro, ni documento, ni correo)
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setApellido(usuarioDTO.getApellido());
         usuario.setDireccionUsuario(usuarioDTO.getDireccion());
         usuario.setTelefono(usuarioDTO.getTelefono());
-        usuario.setCorreo(usuarioDTO.getCorreo());
+        // usuario.setCorreo(usuarioDTO.getCorreo()); // ❌ NO SE PERMITE CAMBIAR
         usuario.setEstado(usuarioDTO.getEstado());
         usuario.setTipoDocumento(usuarioDTO.getTipoDocumento());
 
-        // Actualizar rol si cambió (el rol está en la entidad Usuario, no es el enum)
+        // ✅ PERMITIR CAMBIO DE ROL (excepto su propia cuenta, validado arriba)
         if (!usuario.getRol().getIdRoles().equals(usuarioDTO.getIdRol())) {
+            // ❌ NO PERMITIR asignar rol ADMIN (código 1)
+            if (usuarioDTO.getIdRol() == 1) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "No se puede asignar el rol de Administrador");
+                return ResponseEntity.status(403).body(error);
+            }
+
+            // Actualizar ROL_ID en la entidad
             com.sena.eggs_gold.model.entity.Rol nuevoRol = new com.sena.eggs_gold.model.entity.Rol();
             nuevoRol.setIdRoles(usuarioDTO.getIdRol());
             usuario.setRol(nuevoRol);
+
+            // ✅ ACTUALIZAR tipo_usuario (discriminador de Hibernate) según el nuevo rol
+            String nuevoTipoUsuario = obtenerTipoUsuarioPorRol(usuarioDTO.getIdRol());
+            jdbcTemplate.update(
+                    "UPDATE usuarios SET tipo_usuario = ? WHERE ID_USUARIOS = ?",
+                    nuevoTipoUsuario, id
+            );
         }
 
         // Guardar cambios en la base de datos
@@ -315,5 +353,24 @@ public class AdministradorRestController {
         resumen.put("novedadesPendientes", novedadesPendientes);
 
         return ResponseEntity.ok(resumen);
+    }
+
+    /**
+     * Método auxiliar para obtener el tipo_usuario (discriminador) según el ID del rol
+     * Esto es necesario porque Hibernate usa el discriminador para determinar la subclase
+     */
+    private String obtenerTipoUsuarioPorRol(Integer idRol) {
+        switch (idRol) {
+            case 1:
+                return "Administrador";
+            case 2:
+                return "Logistica";
+            case 3:
+                return "Conductor";
+            case 4:
+                return "Cliente";
+            default:
+                throw new RuntimeException("Rol no válido: " + idRol);
+        }
     }
 }
