@@ -368,7 +368,7 @@ public class AdministradorRestController {
             case 3:
                 return "Conductor";
             case 4:
-                return "Cliente";
+                return "cliente";
             default:
                 throw new RuntimeException("Rol no válido: " + idRol);
         }
