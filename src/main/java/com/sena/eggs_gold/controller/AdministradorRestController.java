@@ -152,9 +152,6 @@ public class AdministradorRestController {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Guardar estado anterior para detectar cambios
-        EstadoUsuario estadoAnterior = usuario.getEstado();
-
         // VALIDACIÓN 2: No permitir cambio de correo
         // El correo NO se actualiza, se mantiene el original
 
@@ -192,11 +189,9 @@ public class AdministradorRestController {
         // Guardar cambios en la base de datos
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
 
-        // Si el estado cambió de ACTIVO a INACTIVO, enviar correo de suspensión
-        if (estadoAnterior == EstadoUsuario.ACTIVO && usuarioDTO.getEstado() == EstadoUsuario.INACTIVO) {
-            // Llamar al servicio para enviar el correo (no para guardar)
-            adminService.cambiarEstadoUsuario(id, EstadoUsuario.INACTIVO);
-        }
+        // nota: el envio de correo de cambio de estado se maneja automaticamente
+        // desde el frontend mediante el endpoint PUT /api/usuarios/{id}/estado
+        // en UsuarioController cuando se detecta un cambio de estado
 
         return ResponseEntity.ok(convertirAUsuarioAdminDTO(usuarioActualizado));
     }

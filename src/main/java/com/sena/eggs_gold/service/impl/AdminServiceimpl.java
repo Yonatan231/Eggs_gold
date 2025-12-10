@@ -2,13 +2,10 @@ package com.sena.eggs_gold.service.impl;
 
 import com.sena.eggs_gold.dto.AdminDTO;
 import com.sena.eggs_gold.model.entity.Rol;
-import com.sena.eggs_gold.model.entity.Usuario;
 import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.repository.AdminRepository;
 import com.sena.eggs_gold.repository.RolRepository;
-import com.sena.eggs_gold.repository.UsuarioRepository;
 import com.sena.eggs_gold.service.AdminService;
-import com.sena.eggs_gold.service.EmailService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +14,11 @@ public class AdminServiceimpl implements AdminService {
 
     private final AdminRepository adminRepository;
     private final RolRepository rolRepository;
-    private final UsuarioRepository usuarioRepository;
-    private final EmailService emailService;
 
     public AdminServiceimpl(AdminRepository adminRepository,
-                            RolRepository rolRepository,
-                            UsuarioRepository usuarioRepository,
-                            EmailService emailService) {
+                            RolRepository rolRepository) {
         this.adminRepository = adminRepository;
         this.rolRepository = rolRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.emailService = emailService;
     }
 
     @Override
@@ -61,16 +52,6 @@ public class AdminServiceimpl implements AdminService {
                 .orElse(null);
     }
 
-    @Override
-    public void cambiarEstadoUsuario(Integer idUsuario, EstadoUsuario nuevoEstado) {
-        // buscar el usuario por id
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // solo enviar correo si el estado es inactivo
-        if (nuevoEstado == EstadoUsuario.INACTIVO) {
-            String nombreCompleto = usuario.getNombre() + " " + usuario.getApellido();
-            emailService.enviarCorreoSuspension(usuario.getCorreo(), nombreCompleto);
-        }
-    }
+    // nota: el metodo cambiarEstadoUsuario fue movido a UsuarioService
+    // usar usuarioService.cambiarEstadoUsuario() en su lugar
 }

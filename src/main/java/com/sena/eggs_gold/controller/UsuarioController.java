@@ -31,7 +31,7 @@ public class UsuarioController {
 
     public void registrarUsuario(Usuario nuevoUsuario) {
         if (usuarioRepository.existsByNumDocumento(nuevoUsuario.getNumDocumento())) {
-            throw new IllegalArgumentException("El documento ya está registrado.");
+            throw new IllegalArgumentException("El documento ya esta registrado.");
         }
         usuarioRepository.save(nuevoUsuario);
     }
@@ -69,7 +69,7 @@ public class UsuarioController {
     @PutMapping("/eliminar/{id}")
     public ResponseEntity<String> eliminarLogico(@PathVariable Integer id) {
         usuarioService.eliminarLogico(id);
-        return ResponseEntity.ok(" Usuario eliminado");
+        return ResponseEntity.ok("usuario eliminado");
     }
 
     @GetMapping("clientes/activos")
@@ -121,10 +121,53 @@ public class UsuarioController {
         if (rutaFoto != null && !rutaFoto.isBlank()) {
             return ResponseEntity.ok(Map.of("success", true, "ruta", rutaFoto));
         } else {
-            // Si no hay foto, puedes devolver iniciales como alternativa visual
+            // si no hay foto, puedes devolver iniciales como alternativa visual
             String iniciales = usuario.getNombre().substring(0, 1).toUpperCase() +
                     usuario.getApellido().substring(0, 1).toUpperCase();
             return ResponseEntity.ok(Map.of("success", false, "iniciales", iniciales));
+        }
+    }
+
+    /**
+     * nuevo endpoint: cambiar estado de usuario (activo/inactivo) y enviar correo automaticamente
+     * PUT /api/usuarios/{id}/estado
+     * body: { "estado": "ACTIVO" } o { "estado": "INACTIVO" }
+     */
+    @PutMapping("/api/usuarios/{id}/estado")
+    @ResponseBody
+    public ResponseEntity<?> cambiarEstadoUsuario(
+            @PathVariable Integer id,
+            @RequestBody Map<String, String> body
+    ) {
+        try {
+            String estadoStr = body.get("estado");
+
+            if (estadoStr == null || estadoStr.isBlank()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("success", false, "message", "El estado es requerido"));
+            }
+
+            EstadoUsuario nuevoEstado;
+            try {
+                nuevoEstado = EstadoUsuario.valueOf(estadoStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("success", false, "message", "Estado invalido. Use ACTIVO o INACTIVO"));
+            }
+
+            usuarioService.cambiarEstadoUsuario(id, nuevoEstado);
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Estado actualizado correctamente. Se ha enviado un correo al usuario."
+            ));
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "message", "Error al cambiar el estado: " + e.getMessage()));
         }
     }
 }

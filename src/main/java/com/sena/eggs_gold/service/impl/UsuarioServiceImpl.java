@@ -39,7 +39,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         this.usuarioRepository = usuarioRepository;
         this.emailService = emailService;
 
-        // Configurar Cloudinary con las credenciales
+        // configurar cloudinary con las credenciales
         this.cloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudName,
                 "api_key", apiKey,
@@ -114,30 +114,30 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     /**
-     * ✅ NUEVO: Guarda la foto de perfil en CLOUDINARY (nube)
-     * Esto permite que las fotos persistan incluso si el servidor se reinicia
+     * nuevo: guarda la foto de perfil en cloudinary (nube)
+     * esto permite que las fotos persistan incluso si el servidor se reinicia
      */
     @Override
     public String guardarFotoPerfil(Integer usuarioId, MultipartFile foto) throws IOException {
-        // 1. VALIDAR que se envió una imagen
+        // 1. validar que se envio una imagen
         if (foto.isEmpty()) {
-            throw new IOException("No se envió ninguna imagen");
+            throw new IOException("No se envio ninguna imagen");
         }
 
         try {
-            // 2. SUBIR imagen a Cloudinary en la carpeta "eggs_gold/perfiles"
+            // 2. subir imagen a cloudinary en la carpeta "eggs_gold/perfiles"
             Map uploadResult = cloudinary.uploader().upload(foto.getBytes(),
                     ObjectUtils.asMap(
                             "folder", "eggs_gold/perfiles",
                             "resource_type", "image",
-                            "public_id", "perfil_usuario" + usuarioId // Nombre personalizado
+                            "public_id", "perfil_usuario" + usuarioId // nombre personalizado
                     ));
 
-            // 3. OBTENER la URL segura de la imagen
+            // 3. obtener la url segura de la imagen
             String urlImagen = (String) uploadResult.get("secure_url");
-            System.out.println("✅ Foto de perfil subida a Cloudinary: " + urlImagen);
+            System.out.println("foto de perfil subida a cloudinary: " + urlImagen);
 
-            // 4. ACTUALIZAR la base de datos con la nueva URL
+            // 4. actualizar la base de datos con la nueva url
             Usuario usuario = usuarioRepository.findById(usuarioId)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -147,40 +147,40 @@ public class UsuarioServiceImpl implements UsuarioService {
             return urlImagen;
 
         } catch (IOException e) {
-            System.err.println("❌ Error al subir foto a Cloudinary: " + e.getMessage());
+            System.err.println("error al subir foto a cloudinary: " + e.getMessage());
             throw new IOException("Error al subir la foto de perfil a Cloudinary", e);
         }
     }
 
-    // ========== MÉTODOS PARA RECUPERACIÓN DE CONTRASEÑA ==========
+    // metodos para recuperacion de contrasena
 
     @Override
     public void solicitarRecuperacionContrasena(String correo) {
-        // Buscar usuario por correo
+        // buscar usuario por correo
         Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
 
-        // Solo proceder si el usuario existe
+        // solo proceder si el usuario existe
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
 
-            // Generar token único (UUID)
+            // generar token unico (uuid)
             String token = UUID.randomUUID().toString();
 
-            // Establecer fecha de expiración (1 hora desde ahora)
+            // establecer fecha de expiracion (1 hora desde ahora)
             LocalDateTime expiracion = LocalDateTime.now().plusHours(1);
 
-            // Guardar token y expiración en el usuario
+            // guardar token y expiracion en el usuario
             usuario.setTokenRecuperacion(token);
             usuario.setTokenExpiracion(expiracion);
             usuarioRepository.save(usuario);
 
-            // Enviar correo con el enlace de recuperación
+            // enviar correo con el enlace de recuperacion
             emailService.enviarCorreoRecuperacion(correo, token);
 
-            System.out.println("Token de recuperación generado para: " + correo);
+            System.out.println("token de recuperacion generado para: " + correo);
         } else {
-            // Si el usuario no existe, no hacemos nada (por seguridad)
-            System.out.println("Intento de recuperación para correo no registrado: " + correo);
+            // si el usuario no existe, no hacemos nada (por seguridad)
+            System.out.println("intento de recuperacion para correo no registrado: " + correo);
         }
     }
 
@@ -192,7 +192,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             Usuario usuario = usuarioOpt.get();
             LocalDateTime ahora = LocalDateTime.now();
 
-            // Verificar que el token no haya expirado
+            // verificar que el token no haya expirado
             return usuario.getTokenExpiracion() != null &&
                     ahora.isBefore(usuario.getTokenExpiracion());
         }
@@ -208,29 +208,49 @@ public class UsuarioServiceImpl implements UsuarioService {
             Usuario usuario = usuarioOpt.get();
             LocalDateTime ahora = LocalDateTime.now();
 
-            // Verificar que el token no haya expirado
+            // verificar que el token no haya expirado
             if (usuario.getTokenExpiracion() != null &&
                     ahora.isBefore(usuario.getTokenExpiracion())) {
 
-                // Encriptar la nueva contraseña
+                // encriptar la nueva contrasena
                 String contrasenaEncriptada = BCrypt.hashpw(nuevaContrasena, BCrypt.gensalt());
 
-                // Actualizar contraseña
+                // actualizar contrasena
                 usuario.setPassword(contrasenaEncriptada);
 
-                // Eliminar token y expiración (para que no se pueda reutilizar)
+                // eliminar token y expiracion (para que no se pueda reutilizar)
                 usuario.setTokenRecuperacion(null);
                 usuario.setTokenExpiracion(null);
 
-                // Guardar cambios
+                // guardar cambios
                 usuarioRepository.save(usuario);
 
-                System.out.println("Contraseña actualizada para usuario: " + usuario.getCorreo());
+                System.out.println("contrasena actualizada para usuario: " + usuario.getCorreo());
             } else {
                 throw new RuntimeException("El token ha expirado");
             }
         } else {
-            throw new RuntimeException("Token inválido");
+            throw new RuntimeException("Token invalido");
         }
+    }
+
+    // nuevo metodo: cambiar estado de usuario y enviar correo automaticamente
+    @Override
+    public void cambiarEstadoUsuario(Integer idUsuario, EstadoUsuario nuevoEstado) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // actualizar estado en la base de datos
+        usuario.setEstado(nuevoEstado);
+        usuarioRepository.save(usuario);
+
+        // enviar correo de notificacion
+        // nota: este metodo se llama desde el frontend solo cuando el estado cambio
+        // por lo tanto, no necesitamos verificar si cambio aqui
+        String nombreCompleto = usuario.getNombre() + " " + usuario.getApellido();
+        emailService.enviarCorreoCambioEstado(usuario.getCorreo(), nombreCompleto, nuevoEstado);
+
+        System.out.println("📧 Correo de cambio de estado enviado a: " + usuario.getCorreo());
+        System.out.println("   Usuario: " + nombreCompleto + " | Nuevo estado: " + nuevoEstado);
     }
 }

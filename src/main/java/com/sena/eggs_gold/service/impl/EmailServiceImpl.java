@@ -3,6 +3,7 @@ package com.sena.eggs_gold.service.impl;
 import com.sena.eggs_gold.model.entity.DetallePedido;
 import com.sena.eggs_gold.model.entity.Factura;
 import com.sena.eggs_gold.model.entity.Pedido;
+import com.sena.eggs_gold.model.enums.EstadoUsuario;
 import com.sena.eggs_gold.repository.DetallePedidoRepository;
 import com.sena.eggs_gold.service.EmailService;
 import jakarta.mail.MessagingException;
@@ -27,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
-    // Metodo base - NO asincrono (lo usan los demas metodos)
+    // metodo base - no asincrono (lo usan los demas metodos)
     @Override
     public void enviarCorreo(String destinatario, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -44,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
         System.out.println("Correo enviado a: " + destinatario);
     }
 
-    // Metodo base - NO asincrono
+    // metodo base - no asincrono
     @Override
     public void enviarCorreosMasivos(List<String> destinatarios, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -56,7 +57,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ASINCRONO - Se ejecuta en segundo plano
+    // asincrono - se ejecuta en segundo plano
     @Async
     @Override
     public void enviarCorreoBienvenida(String para, String nombreUsuario) {
@@ -74,26 +75,137 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ASINCRONO - Se ejecuta en segundo plano
+    // asincrono - metodo unificado para cambio de estado de cuenta
     @Async
     @Override
-    public void enviarCorreoCambioEstado(String para, String nombreUsuario, String nuevoEstado) {
-        String asunto = "Actualización del estado de tu cuenta";
-        String cuerpo = """
-                <p>Hola <b>%s</b>,</p>
-                <p>Tu cuenta ha cambiado de estado a: <b>%s</b></p>
-                <p>Si tienes dudas, contacta con soporte.</p>
-                <br>
-                <p>Atentamente,<br><b>Equipo Eggs Gold</b></p>
-                """.formatted(nombreUsuario, nuevoEstado);
+    public void enviarCorreoCambioEstado(String para, String nombreUsuario, EstadoUsuario nuevoEstado) {
+        String asunto;
+        String cuerpoHtml;
+
+        if (nuevoEstado == EstadoUsuario.INACTIVO) {
+            // plantilla para suspension de cuenta
+            asunto = "Cuenta Suspendida - Eggs Gold";
+            cuerpoHtml = String.format("""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <style>
+                            body { font-family: Arial, sans-serif; color: #333; }
+                            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                            .header { background-color: #dc3545; padding: 20px; text-align: center; color: white; }
+                            .content { padding: 20px; background-color: #f9f9f9; }
+                            .warning-box {
+                                background-color: #fff3cd; 
+                                border-left: 4px solid #ffc107; 
+                                padding: 15px; 
+                                margin: 20px 0; 
+                            }
+                            .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <h1>Eggs Gold</h1>
+                                <h2>Notificacion de Cuenta</h2>
+                            </div>
+                            
+                            <div class="content">
+                                <h2>Hola %s</h2>
+                                <p>Te informamos que tu cuenta ha sido <strong>suspendida</strong> por el administrador.</p>
+                                
+                                <div class="warning-box">
+                                    <p><strong>⚠️ Importante:</strong></p>
+                                    <p>No podras acceder al sistema hasta que tu cuenta sea reactivada.</p>
+                                </div>
+                                
+                                <p style="margin-top: 20px;">
+                                    Si consideras que esto es un error o deseas mas informacion, 
+                                    por favor contacta con el administrador del sistema.
+                                </p>
+                                
+                                <p style="margin-top: 30px;">
+                                    Atentamente,<br>
+                                    <strong>Equipo Eggs Gold</strong>
+                                </p>
+                            </div>
+                            
+                            <div class="footer">
+                                <p>Este es un correo automatico, por favor no responder.</p>
+                                <p>© 2024 Eggs Gold - Todos los derechos reservados</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                    """, nombreUsuario);
+        } else {
+            // plantilla para activacion de cuenta
+            asunto = "Cuenta Activada - Eggs Gold";
+            cuerpoHtml = String.format("""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <style>
+                            body { font-family: Arial, sans-serif; color: #333; }
+                            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                            .header { background-color: #27AE60; padding: 20px; text-align: center; color: white; }
+                            .content { padding: 20px; background-color: #f9f9f9; }
+                            .success-box {
+                                background-color: #d4edda; 
+                                border-left: 4px solid #28a745; 
+                                padding: 15px; 
+                                margin: 20px 0; 
+                            }
+                            .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <h1>Eggs Gold</h1>
+                                <h2>Notificacion de Cuenta</h2>
+                            </div>
+                            
+                            <div class="content">
+                                <h2>¡Buenas noticias %s!</h2>
+                                <p>Tu cuenta ha sido <strong>reactivada</strong> por el administrador.</p>
+                                
+                                <div class="success-box">
+                                    <p><strong>✓ Tu cuenta esta activa:</strong></p>
+                                    <p>Ya puedes acceder nuevamente al sistema y continuar usando todos los servicios.</p>
+                                </div>
+                                
+                                <p style="margin-top: 20px;">
+                                    Puedes iniciar sesion con tus credenciales habituales.
+                                </p>
+                                
+                                <p style="margin-top: 30px;">
+                                    Atentamente,<br>
+                                    <strong>Equipo Eggs Gold</strong>
+                                </p>
+                            </div>
+                            
+                            <div class="footer">
+                                <p>Este es un correo automatico, por favor no responder.</p>
+                                <p>© 2024 Eggs Gold - Todos los derechos reservados</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                    """, nombreUsuario);
+        }
+
         try {
-            enviarCorreo(para, asunto, cuerpo);
+            enviarCorreo(para, asunto, cuerpoHtml);
+            System.out.println("Correo de cambio de estado (" + nuevoEstado + ") enviado a: " + para);
         } catch (Exception e) {
             System.err.println("Error al enviar correo de cambio de estado: " + e.getMessage());
         }
     }
 
-    // ASINCRONO - Se ejecuta en segundo plano (el mas importante para tu caso)
+    // asincrono - se ejecuta en segundo plano (el mas importante para tu caso)
     @Async
     @Override
     public void enviarFacturaPorCorreo(Factura factura) {
@@ -103,11 +215,11 @@ public class EmailServiceImpl implements EmailService {
 
         String asunto = "Factura #" + factura.getNumeroFactura() + " - Eggs Gold";
 
-        // Obtener detalles del pedido
+        // obtener detalles del pedido
         List<DetallePedido> detalles = detallePedidoRepository
                 .findByPedidoIdPedidos(factura.getPedido().getIdPedidos());
 
-        // Construir tabla de productos
+        // construir tabla de productos
         StringBuilder tablaProductos = new StringBuilder();
         for (DetallePedido detalle : detalles) {
             BigDecimal subtotal = detalle.getPrecioUnitario()
@@ -174,15 +286,15 @@ public class EmailServiceImpl implements EmailService {
                                 </tbody>
                             </table>
                             
-                            <div class="total">
-                                <p>TOTAL: $%,.2f</p>
-                            </div>
+                            <p class="total">TOTAL: $%,.2f</p>
                             
-                            <p style="margin-top: 30px;">Tu pedido esta siendo procesado y pronto lo recibirás.</p>
+                            <p style="margin-top: 20px; font-size: 14px;">
+                                Tu pedido sera entregado en la direccion especificada.
+                            </p>
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automático, por favor no responder.</p>
+                            <p>Este es un correo automatico, por favor no responder.</p>
                             <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
@@ -205,30 +317,26 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // ASINCRONO - Correo de confirmacion de entrega
     @Async
     @Override
     public void enviarCorreoEntregaPedido(Pedido pedido) {
         String destinatario = pedido.getCliente().getCorreo();
-        String nombreCliente = pedido.getCliente().getNombre() + " " +
-                pedido.getCliente().getApellido();
-
-        String nombreConductor = pedido.getConductor().getNombre() + " " +
-                pedido.getConductor().getApellido();
-
+        String nombreCliente = pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido();
         String asunto = "Pedido #" + pedido.getIdPedidos() + " Entregado - Eggs Gold";
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        String fechaEntrega = pedido.getFechaEntrega().format(formatter);
+        String fechaEntrega = pedido.getFechaEntrega() != null ?
+                pedido.getFechaEntrega().format(formatter) : "No especificada";
 
-        // Construir seccion de observaciones (opcional)
+        String nombreConductor = pedido.getConductor() != null ?
+                pedido.getConductor().getNombre() + " " + pedido.getConductor().getApellido() : "No asignado";
+
         String seccionObservaciones = "";
-        if (pedido.getObservacionConductor() != null &&
-                !pedido.getObservacionConductor().trim().isEmpty()) {
+        if (pedido.getObservacionConductor() != null && !pedido.getObservacionConductor().isEmpty()) {
             seccionObservaciones = String.format("""
-                    <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin-top: 20px;">
-                        <p><strong>Observaciones del conductor:</strong></p>
-                        <p style="margin: 5px 0;">%s</p>
+                    <div style="background-color: #e8f4f8; padding: 15px; border-left: 4px solid #3498db; margin-top: 20px;">
+                        <p style="margin: 0; font-weight: bold;">Observacion del conductor:</p>
+                        <p style="margin: 5px 0 0 0;">%s</p>
                     </div>
                     """, pedido.getObservacionConductor());
         }
@@ -241,9 +349,14 @@ public class EmailServiceImpl implements EmailService {
                     <style>
                         body { font-family: Arial, sans-serif; color: #333; }
                         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                        .header { background-color: #28a745; padding: 20px; text-align: center; color: white; }
+                        .header { background-color: #27AE60; padding: 20px; text-align: center; color: white; }
                         .content { padding: 20px; background-color: #f9f9f9; }
-                        .info-box { background-color: white; padding: 15px; border-left: 4px solid #28a745; margin: 15px 0; }
+                        .success-box {
+                            background-color: #d4edda;
+                            border-left: 4px solid #28a745;
+                            padding: 15px;
+                            margin: 20px 0;
+                        }
                         .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
                     </style>
                 </head>
@@ -253,29 +366,29 @@ public class EmailServiceImpl implements EmailService {
                             <h1>Eggs Gold</h1>
                             <h2>Pedido Entregado</h2>
                         </div>
-                
+                        
                         <div class="content">
-                            <h2>Hola %s</h2>
-                            <p>Tu pedido ha sido entregado exitosamente.</p>
+                            <h2>¡Hola %s!</h2>
                             
-                            <div class="info-box">
-                                <p><strong>Numero de pedido:</strong> #%d</p>
-                                <p><strong>Fecha de entrega:</strong> %s</p>
-                                <p><strong>Dirección:</strong> %s</p>
-                                <p><strong>Conductor:</strong> %s</p>
+                            <div class="success-box">
+                                <p><strong>Tu pedido #%d ha sido entregado exitosamente</strong></p>
                             </div>
+                            
+                            <p><strong>Fecha de entrega:</strong> %s</p>
+                            <p><strong>Direccion:</strong> %s</p>
+                            <p><strong>Conductor:</strong> %s</p>
                             
                             %s
                             
                             <p style="margin-top: 30px;">Esperamos que disfrutes de tus productos. Gracias por confiar en nosotros</p>
                             
                             <p style="margin-top: 20px; font-size: 14px; color: #666;">
-                                Si tienes algún problema con tu pedido, por favor contactanos lo antes posible.
+                                Si tienes algun problema con tu pedido, por favor contactanos lo antes posible.
                             </p>
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automático, por favor no responder.</p>
+                            <p>Este es un correo automatico, por favor no responder.</p>
                             <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
@@ -351,7 +464,7 @@ public class EmailServiceImpl implements EmailService {
                         </div>
                         
                         <div class="footer">
-                            <p>Este es un correo automático, por favor no responder.</p>
+                            <p>Este es un correo automatico, por favor no responder.</p>
                             <p>2024 Eggs Gold - Todos los derechos reservados</p>
                         </div>
                     </div>
@@ -363,77 +476,6 @@ public class EmailServiceImpl implements EmailService {
             enviarCorreo(correo, asunto, cuerpoHtml);
         } catch (Exception e) {
             System.err.println("Error al enviar correo de recuperación: " + e.getMessage());
-        }
-
-
-    }
-
-    // ASINCRONO - Correo de suspensión de cuenta
-    @Async
-    @Override
-    public void enviarCorreoSuspension(String correo, String nombreUsuario) {
-        String asunto = "Cuenta Suspendida - Eggs Gold";
-
-        String cuerpoHtml = String.format("""
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <style>
-                        body { font-family: Arial, sans-serif; color: #333; }
-                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                        .header { background-color: #dc3545; padding: 20px; text-align: center; color: white; }
-                        .content { padding: 20px; background-color: #f9f9f9; }
-                        .warning-box {
-                            background-color: #fff3cd; 
-                            border-left: 4px solid #ffc107; 
-                            padding: 15px; 
-                            margin: 20px 0; 
-                        }
-                        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="header">
-                            <h1>Eggs Gold</h1>
-                            <h2>Notificación de Cuenta</h2>
-                        </div>
-                        
-                        <div class="content">
-                            <h2>Hola %s</h2>
-                            <p>Te informamos que tu cuenta ha sido <strong>suspendida</strong> por el administrador.</p>
-                            
-                            <div class="warning-box">
-                                <p><strong>⚠️ Importante:</strong></p>
-                                <p>No podrás acceder al sistema hasta que tu cuenta sea reactivada.</p>
-                            </div>
-                            
-                            <p style="margin-top: 20px;">
-                                Si consideras que esto es un error o deseas más información, 
-                                por favor contacta con el administrador del sistema.
-                            </p>
-                            
-                            <p style="margin-top: 30px;">
-                                Atentamente,<br>
-                                <strong>Equipo Eggs Gold</strong>
-                            </p>
-                        </div>
-                        
-                        <div class="footer">
-                            <p>Este es un correo automático, por favor no responder.</p>
-                            <p>© 2024 Eggs Gold - Todos los derechos reservados</p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-                """, nombreUsuario);
-
-        try {
-            enviarCorreo(correo, asunto, cuerpoHtml);
-            System.out.println("Correo de suspensión enviado a: " + correo);
-        } catch (Exception e) {
-            System.err.println("Error al enviar correo de suspensión: " + e.getMessage());
         }
     }
 }

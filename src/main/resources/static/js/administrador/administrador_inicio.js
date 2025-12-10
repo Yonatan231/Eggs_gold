@@ -522,6 +522,8 @@ function llenarFormularioEdicion(usuario) {
     document.getElementById('edit-correo').value = usuario.correo;
     document.getElementById('edit-rol').value = usuario.idRol;
     document.getElementById('edit-estado').value = usuario.estado;
+    // guardar estado original para detectar cambios
+    document.getElementById('edit-estado').setAttribute('data-estado-original', usuario.estado);
     document.getElementById('edit-fecha-registro').textContent = formatearFecha(usuario.fechaRegistro);
 
     // Deshabilitar correo SIEMPRE (política de seguridad)
@@ -574,6 +576,8 @@ function llenarFormularioEdicion(usuario) {
 
 async function guardarCambiosUsuario() {
     const idUsuario = document.getElementById('edit-id-usuario').value;
+    const estadoAnterior = document.getElementById('edit-estado').getAttribute('data-estado-original');
+    const estadoNuevo = document.getElementById('edit-estado').value;
 
     const usuarioDTO = {
         idUsuario: parseInt(idUsuario),
@@ -585,10 +589,11 @@ async function guardarCambiosUsuario() {
         telefono: document.getElementById('edit-telefono').value,
         correo: document.getElementById('edit-correo').value,
         idRol: parseInt(document.getElementById('edit-rol').value),
-        estado: document.getElementById('edit-estado').value
+        estado: estadoNuevo
     };
 
     try {
+        // actualizar usuario
         const response = await fetch(`/api/admin/usuarios/${idUsuario}`, {
             method: 'PUT',
             headers: {
@@ -605,6 +610,27 @@ async function guardarCambiosUsuario() {
 
         if (!response.ok) {
             throw new Error('Error al actualizar el usuario');
+        }
+
+        // si el estado cambio, enviar correo automaticamente
+        if (estadoAnterior && estadoAnterior !== estadoNuevo) {
+            try {
+                const emailResponse = await fetch(`/api/usuarios/${idUsuario}/estado`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ estado: estadoNuevo })
+                });
+
+                if (emailResponse.ok) {
+                    const emailResult = await emailResponse.json();
+                    console.log('correo de cambio de estado enviado:', emailResult.message);
+                }
+            } catch (emailError) {
+                console.error('error al enviar correo de notificacion:', emailError);
+                // no detener el flujo si falla el correo
+            }
         }
 
         mostrarMensaje('Usuario actualizado correctamente', 'success');

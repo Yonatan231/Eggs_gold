@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.itextpdf:itextpdf:5.5.13.3'                         // libreria para el pdf de la factura
     implementation 'org.jfree:jfreechart:1.5.4'                             // libreria para graficas en PDF
     implementation 'org.mindrot:jbcrypt:0.4'                                // libreria para encriptar token de restablecimiento de password
+    implementation 'com.cloudinary:cloudinary-http44:1.36.0'                // libreria para cloudinary
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -42,8 +43,6 @@ dependencies {
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 
-    // ✅ CLOUDINARY - Para subir imágenes a la nube
-    implementation 'com.cloudinary:cloudinary-http44:1.36.0'
 }
 
 tasks.named('test') {

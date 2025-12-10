@@ -15,7 +15,7 @@ public interface UsuarioService {
 
     boolean documentoYaExistente(String numDocumento);
 
-    boolean correoYaExistente(String correo); // ✅ Nuevo método para validar correo único
+    boolean correoYaExistente(String correo);
 
     List<ClientePedidosDTO> obtenerClientesConPedidos();
 
@@ -37,10 +37,13 @@ public interface UsuarioService {
 
     String guardarFotoPerfil(Integer usuarioId, MultipartFile foto) throws IOException;
 
-    // Metodos para recuperacion de contrasena
+    // metodos para recuperacion de contrasena
     void solicitarRecuperacionContrasena(String correo);
 
     boolean validarToken(String token);
 
     void actualizarContrasena(String token, String nuevaContrasena);
+
+    // nuevo metodo: cambiar estado de usuario y enviar correo automaticamente
+    void cambiarEstadoUsuario(Integer idUsuario, EstadoUsuario nuevoEstado);
 }
