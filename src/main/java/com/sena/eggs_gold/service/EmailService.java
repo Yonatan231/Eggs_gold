@@ -17,13 +17,11 @@ public interface EmailService {
 
     void enviarCorreoBienvenida(String para, String nombreUsuario);
 
-    // metodo unificado para cambio de estado de cuenta (activo/inactivo)
     void enviarCorreoCambioEstado(String para, String nombreUsuario, EstadoUsuario nuevoEstado);
 
     void enviarFacturaPorCorreo(Factura factura);
 
     void enviarCorreoEntregaPedido(Pedido pedido);
 
-    // metodo para enviar correo de recuperacion de contrasena
     void enviarCorreoRecuperacion(String correo, String token);
 }

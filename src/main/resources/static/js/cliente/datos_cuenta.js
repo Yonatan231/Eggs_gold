@@ -98,9 +98,10 @@ function validateForm() {
     const correo = document.getElementById('correo').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
     const edad = document.getElementById('edad').value;
+    const direccion = document.getElementById('direccion').value.trim();
 
     // Validar campos obligatorios
-    if (!nombre || !apellido || !correo || !edad) {
+    if (!nombre || !apellido || !correo || !edad || !direccion) {
         showAlert('Por favor, complete todos los campos obligatorios.', 'error');
         return false;
     }
@@ -124,10 +125,14 @@ function validateForm() {
         return false;
     }
 
-    // Validar teléfono (solo números, 7-10 dígitos)
-    const telefonoRegex = /^[0-9]{7,10}$/;
-    if (telefono && !telefonoRegex.test(telefono)) {
-        showAlert('El teléfono debe tener entre 7 y 10 dígitos.', 'error');
+    // Validar teléfono (obligatorio, exactamente 10 dígitos)
+    if (!telefono) {
+        showAlert('El teléfono es obligatorio.', 'error');
+        return false;
+    }
+    const telefonoRegex = /^[0-9]{10}$/;
+    if (!telefonoRegex.test(telefono)) {
+        showAlert('El teléfono debe tener exactamente 10 dígitos.', 'error');
         return false;
     }
 
