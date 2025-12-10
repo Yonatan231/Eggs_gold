@@ -22,7 +22,7 @@ public class RoleInterceptor implements HandlerInterceptor {
             if (isPublicUrl(uri)) {
                 return true;
             }
-            // Redirigir a login si intenta acceder a páginas protegidas
+            // redirigir a login si intenta acceder a paginas protegidas
             response.sendRedirect("/login");
             return false;
         }

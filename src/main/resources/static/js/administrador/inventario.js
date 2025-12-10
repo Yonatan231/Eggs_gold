@@ -125,9 +125,9 @@ function aplicarColores() {
 
         badge.classList.remove("roja", "amarilla", "verde");
 
-        if (cantidad < 100) {
+        if (cantidad < 500) {
             badge.classList.add("roja");
-        } else if (cantidad < 500) {
+        } else if (cantidad < 1000) {
             badge.classList.add("amarilla");
         } else {
             badge.classList.add("verde");
