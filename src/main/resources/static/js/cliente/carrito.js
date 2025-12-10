@@ -263,13 +263,19 @@ function soloNumeros(input) {
     input.value = input.value.replace(/\D/g, '');
 }
 
-/* configurar eventos */
+/* configuracion de eventos */
 
 function configurarEventos() {
-    // boton continuar pedido
+    // boton continuar del carrito
     const btnContinuar = document.getElementById("continuar-pedido");
     if (btnContinuar) {
         btnContinuar.addEventListener("click", continuarConPedido);
+    }
+
+    // boton volver del formulario
+    const btnVolver = document.getElementById("volver-carrito");
+    if (btnVolver) {
+        btnVolver.addEventListener("click", volverAlCarrito);
     }
 
     // boton confirmar pedido
@@ -278,10 +284,15 @@ function configurarEventos() {
         btnConfirmar.addEventListener("click", confirmarPedido);
     }
 
-    // boton volver al carrito
-    const btnVolver = document.getElementById("volver-carrito");
-    if (btnVolver) {
-        btnVolver.addEventListener("click", volverAlCarrito);
+    // botones de procesar pago
+    const btnPagoNequi = document.getElementById("procesar-pago-nequi");
+    if (btnPagoNequi) {
+        btnPagoNequi.addEventListener("click", procesarPagoNequi);
+    }
+
+    const btnPagoVisa = document.getElementById("procesar-pago-visa");
+    if (btnPagoVisa) {
+        btnPagoVisa.addEventListener("click", procesarPagoVisa);
     }
 
     // formateo automatico de campos
@@ -509,22 +520,21 @@ function enviarPedidoAlServidor() {
     })
         .then(response => response.json())
         .then(data => {
-            // delay minimo de 2 segundos
-            setTimeout(() => {
-                ocultarOverlayCarga();
+            // ocultar overlay cuando el servidor responda
+            ocultarOverlayCarga();
 
-                if (data.success) {
-                    mostrarConfirmacion();
-                } else {
-                    alert(data.message);
-                    if (btnConfirmar) {
-                        btnConfirmar.disabled = false;
-                        btnConfirmar.textContent = "confirmar pedido";
-                    }
+            if (data.success) {
+                mostrarConfirmacion();
+            } else {
+                alert(data.message);
+                if (btnConfirmar) {
+                    btnConfirmar.disabled = false;
+                    btnConfirmar.textContent = "confirmar pedido";
                 }
-            }, 2000);
+            }
         })
         .catch(error => {
+            // ocultar overlay en caso de error
             ocultarOverlayCarga();
 
             console.error("error:", error);

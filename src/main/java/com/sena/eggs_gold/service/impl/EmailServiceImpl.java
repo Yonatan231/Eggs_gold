@@ -205,8 +205,6 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // asincrono - se ejecuta en segundo plano (el mas importante para tu caso)
-    @Async
     @Override
     public void enviarFacturaPorCorreo(Factura factura) {
         String destinatario = factura.getPedido().getCliente().getCorreo();
