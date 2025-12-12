@@ -2,12 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag IMPORTANTE para responsive: hace que el sitio se adapte al ancho del dispositivo -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 
-    <!-- Rutas CSS -->
     <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
@@ -16,7 +14,6 @@
 </head>
 
 <body>
-<!-- ===== ENCABEZADO ===== -->
 <header>
     <div class="marca">
         <div class="logo">
@@ -29,14 +26,12 @@
         </div>
     </div>
 
-    <!-- Botón hamburguesa para menú móvil (solo se ve en pantallas pequeñas) -->
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
-    <!-- Navegación: se oculta en móvil y se muestra al hacer clic en el botón -->
     <nav id="navMenu">
         <a th:href="@{/inicio}">Inicio</a>
         <a th:href="@{/inicio#sobre}">Sobre nosotros</a>
@@ -50,41 +45,33 @@
     </nav>
 </header>
 
-<!-- ===== CONTENIDO PRINCIPAL ===== -->
 <main class="contacto-contenedor">
     <section class="contacto-principal">
-        <!-- Título principal de la página -->
         <h2 class="titulo-contacto">Contáctanos</h2>
 
-        <!-- Descripción introductoria -->
         <p class="descripcion-contacto">
             Estamos aquí para ayudarte. Si tienes preguntas, inquietudes o deseas saber más sobre nuestros productos, comunícate con nosotros a través de los siguientes medios:
         </p>
 
-        <!-- Grid de tarjetas de contacto -->
         <div class="tarjetas-contacto">
-            <!-- Tarjeta de Teléfonos -->
             <div class="tarjeta">
                 <h3>📞 Teléfonos</h3>
                 <p>3126204260 / 3216942598</p>
             </div>
 
-            <!-- Tarjeta de Correo -->
             <div class="tarjeta">
                 <h3>📧 Correo</h3>
-                <p>contacto@eggsgold.com</p>
+                <p>distribuidoraeggsgold.com</p>
             </div>
 
-            <!-- Tarjeta de Dirección -->
             <div class="tarjeta">
                 <h3>📍 Dirección</h3>
-                <p>Calle 123 #45-67, Bogotá, Colombia</p>
+                <p>Calle 123 #47-86, Bogotá, Colombia</p>
             </div>
         </div>
     </section>
 </main>
 
-<!-- ===== PIE DE PÁGINA ===== -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -119,7 +106,6 @@
     </div>
 </footer>
 
-<!-- Script JavaScript para el menú móvil -->
 <script th:src="@{/js/inicio/inicio.js}"></script>
 </body>
 </html>

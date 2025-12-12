@@ -14,27 +14,22 @@
 </head>
 <body>
 
-<!-- ===== HEADER FIXED RESPONSIVE ===== -->
 <header class="header">
     <div class="header-top">
-        <!-- LOGO (solo imagen) -->
         <div class="logo">
             <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
 
-        <!-- TÍTULO CENTRAL -->
         <div class="header-title">
             <h1>Consulta tus Pedidos</h1>
         </div>
 
-        <!-- BOTÓN HAMBURGUESA (solo móvil) -->
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
             <span></span>
             <span></span>
             <span></span>
         </button>
 
-        <!-- NAVEGACIÓN (desktop) / MENÚ DESPLEGABLE (móvil) -->
         <nav class="header-actions" id="navMenu">
             <button class="nav-item btn-novedad" id="btnNovedad">
                 <span>Reportar Novedad</span>
@@ -71,7 +66,6 @@
     </section>
 </div>
 
-<!-- MODAL PARA REPORTAR NOVEDAD -->
 <div class="modal" id="novedadModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -112,7 +106,6 @@
     </div>
 </div>
 
-<!-- MODAL PARA VER FACTURA -->
 <div class="modal" id="facturaModal">
     <div class="modal-content modal-factura">
         <div class="modal-header">
@@ -121,7 +114,6 @@
         </div>
 
         <div id="facturaContent" class="factura-content">
-            <!-- Contenido de la factura se carga dinámicamente -->
         </div>
 
         <div class="form-actions">
@@ -133,7 +125,6 @@
     </div>
 </div>
 
-<!-- ========== PIE DE PÁGINA (FOOTER) ========== -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -168,11 +159,12 @@
     </div>
 </footer>
 
-<!-- SCRIPTS -->
 <script th:src="@{js/cliente/historial_pedidos_cliente.js}"></script>
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
+
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script th:src="@{/js/utils/reportar_novedad.js}"></script>
+
 <script th:src="@{/js/cliente/menu_hamburguesa.js}"></script>
 <script> validarRolPagina('CLIENTE'); </script>
 

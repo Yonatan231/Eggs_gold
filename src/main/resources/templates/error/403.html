@@ -24,11 +24,9 @@
 
 <script>
     function volver() {
-        // Intentar volver a la página anterior
         if (history.length > 1) {
             history.back();
         } else {
-            // Si no hay historial, ir al login
             window.location.href = '/login';
         }
     }

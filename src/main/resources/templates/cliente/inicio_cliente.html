@@ -10,7 +10,6 @@
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 </head>
 <body>
-<!-- ========== ENCABEZADO (HEADER) ========== -->
 <header>
     <div class="header-contenedor">
         <div class="marca">
@@ -61,34 +60,28 @@
     </div>
 </header>
 
-<!-- ========== CONTENIDO PRINCIPAL ========== -->
 <main>
     <section class="seccion-productos">
         <h2 class="titulo-seccion">NUESTROS PRODUCTOS</h2>
 
-        <!-- ✅ Mensaje de carga -->
         <div id="mensaje-carga" style="text-align: center; padding: 40px;">
             <p style="font-size: 1.2rem; color: #666;"> Cargando productos...</p>
         </div>
 
-        <!-- ✅ Mensaje de error (oculto por defecto) -->
         <div id="mensaje-error" style="display: none; text-align: center; padding: 40px;">
             <p style="font-size: 1.2rem; color: #c62828;"> Error al cargar productos</p>
         </div>
 
-        <!-- ✅ Mensaje sin productos (oculto por defecto) -->
         <div id="mensaje-sin-productos" style="display: none; text-align: center; padding: 40px;">
             <p style="font-size: 1.2rem; color: #666;"> No hay productos disponibles en este momento</p>
         </div>
 
-        <!-- Contenedor donde se cargarán los productos dinámicamente -->
         <div class="productos" id="productos-container">
             <!-- Los productos se cargarán aquí mediante JavaScript -->
         </div>
     </section>
 </main>
 
-<!-- ========== PIE DE PÁGINA (FOOTER) ========== -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">

@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- INFORMACIÓN BÁSICA DE LA PÁGINA -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Pedidos asignados del conductor - Eggs Gold">
     <link rel="icon" type="image/jpg" th:href="@{imagenes/inicio/logo.jpg}">
 
-    <!-- ICONOS DE FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ESTILOS REUTILIZABLES -->
     <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
 
-    <!-- ESTILOS ESPECÍFICOS -->
     <link rel="stylesheet" th:href="@{/css/conductor/pedidos_asignados.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
@@ -22,43 +18,30 @@
 </head>
 <body>
 
-<!-- ============================================
-     HEADER RESPONSIVE (Nuevo - para móviles/tablets)
-     ============================================ -->
 <div class="header-responsive">
     <div class="header-content">
-        <!-- Logo a la izquierda (solo imagen) -->
         <div class="header-logo">
             <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
 
-        <!-- Título en el centro -->
         <h1 class="header-title">
             Mis Pedidos <span class="resaltado">Asignados</span>
         </h1>
 
-        <!-- Menú hamburguesa a la derecha (tres líneas negras) -->
         <button class="header-hamburger" aria-label="Abrir menú">
             <i class="fas fa-bars"></i>
         </button>
     </div>
 </div>
 
-<!-- ============================================
-     MENÚ LATERAL (SIDEBAR)
-     ============================================ -->
 <nav id="sidebar">
     <ul>
-        <!-- PERFIL DEL CONDUCTOR -->
         <li class="perfil-admin">
             <div class="avatar-contenedor" id="avatar-contenedor">
-                <!-- Iniciales cuando no hay foto -->
                 <span id="avatar-iniciales">CD</span>
 
-                <!-- Foto de perfil -->
                 <img id="avatar-imagen" src="" alt="Foto de perfil" style="display: none;">
 
-                <!-- Botón para subir foto -->
                 <label for="input-foto" class="boton-subir-foto" aria-label="Cambiar foto de perfil">
                     <i class="fas fa-camera"></i>
                 </label>
@@ -81,15 +64,10 @@
     </ul>
 </nav>
 
-<!-- ============================================
-     CONTENIDO PRINCIPAL
-     ============================================ -->
 <main id="main-content">
 
-    <!-- CABECERA (Solo visible en desktop) -->
     <header role="banner">
         <div class="opciones">
-            <!-- Logo y marca alineados horizontalmente -->
             <div class="marca-contenedor">
                 <div class="logo">
                     <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo de Eggs Gold">
@@ -105,13 +83,9 @@
         </div>
     </header>
 
-    <!-- MENSAJES DE ALERTA -->
     <div id="mensaje-success" class="alert alert-success" style="display: none;"></div>
     <div id="mensaje-error" class="alert alert-error" style="display: none;"></div>
 
-    <!-- ============================================
-         CONTENEDOR DE LA TABLA DE PEDIDOS
-         ============================================ -->
     <div class="tabla-contenedor">
         <div class="tabla-header">
             <h2>Lista de Pedidos Asignados</h2>
@@ -120,7 +94,6 @@
             </div>
         </div>
 
-        <!-- Tabla de pedidos con scroll horizontal -->
         <div class="tabla-contenedor-scroll">
             <table id="tablaPedidos" class="tabla-datos">
                 <thead>
@@ -135,11 +108,9 @@
                 </tr>
                 </thead>
                 <tbody id="tablaBody">
-                <!-- Los datos se cargan dinámicamente con JS -->
                 </tbody>
             </table>
 
-            <!-- Mensaje cuando no hay pedidos -->
             <div id="sin-pedidos" class="sin-pedidos" style="display: none;">
                 <i class="fas fa-inbox"></i>
                 <p>No tienes pedidos asignados</p>
@@ -149,18 +120,12 @@
 
 </main>
 
-<!-- ============================================
-     MODAL PARA VER DETALLE DEL PEDIDO
-     ============================================ -->
 <div id="modalDetallePedido" class="modal">
     <div class="modal-contenido">
-        <!-- Botón para cerrar -->
         <span class="cerrar" onclick="cerrarModal()">&times;</span>
 
-        <!-- Título del modal -->
         <h2>Detalle del Pedido #<span id="pedidoId"></span></h2>
 
-        <!-- Información del cliente -->
         <div class="info-cliente">
             <h3>Información del Cliente:</h3>
             <p><strong>Nombre:</strong> <span id="clienteNombre"></span></p>
@@ -168,13 +133,11 @@
             <p><strong>Teléfono:</strong> <span id="clienteTelefono"></span></p>
         </div>
 
-        <!-- Lista de productos -->
         <div class="detalle-productos">
             <h3>Productos del Pedido:</h3>
             <ul id="listaProductos" class="lista-productos"></ul>
         </div>
 
-        <!-- Botones del modal -->
         <div class="modal-botones">
             <button class="btn-modal btn-cancelar" onclick="cerrarModal()">
                 Cerrar
@@ -186,13 +149,10 @@
     </div>
 </div>
 
-<!-- SCRIPTS REUTILIZABLES (primero) -->
 <script th:src="@{/js/utils/sidebar.js}"></script>
 
-<!-- SCRIPTS ESPECÍFICOS (después) -->
 <script th:src="@{/js/conductor/pedidos_asignados.js}"></script>
 
-<!-- SCRIPTS DE SESIÓN Y VALIDACIÓN -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('CONDUCTOR'); </script>

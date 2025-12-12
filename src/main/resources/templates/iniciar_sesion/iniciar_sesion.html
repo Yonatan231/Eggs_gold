@@ -6,7 +6,6 @@
     <title>Iniciar Sesion - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 
-    <!-- Rutas CSS -->
     <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
@@ -15,7 +14,6 @@
 </head>
 
 <body>
-<!-- ===== ENCABEZADO ===== -->
 <header>
     <div class="marca">
         <div class="logo">
@@ -28,53 +26,44 @@
         </div>
     </div>
 
-    <!-- Boton hamburguesa para menu movil -->
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
-    <!-- Navegacion -->
     <nav id="navMenu">
         <a th:href="@{/inicio}">Inicio</a>
         <a th:href="@{/inicio#sobre}">Sobre nosotros</a>
         <a th:href="@{/inicio#productos}">Productos</a>
         <a th:href="@{/contacto}">Contacto</a>
         <a th:href="@{/registro_cliente}">Registrarse</a>
-        <a th:href="@{/iniciar_sesion}" class="activo">Iniciar Sesion</a>
+        <a th:href="@{/iniciar_sesion}" class="activo">Iniciar Sesión</a>
         <a th:href="@{/inicio_cliente}" class="carrito">
             <img th:src="@{/imagenes/inicio/carrito_compras.png}" alt="Carrito de compras">
         </a>
     </nav>
 </header>
 
-<!-- ===== CONTENIDO PRINCIPAL ===== -->
 <main>
     <div class="formulario-container">
-        <!-- Titulo del formulario -->
         <div class="titulo-formulario">
             <span class="icono-login"></span>
             INICIAR SESION
         </div>
 
-        <!-- Wrapper que contiene imagen y formulario -->
         <div class="form-wrapper">
-            <!-- Imagen decorativa del formulario -->
             <div class="imagen-container">
                 <img th:src="@{/imagenes/iniciar_sesion/iniciar_sesion.png}" alt="Imagen de inicio" class="registro-img" />
             </div>
 
-            <!-- Tarjeta que contiene el formulario -->
             <div class="form-card">
                 <form th:action="@{/login}" th:object="${loginDTO}" method="POST">
 
-                    <!-- ✅ MENSAJE DE ERROR DEL SERVIDOR -->
                     <div th:if="${error}" class="mensaje-error" style="display:block; margin-bottom: 15px; padding: 12px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px; text-align: center;">
                         <span th:text="${error}"></span>
                     </div>
 
-                    <!-- Campo de documento -->
                     <div class="form-group">
                         <label for="documento">Documento:</label>
                         <input
@@ -86,7 +75,6 @@
                         />
                     </div>
 
-                    <!-- Campo de contrasena -->
                     <div class="form-group">
                         <label for="contrasena">Contraseña:</label>
                         <input
@@ -98,9 +86,8 @@
                         />
                     </div>
 
-                    <!-- Boton de enviar -->
                     <button type="submit" class="boton-registrarse">
-                        Iniciar sesion
+                        Iniciar sesión
                     </button>
 
                     <!-- Enlaces -->
@@ -117,7 +104,6 @@
     </div>
 </main>
 
-<!-- ===== MODAL DE RECUPERACION ===== -->
 <div id="modalRecuperacion" class="modal-overlay" style="display: none;">
     <div class="modal-content">
         <div class="modal-header">
@@ -135,7 +121,6 @@
     </div>
 </div>
 
-<!-- ===== PIE DE PAGINA ===== -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -170,13 +155,10 @@
     </div>
 </footer>
 
-<!-- Script JavaScript para el menu movil -->
 <script th:src="@{/js/inicio/inicio.js}"></script>
 <script>
-    // Limpiar indicador de sesion cerrada al entrar al login
     sessionStorage.removeItem('sesion_cerrada');
 
-    // ========== MODAL DE RECUPERACION ==========
     const btnOlvideContrasena = document.getElementById('btnOlvideContrasena');
     const btnCerrarModal = document.getElementById('btnCerrarModal');
     const btnEnviarRecuperacion = document.getElementById('btnEnviarRecuperacion');
@@ -184,7 +166,6 @@
     const correoRecuperacion = document.getElementById('correoRecuperacion');
     const mensajeModal = document.getElementById('mensajeModal');
 
-    // Abrir modal
     btnOlvideContrasena.addEventListener('click', function(e) {
         e.preventDefault();
         modalRecuperacion.style.display = 'flex';
@@ -193,19 +174,16 @@
         mensajeModal.className = 'mensaje-modal';
     });
 
-    // Cerrar modal
     btnCerrarModal.addEventListener('click', function() {
         modalRecuperacion.style.display = 'none';
     });
 
-    // Cerrar modal al hacer clic fuera
     modalRecuperacion.addEventListener('click', function(e) {
         if (e.target === modalRecuperacion) {
             modalRecuperacion.style.display = 'none';
         }
     });
 
-    // Enviar solicitud de recuperacion
     btnEnviarRecuperacion.addEventListener('click', function() {
         const correo = correoRecuperacion.value.trim();
 
@@ -215,7 +193,6 @@
             return;
         }
 
-        // Validar formato de correo
         const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!regexCorreo.test(correo)) {
             mensajeModal.textContent = 'Por favor ingresa un correo válido';
@@ -223,11 +200,9 @@
             return;
         }
 
-        // Deshabilitar boton mientras se procesa
         btnEnviarRecuperacion.disabled = true;
         btnEnviarRecuperacion.textContent = 'Enviando...';
 
-        // Enviar solicitud al servidor
         fetch('/solicitar-recuperacion', {
             method: 'POST',
             headers: {
@@ -241,7 +216,6 @@
                 mensajeModal.className = 'mensaje-modal exito';
                 correoRecuperacion.value = '';
 
-                // Cerrar modal después de 3 segundos
                 setTimeout(function() {
                     modalRecuperacion.style.display = 'none';
                 }, 3000);
@@ -256,5 +230,6 @@
             });
     });
 </script>
+
 </body>
 </html>

@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag IMPORTANTE para responsive: hace que el sitio se adapte al ancho del dispositivo -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
@@ -14,7 +13,6 @@
 </head>
 
 <body>
-<!-- ===== ENCABEZADO ===== -->
 <header>
     <div class="marca">
         <div class="logo">
@@ -27,16 +25,13 @@
         </div>
     </div>
 
-    <!-- Botón hamburguesa para menú móvil (solo se ve en pantallas pequeñas) -->
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
-    <!-- Navegación: se oculta en móvil y se muestra al hacer clic en el botón -->
     <nav id="navMenu">
-        <!-- CORREGIDO: href="#inicio" en lugar de "#menu-toggle" -->
         <a href="#inicio">Inicio</a>
         <a href="#sobre">Sobre nosotros</a>
         <a href="#productos">Productos</a>
@@ -49,16 +44,13 @@
     </nav>
 </header>
 
-<!-- ===== CONTENIDO PRINCIPAL ===== -->
 <main>
-    <!-- Sección de portada - AGREGADO: id="inicio" para que el enlace funcione -->
     <section id="inicio" class="inicio">
         <div class="inicio-imagen-grande">
             <img th:src="@{/imagenes/inicio/portada.jpg}" alt="Huevos frescos" class="imagen-principal">
         </div>
     </section>
 
-    <!-- Sección sobre nosotros -->
     <section id="sobre" class="sobre-nosotros">
         <h1>Sobre nosotros</h1>
         <p>
@@ -75,7 +67,6 @@
 
     </section>
 
-    <!-- Sección de productos -->
     <section id="productos">
         <h2 class="titulo-seccion">Productos Especiales</h2>
         <div class="productos">
@@ -83,7 +74,6 @@
                 <img th:src="@{/imagenes/inicio/huevos1.jpg}" alt="Caja de 12 huevos">
                 <h3>Caja x24</h3>
                 <p class="precio">$15.000</p>
-                <!-- CORREGIDO: Ahora es un enlace que lleva a iniciar sesión -->
                 <a th:href="@{/iniciar_sesion}" class="boton boton-amarillo">Comprar</a>
             </article>
 
@@ -91,7 +81,6 @@
                 <img th:src="@{/imagenes/inicio/huevos_azules.png}" alt="Huevos Azules X12">
                 <h3>Huevos Azules X12</h3>
                 <p class="precio">$20.000</p>
-                <!-- CORREGIDO: Ahora es un enlace que lleva a iniciar sesión -->
                 <a th:href="@{/iniciar_sesion}" class="boton boton-amarillo">Comprar</a>
             </article>
 
@@ -99,14 +88,12 @@
                 <img th:src="@{/imagenes/inicio/huevos_organicos.jpg}" alt="Huevos orgánicos">
                 <h3>Huevos orgánicos x6</h3>
                 <p class="precio">$4.000</p>
-                <!-- CORREGIDO: Ahora es un enlace que lleva a iniciar sesión -->
                 <a th:href="@{/iniciar_sesion}" class="boton boton-amarillo">Comprar</a>
             </article>
 
         </div>
     </section>
 
-    <!-- Opiniones -->
     <section class="opiniones">
         <h2>Opiniones</h2>
         <blockquote>"Huevos muy frescos y de excelente calidad." – <strong>Laura G.</strong></blockquote>
@@ -114,7 +101,6 @@
         <blockquote>"Sabor natural, muy recomendados." – <strong>Sofía R.</strong></blockquote>
     </section>
 
-    <!-- Galería -->
     <section class="galeria">
         <h2>Galería del campo</h2>
         <div class="galeria-grid">
@@ -126,7 +112,6 @@
     </section>
 </main>
 
-<!-- ===== PIE DE PÁGINA ===== -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -161,7 +146,6 @@
     </div>
 </footer>
 
-<!-- Script JavaScript para el menú móvil -->
 <script th:src="@{/js/inicio/inicio.js}"></script>
 </body>
 </html>

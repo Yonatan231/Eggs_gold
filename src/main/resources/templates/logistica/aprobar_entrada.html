@@ -8,18 +8,15 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- estilos reutilizables -->
     <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
 
-    <!-- estilos especificos -->
     <link rel="stylesheet" th:href="@{/css/logistica/aprobar_entrada.css}" />
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
 
 <body>
 
-<!-- header responsive (moviles/tablets) -->
 <div class="header-responsive">
     <div class="header-content">
         <div class="header-logo">
@@ -36,7 +33,6 @@
     </div>
 </div>
 
-<!-- menu lateral -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
@@ -65,9 +61,7 @@
     </ul>
 </nav>
 
-<!-- contenido principal -->
 <main id="main-content">
-    <!-- cabecera (solo desktop) -->
     <header role="banner">
         <div class="opciones">
             <div class="marca-contenedor">
@@ -85,11 +79,9 @@
         </div>
     </header>
 
-    <!-- mensajes -->
     <div id="mensaje-success" class="alert alert-success" style="display: none;"></div>
     <div id="mensaje-error" class="alert alert-error" style="display: none;"></div>
 
-    <!-- contenedor de la tabla -->
     <div class="tabla-contenedor">
         <div class="tabla-header">
             <h2>Entradas Pendientes de Aprobación</h2>
@@ -98,7 +90,6 @@
             </div>
         </div>
 
-        <!-- tabla con scroll horizontal -->
         <div class="tabla-contenedor-scroll">
             <table id="tablaEntradas" class="tabla-datos">
                 <thead>
@@ -115,7 +106,6 @@
                 </tbody>
             </table>
 
-            <!-- mensaje cuando no hay entradas -->
             <div id="sin-entradas" class="sin-entradas" style="display: none;">
                 <i class="fas fa-check-circle"></i>
                 <p>No hay entradas pendientes de aprobación</p>
@@ -124,13 +114,10 @@
     </div>
 </main>
 
-<!-- scripts reutilizables (primero) -->
 <script th:src="@{/js/utils/sidebar.js}"></script>
 
-<!-- scripts especificos (despues) -->
 <script th:src="@{/js/logistica/aprobar_entrada.js}"></script>
 
-<!-- scripts de sesion y validacion -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('LOGISTICA'); </script>

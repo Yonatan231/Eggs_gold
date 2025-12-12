@@ -8,11 +8,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- estilos reutilizables -->
     <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
 
-    <!-- estilos especificos -->
     <link rel="stylesheet" th:href="@{/css/logistica/logistica_inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
@@ -20,7 +18,6 @@
 </head>
 <body>
 
-<!-- header responsive (moviles/tablets) -->
 <div class="header-responsive">
     <div class="header-content">
         <div class="header-logo">
@@ -37,7 +34,6 @@
     </div>
 </div>
 
-<!-- menu lateral -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
@@ -84,10 +80,8 @@
     </ul>
 </nav>
 
-<!-- contenido principal -->
 <main id="main-content">
 
-    <!-- cabecera (solo desktop) -->
     <header role="banner">
         <div class="opciones">
             <div class="marca-contenedor">
@@ -105,10 +99,8 @@
         </div>
     </header>
 
-    <!-- tarjetas de resumen -->
     <section class="contenedor-cuadros">
 
-        <!-- tarjeta 1: pedidos nuevos -->
         <div class="tarjeta-resumen pedidos-nuevos">
             <div class="tarjeta-icono">
                 <i class="fas fa-box-open"></i>
@@ -119,7 +111,6 @@
             </div>
         </div>
 
-        <!-- tarjeta 2: entradas pendientes -->
         <div class="tarjeta-resumen entradas-pendientes">
             <div class="tarjeta-icono">
                 <i class="fas fa-truck-loading"></i>
@@ -132,7 +123,6 @@
 
     </section>
 
-    <!-- seccion de pedidos para alistar -->
     <section class="seccion-tabla">
         <div class="encabezado-tabla">
             <h2>Pedidos para Alistar</h2>
@@ -142,7 +132,6 @@
             </div>
         </div>
 
-        <!-- tabla con scroll horizontal -->
         <div class="tabla-contenedor-scroll">
             <table id="tablaPedidos" class="tabla-datos">
                 <thead>
@@ -160,7 +149,6 @@
                 </tbody>
             </table>
 
-            <!-- mensaje cuando no hay pedidos -->
             <div id="mensajeVacio" class="mensaje-vacio" style="display: none;">
                 <i class="fas fa-inbox"></i>
                 <p>No hay pedidos para alistar</p>
@@ -168,7 +156,6 @@
         </div>
     </section>
 
-    <!-- modal para ver detalles del pedido -->
     <div id="modalDetallePedido" class="modal">
         <div class="modal-contenido">
             <span class="cerrar" onclick="cerrarModal()">&times;</span>
@@ -186,7 +173,6 @@
         </div>
     </div>
 
-    <!-- modal para reportar novedad -->
     <div class="modal" id="novedadModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -228,7 +214,6 @@
         </div>
     </div>
 
-    <!-- modal para asignar conductor -->
     <div id="modalAsignarConductor" class="modal">
         <div class="modal-contenido">
             <span class="cerrar" onclick="cerrarModalConductor()">&times;</span>
@@ -250,14 +235,11 @@
 
 </main>
 
-<!-- scripts reutilizables (primero) -->
 <script th:src="@{/js/utils/sidebar.js}"></script>
 
-<!-- scripts especificos (despues) -->
 <script th:src="@{/js/utils/reportar_novedad.js}"></script>
 <script th:src="@{/js/logistica/logistica_inicio.js}"></script>
 
-<!-- scripts de sesion y validacion -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('LOGISTICA'); </script>

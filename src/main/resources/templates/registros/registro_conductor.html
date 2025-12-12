@@ -30,7 +30,6 @@
     </div>
 </div>
 
-<!-- sidebar -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
@@ -58,9 +57,7 @@
     </ul>
 </nav>
 
-<!-- contenido principal -->
 <main id="main-content">
-    <!-- header desktop -->
     <header role="banner">
         <div class="opciones">
             <div class="marca-contenedor">
@@ -76,13 +73,11 @@
         </div>
     </header>
 
-    <!-- formulario -->
     <form th:action="@{/registro_conductor}" th:object="${conductor}" method="post"
           class="formulario-contenedor">
 
         <h2>Formulario de registro</h2>
 
-        <!-- mensajes del servidor -->
         <div th:if="${mensaje}" class="alert alert-success">
             <i class="fas fa-check-circle"></i>
             <span th:text="${mensaje}"></span>

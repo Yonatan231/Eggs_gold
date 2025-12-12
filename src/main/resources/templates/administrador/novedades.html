@@ -13,7 +13,6 @@
 </head>
 <body>
 
-<!-- header fijo responsive -->
 <header class="header-novedades">
     <div class="header-content">
         <div class="header-logo">
@@ -33,7 +32,6 @@
 </header>
 
 <div class="container">
-    <!-- filtro por estado -->
     <div class="filter-container">
         <label for="filtroEstado">Filtrar por estado:</label>
         <select id="filtroEstado" class="filter-select">
@@ -43,7 +41,6 @@
         </select>
     </div>
 
-    <!-- contenedor con scroll horizontal -->
     <div class="tabla-contenedor-scroll">
         <table id="tablaNovedades">
             <thead>
@@ -74,7 +71,6 @@
                 <td th:text="${novedad.usuario.nombre + ' ' + novedad.usuario.apellido}"></td>
                 <td th:text="${novedad.usuario.rol.nombreRol}"></td>
                 <td>
-                    <!-- ✅ CORRECCIÓN: Usar directamente la URL de Cloudinary -->
                     <button th:if="${novedad.imagen != null}"
                             class="btn-ver-imagen"
                             th:attr="data-imagen=${novedad.imagen}">
@@ -98,7 +94,6 @@
     </div>
 </div>
 
-<!-- lightbox para ver imagen -->
 <div id="lightbox" class="lightbox">
     <span class="lightbox-close">&times;</span>
     <img class="lightbox-content" id="lightbox-img" alt="Imagen de novedad">

@@ -104,8 +104,7 @@ public class RoleInterceptor implements HandlerInterceptor {
         if (uri.startsWith("/cliente") ||
                 uri.startsWith("/mi_perfil") ||
                 uri.startsWith("/carrito") ||
-                uri.startsWith("/historial_pedidos") ||
-                uri.startsWith("/inventario/")){
+                uri.startsWith("/historial_pedidos")){
             return "CLIENTE".equals(rol);
         }
 

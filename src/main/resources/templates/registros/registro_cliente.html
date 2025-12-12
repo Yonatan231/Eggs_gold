@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Cliente - Eggs Gold</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
-    <!-- ruta hacia el css -->
     <link rel="stylesheet" th:href="@{/css/inicio/inicio.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/pie_pagina.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/encabezado.css}">
@@ -14,10 +13,8 @@
 </head>
 
 <body>
-<!-- encabezado -->
 <header>
     <div class="marca">
-        <!-- logo como imagen -->
         <div class="logo">
             <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
@@ -28,7 +25,6 @@
         </div>
     </div>
 
-    <!-- boton hamburguesa para menu movil solo se ve en pantallas pequenas -->
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
         <span></span>
         <span></span>
@@ -49,26 +45,19 @@
 </header>
 
 <main>
-    <!-- contenedor principal del formulario -->
     <div class="form-wrapper">
         <h2 class="titulo-registro">REGISTRO</h2>
-        <!-- imagen decorativa del formulario -->
         <img th:src="@{/imagenes/registros/registro_cliente.png}" alt="Imagen de registro" class="registro-img" />
 
-        <!-- tarjeta del formulario -->
         <div class="form-card">
-            <!-- mensajes del servidor -->
-            <!-- mensaje de error del servidor documento o correo duplicado -->
             <div th:if="${error}" class="mensaje-error" style="display:block; margin-bottom: 15px; padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
                 <p th:text="${error}" style="margin: 0;"></p>
             </div>
 
-            <!-- mensaje de exito -->
             <div th:if="${mensaje}" class="mensaje-exito" style="display:block; margin-bottom: 15px; padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
                 <p th:text="${mensaje}" style="margin: 0;"></p>
             </div>
 
-            <!-- errores de validacion de campos si existen -->
             <div th:if="${errores}" class="mensaje-error" style="display:block; margin-bottom: 15px; padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
                 <ul style="margin: 5px 0; padding-left: 20px;">
                     <li th:each="error : ${errores}" th:text="${error.field + ': ' + error.defaultMessage}"></li>
@@ -76,58 +65,48 @@
             </div>
 
             <form th:action="@{/registro_cliente}" th:object="${clienteDTO}" method="POST">
-                <!-- nombre -->
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" th:field="*{nombre}" required>
                 </div>
 
-                <!-- apellido -->
                 <div class="form-group">
                     <label for="apellido">Apellido:</label>
                     <input type="text" id="apellido" th:field="*{apellido}" required>
                 </div>
 
-                <!-- direccion -->
                 <div class="form-group">
                     <label for="direccion">Direccion:</label>
                     <input type="text" id="direccion" th:field="*{direccionUsuario}" required>
                 </div>
 
-                <!-- edad -->
                 <div class="form-group">
                     <label for="edad">Edad:</label>
                     <input type="number" id="edad" th:field="*{edad}" min="18" max="100" required>
                 </div>
 
-                <!-- numero de documento -->
                 <div class="form-group">
                     <label for="numDocumento">Numero de Documento:</label>
                     <input type="number" id="numDocumento" th:field="*{numDocumento}" required>
                 </div>
 
-                <!-- telefono -->
                 <div class="form-group">
                     <label for="telefono">Telefono:</label>
                     <input type="tel" id="telefono" th:field="*{telefono}" required>
                 </div>
 
-                <!-- correo electronico -->
                 <div class="form-group">
                     <label for="correo">Correo Electronico:</label>
                     <input type="email" id="correo" th:field="*{correo}" required>
                 </div>
 
-                <!-- contrasena -->
                 <div class="form-group">
                     <label for="password">Contraseña:</label>
                     <input type="password" id="password" th:field="*{password}" required>
                 </div>
 
-                <!-- boton de enviar -->
                 <button type="submit" class="boton-registrarse">Registrarse</button>
 
-                <!-- enlace a login -->
                 <div class="enlace-login">
                     ya tienes una cuenta? <a th:href="@{/iniciar_sesion}">Inicia sesión aqui</a>
                 </div>
@@ -136,7 +115,6 @@
     </div>
 </main>
 
-<!-- pie de pagina -->
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -171,13 +149,11 @@
     </div>
 </footer>
 
-<!-- script javascript para el menu movil -->
 <script th:src="@{/js/inicio/inicio.js}"></script>
 <script th:src="@{/js/utils/validacion_registro_usuario.js}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // configuracion de ids para el formulario de cliente
         const configCliente = {
             nombreId: 'nombre',
             apellidoId: 'apellido',

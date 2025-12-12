@@ -8,11 +8,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- estilos reutilizables -->
     <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
 
-    <!-- estilos especificos -->
     <link rel="stylesheet" th:href="@{css/administrador/administrador_inicio.css}" />
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 
@@ -21,7 +19,6 @@
 
 <body>
 
-<!-- header responsive (moviles/tablets) -->
 <div class="header-responsive">
     <div class="header-content">
         <div class="header-logo">
@@ -45,7 +42,6 @@
     </div>
 </div>
 
-<!-- menu lateral -->
 <nav id="sidebar" aria-label="Menú de administración">
     <ul>
         <li class="perfil-admin">
@@ -70,10 +66,8 @@
     </ul>
 </nav>
 
-<!-- contenido principal -->
 <main id="main-content" role="main">
 
-    <!-- cabecera (solo desktop) -->
     <header role="banner">
         <div class="opciones">
             <div class="marca">
@@ -94,7 +88,6 @@
         </div>
     </header>
 
-    <!-- tarjetas de resumen -->
     <section class="contenedor-cuadros" aria-label="Resumen del sistema">
 
         <div class="tarjeta-resumen registrados">
@@ -118,7 +111,6 @@
         </div>
     </section>
 
-    <!-- seccion de pedidos -->
     <section class="seccion-tabla" aria-labelledby="titulo-pedidos">
         <div class="encabezado-seccion">
             <h2 id="titulo-pedidos">Pedidos Realizados</h2>
@@ -129,7 +121,6 @@
             </div>
         </div>
 
-        <!-- controles: busqueda y filtro -->
         <div class="controles-pedidos">
             <form class="form-busqueda" id="form-busqueda-pedidos">
                 <input type="text" name="buscar" id="buscar-pedido" placeholder="Buscar por ID, cliente..." aria-label="Buscar pedidos">
@@ -152,7 +143,6 @@
             </div>
         </div>
 
-        <!-- tabla de pedidos con scroll horizontal -->
         <div class="contenedor-tabla-scroll">
             <table class="tabla-datos" id="tabla-pedidos" aria-describedby="titulo-pedidos">
                 <thead>
@@ -176,7 +166,6 @@
         </div>
     </section>
 
-    <!-- modal de detalle del pedido -->
     <div id="modal-pedido" class="modal-overlay" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-pedido">
         <div class="modal-contenido">
             <div class="modal-header">
@@ -190,7 +179,6 @@
         </div>
     </div>
 
-    <!-- seccion de usuarios -->
     <section class="seccion-tabla" aria-labelledby="titulo-usuarios">
         <div class="encabezado-seccion">
             <h2 id="titulo-usuarios">Gestión de Usuarios</h2>
@@ -201,7 +189,6 @@
             </div>
         </div>
 
-        <!-- controles: busqueda y filtros -->
         <div class="controles-usuarios">
             <form class="form-busqueda" id="form-busqueda-usuarios">
                 <input type="text" name="buscar" id="buscar-usuario" placeholder="Buscar por nombre, documento..." aria-label="Buscar usuarios">
@@ -229,7 +216,6 @@
             </div>
         </div>
 
-        <!-- tabla de usuarios con scroll horizontal sin columna id -->
         <div class="contenedor-tabla-scroll">
             <table class="tabla-datos" id="tabla-usuarios" aria-describedby="titulo-usuarios">
                 <thead>
@@ -252,7 +238,6 @@
         </div>
     </section>
 
-    <!-- modal de edicion de usuario -->
     <div id="modal-usuario" class="modal-overlay" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="titulo-modal-usuario">
         <div class="modal-contenido modal-edicion">
             <div class="modal-header">
@@ -333,13 +318,10 @@
 
 </main>
 
-<!-- scripts reutilizables (primero) -->
 <script th:src="@{/js/utils/sidebar.js}"></script>
 
-<!-- scripts especificos (despues) -->
 <script th:src="@{/js/administrador/administrador_inicio.js}"></script>
 
-<!-- scripts de sesion y validacion -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('ADMIN'); </script>

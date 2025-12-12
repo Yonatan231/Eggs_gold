@@ -8,17 +8,14 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- CSS reutilizables -->
     <link rel="stylesheet" th:href="@{/css/utils/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/utils/header-responsive.css}">
 
-    <!-- CSS especificos -->
     <link rel="stylesheet" th:href="@{/css/registros/registro_conductor_logistica.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
 <body>
 
-<!-- header responsive (solo movil) -->
 <div class="header-responsive">
     <div class="header-content">
         <div class="header-logo">
@@ -33,7 +30,6 @@
     </div>
 </div>
 
-<!-- sidebar -->
 <nav id="sidebar">
     <ul>
         <li class="perfil-admin">
@@ -61,7 +57,6 @@
     </ul>
 </nav>
 
-<!-- contenido principal -->
 <main id="main-content">
     <!-- header desktop -->
     <header role="banner">
@@ -79,13 +74,11 @@
         </div>
     </header>
 
-    <!-- formulario -->
     <form th:action="@{/registro_logistica}" th:object="${logistica}" method="post"
           class="formulario-contenedor">
 
         <h2>Formulario de registro</h2>
 
-        <!-- mensajes del servidor -->
         <div th:if="${mensaje}" class="alert alert-success">
             <i class="fas fa-check-circle"></i>
             <span th:text="${mensaje}"></span>
@@ -126,10 +119,8 @@
     </form>
 </main>
 
-<!-- JS reutilizables -->
 <script th:src="@{/js/utils/sidebar.js}"></script>
 
-<!-- JS especificos -->
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script> validarRolPagina('ADMIN'); </script>
