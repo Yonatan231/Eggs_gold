@@ -1,11 +1,7 @@
-// pedidos_pendientes.js - funcionalidad especifica
-
-// cuando la pagina carga
 document.addEventListener('DOMContentLoaded', function() {
     cargarPedidosPendientes();
 });
 
-// obtener pedidos pendientes del servidor
 function cargarPedidosPendientes() {
     fetch('/api/logistica/pedidos-pendientes')
         .then(response => response.json())
@@ -22,7 +18,6 @@ function cargarPedidosPendientes() {
         });
 }
 
-// mostrar pedidos en la tabla
 function mostrarPedidos(pedidos) {
     const tbody = document.getElementById('tablaBody');
     const tablaPedidos = document.getElementById('tablaPedidos');
@@ -42,7 +37,6 @@ function mostrarPedidos(pedidos) {
     sinPedidos.style.display = 'none';
     contador.textContent = pedidos.length;
 
-    // invertir orden: mas antiguos arriba, mas recientes abajo (cola fifo)
     const pedidosOrdenados = [...pedidos].reverse();
 
     pedidosOrdenados.forEach(pedido => {
@@ -74,7 +68,6 @@ function mostrarPedidos(pedidos) {
     });
 }
 
-// tomar un pedido
 function tomarPedido(idPedido) {
     if (!confirm('¿Deseas tomar el pedido #' + idPedido + '?')) {
         return;
@@ -104,7 +97,6 @@ function tomarPedido(idPedido) {
         });
 }
 
-// mostrar mensajes al usuario
 function mostrarMensaje(texto, tipo) {
     let mensaje;
 

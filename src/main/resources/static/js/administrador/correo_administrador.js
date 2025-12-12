@@ -1,5 +1,3 @@
-// correo_administrador.js - logica de seleccion de roles y envio
-
 document.addEventListener("DOMContentLoaded", () => {
     const roleCards = document.querySelectorAll(".role-card");
     const hiddenInput = document.getElementById("rolIds");
@@ -15,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rolesSeleccionados = new Set();
 
-    // seleccion de roles
     roleCards.forEach(card => {
         card.addEventListener("click", () => {
             const id = card.dataset.id;
@@ -29,11 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             hiddenInput.value = Array.from(rolesSeleccionados).join(",");
-            console.log("roles seleccionados:", hiddenInput.value);
         });
     });
 
-    // validar antes de enviar
     form.addEventListener("submit", (event) => {
         const asunto = asuntoInput.value.trim();
         const mensaje = mensajeInput.value.trim();

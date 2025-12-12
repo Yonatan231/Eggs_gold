@@ -1,16 +1,8 @@
-/* ============================================
-   CARGAR PRODUCTOS DISPONIBLES PARA CLIENTE
-   ============================================ */
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log(" Iniciando carga de productos...");
     cargarProductos();
-    cargarContadorCarrito(); // ✅ Cargar contador al inicio
+    cargarContadorCarrito();
 });
 
-/**
- * Carga los productos disponibles desde el backend
- */
 function cargarProductos() {
     const container = document.getElementById("productos-container");
     const mensajeCarga = document.getElementById("mensaje-carga");
@@ -22,18 +14,14 @@ function cargarProductos() {
         return;
     }
 
-    console.log("📡 Haciendo petición al servidor...");
-
     fetch("/cliente/api/productos")
         .then(response => {
-            console.log("📥 Respuesta recibida:", response.status);
             if (!response.ok) {
                 throw new Error(`Error HTTP: ${response.status}`);
             }
             return response.json();
         })
         .then(productos => {
-            console.log("📦 Productos recibidos:", productos);
 
             if (mensajeCarga) mensajeCarga.style.display = 'none';
 
@@ -50,7 +38,6 @@ function cargarProductos() {
                 container.appendChild(card);
             });
 
-            console.log(`✅ ${productos.length} productos cargados correctamente`);
         })
         .catch(error => {
             console.error("❌ Error al cargar productos:", error);
@@ -60,9 +47,6 @@ function cargarProductos() {
         });
 }
 
-/**
- * Crea una tarjeta HTML para un producto
- */
 function crearTarjetaProducto(producto) {
     const card = document.createElement("div");
     card.className = "producto-card";
@@ -94,9 +78,8 @@ function crearTarjetaProducto(producto) {
 
     const disponibilidad = document.createElement("p");
     disponibilidad.className = "producto-disponibilidad";
-    disponibilidad.textContent = `✅ Disponibles: ${producto.cantidad} unidades`;
+    disponibilidad.textContent = ` Disponibles: ${producto.cantidad} unidades`;
 
-    // ✅ Botón activado con evento
     const boton = document.createElement("button");
     boton.className = "boton_compra";
     boton.textContent = "Ver producto";
@@ -113,17 +96,11 @@ function crearTarjetaProducto(producto) {
     return card;
 }
 
-/* ============================================
-   MODAL DE CANTIDAD
-   ============================================ */
-
 function abrirModalCantidad(producto) {
-    // Crear overlay del modal
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay-cantidad";
     overlay.id = "modal-cantidad";
 
-    // Crear contenido del modal
     overlay.innerHTML = `
         <div class="modal-cantidad">
             <div class="modal-header">
@@ -155,7 +132,6 @@ function abrirModalCantidad(producto) {
 
     document.body.appendChild(overlay);
 
-    // Cerrar modal al hacer clic fuera
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
             cerrarModalCantidad();
@@ -175,7 +151,6 @@ function agregarAlCarrito(idProducto, maxCantidad) {
     const errorCantidad = document.getElementById("error-cantidad");
     const cantidad = parseInt(inputCantidad.value);
 
-    // Validaciones
     if (isNaN(cantidad) || cantidad <= 0) {
         errorCantidad.textContent = "❌ La cantidad debe ser mayor a 0";
         errorCantidad.style.display = 'block';
@@ -188,7 +163,6 @@ function agregarAlCarrito(idProducto, maxCantidad) {
         return;
     }
 
-    // Enviar al backend
     const datos = {
         idProducto: idProducto,
         cantidad: cantidad
@@ -218,10 +192,6 @@ function agregarAlCarrito(idProducto, maxCantidad) {
         });
 }
 
-/* ============================================
-   CONTADOR DEL CARRITO
-   ============================================ */
-
 function cargarContadorCarrito() {
     fetch('/carrito/api/contador')
         .then(response => response.json())
@@ -235,10 +205,6 @@ function cargarContadorCarrito() {
             console.error("❌ Error al cargar contador:", error);
         });
 }
-
-/* ============================================
-   BÚSQUEDA DE PRODUCTOS
-   ============================================ */
 
 const buscador = document.getElementById("buscador-productos");
 if (buscador) {

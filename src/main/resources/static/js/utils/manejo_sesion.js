@@ -5,7 +5,6 @@ window.rolSesion = null;
     const sesionCerrada = sessionStorage.getItem('sesion_cerrada');
 
     if (sesionCerrada === 'true') {
-        console.log('⚠️ Sesión cerrada detectada - Limpiando caché');
 
         sessionStorage.clear();
         localStorage.clear();
@@ -51,10 +50,6 @@ fetch('/session', { credentials: 'same-origin' })
             return;
         }
 
-        console.log(' Sesión activa');
-        console.log('   ID de sesión:', usuario_id);
-        console.log('   Rol:', rol);
-
         window.idSesion = usuario_id;
         window.rolSesion = rol;
 
@@ -67,9 +62,6 @@ fetch('/session', { credentials: 'same-origin' })
             rol: rol
         };
         localStorage.setItem("cliente", JSON.stringify(datosCliente));
-
-        console.log(" ID de sesión disponible globalmente:", window.idSesion);
-        console.log(" ID de sesión guardado en sessionStorage:", sessionStorage.getItem("usuarioId"));
 
         window.dispatchEvent(new CustomEvent('sesionCargada', {
             detail: {

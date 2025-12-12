@@ -1,6 +1,3 @@
-// logistica_inicio.js - funcionalidad especifica
-
-// cuando la pagina carga
 document.addEventListener("DOMContentLoaded", function() {
     cargarDashboard();
     cargarPedidosEnAlistamiento();
@@ -9,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
     inicializarActualizacionAutomatica();
 });
 
-// cargar datos del dashboard
 async function cargarDashboard() {
     try {
         const response = await fetch('/api/logistica/dashboard/resumen');
@@ -35,14 +31,12 @@ async function cargarDashboard() {
     }
 }
 
-// inicializar actualizacion automatica
 function inicializarActualizacionAutomatica() {
     setInterval(() => {
         cargarDashboard();
     }, 60000);
 }
 
-// cargar pedidos en alistamiento del usuario
 function cargarPedidosEnAlistamiento() {
     fetch('/api/logistica/mis-pedidos')
         .then(response => response.json())
@@ -60,7 +54,6 @@ function cargarPedidosEnAlistamiento() {
         });
 }
 
-// mostrar pedidos en la tabla
 function mostrarPedidosEnTabla(pedidos) {
     const tbody = document.getElementById('tablaPedidosBody');
     const tabla = document.getElementById('tablaPedidos');
@@ -110,7 +103,6 @@ function mostrarPedidosEnTabla(pedidos) {
     });
 }
 
-// mostrar mensaje cuando no hay pedidos
 function mostrarMensajeVacio() {
     const tabla = document.getElementById('tablaPedidos');
     const mensajeVacio = document.getElementById('mensajeVacio');
@@ -119,7 +111,6 @@ function mostrarMensajeVacio() {
     mensajeVacio.style.display = 'block';
 }
 
-// actualizar contadores de tarjetas
 function actualizarContadores() {
     fetch('/api/logistica/pedidos-pendientes')
         .then(response => response.json())
@@ -133,7 +124,6 @@ function actualizarContadores() {
     document.getElementById('totalEntradasPendientes').textContent = '0';
 }
 
-// configurar busqueda de pedidos
 function configurarBusqueda() {
     const inputBuscar = document.getElementById("buscar");
     const tbody = document.getElementById("tablaPedidosBody");
@@ -167,7 +157,6 @@ function configurarBusqueda() {
     });
 }
 
-// abrir modal con detalles del pedido
 function abrirModal(id) {
     document.getElementById("pedidoId").textContent = id;
 
@@ -197,13 +186,11 @@ function abrirModal(id) {
         });
 }
 
-// cerrar modal de detalles
 function cerrarModal() {
     const modal = document.getElementById("modalDetallePedido");
     modal.style.display = "none";
 }
 
-// marcar pedido como listo
 function marcarComoListo(btn, idPedido) {
     if (!confirm(`¿Marcar el pedido #${idPedido} como listo?`)) {
         return;
@@ -238,7 +225,6 @@ function marcarComoListo(btn, idPedido) {
         });
 }
 
-// abrir modal para asignar conductor
 function abrirModalAsignarConductor(idPedido) {
     document.getElementById('pedidoIdAsignar').textContent = idPedido;
 
@@ -262,7 +248,6 @@ function abrirModalAsignarConductor(idPedido) {
         });
 }
 
-// mostrar lista de conductores
 function mostrarConductores(conductores, idPedido) {
     const lista = document.getElementById('listaConductores');
     lista.innerHTML = '';
@@ -293,7 +278,6 @@ function mostrarConductores(conductores, idPedido) {
     });
 }
 
-// confirmar asignacion de conductor
 function confirmarAsignacion(idPedido, idConductor, nombreConductor) {
     if (!confirm(`¿Asignar el pedido #${idPedido} a ${nombreConductor}?`)) {
         return;
@@ -332,14 +316,12 @@ function confirmarAsignacion(idPedido, idConductor, nombreConductor) {
         });
 }
 
-// cerrar modal de asignar conductor
 function cerrarModalConductor() {
     const modal = document.getElementById('modalAsignarConductor');
     modal.style.display = 'none';
     document.getElementById('buscarConductor').value = '';
 }
 
-// configurar busqueda de conductores
 function configurarBusquedaConductor() {
     const inputBuscar = document.getElementById('buscarConductor');
 
@@ -360,7 +342,6 @@ function configurarBusquedaConductor() {
     });
 }
 
-// cerrar modales al hacer clic fuera
 window.addEventListener('click', function(e) {
     const modalDetalle = document.getElementById('modalDetallePedido');
     const modalNovedad = document.getElementById('novedadModal');
@@ -379,14 +360,12 @@ window.addEventListener('click', function(e) {
     }
 });
 
-// modal de novedad - usando funciones compartidas
 const btnNovedad = document.getElementById('btnNovedad');
 const novedadModal = document.getElementById('novedadModal');
 const closeModal = document.getElementById('closeModal');
 const cancelNovedad = document.getElementById('cancelNovedad');
 const novedadForm = document.getElementById('novedadForm');
 
-// abrir modal
 if (btnNovedad) {
     btnNovedad.addEventListener('click', function(e) {
         e.preventDefault();
@@ -394,7 +373,6 @@ if (btnNovedad) {
     });
 }
 
-// cerrar modal con x
 if (closeModal) {
     closeModal.addEventListener('click', function() {
         novedadModal.style.display = 'none';
@@ -402,7 +380,6 @@ if (closeModal) {
     });
 }
 
-// cerrar modal con boton cancelar
 if (cancelNovedad) {
     cancelNovedad.addEventListener('click', function() {
         novedadModal.style.display = 'none';
@@ -410,7 +387,6 @@ if (cancelNovedad) {
     });
 }
 
-// envio del formulario
 if (novedadForm) {
     novedadForm.addEventListener('submit', function(e) {
         e.preventDefault();

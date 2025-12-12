@@ -1,13 +1,4 @@
-// validacion generica de formularios de registro
-// este archivo contiene validaciones para cliente conductor y logistica
-
-/**
- * funcion principal de validacion
- * @param {Object} config - configuracion con los ids de los campos del formulario
- * @returns {boolean} - true si el formulario es valido false en caso contrario
- */
 function validarFormularioRegistro(config) {
-    // obtener valores de los campos
     const nombre = document.getElementById(config.nombreId).value.trim();
     const apellido = document.getElementById(config.apellidoId).value.trim();
     const numDocumento = document.getElementById(config.numDocumentoId).value.trim();
@@ -17,7 +8,6 @@ function validarFormularioRegistro(config) {
     const correo = document.getElementById(config.correoId).value.trim();
     const password = document.getElementById(config.passwordId).value.trim();
 
-    // validar nombre
     if (!nombre) {
         alert("el nombre es obligatorio");
         return false;
@@ -31,7 +21,6 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // validar apellido
     if (!apellido) {
         alert("el apellido es obligatorio");
         return false;
@@ -45,7 +34,6 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // validar numero de documento
     if (!numDocumento) {
         alert("el numero de documento es obligatorio");
         return false;
@@ -59,7 +47,6 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // validar direccion
     if (!direccion) {
         alert("la direccion es obligatoria");
         return false;
@@ -69,7 +56,6 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // validar edad
     if (!edad) {
         alert("la edad es obligatoria");
         return false;
@@ -84,7 +70,6 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // validar telefono debe tener exactamente 10 digitos
     if (!telefono) {
         alert("el telefono es obligatorio");
         return false;
@@ -98,7 +83,6 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // validar correo electronico
     if (!correo) {
         alert("el correo electronico es obligatorio");
         return false;
@@ -108,7 +92,6 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // validar contrasena
     if (!password) {
         alert("la contrasena es obligatoria");
         return false;
@@ -122,52 +105,30 @@ function validarFormularioRegistro(config) {
         return false;
     }
 
-    // si todas las validaciones pasaron
     return true;
 }
 
-// funciones auxiliares de validacion
-
-/**
- * valida que un texto contenga solo letras y espacios
- */
 function validarSoloLetrasYEspacios(texto) {
     const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     return regex.test(texto);
 }
 
-/**
- * valida que un texto contenga solo numeros
- */
 function validarSoloNumeros(texto) {
     const regex = /^[0-9]+$/;
     return regex.test(texto);
 }
 
-/**
- * valida el formato de un correo electronico
- */
 function validarFormatoCorreo(correo) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(correo);
 }
 
-/**
- * valida que la contrasena contenga numeros y letras
- */
 function validarPasswordConNumerosYLetras(password) {
     const tieneNumeros = /\d/.test(password);
     const tieneLetras = /[a-zA-Z]/.test(password);
     return tieneNumeros && tieneLetras;
 }
 
-// funcion para inicializar validacion en un formulario
-
-/**
- * inicializa la validacion en un formulario especifico
- * @param {string} formId - id del formulario
- * @param {Object} config - configuracion de ids de campos
- */
 function inicializarValidacion(formId, config) {
     const formulario = document.querySelector(formId);
 
@@ -176,13 +137,11 @@ function inicializarValidacion(formId, config) {
             // validar el formulario
             const esValido = validarFormularioRegistro(config);
 
-            // si no es valido prevenir el envio
             if (!esValido) {
                 event.preventDefault();
                 return false;
             }
 
-            // si es valido permitir el envio
             return true;
         });
     }

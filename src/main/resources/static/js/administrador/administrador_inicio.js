@@ -128,7 +128,6 @@ function mostrarPedidos(pedidos) {
         mensajeSinPedidos.style.display = 'none';
     }
 
-    // invertir orden: mas antiguos arriba, mas recientes abajo (cola fifo)
     const pedidosOrdenados = [...pedidos].reverse();
 
     pedidosOrdenados.forEach(pedido => {
@@ -426,7 +425,6 @@ function llenarSelectRoles() {
         }
 
         if (editRol) {
-            // ❌ No permitir seleccionar rol ADMIN (código 1) en el modal de edición
             if (rol.idRoles !== 1) {
                 const option = document.createElement('option');
                 option.value = rol.idRoles;
@@ -508,7 +506,6 @@ async function abrirModalEditarUsuario(idUsuario) {
 }
 
 function llenarFormularioEdicion(usuario) {
-    // Obtener ID del admin actual
     const idAdminActual = parseInt(sessionStorage.getItem('usuario_id'));
     const esPropiaCuenta = usuario.idUsuario === idAdminActual;
 
@@ -522,16 +519,13 @@ function llenarFormularioEdicion(usuario) {
     document.getElementById('edit-correo').value = usuario.correo;
     document.getElementById('edit-rol').value = usuario.idRol;
     document.getElementById('edit-estado').value = usuario.estado;
-    // guardar estado original para detectar cambios
     document.getElementById('edit-estado').setAttribute('data-estado-original', usuario.estado);
     document.getElementById('edit-fecha-registro').textContent = formatearFecha(usuario.fechaRegistro);
 
-    // Deshabilitar correo SIEMPRE (política de seguridad)
     document.getElementById('edit-correo').disabled = true;
     document.getElementById('edit-correo').style.backgroundColor = '#f5f5f5';
     document.getElementById('edit-correo').style.cursor = 'not-allowed';
 
-    // Si es su propia cuenta, deshabilitar TODO y mostrar advertencia
     if (esPropiaCuenta) {
         const campos = ['edit-nombre', 'edit-apellido', 'edit-tipo-documento',
             'edit-direccion', 'edit-telefono', 'edit-estado', 'edit-rol'];
@@ -543,7 +537,6 @@ function llenarFormularioEdicion(usuario) {
             campo.style.cursor = 'not-allowed';
         });
 
-        // Deshabilitar botón guardar
         const btnGuardar = document.querySelector('#modal-usuario .btn-guardar');
         if (btnGuardar) {
             btnGuardar.disabled = true;
@@ -553,7 +546,6 @@ function llenarFormularioEdicion(usuario) {
 
         mostrarMensaje('No puedes modificar tu propia cuenta', 'error');
     } else {
-        // Si NO es su propia cuenta, habilitar campos editables (incluyendo rol)
         const campos = ['edit-nombre', 'edit-apellido', 'edit-tipo-documento',
             'edit-direccion', 'edit-telefono', 'edit-estado', 'edit-rol'];
 
@@ -564,7 +556,6 @@ function llenarFormularioEdicion(usuario) {
             campo.style.cursor = '';
         });
 
-        // Habilitar botón guardar
         const btnGuardar = document.querySelector('#modal-usuario .btn-guardar');
         if (btnGuardar) {
             btnGuardar.disabled = false;
@@ -593,7 +584,6 @@ async function guardarCambiosUsuario() {
     };
 
     try {
-        // actualizar usuario
         const response = await fetch(`/api/admin/usuarios/${idUsuario}`, {
             method: 'PUT',
             headers: {
@@ -612,7 +602,6 @@ async function guardarCambiosUsuario() {
             throw new Error('Error al actualizar el usuario');
         }
 
-        // si el estado cambio, enviar correo automaticamente
         if (estadoAnterior && estadoAnterior !== estadoNuevo) {
             try {
                 const emailResponse = await fetch(`/api/usuarios/${idUsuario}/estado`, {
@@ -629,7 +618,6 @@ async function guardarCambiosUsuario() {
                 }
             } catch (emailError) {
                 console.error('error al enviar correo de notificacion:', emailError);
-                // no detener el flujo si falla el correo
             }
         }
 

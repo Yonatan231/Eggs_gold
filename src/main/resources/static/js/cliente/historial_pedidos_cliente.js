@@ -1,12 +1,9 @@
-// variables globales
 let todosLosPedidos = [];
 let pedidoIdParaFactura = null;
 
-// elementos del dom (se inicializaran despues)
 let tabs, orderSections, btnNovedad, novedadModal, closeModal, cancelNovedad, novedadForm;
 let facturaModal, closeFacturaModal, closeFacturaBtn, downloadFacturaBtn;
 
-// cargar pedidos desde el servidor
 function cargarPedidos() {
     fetch('/api/cliente/mis-pedidos')
         .then(response => response.json())
@@ -25,7 +22,6 @@ function cargarPedidos() {
         });
 }
 
-// mapeo de estados
 function mapearEstado(estado) {
     const estadosAlistamiento = ['PENDIENTE', 'EN_ALISTAMIENTO', 'LISTO'];
     const estadosEntrega = ['ASIGNADO', 'EN_CAMINO'];
@@ -57,13 +53,11 @@ function mapearEstado(estado) {
     };
 }
 
-// formatear fecha
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
 }
 
-// crear tarjeta de pedido
 function createOrderCard(pedido) {
     const estadoInfo = mapearEstado(pedido.estado);
 
@@ -119,7 +113,6 @@ function createOrderCard(pedido) {
     `;
 }
 
-// mostrar pedidos por filtro
 function mostrarPedidosPorFiltro(filtro) {
     let pedidosFiltrados = [];
 
@@ -143,7 +136,6 @@ function mostrarPedidosPorFiltro(filtro) {
     displayOrders(pedidosFiltrados, containerId);
 }
 
-// mostrar pedidos en contenedor
 function displayOrders(orders, containerId) {
     const container = document.getElementById(containerId);
 
@@ -165,7 +157,6 @@ function displayOrders(orders, containerId) {
     container.innerHTML = orders.map(order => createOrderCard(order)).join('');
 }
 
-// mostrar sin pedidos
 function mostrarSinPedidos(filtro) {
     const containerMap = {
         'all': 'orders-container-all',
@@ -178,7 +169,6 @@ function mostrarSinPedidos(filtro) {
     displayOrders([], containerId);
 }
 
-// ver factura
 function verFactura(idPedido) {
     pedidoIdParaFactura = idPedido;
 
@@ -197,7 +187,6 @@ function verFactura(idPedido) {
         });
 }
 
-// mostrar factura en modal
 function mostrarFacturaEnModal(factura) {
     const fecha = new Date(factura.fechaPago);
     const fechaFormateada = fecha.toLocaleString('es-ES');
@@ -213,7 +202,7 @@ function mostrarFacturaEnModal(factura) {
 
     const facturaHTML = `
         <div class="factura-header">
-            <h1>🥚 EGGS GOLD</h1>
+            <h1> EGGS GOLD</h1>
             <p>Factura de Venta</p>
         </div>
         
@@ -257,13 +246,11 @@ function mostrarFacturaEnModal(factura) {
     facturaModal.style.display = 'flex';
 }
 
-// descargar factura pdf
 function descargarFacturaPDF() {
     if (!pedidoIdParaFactura) return;
     window.open('/api/cliente/factura/' + pedidoIdParaFactura + '/pdf', '_blank');
 }
 
-// inicializacion y event listeners
 document.addEventListener('DOMContentLoaded', function() {
     // inicializar elementos del dom
     tabs = document.querySelectorAll('.tab');
@@ -278,17 +265,13 @@ document.addEventListener('DOMContentLoaded', function() {
     closeFacturaBtn = document.getElementById('closeFacturaBtn');
     downloadFacturaBtn = document.getElementById('downloadFacturaBtn');
 
-    // navegacion por pestanas
     tabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            // remover clase active
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            // ocultar todas las secciones
             orderSections.forEach(section => section.classList.remove('active'));
 
-            // obtener filtro y mostrar seccion
             const filtro = tab.getAttribute('data-tab');
             const seccion = document.getElementById(`${filtro}-orders`);
 
@@ -296,12 +279,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 seccion.classList.add('active');
             }
 
-            // filtrar pedidos
             mostrarPedidosPorFiltro(filtro);
         });
     });
 
-    // modal de novedades
     if (btnNovedad) {
         btnNovedad.addEventListener('click', () => {
             novedadModal.style.display = 'flex';
@@ -320,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // modal de factura
     if (closeFacturaModal) {
         closeFacturaModal.addEventListener('click', () => {
             facturaModal.style.display = 'none';
@@ -337,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadFacturaBtn.addEventListener('click', descargarFacturaPDF);
     }
 
-    // formulario de novedad - usando funcion compartida
     if (novedadForm) {
         novedadForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -347,21 +326,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const descripcion = document.getElementById('descripcion').value.trim();
             const imagenFile = document.getElementById('evidencia').files[0];
 
-            // validar campos usando funcion compartida
             const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
             if (!validacion.valido) {
                 alert(validacion.mensaje);
                 return;
             }
 
-            // obtener id de usuario
             const idUsuario = obtenerIdUsuario();
             if (!idUsuario) {
                 alert('Error: No se pudo obtener la informacion de usuario. Recargue la pagina.');
                 return;
             }
 
-            // reportar novedad usando funcion compartida
             reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
                 .then(resultado => {
                     if (resultado.success) {
@@ -375,7 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // cerrar modales al hacer clic fuera
     window.addEventListener('click', (e) => {
         if (e.target === novedadModal) {
             novedadModal.style.display = 'none';
@@ -385,6 +360,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // cargar pedidos al iniciar
     cargarPedidos();
 });

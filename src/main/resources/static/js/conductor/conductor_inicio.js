@@ -1,11 +1,5 @@
-/* conductor_inicio.js - logica especifica
-   solo contiene la logica de negocio de conductor
-   la funcionalidad del sidebar esta en utils/sidebar.js */
-
-// variable global para el id del pedido a entregar
 let pedidoAEntregar = null;
 
-// cuando la pagina carga
 document.addEventListener("DOMContentLoaded", function() {
     cargarDashboard();
     cargarPedidosEnCamino();
@@ -14,9 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
     inicializarActualizacionAutomatica();
 });
 
-// funciones para el dashboard (tarjetas de resumen)
-
-/* carga los datos del dashboard: pedidos asignados y pendientes */
 async function cargarDashboard() {
     try {
         const response = await fetch('/api/conductor/dashboard/resumen');
@@ -27,13 +18,11 @@ async function cargarDashboard() {
 
         const datos = await response.json();
 
-        // actualizar contador de pedidos asignados
         const contadorAsignados = document.getElementById('totalAsignados');
         if (contadorAsignados) {
             contadorAsignados.textContent = datos.pedidosAsignados;
         }
 
-        // actualizar contador de pedidos pendientes
         const contadorPendientes = document.getElementById('totalPendientes');
         if (contadorPendientes) {
             contadorPendientes.textContent = datos.pedidosPendientes;
@@ -44,17 +33,12 @@ async function cargarDashboard() {
     }
 }
 
-/* inicializa la actualizacion automatica del dashboard
-   se actualiza cada minuto */
 function inicializarActualizacionAutomatica() {
-    // actualizar cada 60 segundos
     setInterval(() => {
         cargarDashboard();
     }, 60000);
 }
 
-// funcion: cargarPedidosEnCamino()
-// obtiene los pedidos en_camino desde el servidor
 function cargarPedidosEnCamino() {
     fetch('/api/conductor/pedidos-en-camino')
         .then(response => response.json())
@@ -72,8 +56,6 @@ function cargarPedidosEnCamino() {
         });
 }
 
-// funcion: mostrarPedidosEnTabla(pedidos)
-// muestra los pedidos en la tabla
 function mostrarPedidosEnTabla(pedidos) {
     const tbody = document.getElementById('tablaPedidosDiaBody');
     const tabla = document.getElementById('tablaPedidosDia');
@@ -115,15 +97,11 @@ function mostrarPedidosEnTabla(pedidos) {
     });
 }
 
-// funcion: mostrarMensajeVacio()
-// muestra mensaje cuando no hay pedidos
 function mostrarMensajeVacio() {
     document.getElementById('tablaPedidosDia').style.display = 'none';
     document.getElementById('mensajeVacio').style.display = 'block';
 }
 
-// funcion: marcarEntregado(idPedido)
-// abre modal para confirmar entrega
 function marcarEntregado(idPedido) {
     pedidoAEntregar = idPedido;
     document.getElementById('pedidoIdEntrega').textContent = idPedido;
@@ -131,8 +109,6 @@ function marcarEntregado(idPedido) {
     document.getElementById('modalEntregarPedido').style.display = 'flex';
 }
 
-// funcion: confirmarEntrega()
-// confirma la entrega con observacion
 function confirmarEntrega() {
     const observacion = document.getElementById('observacionEntrega').value;
 
@@ -161,15 +137,11 @@ function confirmarEntrega() {
         });
 }
 
-// funcion: cerrarModalEntrega()
-// cierra el modal de entrega
 function cerrarModalEntrega() {
     document.getElementById('modalEntregarPedido').style.display = 'none';
     pedidoAEntregar = null;
 }
 
-// funcion: configurarBusqueda()
-// configura la barra de busqueda de pedidos
 function configurarBusqueda() {
     const inputBuscar = document.getElementById("buscarPedido");
     const tbody = document.getElementById("tablaPedidosDiaBody");
@@ -192,8 +164,6 @@ function configurarBusqueda() {
     });
 }
 
-// funcion: verDetalle(idPedido)
-// abre el modal con los detalles del pedido
 function verDetalle(idPedido) {
     document.getElementById('pedidoId').textContent = idPedido;
 
@@ -203,13 +173,11 @@ function verDetalle(idPedido) {
             if (data.success) {
                 const detalle = data.detalle;
 
-                // llenar informacion del cliente
                 document.getElementById('clienteNombre').textContent = detalle.clienteNombre || 'N/A';
                 document.getElementById('clienteDireccion').textContent = detalle.direccion || 'N/A';
                 document.getElementById('clienteTelefono').textContent = detalle.clienteTelefono || 'N/A';
                 document.getElementById('clienteComentario').textContent = detalle.detalleCliente || 'Ninguno';
 
-                // llenar lista de productos
                 const lista = document.getElementById('listaProductos');
                 lista.innerHTML = '';
 
@@ -230,22 +198,17 @@ function verDetalle(idPedido) {
         });
 }
 
-// funcion: cerrarModal()
-// cierra el modal de detalles
 function cerrarModal() {
     const modal = document.getElementById('modalDetallePedido');
     modal.style.display = 'none';
 }
 
-// funcion: verRuta(direccion)
-// abre google maps con la direccion
 function verRuta(direccion) {
     const direccionCodificada = encodeURIComponent(direccion);
     const urlMaps = 'https://www.google.com/maps/search/?api=1&query=' + direccionCodificada;
     window.open(urlMaps, '_blank');
 }
 
-// cerrar modal al hacer clic fuera
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('modalDetallePedido');
     const novedadModal = document.getElementById('novedadModal');
@@ -264,7 +227,6 @@ window.addEventListener('click', function(e) {
     }
 });
 
-// configurar modal de novedad - usando funciones compartidas
 function configurarModalNovedad() {
     const novedadForm = document.getElementById('novedadForm');
 
@@ -277,21 +239,18 @@ function configurarModalNovedad() {
             const descripcion = document.getElementById('descripcion').value.trim();
             const imagenFile = document.getElementById('evidencia').files[0];
 
-            // validar campos usando funcion compartida
             const validacion = validarCamposNovedad(idPedido, tipoNovedad, descripcion);
             if (!validacion.valido) {
                 alert(validacion.mensaje);
                 return;
             }
 
-            // obtener id de usuario
             const idUsuario = obtenerIdUsuario();
             if (!idUsuario) {
                 alert('Error: No se pudo obtener la informacion de usuario. Recargue la pagina.');
                 return;
             }
 
-            // reportar novedad usando funcion compartida
             reportarNovedad(idUsuario, parseInt(idPedido), tipoNovedad, descripcion, imagenFile)
                 .then(resultado => {
                     if (resultado.success) {
@@ -305,7 +264,6 @@ function configurarModalNovedad() {
         });
     }
 
-    // configurar botones del modal
     const btnNovedad = document.getElementById('btnNovedad');
     const novedadModal = document.getElementById('novedadModal');
     const closeModal = document.getElementById('closeModal');
