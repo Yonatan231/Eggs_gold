@@ -298,7 +298,6 @@ header[role="banner"] {
     background-color: #229954;
 }
 
-/* responsive */
 @media (max-width: 768px) {
     main {
         margin-left: 0;

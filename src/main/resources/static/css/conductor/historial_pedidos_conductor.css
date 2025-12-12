@@ -1,5 +1,3 @@
-/* historial_pedidos_conductor.css - estilos especificos */
-
 :root {
     --color-verde: #27AE60;
     --color-amarillo: #F7DC6F;
@@ -23,7 +21,6 @@ body {
     min-height: 100vh;
 }
 
-/* contenido principal */
 main {
     flex: 1;
     margin-left: 250px;
@@ -31,7 +28,6 @@ main {
     transition: margin-left 0.3s ease;
 }
 
-/* cabecera (solo desktop) */
 header[role="banner"] {
     background: #ffffff;
     padding: 15px 20px;
@@ -93,7 +89,6 @@ header[role="banner"] {
     font-weight: bold;
 }
 
-/* contenedor principal de la tabla */
 .tabla-contenedor {
     max-width: 1400px;
     margin: 0 auto;
@@ -103,7 +98,6 @@ header[role="banner"] {
     overflow: hidden;
 }
 
-/* encabezado de la tabla */
 .tabla-header {
     padding: 25px 30px;
     background: var(--color-verde);
@@ -124,7 +118,6 @@ header[role="banner"] {
     gap: 10px;
 }
 
-/* barra de busqueda */
 .busqueda-contenedor {
     padding: 20px 30px;
     border-bottom: 1px solid #eee;
@@ -154,7 +147,6 @@ header[role="banner"] {
     border-color: var(--color-verde);
 }
 
-/* contenedor con scroll horizontal */
 .tabla-contenedor-scroll {
     overflow-x: auto;
     overflow-y: visible;
@@ -163,7 +155,6 @@ header[role="banner"] {
     -webkit-overflow-scrolling: touch;
 }
 
-/* personalizar barra de scroll */
 .tabla-contenedor-scroll::-webkit-scrollbar {
     height: 8px;
 }
@@ -182,7 +173,6 @@ header[role="banner"] {
     background: #555;
 }
 
-/* tabla con ancho minimo */
 .tabla-datos {
     width: 100%;
     min-width: 900px;
@@ -210,7 +200,6 @@ header[role="banner"] {
     background-color: #f8f9fa;
 }
 
-/* botones de accion */
 .btn-accion {
     padding: 8px 16px;
     border: none;
@@ -231,7 +220,6 @@ header[role="banner"] {
     background-color: #229954;
 }
 
-/* mensaje sin pedidos */
 .sin-pedidos {
     text-align: center;
     padding: 60px 20px;
@@ -250,7 +238,6 @@ header[role="banner"] {
     margin: 0;
 }
 
-/* modal */
 .modal {
     display: none;
     position: fixed;
@@ -299,7 +286,6 @@ header[role="banner"] {
     color: #e74c3c;
 }
 
-/* info cliente en modal */
 .info-cliente {
     background-color: #f8f9fa;
     padding: 20px;
@@ -327,7 +313,6 @@ header[role="banner"] {
     color: #555;
 }
 
-/* seccion de comentarios */
 .comentarios-section {
     margin-bottom: 20px;
 }
@@ -360,7 +345,6 @@ header[role="banner"] {
     font-style: italic;
 }
 
-/* detalle productos en modal */
 .detalle-productos {
     margin-bottom: 20px;
 }
@@ -395,8 +379,6 @@ header[role="banner"] {
     align-items: center;
 }
 
-
-/* botones del modal */
 .modal-botones {
     display: flex;
     justify-content: center;
@@ -426,7 +408,6 @@ header[role="banner"] {
     margin-right: 5px;
 }
 
-/* responsive */
 @media (max-width: 768px) {
     main {
         margin-left: 0;

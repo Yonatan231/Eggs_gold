@@ -1,5 +1,3 @@
-/* pedidos_pendientes.css - estilos especificos */
-
 :root {
     --color-verde: #27AE60;
     --color-amarillo: #F7DC6F;
@@ -21,7 +19,6 @@ body {
     min-height: 100vh;
 }
 
-/* contenido principal */
 main {
     flex: 1;
     margin-left: 250px;
@@ -30,7 +27,6 @@ main {
     transition: margin-left 0.3s ease;
 }
 
-/* cabecera (solo desktop) */
 header[role="banner"] {
     background: #ffffff;
     padding: 15px 20px;
@@ -92,7 +88,6 @@ header[role="banner"] {
     font-weight: bold;
 }
 
-/* alertas */
 .alert {
     max-width: 1200px;
     margin: 0 auto 20px auto;
@@ -126,7 +121,6 @@ header[role="banner"] {
     border: 1px solid #c62828;
 }
 
-/* contenedor de la tabla */
 .tabla-contenedor {
     max-width: 1200px;
     margin: 0 auto;
@@ -136,7 +130,6 @@ header[role="banner"] {
     overflow: hidden;
 }
 
-/* encabezado de la tabla */
 .tabla-header {
     padding: 25px 30px;
     background: var(--color-verde);
@@ -174,7 +167,6 @@ header[role="banner"] {
     font-weight: 700;
 }
 
-/* contenedor con scroll horizontal */
 .tabla-contenedor-scroll {
     overflow-x: auto;
     overflow-y: visible;
@@ -201,7 +193,6 @@ header[role="banner"] {
     background: #555;
 }
 
-/* tabla con ancho minimo */
 .tabla-datos {
     width: 100%;
     min-width: 900px;
@@ -233,7 +224,6 @@ header[role="banner"] {
     background-color: #f8f9fa;
 }
 
-/* boton tomar */
 .btn-tomar {
     background-color: var(--color-verde);
     color: white;
@@ -250,8 +240,6 @@ header[role="banner"] {
     background-color: #1F8A4E;
 }
 
-
-/* mensaje sin pedidos */
 .sin-pedidos {
     text-align: center;
     padding: 60px 20px;
@@ -270,7 +258,6 @@ header[role="banner"] {
     margin: 0;
 }
 
-/* animacion de fila eliminada */
 @keyframes fadeOut {
     from {
         opacity: 1;
@@ -286,7 +273,6 @@ header[role="banner"] {
     animation: fadeOut 0.5s ease-out forwards;
 }
 
-/* responsive */
 @media (max-width: 768px) {
     main {
         margin-left: 0;

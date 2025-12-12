@@ -1,4 +1,3 @@
-/* ===== VARIABLES GLOBALES ===== */
 :root {
     --primary-color: #F7DC6F;
     --success-color: #27ae60;
@@ -8,7 +7,6 @@
     --gray-color: #95a5a6;
 }
 
-/* ===== RESET BÁSICO ===== */
 * {
     margin: 0;
     padding: 0;
@@ -16,7 +14,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ===== BODY ===== */
 body {
     background-color: #f5f7fa;
     color: #333;
@@ -24,7 +21,6 @@ body {
     padding: 20px;
 }
 
-/* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -34,7 +30,6 @@ body {
     overflow: hidden;
 }
 
-/* ===== HEADER ===== */
 header {
     background: #F7DC6F;
     color: white;
@@ -42,7 +37,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative; /* Necesario para posicionar el botón */
+    position: relative;
 }
 
 .header-content {
@@ -51,7 +46,6 @@ header {
     width: 100%;
 }
 
-/* ===== LOGO ===== */
 .logo-titulo {
     display: flex;
     flex-direction: column;
@@ -74,11 +68,9 @@ header {
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
 }
 
-/* ===== TEXTO DEL HEADER ===== */
 .header-text {
     flex-grow: 1;
     text-align: center;
-    /* SIN position: relative - el botón se posiciona relativo al header */
 }
 
 .header-text h1 {
@@ -93,8 +85,6 @@ header {
     color: #333;
 }
 
-/* ===== BOTÓN VOLVER ===== */
-/* Se posiciona relativo al header, no al header-text */
 .btn-volver {
     position: absolute;
     top: 20px;
@@ -102,7 +92,7 @@ header {
     background-color: var(--success-color);
     color: white;
     border: none;
-    border-radius: 8px; /* Cuadrado con bordes redondeados */
+    border-radius: 8px;
     padding: 10px;
     width: 40px;
     height: 40px;
@@ -128,12 +118,10 @@ header {
     background-color: #219653;
 }
 
-/* ===== PERFIL DE USUARIO ===== */
 .user-profile {
     padding: 30px;
 }
 
-/* ===== FORMULARIO ===== */
 .form-group {
     margin-bottom: 20px;
 }
@@ -183,7 +171,6 @@ input:disabled {
     font-style: italic;
 }
 
-/* ===== BOTONES DEL FORMULARIO ===== */
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -231,7 +218,6 @@ input:disabled {
     background-color: #219653;
 }
 
-/* ===== ALERTAS ===== */
 .alert {
     padding: 15px;
     border-radius: 6px;
@@ -251,7 +237,6 @@ input:disabled {
     border: 1px solid #f9b4ab;
 }
 
-/* ===== CAMPO DE CONTRASEÑA ===== */
 .password-toggle {
     position: relative;
 }
@@ -268,11 +253,6 @@ input:disabled {
     font-size: 14px;
 }
 
-/* ==========================================
-   RESPONSIVE - TABLETS Y MÓVILES
-   ========================================== */
-
-/* ===== TABLETS (768px o menos) ===== */
 @media (max-width: 768px) {
     .form-row {
         flex-direction: column;
@@ -283,7 +263,6 @@ input:disabled {
         flex-direction: column;
     }
 
-    /* Header reorganizado */
     header {
         padding: 15px 20px;
     }
@@ -293,7 +272,6 @@ input:disabled {
         text-align: center;
     }
 
-    /* Logo en esquina superior izquierda */
     .marca {
         position: absolute !important;
         top: 10px;
@@ -312,7 +290,6 @@ input:disabled {
         border-width: 2px;
     }
 
-    /* Botón volver alineado con el logo */
     .btn-volver {
         top: 10px;
         right: 10px;
@@ -326,7 +303,6 @@ input:disabled {
         height: 18px;
     }
 
-    /* Texto centrado con espacio para logo y botón */
     .header-text {
         margin-top: 40px;
         padding: 0 50px;
@@ -341,7 +317,6 @@ input:disabled {
     }
 }
 
-/* ===== MÓVILES (480px o menos) ===== */
 @media (max-width: 480px) {
     .header-text h1 {
         font-size: 1.3rem;
@@ -351,7 +326,6 @@ input:disabled {
         font-size: 0.85rem;
     }
 
-    /* Logo más pequeño */
     .marca {
         top: 8px !important;
         left: 8px !important;
@@ -362,7 +336,6 @@ input:disabled {
         height: 30px !important;
     }
 
-    /* Botón volver alineado con el logo */
     .btn-volver {
         top: 8px;
         right: 8px;

@@ -1,12 +1,3 @@
-/* ============================================
-   HEADER-RESPONSIVE.CSS - HEADER FIJO RESPONSIVE
-   Este archivo maneja el header que se muestra
-   en todas las pantallas con diseño responsive
-   ============================================ */
-
-/* ============================================
-   RESET GLOBAL PARA PREVENIR OVERFLOW
-   ============================================ */
 * {
     box-sizing: border-box;
 }
@@ -23,9 +14,6 @@ body {
     padding: 0;
 }
 
-/* ============================================
-   VARIABLES DEL HEADER
-   ============================================ */
 :root {
     --header-height: 70px;
     --header-bg: #F7DC6F;
@@ -34,9 +22,6 @@ body {
     --color-dark: #2c3e50;
 }
 
-/* ============================================
-   HEADER PRINCIPAL
-   ============================================ */
 .header-responsive {
     position: fixed;
     top: 0;
@@ -60,9 +45,6 @@ body {
     width: 100%;
 }
 
-/* ============================================
-   LOGO EN EL HEADER (solo imagen)
-   ============================================ */
 .header-logo {
     display: flex;
     align-items: center;
@@ -81,9 +63,6 @@ body {
     display: none;
 }
 
-/* ============================================
-   TÍTULO DEL CENTRO
-   ============================================ */
 .header-title {
     flex: 1;
     text-align: center;
@@ -100,9 +79,6 @@ body {
     color: var(--color-primary);
 }
 
-/* ============================================
-   BOTÓN HAMBURGUESA EN EL HEADER
-   ============================================ */
 .header-hamburger {
     background: transparent;
     color: #333;
@@ -120,9 +96,6 @@ body {
     color: #333;
 }
 
-/* ============================================
-   AJUSTE DEL CONTENIDO PRINCIPAL
-   ============================================ */
 main {
     margin-left: 250px;
     padding: 20px;
@@ -131,9 +104,6 @@ main {
     max-width: 100%;
 }
 
-/* ============================================
-   HEADER ANTIGUO (el que ya existe)
-   ============================================ */
 header[role="banner"] {
     background-color: #ffffff;
     padding: 15px 20px;
@@ -142,9 +112,6 @@ header[role="banner"] {
     margin-bottom: 25px;
 }
 
-/* ============================================
-   CONTENEDORES DE TABLAS CON SCROLL
-   ============================================ */
 .tabla-contenedor,
 .table-container {
     width: 100%;
@@ -159,9 +126,6 @@ header[role="banner"] {
     width: 100%;
 }
 
-/* ============================================
-   RESPONSIVE - TABLETS Y MÓVILES
-   ============================================ */
 @media (max-width: 768px) {
     .header-responsive {
         display: block;
@@ -218,9 +182,6 @@ header[role="banner"] {
     }
 }
 
-/* ============================================
-   RESPONSIVE - DESKTOP
-   ============================================ */
 @media (min-width: 769px) {
     .toggle-btn {
         display: none !important;
@@ -231,9 +192,6 @@ header[role="banner"] {
     }
 }
 
-/* ============================================
-   PREVENIR OVERFLOW EN TODOS LOS ELEMENTOS
-   ============================================ */
 img {
     max-width: 100%;
     height: auto;

@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #27AE60 0%, #145A32 100%);
-    padding: 1rem; /* Padding general para móviles */
+    padding: 1rem;
 }
 
 .error-card {
@@ -15,7 +15,7 @@
     text-align: center;
     max-width: 500px;
     width: 100%;
-    margin: 1rem; /* Margen para móviles */
+    margin: 1rem;
 }
 
 .error-code {
@@ -45,7 +45,7 @@
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
-    display: inline-block; /* Para que funcione mejor en móviles */
+    display: inline-block;
 }
 
 .btn-home:hover {
@@ -53,9 +53,6 @@
     transform: scale(1.08);
 }
 
-/* MEDIA QUERIES PARA RESPONSIVE */
-
-/* Tablets y pantallas medianas */
 @media (max-width: 768px) {
     .error-card {
         padding: 2rem;
@@ -75,7 +72,6 @@
     }
 }
 
-/* Móviles */
 @media (max-width: 480px) {
     .error-container {
         padding: 0.5rem;
@@ -108,7 +104,6 @@
     }
 }
 
-/* Pantallas muy pequeñas (móviles pequeños) */
 @media (max-width: 320px) {
     .error-card {
         padding: 1rem;
@@ -125,6 +120,6 @@
 
     .btn-home {
         padding: 0.6rem 1.5rem;
-        width: 100%; /* Botón ocupa todo el ancho */
+        width: 100%;
     }
 }

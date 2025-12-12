@@ -135,7 +135,6 @@ header[role="banner"] {
     margin: 0;
 }
 
-/* boton csv con icono */
 .btn-csv {
     background: var(--color-verde);
     color: white;
@@ -186,7 +185,6 @@ header[role="banner"] {
     border-color: var(--color-verde);
 }
 
-/* select con altura para mostrar multiples opciones */
 .formulario-contenedor select[size] {
     min-height: 150px;
     padding: 8px;

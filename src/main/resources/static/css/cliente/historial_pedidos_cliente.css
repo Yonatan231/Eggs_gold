@@ -22,8 +22,6 @@ body {
     width: 100%;
 }
 
-/* header fixed responsive */
-
 .header {
     background-color: #F7DC6F;
     color: #333333;
@@ -46,12 +44,10 @@ body {
     gap: 20px;
 }
 
-/* logo empujado a la izquierda (solo desktop) */
 .logo {
     margin-right: auto;
 }
 
-/* titulo central */
 .header-title {
     flex: 0 1 auto;
     text-align: center;
@@ -67,7 +63,6 @@ body {
     text-overflow: ellipsis;
 }
 
-/* navegacion empujada a la derecha (solo desktop) */
 .header-actions {
     display: flex;
     align-items: center;
@@ -105,7 +100,6 @@ body {
     background-color: #1e8449;
 }
 
-/* boton hamburguesa - oculto por defecto */
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -121,8 +115,6 @@ body {
     background-color: #333333;
     border-radius: 2px;
 }
-
-/* main content */
 
 .container {
     width: calc(100% - 40px);
@@ -159,7 +151,6 @@ body {
     color: #ffff;
 }
 
-/* secciones ocultas por defecto */
 .orders-section {
     display: none;
 }
@@ -168,7 +159,6 @@ body {
     display: block;
 }
 
-/* grid de pedidos */
 .orders-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -312,8 +302,6 @@ body {
     background-color: #2980b9;
 }
 
-/* modales */
-
 .modal {
     display: none;
     position: fixed;
@@ -442,7 +430,6 @@ textarea.form-control {
     background: #2ecc71;
 }
 
-/* modal de factura */
 .modal-factura {
     max-width: 600px;
     max-height: 77vh;
@@ -528,9 +515,6 @@ textarea.form-control {
     border-top: 2px solid #F7DC6F;
 }
 
-/* media queries - responsive */
-
-/* tablets y moviles (768px o menos) */
 @media (max-width: 768px) {
 
     body {
@@ -545,7 +529,6 @@ textarea.form-control {
         gap: 10px;
     }
 
-    /* resetear margenes del logo en movil */
     .logo {
         margin-right: 0;
         width: 40px;
@@ -553,7 +536,6 @@ textarea.form-control {
         flex-shrink: 0;
     }
 
-    /* titulo mas pequeno */
     .header-title {
         flex: 1;
     }
@@ -562,12 +544,10 @@ textarea.form-control {
         font-size: 18px;
     }
 
-    /* mostrar boton hamburguesa */
     .menu-toggle {
         display: flex;
     }
 
-    /* menu desplegable en movil */
     .header-actions {
         position: absolute;
         top: 100%;
@@ -583,12 +563,10 @@ textarea.form-control {
         margin-left: 0;
     }
 
-    /* menu abierto */
     .header-actions.active {
         max-height: 200px;
     }
 
-    /* items en movil ocupan todo el ancho */
     .nav-item {
         width: 100%;
         padding: 15px 20px;
@@ -603,13 +581,11 @@ textarea.form-control {
         border-bottom: none;
     }
 
-    /* hover en movil */
     .nav-item:hover {
         background-color: #27AE60;
         color: white;
     }
 
-    /* mantener colores de fondo en los botones del menu movil */
     .btn-novedad {
         background-color: transparent;
         color: #333333;
@@ -630,14 +606,12 @@ textarea.form-control {
         color: white;
     }
 
-    /* container ajustado */
     .container {
         width: calc(100% - 30px);
         margin: 15px auto;
         padding: 10px;
     }
 
-    /* tabs responsive */
     .tabs {
         flex-direction: column;
         gap: 5px;
@@ -647,7 +621,6 @@ textarea.form-control {
         min-width: auto;
     }
 
-    /* grid de 1 columna en moviles */
     .orders-grid {
         grid-template-columns: 1fr;
     }
@@ -656,7 +629,6 @@ textarea.form-control {
         grid-template-columns: 1fr;
     }
 
-    /* factura responsive */
     .factura-info {
         grid-template-columns: 1fr;
     }
@@ -681,7 +653,6 @@ textarea.form-control {
     }
 }
 
-/* moviles pequenos (480px o menos) */
 @media (max-width: 480px) {
 
     body {

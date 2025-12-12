@@ -1,7 +1,3 @@
-/* ============================================
-   INVENTARIO.CSS - ESTILOS ESPECÍFICOS
-   ============================================ */
-
 :root {
     --color-verde: #27AE60;
     --color-rojo: #e74c3c;
@@ -10,9 +6,6 @@
     --color-gris: #7f8c8d;
 }
 
-/* ============================================
-   BODY Y MAIN
-   ============================================ */
 body {
     background-color: #FEFCF4;
     font-family: Arial, sans-serif;
@@ -29,9 +22,6 @@ main {
     transition: margin-left 0.3s ease;
 }
 
-/* ============================================
-   HEADER DESKTOP
-   ============================================ */
 header[role="banner"] {
     background-color: white;
     border-bottom: 1px solid #ddd;
@@ -89,9 +79,6 @@ header[role="banner"] {
     white-space: nowrap;
 }
 
-/* ============================================
-   ALERTAS
-   ============================================ */
 .alert {
     max-width: 90%;
     margin: 20px auto;
@@ -113,9 +100,6 @@ header[role="banner"] {
     border: 1px solid #c62828;
 }
 
-/* ============================================
-   BARRA DE BÚSQUEDA Y FILTROS
-   ============================================ */
 .filtros {
     background: #fff;
     padding: 20px;
@@ -183,9 +167,6 @@ header[role="banner"] {
     border-color: var(--color-verde);
 }
 
-/* ============================================
-   CONTENEDOR CON SCROLL HORIZONTAL
-   ============================================ */
 .tabla-contenedor-scroll {
     overflow-x: auto;
     overflow-y: visible;
@@ -215,9 +196,6 @@ header[role="banner"] {
     background: #555;
 }
 
-/* ============================================
-   TABLA CON ANCHO MÍNIMO
-   ============================================ */
 .tabla-datos {
     width: 100%;
     min-width: 900px;
@@ -253,9 +231,6 @@ header[role="banner"] {
     background-color: #f8f9fa;
 }
 
-/* ============================================
-   BOTÓN DE EDITAR
-   ============================================ */
 .btn-editar {
     background: var(--color-amarillo);
     color: #333;
@@ -273,9 +248,6 @@ header[role="banner"] {
     background: #F4D03F;
 }
 
-/* ============================================
-   BADGES DE CANTIDAD Y ESTADO
-   ============================================ */
 .badge-cantidad, .badge-estado {
     font-weight: bold;
     padding: 6px 12px;
@@ -311,9 +283,6 @@ header[role="banner"] {
     background: var(--color-rojo);
 }
 
-/* ============================================
-   MODAL
-   ============================================ */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -439,9 +408,6 @@ header[role="banner"] {
     background: #1e8449;
 }
 
-/* ============================================
-   PREVIEW DE IMAGEN EN EL MODAL
-   ============================================ */
 .preview-imagen-modal {
     width: 100%;
     max-width: 300px;
@@ -497,9 +463,6 @@ header[role="banner"] {
     white-space: nowrap;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
 @media (max-width: 768px) {
     main {
         margin-left: 0;

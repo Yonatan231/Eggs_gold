@@ -1,8 +1,3 @@
-/* pedidos_asignados.css - estilos especificos
-   solo contiene estilos unicos de la vista de pedidos asignados
-   los estilos del sidebar y header estan en utils/ */
-
-/* variables especificas */
 :root {
     --color-verde: #27AE60;
     --color-amarillo: #F7DC6F;
@@ -10,14 +5,12 @@
     --color-fondo: #FFFEF5;
 }
 
-/* reseteo basico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* body */
 body {
     font-family: Arial, sans-serif;
     background-color: #FFFEF5;
@@ -26,7 +19,6 @@ body {
     min-height: 100vh;
 }
 
-/* contenido principal */
 main {
     flex: 1;
     margin-left: 250px;
@@ -34,7 +26,6 @@ main {
     transition: margin-left 0.3s ease;
 }
 
-/* cabecera (solo para desktop) */
 header[role="banner"] {
     background: #ffffff;
     padding: 15px 20px;
@@ -96,7 +87,6 @@ header[role="banner"] {
     font-weight: bold;
 }
 
-/* alertas (mensajes de exito y error) */
 .alert {
     max-width: 1400px;
     margin: 0 auto 20px auto;
@@ -118,7 +108,6 @@ header[role="banner"] {
     border: 1px solid #c62828;
 }
 
-/* contenedor principal de la tabla */
 .tabla-contenedor {
     max-width: 1400px;
     margin: 0 auto;
@@ -128,7 +117,6 @@ header[role="banner"] {
     overflow: hidden;
 }
 
-/* encabezado de la tabla */
 .tabla-header {
     padding: 25px 30px;
     background: var(--color-verde);
@@ -166,7 +154,6 @@ header[role="banner"] {
     font-weight: 700;
 }
 
-/* contenedor con scroll horizontal */
 .tabla-contenedor-scroll {
     overflow-x: auto;
     overflow-y: visible;
@@ -175,7 +162,6 @@ header[role="banner"] {
     -webkit-overflow-scrolling: touch;
 }
 
-/* personalizar la barra de scroll */
 .tabla-contenedor-scroll::-webkit-scrollbar {
     height: 8px;
 }
@@ -194,7 +180,6 @@ header[role="banner"] {
     background: #555;
 }
 
-/* tabla - con ancho minimo para no comprimir */
 .tabla-datos {
     width: 100%;
     min-width: 900px;
@@ -222,7 +207,6 @@ header[role="banner"] {
     background-color: #f8f9fa;
 }
 
-/* botones de accion en tabla */
 .btn-accion {
     padding: 8px 16px;
     border: none;
@@ -252,7 +236,6 @@ header[role="banner"] {
     background-color: #F1C40F;
 }
 
-/* mensaje cuando no hay pedidos */
 .sin-pedidos {
     text-align: center;
     padding: 60px 20px;
@@ -271,7 +254,6 @@ header[role="banner"] {
     margin: 0;
 }
 
-/* modal (ventana emergente) */
 .modal {
     display: none;
     position: fixed;
@@ -317,7 +299,6 @@ header[role="banner"] {
     color: #e74c3c;
 }
 
-/* informacion del cliente en el modal */
 .info-cliente {
     background-color: #f8f9fa;
     padding: 15px;
@@ -337,7 +318,6 @@ header[role="banner"] {
     color: #555;
 }
 
-/* detalle de productos en el modal */
 .detalle-productos {
     margin-bottom: 20px;
 }
@@ -363,7 +343,6 @@ header[role="banner"] {
     color: #333;
 }
 
-/* botones del modal */
 .modal-botones {
     display: flex;
     justify-content: flex-end;
@@ -398,7 +377,6 @@ header[role="banner"] {
     background: #2ecc71;
 }
 
-/* responsive */
 @media (max-width: 768px) {
     main {
         margin-left: 0;
@@ -423,7 +401,6 @@ header[role="banner"] {
         padding: 15px;
     }
 
-    /* en moviles, la tabla mantiene su ancho minimo y permite scroll */
     .tabla-datos {
         min-width: 900px;
     }
@@ -455,7 +432,6 @@ header[role="banner"] {
         font-size: 13px;
     }
 
-    /* en moviles pequenos, se puede reducir ligeramente el ancho minimo */
     .tabla-datos {
         min-width: 800px;
     }

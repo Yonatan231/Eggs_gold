@@ -8,14 +8,12 @@
     --color-gris: #7f8c8d;
 }
 
-/* reseteo basico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* body */
 body {
     font-family: Arial, sans-serif;
     background-color: #FFFEF5;
@@ -24,7 +22,6 @@ body {
     min-height: 100vh;
 }
 
-/* contenido principal */
 main {
     flex: 1;
     margin-left: 250px;
@@ -32,7 +29,6 @@ main {
     transition: margin-left 0.3s ease;
 }
 
-/* cabecera (solo para desktop) */
 header[role="banner"] {
     background: #ffffff;
     padding: 15px 20px;
@@ -94,7 +90,6 @@ header[role="banner"] {
     font-weight: bold;
 }
 
-/* tarjetas de resumen */
 .contenedor-cuadros {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -151,7 +146,6 @@ header[role="banner"] {
     color: #2c3e50;
 }
 
-/* seccion de tabla */
 .seccion-tabla {
     background: white;
     border-radius: 10px;
@@ -195,7 +189,6 @@ header[role="banner"] {
     border-color: var(--color-verde);
 }
 
-/* contenedor con scroll horizontal */
 .tabla-contenedor-scroll {
     overflow-x: auto;
     overflow-y: visible;
@@ -203,7 +196,6 @@ header[role="banner"] {
     -webkit-overflow-scrolling: touch;
 }
 
-/* personalizar la barra de scroll (opcional) */
 .tabla-contenedor-scroll::-webkit-scrollbar {
     height: 8px;
 }
@@ -222,7 +214,6 @@ header[role="banner"] {
     background: #555;
 }
 
-/* tabla - con ancho minimo para no comprimir */
 .tabla-datos {
     width: 100%;
     min-width: 900px;
@@ -249,7 +240,6 @@ header[role="banner"] {
     background-color: #f8f9fa;
 }
 
-/* botones de accion en tablas */
 .btn-accion-tabla {
     padding: 8px 12px;
     border: none;
@@ -286,7 +276,6 @@ header[role="banner"] {
     background: #F1C40F;
 }
 
-/* mensaje vacio */
 .mensaje-vacio {
     text-align: center;
     padding: 40px 20px;
@@ -301,7 +290,6 @@ header[role="banner"] {
     display: block;
 }
 
-/* modales */
 .modal {
     display: none;
     position: fixed;
@@ -347,7 +335,6 @@ header[role="banner"] {
     color: #e74c3c;
 }
 
-/* info cliente en modal */
 .info-cliente {
     background-color: #f8f9fa;
     padding: 15px;
@@ -367,7 +354,6 @@ header[role="banner"] {
     color: #555;
 }
 
-/* detalle productos en modal */
 .detalle-productos {
     margin-bottom: 20px;
 }
@@ -393,7 +379,6 @@ header[role="banner"] {
     color: #333;
 }
 
-/* botones del modal */
 .modal-botones {
     display: flex;
     justify-content: flex-end;
@@ -428,7 +413,6 @@ header[role="banner"] {
     background: #2ecc71;
 }
 
-/* modal de novedad */
 #novedadModal {
     display: none;
     position: fixed;
@@ -552,7 +536,6 @@ textarea.form-control {
     background: #2ecc71;
 }
 
-/* responsive */
 @media (max-width: 768px) {
     main {
         margin-left: 0;
@@ -567,7 +550,6 @@ textarea.form-control {
         grid-template-columns: 1fr;
     }
 
-    /* en moviles, la tabla mantiene su ancho minimo y permite scroll */
     .tabla-datos {
         min-width: 900px;
     }
@@ -600,7 +582,6 @@ textarea.form-control {
         font-size: 28px;
     }
 
-    /* en moviles pequenos, se puede reducir ligeramente el ancho minimo */
     .tabla-datos {
         min-width: 800px;
     }

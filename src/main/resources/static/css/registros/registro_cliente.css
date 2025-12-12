@@ -14,7 +14,6 @@ body {
     background: rgba(244, 208, 63, 0.08);
 }
 
-/* Contenedor principal */
 main {
     display: flex;
     justify-content: center;
@@ -22,7 +21,6 @@ main {
     padding: 60px 10px;
 }
 
-/* Contenedor del formulario con imagen */
 .form-wrapper {
     display: flex;
     flex-direction: row;
@@ -48,14 +46,12 @@ main {
     border-radius: 6px;
 }
 
-/* Tarjeta del formulario */
 .form-card {
     max-width: 500px;
     width: 100%;
     animation: slideIn 1s ease;
 }
 
-/* Estilos del formulario */
 form {
     display: flex;
     flex-direction: column;
@@ -81,7 +77,6 @@ input:focus {
     background-color: #f4f4f4;
 }
 
-/* Botón de registro */
 .boton-registrarse {
     background-color: var(--color-verde);
     color: #fff;
@@ -97,14 +92,12 @@ input:focus {
     transform: scale(1.05);
 }
 
-/* Imagen del formulario */
 .registro-img {
     max-width: 300px;
     height: auto;
     animation: fadeInLeft 1.2s ease;
 }
 
-/* Enlace a login */
 .enlace-login {
     text-align: center;
     margin-top: 10px;
@@ -121,7 +114,6 @@ input:focus {
     color: var(--color-verde);
 }
 
-/* Mensajes de error y éxito */
 .mensaje-error {
     color: red;
     font-size: 14px;
@@ -134,7 +126,6 @@ input:focus {
     text-align: center;
 }
 
-/* Animaciones */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -150,9 +141,6 @@ input:focus {
     to { transform: translateX(0); opacity: 1; }
 }
 
-/* ========== MEDIA QUERIES PARA DISEÑO RESPONSIVE ========== */
-
-/* Para tablets y pantallas medianas (hasta 1024px) */
 @media (max-width: 1024px) {
     .form-wrapper {
         gap: 30px;
@@ -164,7 +152,6 @@ input:focus {
     }
 }
 
-/* Para tablets pequeñas y móviles grandes (hasta 768px) */
 @media (max-width: 768px) {
     main {
         padding: 40px 10px;
@@ -185,7 +172,7 @@ input:focus {
 
     .registro-img {
         max-width: 200px;
-        order: -1; /* Coloca la imagen arriba en móviles */
+        order: -1;
     }
 
     .form-card {
@@ -193,7 +180,6 @@ input:focus {
     }
 }
 
-/* Para móviles pequeños (hasta 480px) */
 @media (max-width: 480px) {
     main {
         padding: 20px 10px;
