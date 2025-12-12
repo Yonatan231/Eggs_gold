@@ -29,13 +29,11 @@ public class PedidoAdminDTO {
     private Integer cantidadTotal;
     private BigDecimal totalPedido;
 
-    // Información según estado
     private String nombreLogistica;
     private String apellidoLogistica;
     private String nombreConductor;
     private String apellidoConductor;
 
-    // Productos del pedido
     private List<ProductoPedidoDTO> productos;
 
     @Data

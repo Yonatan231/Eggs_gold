@@ -11,11 +11,8 @@ import java.util.Optional;
 
 public interface ConductorRepository extends JpaRepository<Conductor, Integer> {
 
-    // buscar conductor solo por numero de documento
-    // ya no buscamos por password porque ahora esta hasheada
     Optional<Conductor> findByNumDocumento(String numDocumento);
 
-    // metodo para el reporte de conductores con pedidos entregados
     @Query("""
     SELECT new com.sena.eggs_gold.dto.ConductorDTO(
         u.idUsuarios, u.nombre, u.apellido, u.numDocumento, 

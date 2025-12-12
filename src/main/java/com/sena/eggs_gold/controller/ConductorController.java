@@ -31,7 +31,6 @@ public class ConductorController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // Mostrar formulario de registro de conductor
     @GetMapping("/registrar_conductor")
     public String mostrarFormulario(Model model, HttpSession session) {
         String rol = (String) session.getAttribute("rol");
@@ -52,14 +51,12 @@ public class ConductorController {
             return "redirect:/acceso_denegado";
         }
 
-        // ✅ Validar que el número de documento no esté registrado
         if (usuarioService.documentoYaExistente(conductorDTO.getNumDocumento())) {
             model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
             model.addAttribute("conductor", conductorDTO); // Mantener los datos del formulario
             return "registros/registro_conductor";
         }
 
-        // ✅ Validar que el correo no esté registrado
         if (usuarioService.correoYaExistente(conductorDTO.getCorreo())) {
             model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
             model.addAttribute("conductor", conductorDTO); // Mantener los datos del formulario
@@ -73,7 +70,6 @@ public class ConductorController {
                     conductorDTO.getNombre()
             );
 
-            // ✅ Mensaje de éxito y limpiar formulario
             model.addAttribute("mensaje", "Conductor registrado exitosamente y correo enviado");
             model.addAttribute("conductor", new ConductorDTO()); // Formulario limpio
             return "registros/registro_conductor";
@@ -100,7 +96,6 @@ public class ConductorController {
         return "conductor/historial_pedidos_conductor";
     }
 
-    // Obtener pedidos asignados al conductor
     @GetMapping("/api/conductor/pedidos-asignados")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerPedidosAsignados(HttpSession session) {
@@ -128,7 +123,6 @@ public class ConductorController {
         }
     }
 
-    // Obtener pedidos en camino
     @GetMapping("/api/conductor/pedidos-en-camino")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerPedidosEnCamino(HttpSession session) {
@@ -156,7 +150,6 @@ public class ConductorController {
         }
     }
 
-    // Aceptar pedido
     @PostMapping("/api/conductor/aceptar-pedido/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> aceptarPedido(
@@ -187,7 +180,6 @@ public class ConductorController {
         }
     }
 
-    // Marcar pedido como entregado
     @PostMapping("/api/conductor/entregar-pedido/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> entregarPedido(
@@ -206,7 +198,6 @@ public class ConductorController {
                 return ResponseEntity.status(401).body(response);
             }
 
-            // ✅ OBTENER OBSERVACIÓN DEL BODY
             String observacion = datos.get("observacion");
 
             conductorService.marcarPedidoEntregado(idPedido, idConductor, observacion);
@@ -222,7 +213,6 @@ public class ConductorController {
         }
     }
 
-    // Obtener detalles de un pedido
     @GetMapping("/api/conductor/detalle-pedido/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerDetallePedido(
@@ -244,7 +234,6 @@ public class ConductorController {
         }
     }
 
-    // Obtener historial de pedidos entregados
     @GetMapping("/api/conductor/historial")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerHistorial(HttpSession session) {

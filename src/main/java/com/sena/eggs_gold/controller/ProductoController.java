@@ -24,21 +24,18 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    // ✅ NUEVO: Endpoint para listar TODOS los productos (usado por cargarProductos())
     @GetMapping("/api/productos")
     @ResponseBody
     public List<ProductoDTO> listarTodosLosProductos() {
         return productoService.listaProductos();
     }
 
-    // Mostrar formulario para agregar producto
     @GetMapping("/registrar_producto")
     public String mostrarFormularioAgregarProducto(Model model) {
         model.addAttribute("producto", new ProductoDTO());
         return "registros/registro_producto";
     }
 
-    // Procesar formulario de guardado
     @PostMapping("/registrar_producto")
     public String guardarProducto(
             @ModelAttribute ProductoDTO productoDTO,
@@ -47,22 +44,20 @@ public class ProductoController {
     ) {
         try {
             productoService.guardarProducto(productoDTO, imagenFile);
-            model.addAttribute("success", "✅ Producto guardado con éxito");
+            model.addAttribute("success", " Producto guardado con éxito");
         } catch (IOException e) {
-            model.addAttribute("error", "❌ Error al guardar el producto: " + e.getMessage());
+            model.addAttribute("error", " Error al guardar el producto: " + e.getMessage());
         }
         model.addAttribute("producto", new ProductoDTO()); // limpiar formulario
         return "registros/registro_producto";
     }
 
-    // Listar productos en una vista
     @GetMapping("/lista_productos")
     public String listaProductos(Model model) {
         model.addAttribute("productos", productoService.listaProductos());
         return "lista_productos";
     }
 
-    // ✅ CORREGIDO: Actualizar producto
     @PutMapping("/api/productos/actualizar/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> actualizarProducto(
@@ -84,17 +79,16 @@ public class ProductoController {
         }
     }
 
-    // ✅ CORREGIDO: Descontinuar producto
     @PutMapping("/api/productos/descontinuar")
     @ResponseBody
     public ResponseEntity<String> descontinuarProducto(@RequestParam Integer id) {
         boolean actualizado = productoService.marcarComoDescontinuado(id);
 
         if (actualizado) {
-            return ResponseEntity.ok("✅ Producto marcado como DESCONTINUADO.");
+            return ResponseEntity.ok(" Producto marcado como DESCONTINUADO.");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("❌ No se pudo actualizar el estado del producto.");
+                    .body(" No se pudo actualizar el estado del producto.");
         }
     }
 
@@ -106,29 +100,26 @@ public class ProductoController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Validar que se envió un archivo
             if (archivoCSV.isEmpty()) {
                 response.put("success", false);
-                response.put("message", "❌ Debes seleccionar un archivo CSV");
+                response.put("message", " Debes seleccionar un archivo CSV");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // Validar extensión del archivo
             String nombreArchivo = archivoCSV.getOriginalFilename();
             if (nombreArchivo == null || !nombreArchivo.toLowerCase().endsWith(".csv")) {
                 response.put("success", false);
-                response.put("message", "❌ El archivo debe ser .csv");
+                response.put("message", " El archivo debe ser .csv");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // Procesar el CSV
             Map<String, Object> resultado = productoService.guardarProductosDesdeCSV(archivoCSV);
 
             response.put("success", true);
             response.put("exitosos", resultado.get("exitosos"));
             response.put("fallidos", resultado.get("fallidos"));
             response.put("errores", resultado.get("errores"));
-            response.put("message", "✅ Carga completada: " +
+            response.put("message", " Carga completada: " +
                     resultado.get("exitosos") + " productos insertados, " +
                     resultado.get("fallidos") + " fallidos");
 
@@ -136,7 +127,7 @@ public class ProductoController {
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error al procesar el archivo: " + e.getMessage());
+            response.put("message", " Error al procesar el archivo: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

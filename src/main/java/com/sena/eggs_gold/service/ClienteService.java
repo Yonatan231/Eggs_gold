@@ -9,9 +9,7 @@ public interface ClienteService {
     void registrarCliente(ClienteDTO clienteDTO);
     ClienteDTO login(String documento, String password);
 
-    // ✅ NUEVO: Obtener pedidos del cliente
     List<Map<String, Object>> obtenerMisPedidos(Integer idCliente);
 
-    // ✅ NUEVO: Obtener factura de un pedido
     Map<String, Object> obtenerFacturaPorPedido(Integer idPedido, Integer idCliente);
 }

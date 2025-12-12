@@ -32,24 +32,19 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     @Transactional
     public Carrito agregarAlCarrito(Integer idUsuario, Integer idProducto, Integer cantidad) {
-        // Buscar usuario
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Buscar producto
         Producto producto = productoRepository.findById(idProducto)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // Verificar si el producto ya está en el carrito
         Carrito carritoExistente = carritoRepository
                 .findByUsuarioIdUsuariosAndProductoIdProductoAndConfirmado(idUsuario, idProducto, false);
 
         if (carritoExistente != null) {
-            // Si ya existe, actualizar la cantidad
             carritoExistente.setCantidad(carritoExistente.getCantidad() + cantidad);
             return carritoRepository.save(carritoExistente);
         } else {
-            // Si no existe, crear nuevo registro
             Carrito nuevoCarrito = new Carrito();
             nuevoCarrito.setUsuario(usuario);
             nuevoCarrito.setProducto(producto);

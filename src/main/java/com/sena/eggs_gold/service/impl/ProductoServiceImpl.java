@@ -34,7 +34,6 @@ public class ProductoServiceImpl implements ProductoService {
     ) {
         this.productoRepository = productoRepository;
 
-        // Configurar Cloudinary con las credenciales
         this.cloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudName,
                 "api_key", apiKey,
@@ -56,7 +55,6 @@ public class ProductoServiceImpl implements ProductoService {
             producto.setEstado(productoDTO.getEstado());
         }
 
-        // Guardar imagen en Cloudinary
         if (!imagenFile.isEmpty()) {
             String urlImagen = guardarImagenProducto(imagenFile);
             producto.setImagen(urlImagen);
@@ -67,28 +65,21 @@ public class ProductoServiceImpl implements ProductoService {
         productoRepository.save(producto);
     }
 
-    /**
-     * ✅ NUEVO: Guarda una imagen de producto en CLOUDINARY
-     * @param archivo - Archivo MultipartFile de la imagen
-     * @return String - URL completa de la imagen en Cloudinary
-     */
     private String guardarImagenProducto(MultipartFile archivo) throws IOException {
         try {
-            // Subir imagen a Cloudinary en la carpeta "eggs_gold/productos"
             Map uploadResult = cloudinary.uploader().upload(archivo.getBytes(),
                     ObjectUtils.asMap(
                             "folder", "eggs_gold/productos",
                             "resource_type", "image"
                     ));
 
-            // Obtener la URL segura de la imagen
             String urlImagen = (String) uploadResult.get("secure_url");
-            System.out.println("✅ Imagen subida a Cloudinary: " + urlImagen);
+            System.out.println(" Imagen subida a Cloudinary: " + urlImagen);
 
             return urlImagen;
 
         } catch (IOException e) {
-            System.err.println("❌ Error al subir imagen a Cloudinary: " + e.getMessage());
+            System.err.println(" Error al subir imagen a Cloudinary: " + e.getMessage());
             throw new IOException("Error al subir la imagen a Cloudinary", e);
         }
     }
@@ -114,7 +105,6 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con id " + id));
 
-        // Actualizar campos (sin cantidad)
         producto.setNombre(datosProducto.getNombre());
         producto.setPrecio(datosProducto.getPrecio());
         producto.setCategoria(datosProducto.getCategoria());
@@ -126,18 +116,15 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto actualizarProductoConImagen(Integer id, Producto datosProducto, MultipartFile imagenFile) throws IOException {
-        // Buscar el producto existente
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con id " + id));
 
-        // Actualizar campos básicos
         producto.setNombre(datosProducto.getNombre());
         producto.setPrecio(datosProducto.getPrecio());
         producto.setCategoria(datosProducto.getCategoria());
         producto.setDescripcion(datosProducto.getDescripcion());
         producto.setEstado(datosProducto.getEstado());
 
-        // Si se envió una nueva imagen, subirla a Cloudinary
         if (imagenFile != null && !imagenFile.isEmpty()) {
             String urlImagen = guardarImagenProducto(imagenFile);
             producto.setImagen(urlImagen);
@@ -186,44 +173,36 @@ public class ProductoServiceImpl implements ProductoService {
         int fallidos = 0;
         List<String> errores = new ArrayList<>();
 
-        // Leer el archivo CSV
         String contenido = new String(archivoCSV.getBytes());
         String[] lineas = contenido.split("\n");
 
-        // Procesar cada línea (saltamos la primera que son los encabezados)
         for (int i = 1; i < lineas.length; i++) {
             String linea = lineas[i].trim();
 
-            // Saltar líneas vacías
             if (linea.isEmpty()) {
                 continue;
             }
 
             try {
-                // Dividir la línea por comas
                 String[] datos = linea.split(",");
 
-                // Validar que tenga los 4 campos necesarios
                 if (datos.length < 4) {
                     fallidos++;
                     errores.add("Línea " + (i + 1) + ": Faltan datos (debe tener: nombre,precio,categoria,descripcion)");
                     continue;
                 }
 
-                // Extraer datos
                 String nombre = datos[0].trim();
                 String precioStr = datos[1].trim();
                 String categoriaStr = datos[2].trim().toUpperCase();
                 String descripcion = datos[3].trim();
 
-                // Validar nombre
                 if (nombre.isEmpty()) {
                     fallidos++;
                     errores.add("Línea " + (i + 1) + ": El nombre no puede estar vacío");
                     continue;
                 }
 
-                // Validar y convertir precio
                 Float precio;
                 try {
                     precio = Float.parseFloat(precioStr);
@@ -238,7 +217,6 @@ public class ProductoServiceImpl implements ProductoService {
                     continue;
                 }
 
-                // Validar categoría
                 com.sena.eggs_gold.model.enums.Categoria categoria;
                 try {
                     categoria = com.sena.eggs_gold.model.enums.Categoria.valueOf(categoriaStr);
@@ -248,23 +226,20 @@ public class ProductoServiceImpl implements ProductoService {
                     continue;
                 }
 
-                // Validar descripción
                 if (descripcion.isEmpty()) {
                     fallidos++;
                     errores.add("Línea " + (i + 1) + ": La descripción no puede estar vacía");
                     continue;
                 }
 
-                // Crear el producto
                 Producto producto = new Producto();
                 producto.setNombre(nombre);
                 producto.setPrecio(precio);
                 producto.setCategoria(categoria);
                 producto.setDescripcion(descripcion);
                 producto.setEstado(EstadoProducto.DISPONIBLE);
-                producto.setImagen("default.jpg"); // Imagen por defecto (los CSV no traen imágenes)
+                producto.setImagen("default.jpg");
 
-                // Guardar en la base de datos
                 productoRepository.save(producto);
                 exitosos++;
 
@@ -274,7 +249,6 @@ public class ProductoServiceImpl implements ProductoService {
             }
         }
 
-        // Preparar respuesta
         resultado.put("exitosos", exitosos);
         resultado.put("fallidos", fallidos);
         resultado.put("errores", errores);

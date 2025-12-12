@@ -14,22 +14,16 @@ import java.util.List;
 @Repository
 public interface VehiculoRepository extends JpaRepository<Vehiculo, Integer> {
 
-    // Validar que no exista un vehículo con la misma placa
     boolean existsByPlaca(String placa);
 
-    // Validar que no exista otra placa al actualizar (excluyendo el vehículo actual)
     boolean existsByPlacaAndIdVehiculosNot(String placa, Integer idVehiculo);
 
-    // Buscar todos los vehículos de un conductor específico
     List<Vehiculo> findByUsuarioIdUsuarios(Integer idConductor);
 
-    // Buscar vehículos por estado de un conductor
     List<Vehiculo> findByUsuarioIdUsuariosAndEstado(Integer idConductor, EstadoUsuario estado);
 
-    // Contar cuántos vehículos ACTIVOS tiene un conductor
     int countByUsuarioIdUsuariosAndEstado(Integer idConductor, EstadoUsuario estado);
 
-    // Desactivar todos los vehículos de un conductor (antes de activar uno nuevo)
     @Modifying
     @Transactional
     @Query("UPDATE Vehiculo v SET v.estado = 'INACTIVO' WHERE v.usuario.idUsuarios = :idConductor")

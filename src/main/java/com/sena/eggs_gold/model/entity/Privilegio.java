@@ -7,9 +7,6 @@ import lombok.AllArgsConstructor;
 import jakarta.persistence.*;
 import java.util.List;
 
-/**
- * Entidad JPA para la tabla privilegios
- */
 @Entity
 @Table(name = "privilegios")
 @Data
@@ -25,7 +22,6 @@ public class Privilegio {
     @Column(name = "DESCRIPCION_PRIVILEGIO", length = 45)
     private String descripcionPrivilegio;
 
-    // Relación muchos-a-muchos con Usuarios a través de UsuarioPrivilegio
     @OneToMany(mappedBy = "privilegio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UsuarioPrivilegio> usuarioPrivilegios;
 }

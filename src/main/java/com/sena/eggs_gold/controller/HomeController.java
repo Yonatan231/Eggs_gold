@@ -27,7 +27,6 @@ import org.springframework.ui.Model;
 
         @GetMapping("/iniciar_sesion")
         public String inicioSecion(Model model) {
-            // Creamos un objeto vacío para el formulario
             model.addAttribute("loginDTO", new LoginDTO());
             return "iniciar_sesion/iniciar_sesion"; // Thymeleaf buscará templates/inicio_secion
         }

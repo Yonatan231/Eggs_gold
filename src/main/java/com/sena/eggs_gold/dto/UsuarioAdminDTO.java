@@ -25,7 +25,6 @@ public class UsuarioAdminDTO {
     private LocalDate fechaRegistro;
     private String fotoPanel;
 
-    // Información del rol
     private Integer idRol;
     private String nombreRol;
 }

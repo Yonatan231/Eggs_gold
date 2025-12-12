@@ -39,12 +39,10 @@ public class LoginController {
         this.conductorService = conductorService;
     }
 
-    // Página de login
     @GetMapping("/login")
     public String mostrarLogin(Model model, @RequestParam(required = false) String error) {
         model.addAttribute("loginDTO", new LoginDTO());
 
-        // ✅ Si viene el parámetro error, agregar mensaje al modelo
         if (error != null) {
             model.addAttribute("error", "Documento o contraseña incorrectos");
         }
@@ -52,11 +50,9 @@ public class LoginController {
         return "iniciar_sesion/iniciar_sesion";
     }
 
-    // Procesar login
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute LoginDTO loginDTO, HttpSession session, Model model) {
 
-        // Cliente
         ClienteDTO cliente = clienteService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (cliente != null) {
             session.setAttribute("usuario_id", cliente.getIdUsuarios());
@@ -66,7 +62,6 @@ public class LoginController {
             return "redirect:/inicio_cliente";
         }
 
-        // Admin
         AdminDTO admin = adminService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (admin != null) {
             session.setAttribute("usuario_id", admin.getIdUsuarios());
@@ -75,7 +70,6 @@ public class LoginController {
             return "redirect:/administrador_inicio";
         }
 
-        // Logística
         LogisticaDTO Logistica = logisticaService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (Logistica != null) {
             session.setAttribute("usuario_id", Logistica.getIdUsuarios());
@@ -84,7 +78,6 @@ public class LoginController {
             return "redirect:/logistica_inicio";
         }
 
-        // Conductor
         ConductorDTO conductor = conductorService.login(loginDTO.getDocumento(), loginDTO.getPassword());
         if (conductor != null) {
             session.setAttribute("usuario_id", conductor.getIdUsuarios());
@@ -94,7 +87,6 @@ public class LoginController {
             return "redirect:/conductor_inicio";
         }
 
-        // ✅ Si ningún login fue exitoso, redirigir con parámetro de error
         return "redirect:/login?error";
     }
 
@@ -103,7 +95,6 @@ public class LoginController {
         return "administrador/administrador";
     }
 
-    // Ver datos de sesión
     @GetMapping("/session")
     @ResponseBody
     public Map<String, Object> getSession(HttpSession session) {

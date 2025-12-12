@@ -28,7 +28,6 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
-    // metodo base - no asincrono (lo usan los demas metodos)
     @Override
     public void enviarCorreo(String destinatario, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -45,7 +44,6 @@ public class EmailServiceImpl implements EmailService {
         System.out.println("Correo enviado a: " + destinatario);
     }
 
-    // metodo base - no asincrono
     @Override
     public void enviarCorreosMasivos(List<String> destinatarios, String asunto, String contenidoHtml)
             throws MessagingException, UnsupportedEncodingException {
@@ -57,7 +55,6 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // asincrono - se ejecuta en segundo plano
     @Async
     @Override
     public void enviarCorreoBienvenida(String para, String nombreUsuario) {
@@ -75,7 +72,6 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    // asincrono - metodo unificado para cambio de estado de cuenta
     @Async
     @Override
     public void enviarCorreoCambioEstado(String para, String nombreUsuario, EstadoUsuario nuevoEstado) {
@@ -83,7 +79,6 @@ public class EmailServiceImpl implements EmailService {
         String cuerpoHtml;
 
         if (nuevoEstado == EstadoUsuario.INACTIVO) {
-            // plantilla para suspension de cuenta
             asunto = "Cuenta Suspendida - Eggs Gold";
             cuerpoHtml = String.format("""
                     <!DOCTYPE html>
@@ -140,7 +135,6 @@ public class EmailServiceImpl implements EmailService {
                     </html>
                     """, nombreUsuario);
         } else {
-            // plantilla para activacion de cuenta
             asunto = "Cuenta Activada - Eggs Gold";
             cuerpoHtml = String.format("""
                     <!DOCTYPE html>
@@ -213,11 +207,9 @@ public class EmailServiceImpl implements EmailService {
 
         String asunto = "Factura #" + factura.getNumeroFactura() + " - Eggs Gold";
 
-        // obtener detalles del pedido
         List<DetallePedido> detalles = detallePedidoRepository
                 .findByPedidoIdPedidos(factura.getPedido().getIdPedidos());
 
-        // construir tabla de productos
         StringBuilder tablaProductos = new StringBuilder();
         for (DetallePedido detalle : detalles) {
             BigDecimal subtotal = detalle.getPrecioUnitario()

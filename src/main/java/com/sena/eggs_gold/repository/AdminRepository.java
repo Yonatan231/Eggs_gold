@@ -7,7 +7,5 @@ import java.util.Optional;
 
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
-    // buscar admin solo por numero de documento
-    // ya no buscamos por password porque ahora esta hasheada
     Optional<Admin> findByNumDocumento(String numDocumento);
 }

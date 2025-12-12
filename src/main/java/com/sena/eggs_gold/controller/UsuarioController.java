@@ -128,11 +128,6 @@ public class UsuarioController {
         }
     }
 
-    /**
-     * nuevo endpoint: cambiar estado de usuario (activo/inactivo) y enviar correo automaticamente
-     * PUT /api/usuarios/{id}/estado
-     * body: { "estado": "ACTIVO" } o { "estado": "INACTIVO" }
-     */
     @PutMapping("/api/usuarios/{id}/estado")
     @ResponseBody
     public ResponseEntity<?> cambiarEstadoUsuario(

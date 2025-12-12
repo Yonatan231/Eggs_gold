@@ -61,8 +61,6 @@ public class ConductorServiceImpl implements ConductorService {
         conductor.setTelefono(dto.getTelefono());
         conductor.setCorreo(dto.getCorreo());
 
-        // hashear la contrasena antes de guardarla
-        // bcrypt.gensalt() genera una sal aleatoria para mayor seguridad
         String passwordHasheada = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
         conductor.setPassword(passwordHasheada);
 
@@ -85,23 +83,18 @@ public class ConductorServiceImpl implements ConductorService {
 
     @Override
     public ConductorDTO login(String numDocumento, String password) {
-        // paso 1: buscar conductor solo por numero de documento
         return conductorRepository.findByNumDocumento(numDocumento)
                 .map(conductor -> {
-                    // paso 2: verificar que el usuario este activo
                     if (conductor.getEstado() != EstadoUsuario.ACTIVO) {
                         return null;
                     }
 
-                    // paso 3: validar la contrasena usando bcrypt
-                    // bcrypt.checkpw compara la contrasena en texto plano con la hasheada
                     boolean passwordCorrecta = BCrypt.checkpw(password, conductor.getPassword());
 
                     if (!passwordCorrecta) {
                         return null;
                     }
 
-                    // paso 4: si todo esta bien, crear y retornar el dto
                     ConductorDTO dto = new ConductorDTO();
                     dto.setIdUsuarios(conductor.getIdUsuarios());
                     dto.setNombre(conductor.getNombre());
@@ -144,18 +137,15 @@ public class ConductorServiceImpl implements ConductorService {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // validar que el pedido este asignado a este conductor
         if (pedido.getConductor() == null ||
                 !pedido.getConductor().getIdUsuarios().equals(idConductor)) {
             throw new RuntimeException("Este pedido no esta asignado a ti");
         }
 
-        // validar estado
         if (pedido.getEstado() != EstadoPedido.ASIGNADO) {
             throw new RuntimeException("El pedido debe estar en estado ASIGNADO");
         }
 
-        // cambiar estado a en camino
         pedido.setEstado(EstadoPedido.EN_CAMINO);
         pedidoRepository.save(pedido);
     }
@@ -166,18 +156,15 @@ public class ConductorServiceImpl implements ConductorService {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // validar que el pedido este asignado a este conductor
         if (pedido.getConductor() == null ||
                 !pedido.getConductor().getIdUsuarios().equals(idConductor)) {
             throw new RuntimeException("Este pedido no esta asignado a ti");
         }
 
-        // validar estado
         if (pedido.getEstado() != EstadoPedido.EN_CAMINO) {
             throw new RuntimeException("El pedido debe estar EN_CAMINO");
         }
 
-        // cambiar estado a entregado y registrar fecha
         pedido.setEstado(EstadoPedido.ENTREGADO);
         pedido.setFechaEntrega(LocalDateTime.now());
 
@@ -187,16 +174,12 @@ public class ConductorServiceImpl implements ConductorService {
 
         pedidoRepository.save(pedido);
 
-        // forzar carga de relaciones antes del metodo asincrono
-        // esto carga los datos mientras la sesion de hibernate esta abierta
         pedido.getCliente().getCorreo();
         pedido.getCliente().getNombre();
         pedido.getCliente().getApellido();
         pedido.getConductor().getNombre();
         pedido.getConductor().getApellido();
 
-        // enviar correo de confirmacion de entrega asincrono
-        // el objeto pedido ya tiene todos los datos cargados
         emailService.enviarCorreoEntregaPedido(pedido);
     }
 
@@ -214,7 +197,6 @@ public class ConductorServiceImpl implements ConductorService {
         }).collect(Collectors.toList());
     }
 
-    // metodo auxiliar convertir pedido a map
     private Map<String, Object> convertirPedidoAMap(Pedido pedido) {
         Map<String, Object> map = new HashMap<>();
         map.put("idPedido", pedido.getIdPedidos());
@@ -225,13 +207,11 @@ public class ConductorServiceImpl implements ConductorService {
         map.put("estado", pedido.getEstado().toString());
         map.put("observacionConductor", pedido.getObservacionConductor());
 
-        // datos del cliente
         if (pedido.getCliente() != null) {
             map.put("clienteNombre", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
             map.put("clienteTelefono", pedido.getCliente().getTelefono());
         }
 
-        // contar tipos de productos
         List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
         map.put("tiposProductos", detalles.size());
 

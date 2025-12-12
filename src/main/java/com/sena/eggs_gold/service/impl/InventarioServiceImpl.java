@@ -42,7 +42,6 @@ public class InventarioServiceImpl implements InventarioService {
         List<Inventario> inventarios = inventarioRepository.findAll();
 
         return inventarios.stream()
-                // Mostrar TODOS los inventarios sin importar la cantidad disponible
                 .map(inventario -> {
                     InventarioDetalleDTO dto = new InventarioDetalleDTO();
                     dto.setIdInventario(inventario.getIdInventario());
@@ -50,7 +49,6 @@ public class InventarioServiceImpl implements InventarioService {
                     dto.setUbicacion(inventario.getUbicacion());
                     dto.setFechaCaducidad(inventario.getFechaCaducidad());
                     dto.setFechaActualizacion(inventario.getFechaActualizacion());
-                    // Datos del producto
                     dto.setNombre(inventario.getProducto().getNombre());
                     dto.setPrecio(inventario.getProducto().getPrecio());
                     dto.setCategoria(inventario.getProducto().getCategoria().name());
@@ -76,15 +74,12 @@ public class InventarioServiceImpl implements InventarioService {
         return true;
     }
 
-    // ✅ NUEVO MÉTODO: Crear inventario desde entrada aprobada
     @Override
     @Transactional
     public Inventario crearInventarioDesdeEntrada(Integer idProducto, Integer cantidad, String ubicacion, String observacion) {
-        // Buscar el producto
         Producto producto = productoRepository.findById(idProducto)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // Crear nuevo registro de inventario
         Inventario inventario = new Inventario();
         inventario.setProducto(producto);
         inventario.setCantidadDisponible(cantidad);

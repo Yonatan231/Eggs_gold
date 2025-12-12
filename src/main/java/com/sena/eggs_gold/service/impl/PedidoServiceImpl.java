@@ -5,7 +5,7 @@ import com.sena.eggs_gold.model.entity.*;
 import com.sena.eggs_gold.model.enums.EstadoPedido;
 import com.sena.eggs_gold.model.enums.MetodoPago;
 import com.sena.eggs_gold.repository.*;
-import com.sena.eggs_gold.service.EmailService; // ✅ AGREGAR
+import com.sena.eggs_gold.service.EmailService;
 import com.sena.eggs_gold.service.PedidoService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -22,33 +22,31 @@ public class PedidoServiceImpl implements PedidoService {
     private final CarritoRepository carritoRepository;
     private final UsuarioRepository usuarioRepository;
     private final InventarioRepository inventarioRepository;
-    private final FacturaRepository facturaRepository; // ✅ AGREGAR
-    private final EmailService emailService; // ✅ AGREGAR
+    private final FacturaRepository facturaRepository;
+    private final EmailService emailService;
 
     public PedidoServiceImpl(PedidoRepository pedidoRepository,
                              DetallePedidoRepository detallePedidoRepository,
                              CarritoRepository carritoRepository,
                              UsuarioRepository usuarioRepository,
                              InventarioRepository inventarioRepository,
-                             FacturaRepository facturaRepository, // ✅ AGREGAR
-                             EmailService emailService) { // ✅ AGREGAR
+                             FacturaRepository facturaRepository,
+                             EmailService emailService) {
         this.pedidoRepository = pedidoRepository;
         this.detallePedidoRepository = detallePedidoRepository;
         this.carritoRepository = carritoRepository;
         this.usuarioRepository = usuarioRepository;
         this.inventarioRepository = inventarioRepository;
-        this.facturaRepository = facturaRepository; // ✅ AGREGAR
-        this.emailService = emailService; // ✅ AGREGAR
+        this.facturaRepository = facturaRepository;
+        this.emailService = emailService;
     }
 
     @Override
     @Transactional
     public Pedido crearPedidoDesdeCarrito(Integer idUsuario, PedidoDTO pedidoDTO) {
-        // 1. Buscar usuario
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // 2. Obtener productos del carrito
         List<Carrito> productosCarrito = carritoRepository
                 .findByUsuarioIdUsuariosAndConfirmado(idUsuario, false);
 
@@ -56,12 +54,10 @@ public class PedidoServiceImpl implements PedidoService {
             throw new RuntimeException("El carrito está vacío");
         }
 
-        // 3. Validar stock disponible
         if (!validarStockDisponible(idUsuario)) {
             throw new RuntimeException("No hay stock suficiente para algunos productos");
         }
 
-        // 4. Crear el pedido
         Pedido pedido = new Pedido();
         pedido.setCliente(usuario);
         pedido.setDireccion(pedidoDTO.getDireccion());
@@ -79,8 +75,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
-        // 5. Crear detalles del pedido y descontar del inventario
-        BigDecimal totalFactura = BigDecimal.ZERO; // ✅ AGREGAR
+        BigDecimal totalFactura = BigDecimal.ZERO;
 
         for (Carrito itemCarrito : productosCarrito) {
             DetallePedido detalle = new DetallePedido();
@@ -90,7 +85,6 @@ public class PedidoServiceImpl implements PedidoService {
             detalle.setPrecioUnitario(BigDecimal.valueOf(itemCarrito.getProducto().getPrecio()));
             detallePedidoRepository.save(detalle);
 
-            // ✅ Calcular total
             BigDecimal subtotal = detalle.getPrecioUnitario()
                     .multiply(BigDecimal.valueOf(detalle.getCantidad()));
             totalFactura = totalFactura.add(subtotal);
@@ -98,23 +92,18 @@ public class PedidoServiceImpl implements PedidoService {
             descontarInventario(itemCarrito.getProducto().getIdProducto(), itemCarrito.getCantidad());
         }
 
-        // ✅ 6. CREAR FACTURA
         Factura factura = crearFactura(pedidoGuardado, totalFactura);
 
-        // ✅ 7. ENVIAR CORREO CON FACTURA
         emailService.enviarFacturaPorCorreo(factura);
 
-        // 8. Eliminar productos del carrito
         carritoRepository.deleteAll(productosCarrito);
 
         return pedidoGuardado;
     }
 
-    // ✅ NUEVO: Crear factura
     private Factura crearFactura(Pedido pedido, BigDecimal total) {
         Factura factura = new Factura();
 
-        // Generar número de factura único
         Integer ultimoNumero = facturaRepository.findMaxNumeroFactura();
         factura.setNumeroFactura(ultimoNumero == null ? 1 : ultimoNumero + 1);
 
@@ -191,7 +180,6 @@ public class PedidoServiceImpl implements PedidoService {
         }
     }
 
-    // ✅ NUEVO: Cambiar estado a LISTO
     @Override
     @Transactional
     public void marcarPedidoComoListo(Integer idPedido) {
@@ -206,7 +194,6 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoRepository.save(pedido);
     }
 
-    // ✅ NUEVO: Asignar conductor
     @Override
     @Transactional
     public void asignarConductor(Integer idPedido, Integer idConductor) {
@@ -225,7 +212,6 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoRepository.save(pedido);
     }
 
-    // ✅ NUEVO: Obtener conductores disponibles
     @Override
     public List<Usuario> obtenerConductoresDisponibles() {
         return usuarioRepository.findAll().stream()

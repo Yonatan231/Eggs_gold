@@ -52,10 +52,6 @@ public class AdministradorRestController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // ============================================
-    // ENDPOINTS DE PEDIDOS
-    // ============================================
-
     @GetMapping("/pedidos")
     public ResponseEntity<List<PedidoAdminDTO>> obtenerTodosPedidos() {
         List<Pedido> pedidos = pedidoRepository.findAll();
@@ -83,10 +79,6 @@ public class AdministradorRestController {
         PedidoAdminDTO dto = convertirAPedidoAdminDTOCompleto(pedido);
         return ResponseEntity.ok(dto);
     }
-
-    // ============================================
-    // ENDPOINTS DE USUARIOS
-    // ============================================
 
     @GetMapping("/usuarios")
     public ResponseEntity<List<UsuarioAdminDTO>> obtenerTodosUsuarios() {
@@ -133,7 +125,6 @@ public class AdministradorRestController {
             @RequestBody UsuarioAdminDTO usuarioDTO,
             jakarta.servlet.http.HttpSession session) {
 
-        // Obtener ID del admin actual
         Integer idAdminActual = (Integer) session.getAttribute("usuario_id");
 
         if (idAdminActual == null) {
@@ -142,7 +133,6 @@ public class AdministradorRestController {
             return ResponseEntity.status(401).body(error);
         }
 
-        // VALIDACIÓN 1: No puede modificar su propia cuenta
         if (id.equals(idAdminActual)) {
             Map<String, String> error = new HashMap<>();
             error.put("error", "No puedes modificar tu propia cuenta");
@@ -152,33 +142,24 @@ public class AdministradorRestController {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // VALIDACIÓN 2: No permitir cambio de correo
-        // El correo NO se actualiza, se mantiene el original
-
-        // Actualizar solo los campos permitidos (no ID, fecha registro, ni documento, ni correo)
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setApellido(usuarioDTO.getApellido());
         usuario.setDireccionUsuario(usuarioDTO.getDireccion());
         usuario.setTelefono(usuarioDTO.getTelefono());
-        // usuario.setCorreo(usuarioDTO.getCorreo()); // ❌ NO SE PERMITE CAMBIAR
         usuario.setEstado(usuarioDTO.getEstado());
         usuario.setTipoDocumento(usuarioDTO.getTipoDocumento());
 
-        // ✅ PERMITIR CAMBIO DE ROL (excepto su propia cuenta, validado arriba)
         if (!usuario.getRol().getIdRoles().equals(usuarioDTO.getIdRol())) {
-            // ❌ NO PERMITIR asignar rol ADMIN (código 1)
             if (usuarioDTO.getIdRol() == 1) {
                 Map<String, String> error = new HashMap<>();
                 error.put("error", "No se puede asignar el rol de Administrador");
                 return ResponseEntity.status(403).body(error);
             }
 
-            // Actualizar ROL_ID en la entidad
             com.sena.eggs_gold.model.entity.Rol nuevoRol = new com.sena.eggs_gold.model.entity.Rol();
             nuevoRol.setIdRoles(usuarioDTO.getIdRol());
             usuario.setRol(nuevoRol);
 
-            // ✅ ACTUALIZAR tipo_usuario (discriminador de Hibernate) según el nuevo rol
             String nuevoTipoUsuario = obtenerTipoUsuarioPorRol(usuarioDTO.getIdRol());
             jdbcTemplate.update(
                     "UPDATE usuarios SET tipo_usuario = ? WHERE ID_USUARIOS = ?",
@@ -186,12 +167,7 @@ public class AdministradorRestController {
             );
         }
 
-        // Guardar cambios en la base de datos
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
-
-        // nota: el envio de correo de cambio de estado se maneja automaticamente
-        // desde el frontend mediante el endpoint PUT /api/usuarios/{id}/estado
-        // en UsuarioController cuando se detecta un cambio de estado
 
         return ResponseEntity.ok(convertirAUsuarioAdminDTO(usuarioActualizado));
     }
@@ -200,7 +176,6 @@ public class AdministradorRestController {
     public ResponseEntity<List<Map<String, Object>>> obtenerTodosRoles() {
         List<Map<String, Object>> roles = new ArrayList<>();
 
-        // Crear lista de roles desde el enum
         for (Rol rol : Rol.values()) {
             Map<String, Object> rolMap = new HashMap<>();
             rolMap.put("idRoles", rol.getCodigo());
@@ -210,10 +185,6 @@ public class AdministradorRestController {
 
         return ResponseEntity.ok(roles);
     }
-
-// ============================================
-// MÉTODOS AUXILIARES - PEDIDOS
-// ============================================
 
     private PedidoAdminDTO convertirAPedidoAdminDTO(Pedido pedido) {
         PedidoAdminDTO dto = new PedidoAdminDTO();
@@ -286,10 +257,6 @@ public class AdministradorRestController {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-// ============================================
-// MÉTODOS AUXILIARES - USUARIOS
-// ============================================
-
     private UsuarioAdminDTO convertirAUsuarioAdminDTO(Usuario usuario) {
         UsuarioAdminDTO dto = new UsuarioAdminDTO();
         dto.setIdUsuario(usuario.getIdUsuarios());
@@ -308,25 +275,13 @@ public class AdministradorRestController {
         return dto;
     }
 
-// ============================================
-// ENDPOINTS PARA DASHBOARD (TARJETAS DE RESUMEN)
-// ============================================
-
-    /**
-     * Obtiene datos para las tarjetas de resumen del dashboard
-     * - Total de usuarios registrados
-     * - Ventas del día (suma de todos los pedidos de hoy)
-     * - Contador de novedades pendientes
-     */
     @GetMapping("/dashboard/resumen")
     public ResponseEntity<Map<String, Object>> obtenerResumenDashboard() {
         Map<String, Object> resumen = new HashMap<>();
 
-        // 1. Total de usuarios registrados
         long totalUsuarios = usuarioRepository.count();
         resumen.put("totalUsuarios", totalUsuarios);
 
-        // 2. Ventas del día (todos los pedidos creados hoy)
         LocalDateTime inicioHoy = LocalDate.now().atStartOfDay();
         LocalDateTime finHoy = LocalDate.now().atTime(LocalTime.MAX);
 
@@ -343,17 +298,12 @@ public class AdministradorRestController {
         resumen.put("ventasHoy", ventasHoy);
         resumen.put("cantidadPedidosHoy", pedidosHoy.size());
 
-        // 3. Contador de novedades pendientes
         long novedadesPendientes = novedadRepository.countByEstado(EstadoNovedad.PENDIENTE);
         resumen.put("novedadesPendientes", novedadesPendientes);
 
         return ResponseEntity.ok(resumen);
     }
 
-    /**
-     * Método auxiliar para obtener el tipo_usuario (discriminador) según el ID del rol
-     * Esto es necesario porque Hibernate usa el discriminador para determinar la subclase
-     */
     private String obtenerTipoUsuarioPorRol(Integer idRol) {
         switch (idRol) {
             case 1:

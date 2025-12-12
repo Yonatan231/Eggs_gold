@@ -19,7 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 
     boolean existsByNumDocumento(String numDocumento);
 
-    boolean existsByCorreo(String correo); // ✅ Nuevo método para validar correo único
+    boolean existsByCorreo(String correo);
 
     @Query("SELECT new com.sena.eggs_gold.dto.ClientePedidosDTO( " +
             "u.idUsuarios, u.nombre, u.apellido, u.numDocumento, u.direccionUsuario, u.telefono, COUNT(p)) " +
@@ -101,28 +101,19 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
     @Query("SELECT u.correo FROM Usuario u WHERE u.rol.idRoles IN :rolIds AND u.correo IS NOT NULL")
     List<String> findEmailsByRolIds(List<Integer> rolIds);
 
-    // ========== CONSULTAS PARA ESTADISTICAS ==========
-
-    // Contar usuarios por rol
     @Query("SELECT u.rol.nombreRol, COUNT(u) FROM Usuario u GROUP BY u.rol.nombreRol")
     List<Object[]> countUsuariosPorRol();
 
-    // Contar usuarios por estado
     @Query("SELECT u.estado, COUNT(u) FROM Usuario u GROUP BY u.estado")
     List<Object[]> countUsuariosPorEstado();
 
-    // Crecimiento de usuarios por mes (formato: YYYY-MM)
     @Query("SELECT FUNCTION('DATE_FORMAT', u.fechaRegistro, '%Y-%m') as mes, COUNT(u) " +
             "FROM Usuario u " +
             "GROUP BY FUNCTION('DATE_FORMAT', u.fechaRegistro, '%Y-%m') " +
             "ORDER BY mes")
     List<Object[]> countUsuariosPorMes();
 
-    // ========== METODOS PARA RECUPERACION DE CONTRASENA ==========
-
-    // Buscar usuario por correo electronico
     Optional<Usuario> findByCorreo(String correo);
 
-    // Buscar usuario por token de recuperacion
     Optional<Usuario> findByTokenRecuperacion(String token);
 }

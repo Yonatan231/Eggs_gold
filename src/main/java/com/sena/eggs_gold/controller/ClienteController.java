@@ -65,14 +65,12 @@ public class ClienteController {
             return "registros/registro_cliente";
         }
 
-        // validar que el numero de documento no este registrado
         if (usuarioService.documentoYaExistente(clienteDTO.getNumDocumento())) {
             model.addAttribute("error", "el numero de documento o correo electronico ya esta registrado");
             model.addAttribute("clienteDTO", clienteDTO); // mantener los datos del formulario
             return "registros/registro_cliente";
         }
 
-        // validar que el correo no este registrado
         if (usuarioService.correoYaExistente(clienteDTO.getCorreo())) {
             model.addAttribute("error", "el numero de documento o correo electronico ya esta registrado");
             model.addAttribute("clienteDTO", clienteDTO); // mantener los datos del formulario
@@ -123,9 +121,6 @@ public class ClienteController {
         return ResponseEntity.ok(productos);
     }
 
-    // endpoints para gestion de perfil
-
-    // obtener datos del cliente actual
     @GetMapping("/api/cliente/datos")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerDatosCliente(HttpSession session) {
@@ -166,7 +161,6 @@ public class ClienteController {
         }
     }
 
-    // actualizar datos del cliente
     @PutMapping("/api/cliente/actualizar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> actualizarDatosCliente(
@@ -187,7 +181,6 @@ public class ClienteController {
             Usuario usuario = usuarioRepository.findById(idCliente)
                     .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
 
-            // validar si el correo cambio y ya existe en otro usuario
             String nuevoCorreo = (String) datos.get("correo");
             if (!usuario.getCorreo().equals(nuevoCorreo)) {
                 if (usuarioService.correoYaExistente(nuevoCorreo)) {
@@ -197,14 +190,12 @@ public class ClienteController {
                 }
             }
 
-            // actualizar datos
             usuario.setNombre((String) datos.get("nombre"));
             usuario.setApellido((String) datos.get("apellido"));
             usuario.setDireccionUsuario((String) datos.get("direccion"));
             usuario.setTelefono((String) datos.get("telefono"));
             usuario.setCorreo(nuevoCorreo);
 
-            // actualizar edad
             if (datos.get("edad") != null) {
                 usuario.setEdad((Integer) datos.get("edad"));
             }
@@ -222,9 +213,6 @@ public class ClienteController {
         }
     }
 
-    // endpoints para historial de pedidos
-
-    // obtener todos los pedidos del cliente
     @GetMapping("/api/cliente/mis-pedidos")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerMisPedidos(HttpSession session) {
@@ -252,7 +240,6 @@ public class ClienteController {
         }
     }
 
-    // obtener factura de un pedido
     @GetMapping("/api/cliente/factura/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerFactura(
@@ -283,7 +270,6 @@ public class ClienteController {
         }
     }
 
-    // descargar factura en pdf
     @GetMapping("/api/cliente/factura/{idPedido}/pdf")
     public ResponseEntity<byte[]> descargarFacturaPDF(
             @PathVariable Integer idPedido,

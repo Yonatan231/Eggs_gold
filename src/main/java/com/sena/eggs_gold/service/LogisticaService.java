@@ -9,7 +9,6 @@ public interface LogisticaService {
     LogisticaDTO login(String numDocumento, String password);
     void registrarLogistica(LogisticaDTO dto);
 
-    // Nuevos métodos para gestión de pedidos
     List<Map<String, Object>> obtenerPedidosPendientes();
     void tomarPedido(Integer idPedido, Integer idLogistica);
     List<Map<String, Object>> obtenerPedidosEnAlistamiento(Integer idLogistica);

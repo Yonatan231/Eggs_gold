@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class VehiculoResponseDTO {
 
-    // Datos del vehículo
     private Integer idVehiculos;
     private String placa;
     private String color;

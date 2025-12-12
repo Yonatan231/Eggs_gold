@@ -10,6 +10,6 @@ import lombok.AllArgsConstructor;
 public class PedidoDTO {
     private String telefono;
     private String direccion;
-    private String detalleCliente;  // Comentario opcional
+    private String detalleCliente;
     private String metodoPago;
 }

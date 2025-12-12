@@ -16,7 +16,6 @@ public enum Rol {
         return codigo;
     }
 
-    // Método para obtener enum por código
     public static Rol fromCodigo(int codigo) {
         for (Rol r : values()) {
             if (r.codigo == codigo) return r;

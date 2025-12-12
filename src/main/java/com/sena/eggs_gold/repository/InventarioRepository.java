@@ -13,7 +13,6 @@ import java.util.Map;
 @Repository
 public interface InventarioRepository extends JpaRepository<Inventario, Integer> {
 
-    // ✅ CORREGIDO: Sin referencia a estado
     @Query("""
         SELECT new com.sena.eggs_gold.dto.ProductoDisponibleDTO(
             p.idProducto, 
@@ -34,11 +33,9 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
     """)
     List<ProductoDisponibleDTO> ProductosDisponiblesEnStock();
 
-    // ✅ CORREGIDO: Sin referencia a estado
     @Query("SELECT i FROM Inventario i WHERE i.cantidadDisponible > 0")
     List<Inventario> listarInventarioActivo();
 
-    // ✅ Ya está correcto
     List<Inventario> findByProductoIdProductoAndCantidadDisponibleGreaterThan(Integer idProducto, Integer cantidad);
 
     @Query(value = """

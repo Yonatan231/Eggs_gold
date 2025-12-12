@@ -23,21 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * CONTROLADOR DE INVENTARIO
- * Maneja las operaciones de la vista de inventario:
- * - Mostrar lista completa agrupada por producto
- * - Buscar productos
- * - Filtrar por estado
- * - Actualizar productos
- */
 @Controller
 public class InventarioController {
 
-    // ============================================
-    // INYECCIÓN DE DEPENDENCIAS
-    // ============================================
-    @Autowired
     private InventarioService inventarioService;
 
     @Autowired
@@ -46,20 +34,14 @@ public class InventarioController {
     @Autowired
     private ProductoService productoService;
 
-    // ============================================
-    // MOSTRAR VISTA DE INVENTARIO
-    // GET /inventario
-    // ============================================
+
     @GetMapping("/inventario")
     public String mostrarInventario(Model model) {
         try {
-            // Obtener todos los registros de inventario
             List<InventarioDetalleDTO> inventarios = inventarioService.obtenerInventarioDetallado();
 
-            // Convertir a InventarioVistaDTO agrupando por producto
             List<InventarioVistaDTO> inventariosVista = convertirAVistaDTO(inventarios);
 
-            // Enviar datos a la vista
             model.addAttribute("inventarios", inventariosVista);
 
             return "administrador/inventario";
@@ -70,10 +52,6 @@ public class InventarioController {
         }
     }
 
-    // ============================================
-    // OBTENER INVENTARIO (API REST)
-    // GET /api/inventario/lista
-    // ============================================
     @GetMapping("/api/inventario/lista")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerInventario() {
@@ -95,10 +73,6 @@ public class InventarioController {
         }
     }
 
-    // ============================================
-    // BUSCAR Y FILTRAR INVENTARIO (API REST)
-    // GET /api/inventario/buscar
-    // ============================================
     @GetMapping("/api/inventario/buscar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> buscarInventario(
@@ -111,7 +85,6 @@ public class InventarioController {
             List<InventarioDetalleDTO> inventarios = inventarioService.obtenerInventarioDetallado();
             List<InventarioVistaDTO> inventariosVista = convertirAVistaDTO(inventarios);
 
-            // Aplicar filtros
             List<InventarioVistaDTO> inventariosFiltrados = inventariosVista.stream()
                     .filter(inv -> {
                         if (buscar == null || buscar.trim().isEmpty()) {
@@ -126,7 +99,6 @@ public class InventarioController {
                         if (estado.equals("todos")) {
                             return true;
                         }
-                        // Filtrar por estado del producto (DISPONIBLE, DESCONTINUADO, AGOTADO)
                         return inv.getEstado().equalsIgnoreCase(estado);
                     })
                     .collect(Collectors.toList());
@@ -144,17 +116,13 @@ public class InventarioController {
         }
     }
 
-    // ============================================
-    // OBTENER PRODUCTO POR ID
-    // GET /api/inventario/producto/{id}
-    // ============================================
+
     @GetMapping("/api/inventario/producto/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerProductoPorId(@PathVariable Integer id) {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Buscar el producto por ID
             Producto producto = productoRepository.findById(id).orElse(null);
 
             if (producto == null) {
@@ -163,7 +131,6 @@ public class InventarioController {
                 return ResponseEntity.status(404).body(response);
             }
 
-            // Preparar datos del producto para enviar
             Map<String, Object> datos = new HashMap<>();
             datos.put("idProducto", producto.getIdProducto());
             datos.put("nombre", producto.getNombre());
@@ -185,21 +152,14 @@ public class InventarioController {
         }
     }
 
-    // ============================================
-    // ACTUALIZAR PRODUCTO
-    // POST /api/inventario/actualizar
-    // Body JSON: solo campos del producto
-    // ============================================
     @PostMapping("/api/inventario/actualizar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> actualizarProducto(@RequestBody Map<String, Object> datos) {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Obtener ID del producto
             Integer idProducto = Integer.parseInt(datos.get("idProducto").toString());
 
-            // Buscar el producto existente
             Producto producto = productoRepository.findById(idProducto).orElse(null);
 
             if (producto == null) {
@@ -208,7 +168,6 @@ public class InventarioController {
                 return ResponseEntity.status(404).body(response);
             }
 
-            // Actualizar campos del PRODUCTO
             if (datos.containsKey("nombre")) {
                 producto.setNombre(datos.get("nombre").toString());
             }
@@ -233,7 +192,6 @@ public class InventarioController {
                 producto.setImagen(datos.get("imagen").toString());
             }
 
-            // Guardar producto actualizado
             productoRepository.save(producto);
 
             response.put("success", true);
@@ -248,11 +206,6 @@ public class InventarioController {
         }
     }
 
-    // ============================================
-    // ACTUALIZAR PRODUCTO CON IMAGEN
-    // POST /api/inventario/actualizar-con-imagen
-    // Recibe FormData con campos del producto e imagen opcional
-    // ============================================
     @PostMapping("/api/inventario/actualizar-con-imagen")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> actualizarProductoConImagen(
@@ -267,7 +220,6 @@ public class InventarioController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Crear objeto Producto con los datos recibidos
             Producto producto = new Producto();
             producto.setNombre(nombre);
             producto.setPrecio(precio);
@@ -275,7 +227,6 @@ public class InventarioController {
             producto.setDescripcion(descripcion);
             producto.setEstado(EstadoProducto.valueOf(estado));
 
-            // Actualizar producto (con o sin imagen)
             Producto actualizado = productoService.actualizarProductoConImagen(idProducto, producto, imagenFile);
 
             response.put("success", true);
@@ -291,37 +242,29 @@ public class InventarioController {
         }
     }
 
-    // ============================================
-    // MÉTODO AUXILIAR: CONVERTIR A VISTA DTO
-    // Agrupa inventarios por producto y suma cantidades
-    // ============================================
     private List<InventarioVistaDTO> convertirAVistaDTO(List<InventarioDetalleDTO> inventarios) {
-        // Agrupar por nombre de producto y sumar cantidades
         Map<String, InventarioVistaDTO> mapaProductos = new HashMap<>();
 
         for (InventarioDetalleDTO inv : inventarios) {
             String key = inv.getNombre();
 
             if (mapaProductos.containsKey(key)) {
-                // Si ya existe, sumar la cantidad
                 InventarioVistaDTO existente = mapaProductos.get(key);
                 existente.setCantidadDisponible(
                         existente.getCantidadDisponible() + inv.getCantidadDisponible()
                 );
 
-                // Actualizar fecha si es más reciente
                 if (inv.getFechaActualizacion().isAfter(existente.getFechaActualizacion())) {
                     existente.setFechaActualizacion(inv.getFechaActualizacion());
                 }
             } else {
-                // Crear nuevo registro
                 InventarioVistaDTO nuevoDTO = new InventarioVistaDTO();
-                nuevoDTO.setIdProducto(inv.getIdInventario()); // Temporal, se corregirá
+                nuevoDTO.setIdProducto(inv.getIdInventario());
                 nuevoDTO.setNombre(inv.getNombre());
                 nuevoDTO.setPrecio(inv.getPrecio());
                 nuevoDTO.setCategoria(inv.getCategoria());
                 nuevoDTO.setDescripcion(inv.getDescripcion());
-                nuevoDTO.setEstado("DISPONIBLE"); // Por defecto
+                nuevoDTO.setEstado("DISPONIBLE");
                 nuevoDTO.setImagen(inv.getImagen());
                 nuevoDTO.setCantidadDisponible(inv.getCantidadDisponible());
                 nuevoDTO.setFechaActualizacion(inv.getFechaActualizacion());
@@ -330,10 +273,8 @@ public class InventarioController {
             }
         }
 
-        // Obtener IDs reales de productos
         List<InventarioVistaDTO> resultado = mapaProductos.values().stream().toList();
         for (InventarioVistaDTO dto : resultado) {
-            // Buscar producto por nombre para obtener su ID real
             Producto producto = productoRepository.findAll().stream()
                     .filter(p -> p.getNombre().equals(dto.getNombre()))
                     .findFirst()

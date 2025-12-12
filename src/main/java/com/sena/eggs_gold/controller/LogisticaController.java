@@ -32,10 +32,8 @@ public class LogisticaController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // Mostrar formulario de registro de logística
     @GetMapping("/registrar_logistica")
     public String mostrarFormulario(Model model, HttpSession session) {
-        // Validar que el rol sea ADMIN
         String rol = (String) session.getAttribute("rol");
         if (rol == null || !rol.equals("ADMIN")) {
             return "redirect:/acceso_denegado";
@@ -45,25 +43,21 @@ public class LogisticaController {
         return "registros/registro_logistica";
     }
 
-    // Procesar el formulario
     @PostMapping("/registro_logistica")
     public String registrarLogistica(@ModelAttribute("logistica") LogisticaDTO logisticaDTO,
                                      HttpSession session,
                                      Model model) {
-        // Validar que el rol sea ADMIN
         String rol = (String) session.getAttribute("rol");
         if (rol == null || !rol.equals("ADMIN")) {
             return "redirect:/acceso_denegado";
         }
 
-        // ✅ Validar que el número de documento no esté registrado
         if (usuarioService.documentoYaExistente(logisticaDTO.getNumDocumento())) {
             model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
             model.addAttribute("logistica", logisticaDTO); // Mantener los datos del formulario
             return "registros/registro_logistica";
         }
 
-        // ✅ Validar que el correo no esté registrado
         if (usuarioService.correoYaExistente(logisticaDTO.getCorreo())) {
             model.addAttribute("error", "El correo electrónico o el número de documento ya está registrado");
             model.addAttribute("logistica", logisticaDTO); // Mantener los datos del formulario
@@ -71,16 +65,13 @@ public class LogisticaController {
         }
 
         try {
-            // Guardar en la base de datos
             logisticaService.registrarLogistica(logisticaDTO);
 
-            // Enviar correo de bienvenida
             emailService.enviarCorreoBienvenida(
                     logisticaDTO.getCorreo(),
                     logisticaDTO.getNombre()
             );
 
-            // ✅ Mensaje de éxito y limpiar formulario
             model.addAttribute("mensaje", "Logística registrada exitosamente y correo enviado");
             model.addAttribute("logistica", new LogisticaDTO()); // Formulario limpio
             return "registros/registro_logistica";
@@ -107,11 +98,6 @@ public class LogisticaController {
         return "logistica/pedidos_pendientes";
     }
 
-    // =====================================================
-    // NUEVOS ENDPOINTS REST PARA GESTIÓN DE PEDIDOS
-    // =====================================================
-
-    // Obtener pedidos pendientes
     @GetMapping("/api/logistica/pedidos-pendientes")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerPedidosPendientes() {
@@ -131,7 +117,6 @@ public class LogisticaController {
         }
     }
 
-    // Tomar un pedido
     @PostMapping("/api/logistica/tomar-pedido/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> tomarPedido(
@@ -141,7 +126,6 @@ public class LogisticaController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Obtener ID del usuario logueado
             Integer idLogistica = (Integer) session.getAttribute("usuario_id");
 
             if (idLogistica == null) {
@@ -150,7 +134,6 @@ public class LogisticaController {
                 return ResponseEntity.status(401).body(response);
             }
 
-            // Tomar el pedido
             logisticaService.tomarPedido(idPedido, idLogistica);
 
             response.put("success", true);
@@ -164,14 +147,12 @@ public class LogisticaController {
         }
     }
 
-    // Obtener pedidos en alistamiento del usuario logueado
     @GetMapping("/api/logistica/mis-pedidos")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerMisPedidos(HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Obtener ID del usuario logueado
             Integer idLogistica = (Integer) session.getAttribute("usuario_id");
 
             if (idLogistica == null) {
@@ -193,7 +174,6 @@ public class LogisticaController {
         }
     }
 
-    // Obtener detalles de un pedido
     @GetMapping("/api/logistica/detalle-pedido/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerDetallePedido(@PathVariable Integer idPedido) {
@@ -213,7 +193,6 @@ public class LogisticaController {
         }
     }
 
-    // Marcar pedido como listo
     @PostMapping("/api/logistica/marcar-listo/{idPedido}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> marcarPedidoListo(@PathVariable Integer idPedido) {
@@ -233,7 +212,6 @@ public class LogisticaController {
         }
     }
 
-    // ✅ NUEVO: Obtener conductores disponibles
     @GetMapping("/api/logistica/conductores")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerConductores() {
@@ -264,7 +242,6 @@ public class LogisticaController {
         }
     }
 
-    // ✅ NUEVO: Asignar conductor a pedido
     @PostMapping("/api/logistica/asignar-conductor")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> asignarConductor(

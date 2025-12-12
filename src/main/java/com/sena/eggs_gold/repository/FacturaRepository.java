@@ -10,10 +10,8 @@ import java.util.Optional;
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Integer> {
 
-    // Buscar factura por pedido
     Optional<Factura> findByPedidoIdPedidos(Integer idPedido);
 
-    // Obtener el último número de factura
     @Query("SELECT MAX(f.numeroFactura) FROM Factura f")
     Integer findMaxNumeroFactura();
 }

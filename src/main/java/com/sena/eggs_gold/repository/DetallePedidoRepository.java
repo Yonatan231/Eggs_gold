@@ -10,12 +10,8 @@ import java.util.List;
 @Repository
 public interface DetallePedidoRepository extends JpaRepository<DetallePedido, Integer> {
 
-    // Buscar detalles por pedido
     List<DetallePedido> findByPedidoIdPedidos(Integer idPedido);
 
-    // ========== CONSULTAS PARA ESTADÍSTICAS ==========
-
-    // Calcular ventas totales por mes (formato: YYYY-MM)
     @Query("SELECT FUNCTION('DATE_FORMAT', p.fechaCreacion, '%Y-%m') as mes, SUM(d.total) " +
             "FROM DetallePedido d " +
             "JOIN d.pedido p " +

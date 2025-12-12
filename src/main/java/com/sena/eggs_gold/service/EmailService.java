@@ -1,4 +1,3 @@
-// ===== EmailService.java =====
 package com.sena.eggs_gold.service;
 
 import com.sena.eggs_gold.model.entity.Factura;

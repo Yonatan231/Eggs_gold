@@ -37,13 +37,11 @@ public interface UsuarioService {
 
     String guardarFotoPerfil(Integer usuarioId, MultipartFile foto) throws IOException;
 
-    // metodos para recuperacion de contrasena
     void solicitarRecuperacionContrasena(String correo);
 
     boolean validarToken(String token);
 
     void actualizarContrasena(String token, String nuevaContrasena);
 
-    // nuevo metodo: cambiar estado de usuario y enviar correo automaticamente
     void cambiarEstadoUsuario(Integer idUsuario, EstadoUsuario nuevoEstado);
 }

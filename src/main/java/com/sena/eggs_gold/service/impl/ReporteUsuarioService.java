@@ -26,21 +26,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Servicio para generar reportes en PDF de estadísticas de usuarios
- * Usa iText 5 para PDF y JFreeChart para gráficas
- */
 @Service
 public class ReporteUsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    // Colores corporativos para PDF
     private static final BaseColor COLOR_PRIMARIO = new BaseColor(41, 128, 185); // Azul
     private static final BaseColor COLOR_SECUNDARIO = new BaseColor(52, 73, 94); // Gris oscuro
     private static final BaseColor COLOR_EXITO = new BaseColor(39, 174, 96); // Verde
 
-    // Colores para gráficas (Java AWT)
     private static final Color COLOR_GRAFICA_1 = new Color(41, 128, 185);
     private static final Color COLOR_GRAFICA_2 = new Color(39, 174, 96);
     private static final Color COLOR_GRAFICA_4 = new Color(231, 76, 60);
@@ -49,16 +43,11 @@ public class ReporteUsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    /**
-     * Obtiene las estadísticas de usuarios desde la base de datos
-     */
     public EstadisticasUsuariosDTO obtenerEstadisticasUsuarios() {
         EstadisticasUsuariosDTO estadisticas = new EstadisticasUsuariosDTO();
 
-        // Total de usuarios
         estadisticas.setTotalUsuarios(usuarioRepository.count());
 
-        // Usuarios por rol
         Map<String, Long> usuariosPorRol = new LinkedHashMap<>();
         List<Object[]> resultadosRol = usuarioRepository.countUsuariosPorRol();
         for (Object[] resultado : resultadosRol) {
@@ -68,7 +57,6 @@ public class ReporteUsuarioService {
         }
         estadisticas.setUsuariosPorRol(usuariosPorRol);
 
-        // Usuarios por estado
         Map<String, Long> usuariosPorEstado = new LinkedHashMap<>();
         List<Object[]> resultadosEstado = usuarioRepository.countUsuariosPorEstado();
         for (Object[] resultado : resultadosEstado) {
@@ -78,7 +66,6 @@ public class ReporteUsuarioService {
         }
         estadisticas.setUsuariosPorEstado(usuariosPorEstado);
 
-        // Crecimiento por mes
         Map<String, Long> crecimientoPorMes = new LinkedHashMap<>();
         List<Object[]> resultadosMes = usuarioRepository.countUsuariosPorMes();
         for (Object[] resultado : resultadosMes) {
@@ -91,9 +78,6 @@ public class ReporteUsuarioService {
         return estadisticas;
     }
 
-    /**
-     * Genera el PDF con las estadísticas de usuarios y gráficas
-     */
     public byte[] generarPDFEstadisticasUsuarios() throws DocumentException, IOException {
         Document document = new Document(PageSize.LETTER);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -102,23 +86,18 @@ public class ReporteUsuarioService {
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            // Obtener estadísticas
             EstadisticasUsuariosDTO estadisticas = obtenerEstadisticasUsuarios();
 
-            // Agregar contenido al PDF
             agregarEncabezado(document);
             agregarInformacionGeneral(document, estadisticas);
 
-            // Sección 2: Usuarios por Rol (tabla + gráfica)
             agregarEstadisticasPorRol(document, estadisticas);
             agregarGraficaBarrasRol(document, estadisticas);
 
-            // Sección 3: Usuarios por Estado (tabla + gráfica)
             document.newPage();
             agregarEstadisticasPorEstado(document, estadisticas);
             agregarGraficaBarrasEstado(document, estadisticas);
 
-            // Sección 4: Crecimiento mensual (tabla + gráfica)
             document.newPage();
             agregarCrecimientoPorMes(document, estadisticas);
             agregarGraficaBarrasCrecimiento(document, estadisticas);
@@ -131,8 +110,6 @@ public class ReporteUsuarioService {
 
         return baos.toByteArray();
     }
-
-    // ==================== MÉTODOS PRIVADOS PARA CONSTRUIR EL PDF ====================
 
     private void agregarEncabezado(Document document) throws DocumentException {
         Font tituloFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD, COLOR_PRIMARIO);
@@ -382,8 +359,6 @@ public class ReporteUsuarioService {
         pie.setSpacingBefore(10);
         document.add(pie);
     }
-
-    // ==================== MÉTODOS AUXILIARES ====================
 
     private void agregarLineaSeparadora(Document document) throws DocumentException {
         LineSeparator linea = new LineSeparator();

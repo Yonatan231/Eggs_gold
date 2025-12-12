@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "entrada_stock") // ✅ CORREGIDO: era "entrada_stsock"
+@Table(name = "entrada_stock")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -22,7 +22,6 @@ public class Rol {
     @Column(name = "NOMBRE_ROL", nullable = false, length = 45)
     private String nombreRol;
 
-    // Relación bidireccional - Un rol puede ser asignado a muchos usuarios
     @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Usuario> usuarios;
 }

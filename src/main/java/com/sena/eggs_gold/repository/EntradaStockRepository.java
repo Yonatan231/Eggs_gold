@@ -10,9 +10,7 @@ import java.util.List;
 @Repository
 public interface EntradaStockRepository extends JpaRepository<EntradaStock, Integer> {
 
-    // Buscar todas las entradas pendientes
     List<EntradaStock> findByEstado(EstadoEntradaStock estado);
 
-    // Buscar entradas por producto
     List<EntradaStock> findByProductoIdProducto(Integer idProducto);
 }

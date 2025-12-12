@@ -11,10 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class InventarioVistaDTO {
 
-    // ID del Producto (para identificar y editar)
     private Integer idProducto;
-
-    // Datos del producto
     private String nombre;
     private Float precio;
     private String categoria;
@@ -22,7 +19,6 @@ public class InventarioVistaDTO {
     private String estado;
     private String imagen;
 
-    // Datos del inventario
     private Integer cantidadDisponible;
     private LocalDate fechaActualizacion;
 }

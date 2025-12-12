@@ -21,12 +21,10 @@ public class FacturaPDFService {
 
             document.open();
 
-            // Fuentes
             Font titleFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD);
             Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
             Font normalFont = new Font(Font.FontFamily.HELVETICA, 10);
 
-            // Título
             Paragraph title = new Paragraph("EGGS GOLD", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
@@ -36,16 +34,13 @@ public class FacturaPDFService {
             subtitle.setSpacingAfter(20);
             document.add(subtitle);
 
-            // Información de la factura
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             LocalDateTime fechaPago = (LocalDateTime) facturaData.get("fechaPago");
 
             document.add(new Paragraph("Factura N°: " + facturaData.get("numeroFactura"), headerFont));
             document.add(new Paragraph("Fecha: " + fechaPago.format(formatter), normalFont));
             document.add(new Paragraph("Método de pago: " + facturaData.get("metodoPago"), normalFont));
-            document.add(new Paragraph(" ")); // Espacio
-
-            // Datos del cliente
+            document.add(new Paragraph(" "));
             document.add(new Paragraph("DATOS DEL CLIENTE", headerFont));
             document.add(new Paragraph("Nombre: " + facturaData.get("clienteNombre"), normalFont));
             document.add(new Paragraph("Documento: " + facturaData.get("clienteDocumento"), normalFont));
@@ -53,12 +48,10 @@ public class FacturaPDFService {
             document.add(new Paragraph("Teléfono: " + facturaData.get("clienteTelefono"), normalFont));
             document.add(new Paragraph(" ")); // Espacio
 
-            // Tabla de productos
             PdfPTable table = new PdfPTable(4);
             table.setWidthPercentage(100);
             table.setWidths(new int[]{3, 1, 2, 2});
 
-            // Encabezados
             PdfPCell cell;
             cell = new PdfPCell(new Phrase("Producto", headerFont));
             cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -76,7 +69,6 @@ public class FacturaPDFService {
             cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
             table.addCell(cell);
 
-            // Productos
             @SuppressWarnings("unchecked")
             List<Map<String, Object>> productos = (List<Map<String, Object>>) facturaData.get("productos");
 
@@ -88,14 +80,13 @@ public class FacturaPDFService {
             }
 
             document.add(table);
-            document.add(new Paragraph(" ")); // Espacio
+            document.add(new Paragraph(" "));
 
-            // Total
             Paragraph total = new Paragraph("TOTAL: $" + facturaData.get("totalPagado"), titleFont);
             total.setAlignment(Element.ALIGN_RIGHT);
             document.add(total);
 
-            document.add(new Paragraph(" ")); // Espacio
+            document.add(new Paragraph(" "));
             document.add(new Paragraph("Gracias por su compra", normalFont));
 
             document.close();

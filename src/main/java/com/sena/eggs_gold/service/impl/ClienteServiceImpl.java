@@ -47,8 +47,6 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setTelefono(dto.getTelefono());
         cliente.setCorreo(dto.getCorreo());
 
-        // hashear la contrasena antes de guardarla
-        // bcrypt.gensalt() genera una sal aleatoria para mayor seguridad
         String passwordHasheada = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
         cliente.setPassword(passwordHasheada);
 
@@ -66,23 +64,18 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDTO login(String numDocumento, String password){
-        // paso 1: buscar el cliente solo por numero de documento
         return clienteRepository.findByNumDocumento(numDocumento)
                 .map(cliente->{
-                    // paso 2: verificar que el usuario este activo
                     if (cliente.getEstado() != EstadoUsuario.ACTIVO) {
                         return null;
                     }
 
-                    // paso 3: validar la contrasena usando bcrypt
-                    // bcrypt.checkpw compara la contrasena en texto plano con la hasheada
                     boolean passwordCorrecta = BCrypt.checkpw(password, cliente.getPassword());
 
                     if (!passwordCorrecta) {
                         return null;
                     }
 
-                    // paso 4: si todo esta bien, crear y retornar el dto
                     ClienteDTO dto = new ClienteDTO();
                     dto.setIdUsuarios(cliente.getIdUsuarios());
                     dto.setNombre(cliente.getNombre());
@@ -97,7 +90,6 @@ public class ClienteServiceImpl implements ClienteService {
                 .orElse(null);
     }
 
-    // obtener pedidos del cliente
     @Override
     public List<Map<String, Object>> obtenerMisPedidos(Integer idCliente) {
         List<Pedido> pedidos = pedidoRepository.findByClienteIdUsuarios(idCliente);
@@ -116,7 +108,6 @@ public class ClienteServiceImpl implements ClienteService {
                 map.put("fechaEntrega", pedido.getFechaEntrega());
             }
 
-            // obtener productos del pedido
             List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(pedido.getIdPedidos());
 
             List<Map<String, Object>> productos = detalles.stream().map(detalle -> {
@@ -132,7 +123,6 @@ public class ClienteServiceImpl implements ClienteService {
             map.put("productos", productos);
             map.put("tiposProductos", detalles.size());
 
-            // calcular total del pedido
             java.math.BigDecimal total = detalles.stream()
                     .map(d -> d.getPrecioUnitario().multiply(java.math.BigDecimal.valueOf(d.getCantidad())))
                     .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
@@ -142,13 +132,11 @@ public class ClienteServiceImpl implements ClienteService {
         }).collect(Collectors.toList());
     }
 
-    // obtener factura de un pedido
     @Override
     public Map<String, Object> obtenerFacturaPorPedido(Integer idPedido, Integer idCliente) {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        // verificar que el pedido pertenezca al cliente
         if (!pedido.getCliente().getIdUsuarios().equals(idCliente)) {
             throw new RuntimeException("No tienes permiso para ver esta factura");
         }
@@ -162,13 +150,11 @@ public class ClienteServiceImpl implements ClienteService {
         facturaMap.put("metodoPago", factura.getMetodoPago().toString());
         facturaMap.put("totalPagado", factura.getTotalPagado());
 
-        // datos del cliente
         facturaMap.put("clienteNombre", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
         facturaMap.put("clienteDocumento", pedido.getCliente().getNumDocumento());
         facturaMap.put("clienteDireccion", pedido.getDireccion());
         facturaMap.put("clienteTelefono", pedido.getCliente().getTelefono());
 
-        // productos de la factura
         List<DetallePedido> detalles = detallePedidoRepository.findByPedidoIdPedidos(idPedido);
 
         List<Map<String, Object>> productos = detalles.stream().map(detalle -> {

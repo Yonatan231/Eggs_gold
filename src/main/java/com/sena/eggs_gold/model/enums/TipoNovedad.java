@@ -13,7 +13,7 @@ public enum TipoNovedad {
     RETRASO_INESPERADO,
     CLIENTE_NO_ESTABA,
 
-
+    // todos
     OTRO
 }
 

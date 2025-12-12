@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Controlador REST para el panel de conductor
- * Proporciona endpoints para obtener datos en formato JSON
- */
 @RestController
 @RequestMapping("/api/conductor")
 public class ConductorRestController {
@@ -25,11 +21,6 @@ public class ConductorRestController {
         this.pedidoRepository = pedidoRepository;
     }
 
-    /**
-     * Obtiene datos para las tarjetas de resumen del dashboard de conductor
-     * - Pedidos asignados (estado ASIGNADO)
-     * - Pedidos pendientes (estado EN_CAMINO)
-     */
     @GetMapping("/dashboard/resumen")
     public ResponseEntity<Map<String, Object>> obtenerResumenDashboard(HttpSession session) {
         Map<String, Object> resumen = new HashMap<>();
@@ -42,13 +33,11 @@ public class ConductorRestController {
                 return ResponseEntity.status(401).body(resumen);
             }
 
-            // 1. Contar pedidos asignados (estado ASIGNADO)
             long pedidosAsignados = pedidoRepository
                     .findByConductorIdUsuariosAndEstado(idConductor, EstadoPedido.ASIGNADO)
                     .size();
             resumen.put("pedidosAsignados", pedidosAsignados);
 
-            // 2. Contar pedidos pendientes (estado EN_CAMINO)
             long pedidosPendientes = pedidoRepository
                     .findByConductorIdUsuariosAndEstado(idConductor, EstadoPedido.EN_CAMINO)
                     .size();

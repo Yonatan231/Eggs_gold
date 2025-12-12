@@ -14,10 +14,9 @@ public class LogisticaDTO {
     private String telefono;
     private String correo;
     private String password;
-    private String tipoUsuario; // el último campo '' de la query
-    private Integer edad; // ✅ Campo edad agregado
+    private String tipoUsuario;
+    private Integer edad;
 
-    // 🔹 Este constructor coincide con la query en UsuarioRepository
     public LogisticaDTO(Integer idUsuarios, String nombre, String apellido,
                         String direccionUsuario, String numDocumento,
                         String telefono, String correo, String password,

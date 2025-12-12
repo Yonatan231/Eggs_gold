@@ -1,4 +1,3 @@
-// ===== ProductoRepository.java =====
 package com.sena.eggs_gold.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -8,9 +8,6 @@ import lombok.AllArgsConstructor;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
-/**
- * Entidad JPA para la tabla vehiculos
- */
 @Entity
 @Table(name = "vehiculos")
 @Data
@@ -23,9 +20,8 @@ public class Vehiculo {
     @Column(name = "ID_VEHICULOS")
     private Integer idVehiculos;
 
-    // Relación ManyToOne - Muchos vehículos pertenecen a un usuario
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario") // Corregido: coincide con la columna SQL
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     @Column(name = "PLACA", nullable = false, length = 20)

@@ -1,10 +1,10 @@
 package com.sena.eggs_gold.model.enums;
 
 public enum EstadoPedido {
-    PENDIENTE,           // El pedido acaba de crearse, cliente lo envia
-    EN_ALISTAMIENTO,     // El pedido se está preparando, logistica lo toma
-    LISTO,               // El pedido está listo para enviar, lo
-    ASIGNADO,            // Se asignó un conductor al pedido
-    EN_CAMINO,           // El conductor está llevando el pedido
-    ENTREGADO            // El pedido ya llegó al cliente
+    PENDIENTE,           // el pedido acaba de crearse, cliente lo envia
+    EN_ALISTAMIENTO,     // el pedido se esta preparando, logistica lo toma
+    LISTO,               // el pedido está listo para asignarlo a un conductor
+    ASIGNADO,            // se asigno  un conductor al pedido
+    EN_CAMINO,           // el conductor esta llevando el pedido
+    ENTREGADO            // el pedido ya llego al cliente
 }

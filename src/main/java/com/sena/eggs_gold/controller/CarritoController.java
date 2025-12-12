@@ -22,13 +22,11 @@ public class CarritoController {
         this.carritoService = carritoService;
     }
 
-    // Mostrar vista del carrito
     @GetMapping
     public String mostrarCarrito() {
         return "cliente/carrito";
     }
 
-    // Agregar producto al carrito
     @PostMapping("/api/agregar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> agregarAlCarrito(
@@ -42,7 +40,7 @@ public class CarritoController {
 
             if (idUsuario == null) {
                 response.put("success", false);
-                response.put("message", "❌ Debes iniciar sesión para agregar productos al carrito");
+                response.put("message", " Debes iniciar sesión para agregar productos al carrito");
                 return ResponseEntity.badRequest().body(response);
             }
 
@@ -51,25 +49,24 @@ public class CarritoController {
 
             if (cantidad <= 0) {
                 response.put("success", false);
-                response.put("message", "❌ La cantidad debe ser mayor a 0");
+                response.put("message", " La cantidad debe ser mayor a 0");
                 return ResponseEntity.badRequest().body(response);
             }
 
             Carrito carrito = carritoService.agregarAlCarrito(idUsuario, idProducto, cantidad);
 
             response.put("success", true);
-            response.put("message", "✅ Producto agregado al carrito");
+            response.put("message", " Producto agregado al carrito");
             response.put("cantidadCarrito", carritoService.contarProductosEnCarrito(idUsuario));
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error: " + e.getMessage());
+            response.put("message", " Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
 
-    // Obtener productos del carrito
     @GetMapping("/api/obtener")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerCarrito(HttpSession session) {
@@ -80,7 +77,7 @@ public class CarritoController {
 
             if (idUsuario == null) {
                 response.put("success", false);
-                response.put("message", "❌ Debes iniciar sesión");
+                response.put("message", " Debes iniciar sesión");
                 return ResponseEntity.badRequest().body(response);
             }
 
@@ -94,12 +91,11 @@ public class CarritoController {
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error: " + e.getMessage());
+            response.put("message", " Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
 
-    // Actualizar cantidad de un producto
     @PutMapping("/api/actualizar/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> actualizarCantidad(
@@ -114,22 +110,21 @@ public class CarritoController {
 
             if (actualizado) {
                 response.put("success", true);
-                response.put("message", "✅ Cantidad actualizada");
+                response.put("message", " Cantidad actualizada");
             } else {
                 response.put("success", false);
-                response.put("message", "❌ Error al actualizar");
+                response.put("message", " Error al actualizar");
             }
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error: " + e.getMessage());
+            response.put("message", " Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
 
-    // Eliminar producto del carrito
     @DeleteMapping("/api/eliminar/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> eliminarDelCarrito(@PathVariable Integer id) {
@@ -140,22 +135,21 @@ public class CarritoController {
 
             if (eliminado) {
                 response.put("success", true);
-                response.put("message", "✅ Producto eliminado del carrito");
+                response.put("message", " Producto eliminado del carrito");
             } else {
                 response.put("success", false);
-                response.put("message", "❌ Error al eliminar");
+                response.put("message", " Error al eliminar");
             }
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error: " + e.getMessage());
+            response.put("message", " Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
 
-    // Obtener contador del carrito
     @GetMapping("/api/contador")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerContador(HttpSession session) {

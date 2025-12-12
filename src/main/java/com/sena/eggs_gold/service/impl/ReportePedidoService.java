@@ -31,22 +31,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Servicio para generar reportes en PDF de estadísticas de pedidos
- * Usa iText 5 para PDF y JFreeChart para gráficas
- */
 @Service
 public class ReportePedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final DetallePedidoRepository detallePedidoRepository;
 
-    // Colores corporativos para PDF
     private static final BaseColor COLOR_PRIMARIO = new BaseColor(41, 128, 185); // Azul
     private static final BaseColor COLOR_SECUNDARIO = new BaseColor(52, 73, 94); // Gris oscuro
     private static final BaseColor COLOR_EXITO = new BaseColor(39, 174, 96); // Verde
 
-    // Colores para gráficas (Java AWT)
     private static final Color COLOR_GRAFICA_1 = new Color(41, 128, 185);
     private static final Color COLOR_GRAFICA_2 = new Color(39, 174, 96);
     private static final Color COLOR_GRAFICA_3 = new Color(230, 126, 34);
@@ -58,16 +52,11 @@ public class ReportePedidoService {
         this.detallePedidoRepository = detallePedidoRepository;
     }
 
-    /**
-     * Obtiene las estadísticas de pedidos desde la base de datos
-     */
     public EstadisticasPedidosDTO obtenerEstadisticasPedidos() {
         EstadisticasPedidosDTO estadisticas = new EstadisticasPedidosDTO();
 
-        // Total de pedidos
         estadisticas.setTotalPedidos(pedidoRepository.count());
 
-        // Pedidos por estado
         Map<String, Long> pedidosPorEstado = new LinkedHashMap<>();
         List<Object[]> resultadosEstado = pedidoRepository.countPedidosPorEstado();
         for (Object[] resultado : resultadosEstado) {
@@ -77,7 +66,6 @@ public class ReportePedidoService {
         }
         estadisticas.setPedidosPorEstado(pedidosPorEstado);
 
-        // Pedidos por método de pago
         Map<String, Long> pedidosPorMetodoPago = new LinkedHashMap<>();
         List<Object[]> resultadosMetodoPago = pedidoRepository.countPedidosPorMetodoPago();
         for (Object[] resultado : resultadosMetodoPago) {
@@ -87,7 +75,6 @@ public class ReportePedidoService {
         }
         estadisticas.setPedidosPorMetodoPago(pedidosPorMetodoPago);
 
-        // Ventas por mes
         Map<String, BigDecimal> ventasPorMes = new LinkedHashMap<>();
         List<Object[]> resultadosVentas = detallePedidoRepository.calcularVentasPorMes();
         for (Object[] resultado : resultadosVentas) {
@@ -97,7 +84,6 @@ public class ReportePedidoService {
         }
         estadisticas.setVentasPorMes(ventasPorMes);
 
-        // Crecimiento por mes
         Map<String, Long> crecimientoPorMes = new LinkedHashMap<>();
         List<Object[]> resultadosMes = pedidoRepository.countPedidosPorMes();
         for (Object[] resultado : resultadosMes) {
@@ -110,9 +96,6 @@ public class ReportePedidoService {
         return estadisticas;
     }
 
-    /**
-     * Genera el PDF con las estadísticas de pedidos y gráficas
-     */
     public byte[] generarPDFEstadisticasPedidos() throws DocumentException, IOException {
         Document document = new Document(PageSize.LETTER);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -121,28 +104,22 @@ public class ReportePedidoService {
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            // Obtener estadísticas
             EstadisticasPedidosDTO estadisticas = obtenerEstadisticasPedidos();
 
-            // Agregar contenido al PDF
             agregarEncabezado(document);
             agregarInformacionGeneral(document, estadisticas);
 
-            // Sección 2: Pedidos por Estado
             agregarEstadisticasPorEstado(document, estadisticas);
             agregarGraficaBarrasEstado(document, estadisticas);
 
-            // Sección 3: Pedidos por Método de Pago
             document.newPage();
             agregarEstadisticasPorMetodoPago(document, estadisticas);
             agregarGraficaBarrasMetodoPago(document, estadisticas);
 
-            // Sección 4: Ventas mensuales
             document.newPage();
             agregarVentasPorMes(document, estadisticas);
             agregarGraficaBarrasVentas(document, estadisticas);
 
-            // Sección 5: Crecimiento de pedidos
             document.newPage();
             agregarCrecimientoPorMes(document, estadisticas);
             agregarGraficaBarrasCrecimiento(document, estadisticas);
@@ -156,7 +133,6 @@ public class ReportePedidoService {
         return baos.toByteArray();
     }
 
-    // ==================== MÉTODOS PRIVADOS PARA CONSTRUIR EL PDF ====================
 
     private void agregarEncabezado(Document document) throws DocumentException {
         Font tituloFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD, COLOR_PRIMARIO);
@@ -463,8 +439,6 @@ public class ReportePedidoService {
         pie.setSpacingBefore(10);
         document.add(pie);
     }
-
-    // ==================== MÉTODOS AUXILIARES ====================
 
     private void agregarLineaSeparadora(Document document) throws DocumentException {
         LineSeparator linea = new LineSeparator();

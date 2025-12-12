@@ -16,28 +16,23 @@ public class RoleInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
         HttpSession session = request.getSession(false);
 
-        // Si no hay sesión activa
         if (session == null || session.getAttribute("usuario_id") == null) {
-            // Permitir acceso solo a páginas públicas
             if (isPublicUrl(uri)) {
                 return true;
             }
-            // redirigir a login si intenta acceder a paginas protegidas
             response.sendRedirect("/login");
             return false;
         }
 
-        // Obtener el rol del usuario
         String rol = (String) session.getAttribute("rol");
 
-        // Validar acceso según rol y URL
         if (!tienePermiso(uri, rol)) {
-            System.out.println("❌ Acceso denegado - Usuario con rol: " + rol + " intentó acceder a: " + uri);
+            System.out.println(" Acceso denegado - Usuario con rol: " + rol + " intentó acceder a: " + uri);
             response.sendRedirect("/error/403");
             return false;
         }
 
-        System.out.println("✅ Acceso permitido - Rol: " + rol + " → " + uri);
+        System.out.println(" Acceso permitido - Rol: " + rol + " → " + uri);
         return true;
     }
 
@@ -49,10 +44,10 @@ public class RoleInterceptor implements HandlerInterceptor {
                 uri.equals("/contacto") ||
                 uri.equals("/registro") ||
                 uri.equals("/registro_cliente") ||
-                uri.equals("/solicitar-recuperacion") ||      // ← NUEVO
-                uri.equals("/reset-password") ||               // ← NUEVO
-                uri.equals("/actualizar-password") ||          // ← NUEVO
-                uri.startsWith("/iniciar_sesion/") ||         // ← NUEVO
+                uri.equals("/solicitar-recuperacion") ||
+                uri.equals("/reset-password") ||
+                uri.equals("/actualizar-password") ||
+                uri.startsWith("/iniciar_sesion/") ||
                 uri.startsWith("/css/") ||
                 uri.startsWith("/js/") ||
                 uri.startsWith("/imagenes/") ||
@@ -63,7 +58,6 @@ public class RoleInterceptor implements HandlerInterceptor {
 
     private boolean tienePermiso(String uri, String rol) {
 
-        // Si no tiene rol, denegar acceso
         if (rol == null) {
             return false;
         }
@@ -92,11 +86,11 @@ public class RoleInterceptor implements HandlerInterceptor {
             return "LOGISTICA".equals(rol) || "ADMIN".equals(rol);
         }
 
-        // vistas para conductores (ACTUALIZADO)
+        // vistas para conductores
         if (uri.startsWith("/conductor") ||
                 uri.startsWith("/historial_pedidos_conductor") ||
                 uri.startsWith("/registro_vehiculo") ||
-                uri.startsWith("/api/vehiculos")) { // ← API de vehículos
+                uri.startsWith("/api/vehiculos")) {
             return "CONDUCTOR".equals(rol);
         }
 
@@ -112,10 +106,9 @@ public class RoleInterceptor implements HandlerInterceptor {
         if (uri.equals("/session") ||
                 uri.equals("/logout") ||
                 uri.startsWith("/api/pedido/listar")) {
-            return true; // Cualquier usuario con sesión activa
+            return true;
         }
 
-        // Por defecto, permitir acceso
         return true;
     }
 }

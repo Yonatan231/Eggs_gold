@@ -9,16 +9,13 @@ import java.util.List;
 @Repository
 public interface CarritoRepository extends JpaRepository<Carrito, Integer> {
 
-    // Buscar todos los productos del carrito de un usuario (no confirmados)
     List<Carrito> findByUsuarioIdUsuariosAndConfirmado(Integer idUsuario, Boolean confirmado);
 
-    // Buscar un producto específico en el carrito de un usuario
     Carrito findByUsuarioIdUsuariosAndProductoIdProductoAndConfirmado(
             Integer idUsuario,
             Integer idProducto,
             Boolean confirmado
     );
 
-    // Contar productos en el carrito
     Integer countByUsuarioIdUsuariosAndConfirmado(Integer idUsuario, Boolean confirmado);
 }

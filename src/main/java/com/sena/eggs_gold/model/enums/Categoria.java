@@ -1,8 +1,5 @@
 package com.sena.eggs_gold.model.enums;
 
-/**
- * Enum para categoría del producto
- */
 public enum Categoria {
     AAA("Categoria AAA - Premium"),
     AA("Categoria AA - Alta"),

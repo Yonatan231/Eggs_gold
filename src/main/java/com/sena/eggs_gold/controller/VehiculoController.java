@@ -21,9 +21,6 @@ public class VehiculoController {
     @Autowired
     private VehiculoService vehiculoService;
 
-    // ==========================================
-    // MOSTRAR LA PÁGINA PRINCIPAL
-    // ==========================================
     @GetMapping("/registro_vehiculo")
     public String mostrarPagina(HttpSession session, Model model) {
         // Verificar que hay un conductor en sesión
@@ -32,16 +29,12 @@ public class VehiculoController {
             return "redirect:/login";
         }
 
-        // Cargar los vehículos del conductor (ya como DTOs)
         List<VehiculoResponseDTO> vehiculos = vehiculoService.listarVehiculosPorConductor(idConductor);
         model.addAttribute("vehiculos", vehiculos);
 
         return "registros/registro_vehiculo";
     }
 
-    // ==========================================
-    // API REST - LISTAR VEHÍCULOS (retorna DTOs)
-    // ==========================================
     @GetMapping("/api/vehiculos/listar")
     @ResponseBody
     public ResponseEntity<List<VehiculoResponseDTO>> listarVehiculos(HttpSession session) {
@@ -50,14 +43,10 @@ public class VehiculoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // El servicio ya retorna DTOs, sin referencias circulares
         List<VehiculoResponseDTO> vehiculos = vehiculoService.listarVehiculosPorConductor(idConductor);
         return ResponseEntity.ok(vehiculos);
     }
 
-    // ==========================================
-    // API REST - CREAR VEHÍCULO (retorna DTO)
-    // ==========================================
     @PostMapping("/api/vehiculos/crear")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> crearVehiculo(
@@ -66,7 +55,6 @@ public class VehiculoController {
 
         Map<String, Object> response = new HashMap<>();
 
-        // Obtener ID del conductor desde la sesión
         Integer idConductor = (Integer) session.getAttribute("usuario_id");
         if (idConductor == null) {
             response.put("exito", false);
@@ -75,7 +63,6 @@ public class VehiculoController {
         }
 
         try {
-            // Registrar vehículo (retorna DTO, sin referencias circulares)
             VehiculoResponseDTO vehiculoRegistrado = vehiculoService.registrarVehiculo(vehiculoDTO, idConductor);
 
             if (vehiculoRegistrado == null) {
@@ -96,9 +83,6 @@ public class VehiculoController {
         }
     }
 
-    // ==========================================
-    // API REST - ACTUALIZAR VEHÍCULO (retorna DTO)
-    // ==========================================
     @PutMapping("/api/vehiculos/actualizar/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> actualizarVehiculo(
@@ -116,7 +100,6 @@ public class VehiculoController {
         }
 
         try {
-            // Actualizar vehículo (retorna DTO, sin referencias circulares)
             VehiculoResponseDTO vehiculoActualizado = vehiculoService.actualizarVehiculo(id, vehiculoDTO, idConductor);
 
             if (vehiculoActualizado == null) {
@@ -141,9 +124,6 @@ public class VehiculoController {
         }
     }
 
-    // ==========================================
-    // API REST - CAMBIAR ESTADO (retorna DTO)
-    // ==========================================
     @PatchMapping("/api/vehiculos/cambiar-estado/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> cambiarEstado(
@@ -160,7 +140,6 @@ public class VehiculoController {
         }
 
         try {
-            // Cambiar estado (retorna DTO, sin referencias circulares)
             VehiculoResponseDTO vehiculoActualizado = vehiculoService.cambiarEstado(id, idConductor);
 
             response.put("exito", true);
@@ -175,13 +154,9 @@ public class VehiculoController {
         }
     }
 
-    // ==========================================
-    // API REST - BUSCAR VEHÍCULO POR ID (retorna DTO)
-    // ==========================================
     @GetMapping("/api/vehiculos/{id}")
     @ResponseBody
     public ResponseEntity<VehiculoResponseDTO> buscarVehiculo(@PathVariable Integer id) {
-        // El servicio ya retorna DTO, sin referencias circulares
         VehiculoResponseDTO vehiculo = vehiculoService.buscarPorId(id);
 
         if (vehiculo == null) {

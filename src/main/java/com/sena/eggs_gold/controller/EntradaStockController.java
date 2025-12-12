@@ -28,27 +28,23 @@ public class EntradaStockController {
         this.productoService = productoService;
     }
 
-    // Mostrar formulario de registro (ADMIN)
     @GetMapping("/registrar")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("productos", productoService.listaProductos());
         return "registros/entrada_stock";
     }
 
-    // ✅ NUEVO: Mostrar vista de aprobación (LOGÍSTICA)
     @GetMapping("/aprobar")
     public String mostrarVistaAprobacion() {
         return "logistica/aprobar_entrada";
     }
 
-    // Endpoint para obtener productos (API REST)
     @GetMapping("/api/productos")
     @ResponseBody
     public ResponseEntity<List<?>> obtenerProductosDisponibles() {
         return ResponseEntity.ok(productoService.listaProductos());
     }
 
-    // Registrar nueva entrada de stock
     @PostMapping("/api/registrar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> registrarEntrada(@RequestBody Map<String, Object> datos) {
@@ -62,32 +58,29 @@ public class EntradaStockController {
             EntradaStock entrada = entradaStockService.registrarEntrada(idProducto, cantidad, proveedor);
 
             response.put("success", true);
-            response.put("message", "✅ Entrada registrada correctamente");
+            response.put("message", " Entrada registrada correctamente");
             response.put("id", entrada.getId());
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error al registrar entrada: " + e.getMessage());
+            response.put("message", " Error al registrar entrada: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
 
-    // Listar todas las entradas
     @GetMapping("/api/listar")
     @ResponseBody
     public ResponseEntity<List<EntradaStockDTO>> listarEntradas() {
         return ResponseEntity.ok(entradaStockService.listarTodasLasEntradas());
     }
 
-    // Listar solo entradas pendientes
     @GetMapping("/api/pendientes")
     @ResponseBody
     public ResponseEntity<List<EntradaStockDTO>> listarPendientes() {
         return ResponseEntity.ok(entradaStockService.listarEntradasPendientes());
     }
 
-    // ✅ NUEVO: Aprobar entrada
     @PostMapping("/api/aprobar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> aprobarEntrada(
@@ -97,12 +90,11 @@ public class EntradaStockController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Obtener ID del usuario de logística desde la sesión
             Integer idLogistica = (Integer) session.getAttribute("usuario_id");
 
             if (idLogistica == null) {
                 response.put("success", false);
-                response.put("message", "❌ No se encontró la sesión del usuario");
+                response.put("message", " No se encontró la sesión del usuario");
                 return ResponseEntity.badRequest().body(response);
             }
 
@@ -119,17 +111,17 @@ public class EntradaStockController {
 
             if (aprobado) {
                 response.put("success", true);
-                response.put("message", "✅ Entrada aprobada e inventario actualizado correctamente");
+                response.put("message", " Entrada aprobada e inventario actualizado correctamente");
             } else {
                 response.put("success", false);
-                response.put("message", "❌ Error al aprobar la entrada");
+                response.put("message", " Error al aprobar la entrada");
             }
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error: " + e.getMessage());
+            response.put("message", " Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -142,29 +134,26 @@ public class EntradaStockController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Validar que se envió un archivo
             if (archivoCSV.isEmpty()) {
                 response.put("success", false);
-                response.put("message", "❌ Debes seleccionar un archivo CSV");
+                response.put("message", " Debes seleccionar un archivo CSV");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // Validar extensión del archivo
             String nombreArchivo = archivoCSV.getOriginalFilename();
             if (nombreArchivo == null || !nombreArchivo.toLowerCase().endsWith(".csv")) {
                 response.put("success", false);
-                response.put("message", "❌ El archivo debe ser .csv");
+                response.put("message", " El archivo debe ser .csv");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // Procesar el CSV
             Map<String, Object> resultado = entradaStockService.guardarEntradasDesdeCSV(archivoCSV);
 
             response.put("success", true);
             response.put("exitosos", resultado.get("exitosos"));
             response.put("fallidos", resultado.get("fallidos"));
             response.put("errores", resultado.get("errores"));
-            response.put("message", "✅ Carga completada: " +
+            response.put("message", " Carga completada: " +
                     resultado.get("exitosos") + " entradas registradas, " +
                     resultado.get("fallidos") + " fallidas");
 
@@ -172,7 +161,7 @@ public class EntradaStockController {
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error al procesar el archivo: " + e.getMessage());
+            response.put("message", " Error al procesar el archivo: " + e.getMessage());
             return ResponseEntity.status(500).body(response);
         }
     }

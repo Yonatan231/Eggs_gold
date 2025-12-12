@@ -20,13 +20,11 @@ public class ConductorDTO {
     private String correo;
     private String password;
     private LocalDate fechaRegistro;
-    private Long pedidosEntregados; // Para estadísticas
-    private Integer edad; // ✅ Campo edad agregado
+    private Long pedidosEntregados;
+    private Integer edad;
 
-    // ✅ NUEVO: Campo para tipo de documento
     private TipoDocumento tipoDocumento;
 
-    // Constructor para queries que incluyen pedidos entregados
     public ConductorDTO(Integer idUsuarios, String nombre, String apellido, String numDocumento,
                         String direccionUsuario, String telefono, Long pedidosEntregados) {
         this.idUsuarios = idUsuarios;

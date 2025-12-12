@@ -22,7 +22,7 @@ public class Pedido {
     private Integer idPedidos;
 
     @Column(name = "DIRECCION", nullable = false, length = 120)
-    private String direccion;  // Dónde se va a entregar el pedido
+    private String direccion;
 
     @Column(name = "DETALLE_CLIENTE", columnDefinition = "TEXT")
     private String detalleCliente;
@@ -32,48 +32,43 @@ public class Pedido {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false)
-    private EstadoPedido estado;  // En qué etapa está el pedido
+    private EstadoPedido estado;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "METODO_PAGO")
-    private MetodoPago metodoPago;  // Cómo pagó el cliente
+    private MetodoPago metodoPago;
 
     @Column(name = "FECHA_CREACION")
-    private LocalDateTime fechaCreacion;  // Cuándo se creó el pedido
+    private LocalDateTime fechaCreacion;
 
     @Column(name = "FECHA_ENTREGA")
-    private LocalDateTime fechaEntrega;  // Cuándo se entregó el pedido
+    private LocalDateTime fechaEntrega;
 
     @Column(name = "CANTIDAD_TOTAL")
-    private Integer cantidadTotal;  // Cuántos productos en total tiene el pedido
+    private Integer cantidadTotal;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CLIENTE", nullable = false)
     private Usuario cliente;
 
-    // Quién está organizando el pedido (logística)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_LOGISTICA")
     private Usuario logistica;
 
-    // Quién va a entregar el pedido (conductor)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CONDUCTOR")
     private Usuario conductor;
 
     @PrePersist
     protected void antesDeGuardar() {
-        // Si no tiene fecha de creación, poner la fecha actual
         if (fechaCreacion == null) {
             fechaCreacion = LocalDateTime.now();
         }
 
-        // Si no tiene estado, ponerlo como PENDIENTE
         if (estado == null) {
             estado = EstadoPedido.PENDIENTE;
         }
 
-        // Si no tiene cantidad total, ponerla en 0
         if (cantidadTotal == null) {
             cantidadTotal = 0;
         }

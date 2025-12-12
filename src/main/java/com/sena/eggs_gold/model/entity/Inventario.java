@@ -33,7 +33,6 @@ public class Inventario {
     @Column(name = "FECHA_ACTUALIZACION", nullable = false)
     private LocalDate fechaActualizacion;
 
-    // Relación JPA - Many to One (muchos registros de inventario pueden ser del mismo producto)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCTOS_ID", nullable = false)

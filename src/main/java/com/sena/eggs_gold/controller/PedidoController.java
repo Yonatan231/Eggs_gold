@@ -21,7 +21,6 @@ public class PedidoController {
         this.pedidoService = pedidoService;
     }
 
-    // Validar stock antes de continuar
     @GetMapping("/api/validar-stock")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> validarStock(HttpSession session) {
@@ -32,7 +31,7 @@ public class PedidoController {
 
             if (idUsuario == null) {
                 response.put("success", false);
-                response.put("message", "❌ Sesión no válida");
+                response.put("message", " Sesión no válida");
                 return ResponseEntity.badRequest().body(response);
             }
 
@@ -40,22 +39,21 @@ public class PedidoController {
 
             if (stockDisponible) {
                 response.put("success", true);
-                response.put("message", "✅ Stock disponible");
+                response.put("message", " Stock disponible");
             } else {
                 response.put("success", false);
-                response.put("message", "❌ No hay suficiente stock para algunos productos");
+                response.put("message", " No hay suficiente stock para algunos productos");
             }
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error: " + e.getMessage());
+            response.put("message", " Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
 
-    // Confirmar pedido
     @PostMapping("/api/confirmar")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> confirmarPedido(
@@ -69,34 +67,32 @@ public class PedidoController {
 
             if (idUsuario == null) {
                 response.put("success", false);
-                response.put("message", "❌ Debes iniciar sesión");
+                response.put("message", " Debes iniciar sesión");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // Validaciones
             if (pedidoDTO.getDireccion() == null || pedidoDTO.getDireccion().trim().isEmpty()) {
                 response.put("success", false);
-                response.put("message", "❌ La dirección es obligatoria");
+                response.put("message", " La dirección es obligatoria");
                 return ResponseEntity.badRequest().body(response);
             }
 
             if (pedidoDTO.getMetodoPago() == null || pedidoDTO.getMetodoPago().trim().isEmpty()) {
                 response.put("success", false);
-                response.put("message", "❌ Debes seleccionar un método de pago");
+                response.put("message", " Debes seleccionar un método de pago");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // Crear pedido
             Pedido pedido = pedidoService.crearPedidoDesdeCarrito(idUsuario, pedidoDTO);
 
             response.put("success", true);
-            response.put("message", "✅ Pedido confirmado exitosamente");
+            response.put("message", " Pedido confirmado exitosamente");
             response.put("idPedido", pedido.getIdPedidos());
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "❌ Error: " + e.getMessage());
+            response.put("message", " Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
