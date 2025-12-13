@@ -258,12 +258,12 @@ public class InventarioController {
                 }
             } else {
                 InventarioVistaDTO nuevoDTO = new InventarioVistaDTO();
-                nuevoDTO.setIdProducto(inv.getIdInventario()); // Temporal, se corregirá
+                nuevoDTO.setIdProducto(inv.getIdInventario());
                 nuevoDTO.setNombre(inv.getNombre());
                 nuevoDTO.setPrecio(inv.getPrecio());
                 nuevoDTO.setCategoria(inv.getCategoria());
                 nuevoDTO.setDescripcion(inv.getDescripcion());
-                nuevoDTO.setEstado("DISPONIBLE"); // Por defecto
+                nuevoDTO.setEstado("DISPONIBLE");
                 nuevoDTO.setImagen(inv.getImagen());
                 nuevoDTO.setCantidadDisponible(inv.getCantidadDisponible());
                 nuevoDTO.setFechaActualizacion(inv.getFechaActualizacion());

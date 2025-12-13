@@ -29,10 +29,10 @@ public class DataInitializer {
                 admin.setDireccionUsuario("Oficina central");
                 admin.setTipoDocumento(TipoDocumento.CC);
                 admin.setNumDocumento("123456789");
-                admin.setTelefono("0000000000");
+                admin.setTelefono("3216204260");
                 admin.setEdad(30);
                 admin.setEstado(EstadoUsuario.ACTIVO);
-                admin.setCorreo("admin@tuapp.com");
+                admin.setCorreo("distribuidoraeggsgold@gmail.com");
                 String passwordHasheada = BCrypt.hashpw("123456789", BCrypt.gensalt());
                 admin.setPassword(passwordHasheada);
 
