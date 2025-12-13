@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Controller
 public class InventarioController {
 
+    @Autowired
     private InventarioService inventarioService;
 
     @Autowired
@@ -33,7 +34,6 @@ public class InventarioController {
 
     @Autowired
     private ProductoService productoService;
-
 
     @GetMapping("/inventario")
     public String mostrarInventario(Model model) {
@@ -115,7 +115,6 @@ public class InventarioController {
             return ResponseEntity.status(500).body(response);
         }
     }
-
 
     @GetMapping("/api/inventario/producto/{id}")
     @ResponseBody
@@ -259,12 +258,12 @@ public class InventarioController {
                 }
             } else {
                 InventarioVistaDTO nuevoDTO = new InventarioVistaDTO();
-                nuevoDTO.setIdProducto(inv.getIdInventario());
+                nuevoDTO.setIdProducto(inv.getIdInventario()); // Temporal, se corregirá
                 nuevoDTO.setNombre(inv.getNombre());
                 nuevoDTO.setPrecio(inv.getPrecio());
                 nuevoDTO.setCategoria(inv.getCategoria());
                 nuevoDTO.setDescripcion(inv.getDescripcion());
-                nuevoDTO.setEstado("DISPONIBLE");
+                nuevoDTO.setEstado("DISPONIBLE"); // Por defecto
                 nuevoDTO.setImagen(inv.getImagen());
                 nuevoDTO.setCantidadDisponible(inv.getCantidadDisponible());
                 nuevoDTO.setFechaActualizacion(inv.getFechaActualizacion());
