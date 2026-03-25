@@ -404,7 +404,7 @@ public class EmailServiceImpl implements EmailService {
     public void enviarCorreoRecuperacion(String correo, String token) {
         String asunto = "Recuperacion de contrasena - Eggs Gold";
 
-        String enlaceRecuperacion = "https://eggs-gold.onrender.com/reset-password?token=" + token;
+        String enlaceRecuperacion = "http://localhost:8080/reset-password?token=" + token;
 
         String cuerpoHtml = String.format("""
                 <!DOCTYPE html>
