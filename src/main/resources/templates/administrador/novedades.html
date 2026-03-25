@@ -6,20 +6,26 @@
     <title>Novedades - Administrador</title>
     <link rel="icon" type="image/jpg" th:href="@{/imagenes/inicio/logo.jpg}">
 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 
     <link rel="stylesheet" th:href="@{/css/administrador/novedades.css}">
     <link rel="stylesheet" th:href="@{/css/inicio/logo.css}">
 </head>
 <body>
 
+
+<!-- header fijo responsive -->
 <header class="header-novedades">
     <div class="header-content">
         <div class="header-logo">
             <img th:src="@{/imagenes/inicio/logo.jpg}" alt="Logo Eggs Gold">
         </div>
 
+
         <h1 class="header-title">Notificaciones</h1>
+
 
         <div class="header-actions">
             <form th:action="@{/administrador_inicio}">
@@ -31,7 +37,9 @@
     </div>
 </header>
 
+
 <div class="container">
+    <!-- filtro por estado -->
     <div class="filter-container">
         <label for="filtroEstado">Filtrar por estado:</label>
         <select id="filtroEstado" class="filter-select">
@@ -41,6 +49,8 @@
         </select>
     </div>
 
+
+    <!-- contenedor con scroll horizontal -->
     <div class="tabla-contenedor-scroll">
         <table id="tablaNovedades">
             <thead>
@@ -62,10 +72,10 @@
                 <td th:text="${novedad.tipoNovedad}"></td>
                 <td th:text="${novedad.descripcion}"></td>
                 <td>
-                    <span class="estado-badge"
-                          th:classappend="${novedad.estado.name() == 'RESUELTO' ? 'estado-resuelto' : 'estado-pendiente'}"
-                          th:text="${novedad.estado}">
-                    </span>
+                   <span class="estado-badge"
+                         th:classappend="${novedad.estado.name() == 'RESUELTO' ? 'estado-resuelto' : 'estado-pendiente'}"
+                         th:text="${novedad.estado}">
+                   </span>
                 </td>
                 <td th:text="${#temporals.format(novedad.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></td>
                 <td th:text="${novedad.usuario.nombre + ' ' + novedad.usuario.apellido}"></td>
@@ -73,7 +83,7 @@
                 <td>
                     <button th:if="${novedad.imagen != null}"
                             class="btn-ver-imagen"
-                            th:attr="data-imagen=${novedad.imagen}">
+                            th:attr="data-imagen=${'/uploads/novedades/' + novedad.imagen}">
                         Ver
                     </button>
                     <span th:unless="${novedad.imagen != null}" class="sin-imagen">Sin imagen</span>
@@ -86,6 +96,7 @@
                 </td>
             </tr>
 
+
             <tr th:if="${#lists.isEmpty(novedades)}" class="empty-row">
                 <td colspan="9" class="empty-message">No hay novedades registradas</td>
             </tr>
@@ -94,10 +105,13 @@
     </div>
 </div>
 
+
+<!-- lightbox para ver imagen -->
 <div id="lightbox" class="lightbox">
     <span class="lightbox-close">&times;</span>
     <img class="lightbox-content" id="lightbox-img" alt="Imagen de novedad">
 </div>
+
 
 <footer>
     <div class="footer-content">
@@ -113,10 +127,12 @@
     </div>
 </footer>
 
+
 <script th:src="@{/js/utils/manejo_sesion.js}"></script>
 <script th:src="@{/js/utils/validacion_rol.js}"></script>
 <script th:src="@{/js/administrador/novedades.js}"></script>
 <script> validarRolPagina('ADMIN'); </script>
+
 
 </body>
 </html>

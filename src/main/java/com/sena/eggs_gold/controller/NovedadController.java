@@ -1,7 +1,5 @@
 package com.sena.eggs_gold.controller;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.sena.eggs_gold.model.entity.Novedad;
 import com.sena.eggs_gold.model.entity.Pedido;
 import com.sena.eggs_gold.model.entity.Usuario;
@@ -11,7 +9,6 @@ import com.sena.eggs_gold.repository.NovedadRepository;
 import com.sena.eggs_gold.repository.PedidoRepository;
 import com.sena.eggs_gold.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -28,25 +29,19 @@ public class NovedadController {
     private final NovedadRepository novedadRepository;
     private final PedidoRepository pedidoRepository;
     private final UsuarioRepository usuarioRepository;
-    private final Cloudinary cloudinary;
 
-    public NovedadController(
-            NovedadRepository novedadRepository,
-            PedidoRepository pedidoRepository,
-            UsuarioRepository usuarioRepository,
-            @Value("${cloudinary.cloud-name}") String cloudName,
-            @Value("${cloudinary.api-key}") String apiKey,
-            @Value("${cloudinary.api-secret}") String apiSecret
-    ) {
+    private static final String UPLOAD_DIR = "C:/eggs_gold_uploads/novedades/";
+
+    public NovedadController(NovedadRepository novedadRepository, PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository) {
         this.novedadRepository = novedadRepository;
         this.pedidoRepository = pedidoRepository;
         this.usuarioRepository = usuarioRepository;
 
-        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", cloudName,
-                "api_key", apiKey,
-                "api_secret", apiSecret
-        ));
+        try {
+            Files.createDirectories(Paths.get(UPLOAD_DIR));
+        } catch (IOException e) {
+            System.err.println("Error al crear directorio de novedades: " + e.getMessage());
+        }
     }
 
     @PostMapping("/api/novedades/crear")
@@ -117,8 +112,8 @@ public class NovedadController {
             novedad.setFechaCreacion(LocalDateTime.now());
 
             if (imagen != null && !imagen.isEmpty()) {
-                String urlImagen = guardarImagenCloudinary(imagen);
-                novedad.setImagen(urlImagen);
+                String nombreImagen = guardarImagen(imagen);
+                novedad.setImagen(nombreImagen);
             }
 
             novedadRepository.save(novedad);
@@ -202,26 +197,25 @@ public class NovedadController {
         }
     }
 
-    private String guardarImagenCloudinary(MultipartFile imagen) throws IOException {
+    private String guardarImagen(MultipartFile imagen) throws IOException {
         if (imagen.isEmpty()) {
             return null;
         }
 
-        try {
-            Map uploadResult = cloudinary.uploader().upload(imagen.getBytes(),
-                    ObjectUtils.asMap(
-                            "folder", "eggs_gold/novedades",
-                            "resource_type", "image"
-                    ));
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String extension = obtenerExtension(imagen.getOriginalFilename());
+        String nombreArchivo = "novedad_" + timestamp + extension;
 
-            String urlImagen = (String) uploadResult.get("secure_url");
-            System.out.println(" Imagen de novedad subida a Cloudinary: " + urlImagen);
+        Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
+        Files.copy(imagen.getInputStream(), rutaArchivo, StandardCopyOption.REPLACE_EXISTING);
 
-            return urlImagen;
+        return nombreArchivo;
+    }
 
-        } catch (IOException e) {
-            System.err.println(" Error al subir imagen de novedad a Cloudinary: " + e.getMessage());
-            throw new IOException("Error al subir la imagen de novedad a Cloudinary", e);
+    private String obtenerExtension(String nombreArchivo) {
+        if (nombreArchivo == null || !nombreArchivo.contains(".")) {
+            return ".jpg";
         }
+        return nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
     }
 }
